@@ -9,11 +9,5 @@ export default function Home() {
 
   const dispatch = useAppDispatch();
 
-  return (
-    <main className="">
-      {/* <button onClick={() => dispatch(update(1))}>test</button>
-      {exampleRx.value} */}
-      Home
-    </main>
-  );
+  return <main className="">Home</main>;
 }
