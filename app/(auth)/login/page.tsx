@@ -32,6 +32,7 @@ const schema = Yup.object({
 
 const LoginPage = () => {
   const [togglePassword, setTogglePassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -54,10 +55,10 @@ const LoginPage = () => {
         </h2>
         <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center bg-gray-100 w-full mt-4 rounded-md ">
-            <div className="w-[40px] h-[40px] flex items-center  justify-center">
+            <div className="w-[40px] h-[40px] mx-2 flex items-center  justify-center">
               <Image
                 alt="message icon"
-                className="w-7 h-7 opacity-40 ml-6"
+                className="w-7 h-7 opacity-40 "
                 src={letterIcon}
               ></Image>
             </div>
@@ -74,10 +75,10 @@ const LoginPage = () => {
             </div>
           )}
           <div className="flex items-center bg-gray-100 w-full mt-4 rounded-md ">
-            <div className="w-[40px] h-[40px] flex items-center  justify-center">
+            <div className="w-[40px] h-[40px] mx-2 flex items-center  justify-center">
               <Image
                 alt="message icon"
-                className="w-7 h-7 opacity-40 ml-6"
+                className="w-7 h-7 opacity-40 "
                 src={keyIcon}
               ></Image>
             </div>
@@ -116,11 +117,18 @@ const LoginPage = () => {
               Forgot password?
             </Link>
           </div>
-          <Button label="Submit" type="submit" />
+          <Button
+            label="Submit"
+            type="submit"
+            className="bg-[#0D0F35]  hover:bg-[#1F37B3] my-4"
+          />
           <div className="w-full text-center mb-[40px]">
             <p className="text-sm font-light text-gray-600">
               Dont&apos;t have an account?{" "}
-              <Link href="#" className="underline inline-block text-blue-700 ">
+              <Link
+                href="/register"
+                className="underline inline-block text-blue-700 "
+              >
                 Sign up here
               </Link>
             </p>
