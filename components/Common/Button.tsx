@@ -1,20 +1,27 @@
 import React from "react";
-
+import { twMerge } from "tailwind-merge";
 interface ButtonProps {
-  type: "button" | "submit" | "reset";
+  children?: React.ReactNode;
+  type?: "button" | "submit" | "reset";
   className?: string;
-  label: string;
+  label?: string;
   onClick?: () => void;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, type, className }) => {
+const Button: React.FC<ButtonProps> = ({
+  label,
+  onClick,
+  type,
+  className,
+  children,
+}) => {
+  const classButton = twMerge(
+    ` text-center relative outline-0 border-0 cursor-pointer select-none transition-all rounded-3xl text-base font-normal flex items-center justify-center min-h-[28px] ${className}`
+  );
   return (
-    <button
-      type={type || "button"}
-      onClick={onClick}
-      className={` text-center relative outline-none border-none cursor-pointer select-none min-w-[64px] transition-all py-3 px-6 rounded-3xl text-base text-white bg-[#0D0F35] font-normal w-[160px] flex items-center justify-center my-4 mx-auto hover:bg-[#1F37B3] ${className}`}
-    >
+    <button type={type || "button"} onClick={onClick} className={classButton}>
       {label}
+      {children}
     </button>
   );
 };
