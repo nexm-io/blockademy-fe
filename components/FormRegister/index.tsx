@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import Input from "../Common/Input";
 import letterIcon from "../../public/letter.svg";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -23,6 +23,7 @@ const schema = Yup.object({
 });
 
 const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -40,6 +41,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
         console.log("onSubmit called:", e);
         setFormState("otp");
         reset();
+        push("/");
       }, 3000);
     });
   };
