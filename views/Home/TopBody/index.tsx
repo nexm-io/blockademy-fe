@@ -1,8 +1,9 @@
 import React from "react";
-import Button from "../Common/Button";
 import Image from "next/image";
-import img from "../../public/images/img.png";
-import clockIcon from "../../public/clock.svg";
+import img from "@/public/images/home/home-1.png";
+import clockIcon from "@/public/icons/clock.svg";
+import Button from "@/components/Common/Button";
+import Link from "next/link";
 
 const TopBody = () => {
   return (
@@ -22,7 +23,7 @@ const TopBody = () => {
         </p>
         <Button
           label="Get start"
-          className="bg-blue-100 text-white-100 h-[48px] py-[2px] px-[24px] mt-6 lg:mt-[47px] w-[110px]"
+          className="bg-blue-100 text-white-100 h-[48px] py-[2px]  mt-6 lg:mt-[47px] w-[110px] hover:bg-transparent hover:border  hover:border-blue-100 hover:text-black-100 "
         ></Button>
       </div>
       <div className="lg:w-[747px] md:w-[450px] w-full h-full lg:h-[608px] flex-shrink-0 bg-gray-200 overflow-hidden">
@@ -34,10 +35,14 @@ const TopBody = () => {
             priority
             width={520}
             height={292}
+            className="cursor-pointer"
           ></Image>
-          <h2 className="text-lg font-bold leading-[28px] mt-[26px] mb-[16px]">
+          <Link
+            href="#"
+            className="text-lg font-bold leading-[28px] mt-[26px] mb-[16px] block"
+          >
             How to Read the Most Popular Crypto Candlestick Patterns
-          </h2>
+          </Link>
           <div className="flex gap-6 text-gray-300 items-center mb-[15px]">
             <span className=" text-base font-normal leading-[23px]">
               Aug 15, 2023

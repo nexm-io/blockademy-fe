@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="max-w-[1440px] ">
         <Providers>
           <Header />
           {children}

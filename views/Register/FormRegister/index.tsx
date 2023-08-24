@@ -1,14 +1,13 @@
 "use client";
 import React from "react";
-import Button from "../Common/Button";
+import Button from "@/components/Common/Button";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Input from "../Common/Input";
-import letterIcon from "../../public/letter.svg";
+import Input from "@/components/Common/Input";
+import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -23,7 +22,6 @@ const schema = Yup.object({
 });
 
 const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
-  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -41,7 +39,6 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
         console.log("onSubmit called:", e);
         setFormState("otp");
         reset();
-        push("/");
       }, 3000);
     });
   };

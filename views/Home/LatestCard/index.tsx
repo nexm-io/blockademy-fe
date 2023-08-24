@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
-import vectorIcon from "../../public/arrowright.svg";
-import CardItem from "../CardItem";
-import cardImg from "../../public/images/img.png";
+import vectorIcon from "@/public/icons/arrowright.svg";
+import cardImg from "@/public/images/home/home-1.png";
+import CardItem from "@/components/CardItem";
 
 const LatestCard = () => {
   return (
@@ -11,7 +11,7 @@ const LatestCard = () => {
         <h4 className="text-black-100 font-normal leading-[28px] text-xl">
           Latest Releases
         </h4>
-        <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px]">
+        <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer hover:bg-white-100 hover:text-gray-100 border border-transparent hover:border-gray-100">
           <span className="text-black-100 text-xs font-normal uppercase">
             see all latest releases{" "}
           </span>

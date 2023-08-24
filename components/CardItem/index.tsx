@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import React from "react";
+import clockIcon from "@/public/icons/clock.svg";
 import Button from "../Common/Button";
-import clockIcon from "../../public/clock.svg";
 
 interface CardItemProps {
   imgSrc: StaticImageData;
@@ -20,13 +20,13 @@ const CardItem: React.FC<CardItemProps> = ({
   timeDuration,
 }) => {
   return (
-    <div className="w-[352px] lg:h-[370px] h-[340px] flex-shrink-0 shadow-lg rounded-2xl">
+    <div className="w-[352px] lg:h-[370px] h-[340px] flex-shrink-0 shadow-lg rounded-2xl cursor-pointer">
       <div className="w-full h-[198px] relative">
         <div className="absolute flex gap-2 top-6 left-6 text-white-100 z-20">
           {nftTags.map((tag, index) => (
             <span
               key={index}
-              className="rounded-full px-3 py-1 bg-black-100 text-white-100 font-bold text-[11px] leading-3"
+              className="rounded-full px-3 py-1 bg-black-100 text-white-100 font-bold text-[11px] leading-3 hover:bg-white-100 hover:text-black-100 border hover:border-green-200 border-transparent"
             >
               {tag}
             </span>

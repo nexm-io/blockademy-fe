@@ -1,5 +1,4 @@
 import React, { useState, useRef, ChangeEvent, useEffect } from "react";
-import Button from "../Common/Button";
 
 interface OTPPageProps {
   //   onComplete: (otp: string) => void;
@@ -7,7 +6,7 @@ interface OTPPageProps {
   otpDigits: any;
 }
 
-const OTPPage: React.FC<OTPPageProps> = ({ register, otpDigits }) => {
+const OTPPanel: React.FC<OTPPageProps> = ({ register, otpDigits }) => {
   const [otp, setOTP] = useState<string[]>(["", "", "", "", "", ""]);
   const inputRefs = useRef<HTMLInputElement[]>(new Array(6).fill(null));
 
@@ -71,4 +70,4 @@ const OTPPage: React.FC<OTPPageProps> = ({ register, otpDigits }) => {
   );
 };
 
-export default OTPPage;
+export default OTPPanel;

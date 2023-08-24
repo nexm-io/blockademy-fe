@@ -1,7 +1,7 @@
 "use client";
+import Button from "@/components/Common/Button";
+import OTPPanel from "@/components/OTPPanel";
 import React, { useRef } from "react";
-import Button from "../Common/Button";
-import OTPPage from "../OTPPanel";
 import { useForm } from "react-hook-form";
 
 interface FormRegisterProps {
@@ -32,7 +32,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
   return (
     <form className="w-full mt-4" onSubmit={handleSubmit(handleOTPComplete)}>
       <h2 className="text-[20px] font-bold text-center">Enter OTP</h2>
-      <OTPPage register={register} otpDigits={otpDigits}></OTPPage>
+      <OTPPanel register={register} otpDigits={otpDigits}></OTPPanel>
       {isSubmitting ? (
         <Button type="button" className=" bg-gray-300 mb-4 mt-8">
           <svg

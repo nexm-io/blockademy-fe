@@ -1,11 +1,12 @@
 "use client";
 import React from "react";
-import Button from "../Common/Button";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Input from "../Common/Input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Input from "@/components/Common/Input";
+import Button from "@/components/Common/Button";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const schema = Yup.object({
@@ -31,6 +32,7 @@ const schema = Yup.object({
 });
 
 const FormPanel = () => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -47,6 +49,7 @@ const FormPanel = () => {
         resolve();
         console.log("onSubmit called:", e);
         reset();
+        push("/");
       }, 3000);
     });
   };
