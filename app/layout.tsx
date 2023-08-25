@@ -4,6 +4,7 @@ import { Providers } from "@/redux/provider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageContainer from "@/components/PageContainer";
+import TopicList from "@/views/Home/TopicList";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,11 +20,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <PageContainer>
-            <Header />
-            {children}
-            <Footer />
-          </PageContainer>
+          <Header />
+          <PageContainer>{children}</PageContainer>
+          <Footer />
         </Providers>
       </body>
     </html>

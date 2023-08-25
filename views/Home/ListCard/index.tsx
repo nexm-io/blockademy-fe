@@ -4,16 +4,22 @@ import vectorIcon from "@/public/icons/arrowright.svg";
 import cardImg from "@/public/images/home/home-1.png";
 import CardItem from "@/components/CardItem";
 
-const LatestCard = () => {
+interface ListCardProps {
+  cardTitle: string;
+  cardLabel: string;
+  mTop?: string;
+}
+
+const ListCard: React.FC<ListCardProps> = ({ cardTitle, cardLabel, mTop }) => {
   return (
-    <section className="mt-[60px]">
-      <div className="flex justify-between lg:mb-[40px] mb-4 items-center">
-        <h4 className="text-black-100 font-normal leading-[28px] text-xl">
-          Latest Releases
+    <section className={`${mTop}`}>
+      <div className="flex justify-between lg:mb-[40px] mb-4 items-center mx-4 lg:mx-0">
+        <h4 className="text-black-100 font-normal leading-[28px] md:text-xl text-base">
+          {cardTitle}
         </h4>
         <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
           <span className="text-black-100 text-xs font-normal uppercase">
-            see all latest releases{" "}
+            see all {cardLabel}
           </span>
           <Image alt="vector" src={vectorIcon}></Image>
         </div>
@@ -48,4 +54,4 @@ const LatestCard = () => {
   );
 };
 
-export default LatestCard;
+export default ListCard;
