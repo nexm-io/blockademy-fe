@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custon btn shadow */
+.btn-shadow:hover {
+  box-shadow: 0 0 10px 2px rgb(62 61 67 / 50%);
+}

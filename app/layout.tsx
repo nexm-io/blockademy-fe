@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Providers } from "@/redux/provider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageContainer from "@/components/PageContainer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="max-w-[1440px] ">
+      <body>
         <Providers>
-          <Header />
-          {children}
-          <Footer />
+          <PageContainer>
+            <Header />
+            {children}
+            <Footer />
+          </PageContainer>
         </Providers>
       </body>
     </html>

@@ -16,7 +16,7 @@ const JourneyAcademy = () => {
         </p>
         <Button
           label="Get start"
-          className="lg:w-[165px] w-[130px] text-[14px] bg-blue-100 text-white-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center hover:bg-transparent hover:border  hover:border-blue-100 hover:text-black-100"
+          className="lg:w-[165px] w-[130px] text-[14px] bg-blue-100 text-white-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn-shadow"
         ></Button>
       </div>
       <div className="self-center md:self-start md:w-[500px] md:h-[200px] lg:w-auto lg:h-auto ">
