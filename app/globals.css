@@ -3,6 +3,93 @@
 @tailwind utilities;
 
 /* Custon btn shadow */
-.btn-shadow:hover {
-  box-shadow: 0 0 10px 2px rgb(62 61 67 / 50%);
+.btn__contain-shadow {
+  transition: all 0.2s ease-in-out;
+}
+.btn__contain-shadow:hover {
+  box-shadow: 0 0 10px 2px rgba(157, 154, 170, 0.4);
+}
+.btn__outline-shadow {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn__outline-shadow:hover {
+  @apply bg-blue-100 bg-opacity-10;
+}
+
+.card-shadow {
+  box-shadow: 0px 3px 6px 0px rgba(20, 21, 26, 0.08),
+    0px 7px 14px 0px rgba(71, 77, 87, 0.08),
+    0px 0px 1px 0px rgba(20, 21, 26, 0.1);
+}
+.status-difficulty::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  top: 50%;
+  left: 12%;
+  transform: translate(-50%, -50%);
+  border-radius: 100rem;
+  flex-shrink: 0;
+}
+.status-difficulty.green::before {
+  background: #02c076;
+}
+
+.status-difficulty.blue::before {
+  background: #37b7ff;
+}
+
+.status-difficulty.red::before {
+  background: #ff1d1d;
+}
+
+.crypto__list {
+  display: grid;
+  grid-template-areas:
+    "h1 h1 h1 h2"
+    "h3 h4 h4 h4"
+    "h5 h5 h6 h6";
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.crypto__h1 {
+  grid-area: h1;
+}
+
+.crypto__h2 {
+  grid-area: h2;
+}
+
+.crypto__h3 {
+  grid-area: h3;
+}
+
+.crypto__h4 {
+  grid-area: h4;
+}
+.crypto__h5 {
+  grid-area: h5;
+}
+
+.crypto__h6 {
+  grid-area: h6;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .crypto__list {
+    display: grid;
+    grid-template-areas:
+      "h1"
+      "h2"
+      "h3"
+      "h4"
+      "h5"
+      "h6";
+    gap: 16px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
 }

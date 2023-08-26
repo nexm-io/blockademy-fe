@@ -2,9 +2,9 @@ import React from "react";
 
 interface InputProps {
   id: string;
-  type: string;
+  type?: string;
   placeholder: string;
-  register: any;
+  register?: any;
   className?: string;
 }
 
@@ -17,7 +17,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <input
-      type={type}
+      type={type || "text"}
       id={id}
       {...register(id)}
       placeholder={placeholder}

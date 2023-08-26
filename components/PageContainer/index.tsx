@@ -7,11 +7,7 @@ const inter = Inter({
 });
 
 const PageContainer = ({ children }: { children: ReactNode }) => {
-  return (
-    <main className={`xl:px-[40px] ${inter.className}`}>
-      <div className="max-w-[1152px] mx-auto">{children}</div>
-    </main>
-  );
+  return <main className={`xl:px-[40px] ${inter.className}`}>{children}</main>;
 };
 
 export default PageContainer;
