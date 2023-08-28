@@ -11,6 +11,8 @@ import TopicList from "@/views/Home/TopicList";
 import NotToKnow from "@/views/Home/NotToKnow";
 import TutorialStart from "@/views/Home/TutorialStart";
 import Glossary from "@/views/Home/Glossary";
+import GiftHeader from "@/components/GiftHeader";
+import NoSignal from "@/components/NoSignal";
 
 export default function Home() {
   const exampleRx = useAppSelector(selectExample);
@@ -19,6 +21,7 @@ export default function Home() {
 
   return (
     <>
+      <GiftHeader />
       <TopBody />
       <ListCard
         cardTitle="Latest Releases"
@@ -42,6 +45,7 @@ export default function Home() {
       />
       <TutorialStart />
       <Glossary />
+      <NoSignal />
     </>
   );
 }

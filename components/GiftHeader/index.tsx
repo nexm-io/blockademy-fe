@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const GiftHeader = () => {
   return (
-    <div className="bg-blue-200 flex items-center justify-center h-[57px] mt-[74px]">
+    <div className="bg-blue-200 flex items-center justify-center h-[57px] mt-[74px] full-bleed__header">
       <div className="flex items-center">
         <Image alt="gift-icon" src={gift}></Image>
         <span className="ml-3 mr-6 md:text-sm text-[12px]">

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import PageContainer from "@/components/PageContainer";
 import TopicList from "@/views/Home/TopicList";
 import GiftHeader from "@/components/GiftHeader";
+import NoSignal from "@/components/NoSignal";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,8 +23,6 @@ export default function RootLayout({
       <body>
         <Providers>
           <Header />
-          <GiftHeader />
-
           <PageContainer>{children}</PageContainer>
           <Footer />
         </Providers>
