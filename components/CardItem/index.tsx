@@ -26,7 +26,7 @@ const CardItem: React.FC<CardItemProps> = ({
           {nftTags.map((tag, index) => (
             <span
               key={index}
-              className="rounded-full px-3 py-1 bg-black-100 text-white-100 font-bold text-[11px] leading-3 hover:bg-white-100 hover:text-black-100 border hover:border-green-200 border-transparent"
+              className="rounded-full px-3 py-1 bg-black-100 text-white-100 font-bold text-[11px] leading-3 "
             >
               {tag}
             </span>

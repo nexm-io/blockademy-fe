@@ -6,19 +6,20 @@ import crypto3 from "@/public/images/home/home-6.png";
 import crypto4 from "@/public/images/home/home-7.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { HiOutlineArrowRight } from "react-icons/hi";
+import PageContainer from "@/components/PageContainer";
 
 const TopicList = () => {
   return (
-    <section className="my-[82px]">
+    <section className="my-[82px] full-bleed">
       <div className="bg-black-100 md:h-[1146px] h-full">
         <div className="max-w-[1152px] mx-auto">
           {/* Topics */}
           <div className="flex gap-8 md:pt-[62px] pt-4 items-center pl-2">
             <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg ">
-              Topics:{" "}
+              Topics:
             </h3>
-            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2">
-              <div className="flex gap-2">
+            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap">
+              <div className="flex gap-2 md:gap-[15px]">
                 <span className="text-black-100 font-medium text-base text-center bg-gray-500 rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize">
                   #all
                 </span>
@@ -26,7 +27,7 @@ const TopicList = () => {
                   #blockchain
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 md:gap-[15px]">
                 <span className="text-gray-500 font-medium text-base text-center  rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize border border-gray-600">
                   #backend
                 </span>
@@ -34,7 +35,7 @@ const TopicList = () => {
                   #frontend
                 </span>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 md:gap-[15px]">
                 <span className="text-gray-500 font-medium text-base text-center  rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize border border-gray-600">
                   #monile
                 </span>
@@ -75,7 +76,7 @@ const TopicList = () => {
           {/* Topic Item */}
           <div className="mt-[50px] crypto__list">
             {/* h1 */}
-            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1">
+            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1 md:mx-0 mx-3">
               <Image
                 alt="crypto-item-1"
                 src={crypto1}
@@ -104,7 +105,7 @@ const TopicList = () => {
               </div>
             </div>
             {/* h2 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2">
+            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 md:mx-0 mx-3">
               <h3 className="text-lg font-bold text-white-100 p-4">
                 NFT Là Gì?
               </h3>
@@ -128,7 +129,7 @@ const TopicList = () => {
               </div>
             </div>
             {/* h3 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3">
+            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 md:mx-0 mx-3">
               <h3 className="text-lg font-bold text-white-100 p-4">
                 Cá Voi Tiền mã hoá là gì và làm sao để phát hiện họ?
               </h3>
@@ -152,7 +153,7 @@ const TopicList = () => {
               </div>
             </div>
             {/* h4 */}
-            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end">
+            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end md:mx-0 mx-3">
               <div className="flex flex-col md:items-end items-start md:pl-0 pl-4 justify-center">
                 <h2 className="md:text-[30px] text-[24px] font-bold leading-[40px] text-white-100 mb-1">
                   Tiền Mã Hóa Là Gì?
@@ -178,18 +179,18 @@ const TopicList = () => {
               <Image
                 alt="crypto-item-2"
                 src={crypto2}
-                className="w-full md:w-auto h-[200px] md:h-auto"
+                className="lg:w-[370px] lg:h-[330px] md:w-auto h-[200px] md:h-auto"
               ></Image>
             </div>
             {/* h5 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 md:mx-0 mx-3">
               <Image alt="crypto-item-3" src={crypto3}></Image>
               <h3 className="text-lg font-bold text-white-100 p-4">
                 Cách giữ an toàn trong giao dịch ngang hàng (P2P)
               </h3>
             </div>
             {/* h6 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 md:mx-0 mx-3">
               <Image alt="crypto-item-3" src={crypto4}></Image>
               <h3 className="text-lg font-bold text-white-100 p-4">
                 Cách giữ an toàn trong giao dịch ngang hàng (P2P)

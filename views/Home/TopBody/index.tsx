@@ -7,8 +7,8 @@ import Link from "next/link";
 
 const TopBody = () => {
   return (
-    <section className="flex gap-[46px] justify-between w-full md:mt-[123px] mt-[140px] md:flex-row flex-col">
-      <div className="lg:basis-[50%] basis-[40%] flex flex-col text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px]">
+    <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
+      <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] md:mt-0 text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px]">
         <h3 className="lg:text-[15px] text-[12px] font-bold uppercase mb-2">
           LEARN ALL ABOUT
         </h3>

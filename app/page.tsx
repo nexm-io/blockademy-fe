@@ -11,9 +11,6 @@ import TopicList from "@/views/Home/TopicList";
 import NotToKnow from "@/views/Home/NotToKnow";
 import TutorialStart from "@/views/Home/TutorialStart";
 import Glossary from "@/views/Home/Glossary";
-import TopContainer from "@/components/TopContainer";
-import MainContainer from "@/components/MainContainer";
-import BottomContainer from "@/components/BottomContainer";
 
 export default function Home() {
   const exampleRx = useAppSelector(selectExample);
@@ -22,35 +19,29 @@ export default function Home() {
 
   return (
     <>
-      <TopContainer>
-        <TopBody />
-        <ListCard
-          cardTitle="Latest Releases"
-          cardLabel="Latest releases"
-          mTop="lg:mt-[160px] md:mt-[100px] mt-[60px]"
-        />
-        <JourneyAcademy />
-        <SpecialContent />
-        <ListCard cardTitle="Trending" cardLabel="Trending" mTop="mt-[60px]" />
-      </TopContainer>
-      <MainContainer>
-        <TopicList />
-      </MainContainer>
-      <BottomContainer>
-        <NotToKnow />
-        <ListCard
-          cardTitle="Backend"
-          cardLabel="Backend"
-          mTop="mt-[60px] md:mt-[100px]"
-        />
-        <ListCard
-          cardTitle="Frontend"
-          cardLabel="Frontend"
-          mTop="mt-[60px] md:mt-[100px]"
-        />
-        <TutorialStart />
-        <Glossary />
-      </BottomContainer>
+      <TopBody />
+      <ListCard
+        cardTitle="Latest Releases"
+        cardLabel="Latest releases"
+        mTop="lg:mt-[160px] md:mt-[100px] mt-[60px]"
+      />
+      <JourneyAcademy />
+      <SpecialContent />
+      <ListCard cardTitle="Trending" cardLabel="Trending" mTop="mt-[60px]" />
+      <TopicList />
+      <NotToKnow />
+      <ListCard
+        cardTitle="Backend"
+        cardLabel="Backend"
+        mTop="mt-[60px] md:mt-[100px]"
+      />
+      <ListCard
+        cardTitle="Frontend"
+        cardLabel="Frontend"
+        mTop="mt-[60px] md:mt-[100px]"
+      />
+      <TutorialStart />
+      <Glossary />
     </>
   );
 }
