@@ -17,7 +17,6 @@ build_docker_dev: &build
     env: $ENV_DEV
   only:
     - develop
-    - dockerize
   script:
     # define .env
     - cat $env > .env
@@ -55,7 +54,6 @@ deploy_dev:
 
   only:
     - develop
-    - dockerize
   script:
     #ssh to server
     - apk add --no-cache openssh-client
