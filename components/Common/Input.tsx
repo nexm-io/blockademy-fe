@@ -21,7 +21,7 @@ const Input: React.FC<InputProps> = ({
       id={id}
       {...register(id)}
       placeholder={placeholder}
-      className={`outline-none border-none bg-gray-100 py-4 pl-[10px] pr-3 w-full ${className}`}
+      className={`outline-none border-none bg-white-200 text-black py-4 pl-[10px] pr-3 w-full ${className}`}
     />
   );
 };

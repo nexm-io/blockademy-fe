@@ -20,14 +20,6 @@ const schema = Yup.object({
     .trim()
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
-  password: Yup.string()
-    .required("Please enter your password")
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      "Password must have a lowercase letter, a number and one special character"
-    )
-    .min(8, "Length from 8 - 160 characters")
-    .max(160, "Length from 8 - 160 characters"),
 });
 
 const Login = () => {
@@ -58,8 +50,8 @@ const Login = () => {
         <h2 className="mt-[40px] text-[#0D1C68] text-[18px] font-medium leading-6">
           Log in to your Academy account
         </h2>
-        <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center  w-full mt-4 rounded-md bg-white-200">
+        <form className="w-full mt-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex items-center  w-full rounded-md bg-white-200 mt-4">
             <div className="w-[40px] h-[40px] mx-2 flex items-center justify-center">
               <Image
                 alt="message icon"
@@ -79,48 +71,12 @@ const Login = () => {
               {errors.email.message}
             </div>
           )}
-          <div className="flex items-center bg-white-200 w-full mt-4 rounded-md ">
-            <div className="w-[40px] h-[40px] mx-2 flex items-center  justify-center">
-              <Image
-                alt="message icon"
-                className="w-7 h-7 opacity-40 "
-                src={keyIcon}
-              ></Image>
-            </div>
-            <Input
-              id="password"
-              type={togglePassword ? "text" : "password"}
-              placeholder="Your password"
-              register={register}
-            />
-            {!togglePassword ? (
-              <Image
-                src={eyeCloseIcon}
-                onClick={() => setTogglePassword(true)}
-                alt="eye-show"
-                className="w-4 h-4 mr-4 cursor-pointer"
-              />
-            ) : (
-              <Image
-                src={eyeIcon}
-                onClick={() => setTogglePassword(false)}
-                alt="eye-show"
-                className="w-4 h-4 mr-4 cursor-pointer"
-              />
-            )}
-          </div>
-          {errors?.password && (
-            <div className="text-red-500 text-sm mt-1">
-              {errors.password.message}
-            </div>
-          )}
-          <div className="w-full text-right mb-6">
-            <Link
-              href="forgot-password"
-              className=" text-gray-400 text-[14px] hover:underline"
-            >
-              Forgot password?
-            </Link>
+
+          <div className="w-full text-right my-6">
+            <p className="leading-[18px] font-light text-center mx-auto my-3 text-sm text-gray-800">
+              Enter your email to create an account, we will send you a link to
+              change your password
+            </p>
           </div>
           {isSubmitting ? (
             <Button
