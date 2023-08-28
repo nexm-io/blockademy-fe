@@ -25,7 +25,7 @@ const Glossary = () => {
             />
           </div>
         </div>
-        <div className="flex md:flex-row flex-col gap-4">
+        <div className="flex lg:flex-row flex-col gap-4 md:mr-5 mr-0 lg:mr-0">
           <div className="w-[358px] bg-white-100 card-shadow rounded-2xl p-6 text-black-100 flex flex-col justify-between">
             <div>
               <div className="rounded-full bg-black-100 text-white-100 text-[11px] flex items-center justify-center w-fit h-[22px] py-1 px-[15px]">

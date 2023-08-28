@@ -93,3 +93,28 @@
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /* For ipad phones: */
+  .crypto__list {
+    display: grid;
+    grid-template-areas:
+      "h1 h1"
+      "h2 h3"
+      "h4 h4"
+      "h5 h6";
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Fix text justify */
+.text__spacing {
+  text-align: justify;
+  word-spacing: -2px;
+}
+
+.full-bleed {
+  box-shadow: 0 0 0 100vmax #14151a;
+  clip-path: inset(0 -100vmax);
+}
