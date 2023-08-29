@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     description:
       "BlockAdemy provides a comprehensive gamified learning experience in the blockchain industry, bridging the gap between theoretical knowledge and practical application.",
-    images: [""],
+    images: ["https://blockademy.s3.ap-southeast-1.amazonaws.com/blockademy-banner.png"],
     title: "Blockademy",
     type: "website",
     url: "https://blockademy.ai/",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     description:
       "BlockAdemy provides a comprehensive gamified learning experience in the blockchain industry, bridging the gap between theoretical knowledge and practical application.",
-    images: [""],
+    images: ["https://blockademy.s3.ap-southeast-1.amazonaws.com/blockademy-banner.png"],
     site: "Blockademy",
     title: "Blockademy",
   },
