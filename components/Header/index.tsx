@@ -13,7 +13,7 @@ const Header = () => {
             <Image alt="logo" src={logo}></Image>
           </Link>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%]">
+        <div className="flex gap-2 md:w-auto w-[40%] prose">
           <Link
             href="/login"
             className="border border-blue-100 md:text-sm text-[12px] flex items-center justify-center text-blue-100 rounded-[4px] w-[94px] h-[32px] btn__outline-shadow"

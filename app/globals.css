@@ -2,20 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custon btn shadow */
-.btn__contain-shadow {
-  transition: all 0.2s ease-in-out;
-}
-.btn__contain-shadow:hover {
-  @apply bg-blue-100;
-  background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
-}
-.btn__outline-shadow {
-  transition: all 0.2s ease-in-out;
-}
-
-.btn__outline-shadow:hover {
-  @apply bg-blue-100 text-white-100;
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  text-decoration: none;
+  font-weight: normal;
 }
 
 .card-shadow {

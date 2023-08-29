@@ -47,8 +47,28 @@ module.exports = {
           100: "#869AFF",
         },
       },
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            ".btn__contain-shadow": {
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                background: "#1F37B3",
+                backgroundImage: "linear-gradient(rgb(0 0 0/20%) 0 0)",
+              },
+            },
+            ".btn__outline-shadow": {
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                background: "#1F37B3",
+                color: "#ffffff",
+              },
+            },
+          },
+        },
+      }),
     },
   },
 
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };

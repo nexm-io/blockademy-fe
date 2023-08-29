@@ -8,7 +8,7 @@ import Link from "next/link";
 const TopBody = () => {
   return (
     <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
-      <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] md:mt-0 text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px]">
+      <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px] ">
         <h3 className="lg:text-[15px] text-[12px] font-bold uppercase mb-2">
           LEARN ALL ABOUT
         </h3>
@@ -21,10 +21,12 @@ const TopBody = () => {
           trying to understand mining or a veteran looking to develop a trading
           strategy, we&apos;ve got you covered.
         </p>
-        <Button
-          label="Join here"
-          className="bg-blue-100 text-white-100 h-[48px] py-[2px] mt-6 lg:mt-[47px] w-[110px] btn__contain-shadow"
-        ></Button>
+        <div className="prose">
+          <Button
+            label="Join here"
+            className="bg-blue-100 text-white-100 h-[48px] py-[2px] mt-6 lg:mt-[47px] w-[110px] btn__contain-shadow"
+          ></Button>
+        </div>
       </div>
       <div className="lg:w-[748px] md:absolute static right-0 md:w-[450px] w-full  h-auto md:pb-10 lg:pb-0 lg:h-[608px] flex-shrink-0 bg-gray-200 overflow-hidden">
         <div className="lg:my-[72px] m-4 md:m-12 lg:mx-[53px] text-black-100">
