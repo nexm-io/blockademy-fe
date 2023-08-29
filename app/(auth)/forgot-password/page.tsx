@@ -47,21 +47,16 @@ const Login = () => {
           Log in to your Academy account
         </h2>
         <form className="w-full mt-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center  w-full rounded-md bg-white-200 mt-4">
-            <div className="w-[40px] h-[40px] mx-2 flex items-center justify-center">
-              <Image
-                alt="message icon"
-                className="w-7 h-7 opacity-40 "
-                src={letterIcon}
-              ></Image>
-            </div>
-            <Input
-              name="email"
-              id="email"
-              type="text"
-              placeholder="Your email address"
-              register={register}
-            />
+          <div className="mt-[29px] mb-1">
+            <label
+              htmlFor="email"
+              className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
+            >
+              Email
+            </label>
+          </div>
+          <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
+            <Input name="email" id="email" type="text" register={register} />
           </div>
           {errors?.email && (
             <div className="text-red-500 text-sm mt-1">
@@ -99,11 +94,13 @@ const Login = () => {
               </svg>
             </Button>
           ) : (
-            <Button
-              label="Submit"
-              type="submit"
-              className="bg-[#0D0F35] text-white-100 min-w-[64px] leading-7 py-[10px] px-[25px] w-[160px] mx-auto hover:bg-[#1F37B3] my-4"
-            />
+            <div className="prose">
+              <Button
+                label="Submit"
+                type="submit"
+                className="bg-blue-100 btn__contain-shadow text-white-100 min-w-[64px] leading-7 py-[10px] px-[25px] w-full rounded-[4px] mx-auto hover:bg-[#1F37B3] my-4"
+              />
+            </div>
           )}
           <div className="w-full text-center mb-[40px]">
             <p className="text-sm font-light text-gray-600">

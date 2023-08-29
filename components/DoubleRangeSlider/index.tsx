@@ -53,7 +53,7 @@ const DoubleRangeSlider = () => {
         <input
           type="range"
           min="0"
-          step="5"
+          step="1"
           max={sliderMaxValue}
           value={sliderOneValue}
           id="slider-1"
@@ -64,7 +64,7 @@ const DoubleRangeSlider = () => {
         <input
           type="range"
           min="0"
-          step="5"
+          step="1"
           max={sliderMaxValue}
           value={sliderTwoValue}
           id="slider-2"
