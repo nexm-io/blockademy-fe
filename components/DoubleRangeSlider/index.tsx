@@ -48,11 +48,6 @@ const DoubleRangeSlider = () => {
 
   return (
     <>
-      {/* <div className="values">
-        <span id="range1">{sliderOneValue}</span>
-        <span> &dash; </span>
-        <span id="range2">{sliderTwoValue}</span>
-      </div> */}
       <div className="container">
         <div ref={sliderTrackRef} className="slider-track"></div>
         <input
