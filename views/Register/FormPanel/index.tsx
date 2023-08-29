@@ -6,13 +6,28 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const schema = Yup.object({
+  firstName: Yup.string().required("Please enter your first name"),
+  lastName: Yup.string().required("Please enter your last name"),
+  email: Yup.string()
+    .required("Please enter your email address")
+    .email("Incorrect email format")
+    .trim()
+    .min(8, "Length from 8 - 160 characters")
+    .max(160, "Length from 8 - 160 characters"),
+  phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   password: Yup.string()
     .required("Please enter your password")
     .matches(
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Password must have a lowercase letter, a number and one special character"
     ),
+  confirm_password: Yup.string().oneOf(
+    [Yup.ref("password")],
+    "The password confirmation does not match"
+  ),
 });
 
 interface FormRegisterProps {
@@ -51,9 +66,84 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
       <div className="flex flex-col lg:flex-row gap-[80px] justify-center">
         <div className="min-w-[384px]">
           <h1 className="text-[30px] leading-10 font-bold mb-10">
-            Set Password
+            Set Infomation
           </h1>
-
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5">
+              First Name
+            </span>
+            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="firstName"
+                name="firstName"
+                type="password"
+                className="bg-white-200 h-12 rounded-lg"
+                register={register}
+              />
+            </div>
+          </div>
+          {errors?.firstName && (
+            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
+              {errors.firstName.message}
+            </div>
+          )}
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5">
+              Last Name
+            </span>
+            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="lastName"
+                name="lastName"
+                type="password"
+                className="bg-white-200 h-12 rounded-lg"
+                register={register}
+              />
+            </div>
+          </div>
+          {errors?.lastName && (
+            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
+              {errors.lastName.message}
+            </div>
+          )}
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5">
+              Email
+            </span>
+            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="email"
+                name="email"
+                type="password"
+                className="bg-white-200 h-12 rounded-lg"
+                register={register}
+              />
+            </div>
+          </div>
+          {errors?.email && (
+            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
+              {errors.email.message}
+            </div>
+          )}
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5">
+              Phone
+            </span>
+            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="phone"
+                name="phone"
+                type="password"
+                className="bg-white-200 h-12 rounded-lg"
+                register={register}
+              />
+            </div>
+          </div>
+          {errors?.phone && (
+            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
+              {errors.phone.message}
+            </div>
+          )}
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5">
               Password
@@ -64,7 +154,6 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 name="password"
                 type="password"
                 className="bg-white-200 h-12 rounded-lg"
-                placeholder="Password..."
                 register={register}
               />
             </div>
@@ -72,6 +161,25 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
           {errors?.password && (
             <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
               {errors.password.message}
+            </div>
+          )}
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5">
+              Confirm Password
+            </span>
+            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                name="confirm_password"
+                id="confirm_password"
+                type="password"
+                className="bg-white-200 h-12 rounded-lg"
+                register={register}
+              />
+            </div>
+          </div>
+          {errors?.confirm_password && (
+            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
+              {errors.confirm_password.message}
             </div>
           )}
 

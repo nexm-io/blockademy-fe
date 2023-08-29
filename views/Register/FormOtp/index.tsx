@@ -66,7 +66,6 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
                   name="otp"
                   type="text"
                   className="bg-white-200 h-12 rounded-lg pr-[120px]"
-                  placeholder="Verify code..."
                   register={register}
                 />
               </div>

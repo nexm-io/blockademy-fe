@@ -71,13 +71,12 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 name="email"
                 type="text"
                 className="bg-white-200 rounded-lg"
-                placeholder="Your email address"
                 register={register}
               />
             </div>
           </div>
           {errors?.email && (
-            <div className="text-red-500 text-sm mt-1 w-full font-medium absolute bottom-[35%]">
+            <div className="text-red-500 text-sm mt-1 w-full font-medium">
               {errors.email.message}
             </div>
           )}
