@@ -1,8 +1,5 @@
 "use client";
 
-import { useAppSelector, useAppDispatch } from "@/redux/hook";
-import { selectExample } from "@/redux/features/example/reducer";
-import { update } from "@/redux/features/example/action";
 import TopBody from "@/views/Home/TopBody";
 import ListCard from "@/views/Home/ListCard";
 import JourneyAcademy from "@/views/Home/JourneyAcademy";
@@ -15,10 +12,6 @@ import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
 
 export default function Home() {
-  const exampleRx = useAppSelector(selectExample);
-
-  const dispatch = useAppDispatch();
-
   return (
     <>
       <GiftHeader />
