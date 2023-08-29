@@ -1,9 +1,16 @@
-import React from 'react'
+import GiftHeader from "@/components/GiftHeader";
+import ArticleLists from "@/views/Articles/ArticleLists";
+import TopicArticle from "@/views/Articles/TopicArticle";
+import React from "react";
 
-const ArticlePage = function () {
+const Article = () => {
   return (
-    <div>page</div>
-  )
-}
+    <>
+      <GiftHeader />
+      <TopicArticle />
+      <ArticleLists />
+    </>
+  );
+};
 
-export default ArticlePage;
+export default Article;

@@ -23,7 +23,7 @@ const NoSignal = () => {
             />
             <Button
               label="Đăng ký"
-              className="bg-white-100 text-black-100 h-[48px] w-[110px] rounded-lg btn__contain-shadow"
+              className="bg-white-100 text-black-100 h-[48px] w-[110px] rounded-lg hover:text-white-100 hover:bg-blue-100"
             ></Button>
           </div>
           <div className="flex gap-[11px]">

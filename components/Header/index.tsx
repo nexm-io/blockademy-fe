@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="bg-white text-black w-full top-0 fixed z-[999] min-h-[74px]">
+    <header className="bg-white-100 text-black w-full top-0 fixed z-[999] min-h-[74px]">
       {/* Top Header */}
       <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4">
         <div className="md:w-full w-[40%]">
@@ -13,7 +13,7 @@ const Header = () => {
             <Image alt="logo" src={logo}></Image>
           </Link>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%]">
+        <div className="flex gap-2 md:w-auto w-[40%] prose">
           <Link
             href="/login"
             className="border border-blue-100 md:text-sm text-[12px] flex items-center justify-center text-blue-100 rounded-[4px] w-[94px] h-[32px] btn__outline-shadow"

@@ -7,7 +7,7 @@ const JourneyAcademy = () => {
   return (
     <section className="lg:py-[46px] p-4 lg:px-[50px]  gap-8 lg:gap-[130px] w-full lg:w-[1150px] rounded-[20px] h-full lg:h-[627px] flex-shrink-0 bg-blue-200 mx-auto mt-[86px]">
       <div className="flex lg:flex-row flex-col-reverse gap-4 justify-between">
-        <div className="flex flex-col text-black-100 lg:w-[40%] w-full">
+        <div className="flex flex-col text-black-100 lg:w-[40%] w-full prose">
           <h2 className="lg:text-[38px] md:text-[28px] text-[20px] font-bold leading-[48px] mb-4">
             Are you ready to begin your journey with Blockademy?
           </h2>
@@ -16,7 +16,7 @@ const JourneyAcademy = () => {
             professional and streamlined application process to join our team.
           </p>
           <Button
-            label="Get start"
+            label="Join here"
             className="lg:w-[165px] w-[130px] text-[14px] bg-blue-100 text-white-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn__contain-shadow"
           ></Button>
         </div>
