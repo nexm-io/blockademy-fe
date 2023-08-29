@@ -22,10 +22,10 @@ const schema = Yup.object({
     .max(160, "Length from 8 - 160 characters"),
   password: Yup.string()
     .required("Please enter your password")
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      "Password must have a lowercase letter, a number and one special character"
-    )
+    // .matches(
+    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    //   "Password must have a lowercase letter, a number and one special character"
+    // )
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
 });
@@ -72,7 +72,7 @@ const Login = () => {
               htmlFor="email"
               className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
             >
-              Email / Phone Number
+              Email
             </label>
           </div>
           <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
@@ -125,7 +125,7 @@ const Login = () => {
           {isSubmitting ? (
             <Button
               type="button"
-              className=" bg-gray-500 mb-4 min-w-[64px] leading-7 py-[10px] px-[25px] w-[160px] mx-auto my-4 h-[48px] cursor-not-allowed"
+              className=" bg-gray-500 w-full h-[52px] rounded-[4px] text-black-100 leading-7 py-[12px] btn__contain-shadow mt-8 cursor-not-allowed"
             >
               <svg
                 aria-hidden="true"
@@ -150,7 +150,7 @@ const Login = () => {
               <Button
                 label="Next"
                 type="submit"
-                className="bg-blue-100 w-full rounded-[4px] text-white-100 leading-7 py-[12px] btn__contain-shadow mt-2"
+                className="bg-blue-100 w-full rounded-[4px] text-white-100 leading-7 py-[12px] btn__contain-shadow mt-8"
               />
             </div>
           )}
