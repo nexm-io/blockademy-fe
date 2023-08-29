@@ -1,8 +1,3 @@
-"use client";
-
-import { useAppSelector, useAppDispatch } from "@/redux/hook";
-import { selectExample } from "@/redux/features/example/reducer";
-import { update } from "@/redux/features/example/action";
 import TopBody from "@/views/Home/TopBody";
 import ListCard from "@/views/Home/ListCard";
 import JourneyAcademy from "@/views/Home/JourneyAcademy";
@@ -13,12 +8,12 @@ import TutorialStart from "@/views/Home/TutorialStart";
 import Glossary from "@/views/Home/Glossary";
 import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Home",
+};
 export default function Home() {
-  const exampleRx = useAppSelector(selectExample);
-
-  const dispatch = useAppDispatch();
-
   return (
     <>
       <GiftHeader />

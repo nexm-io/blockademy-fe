@@ -68,6 +68,7 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
               </div>
               <Input
                 id="email"
+                name="email"
                 type="text"
                 className="bg-white-200 rounded-lg"
                 placeholder="Your email address"

@@ -7,7 +7,7 @@ import {
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import exampleReducer from "./features/example/reducer";
-
+import authReducer from "./features/auth/reducer";
 const persistConfig = {
   key: "blockademy-website",
   storage,
@@ -26,14 +26,18 @@ const createStore = () => {
   });
 };
 
-export let store = createStore();
+// export let store = createStore();
 
+export const store = configureStore({
+  reducer: {
+    auth: authReducer,
+  },
+});
 export const persistor = persistStore(store);
 
-export const refreshStore = () => {
-  store = createStore();
-};
-
+// export const refreshStore = () => {
+//   store = createStore();
+// };
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type StoreType = typeof store;

@@ -2,8 +2,6 @@
 import FormOtp from "@/views/Register/FormOtp";
 import FormPanel from "@/views/Register/FormPanel";
 import FormRegister from "@/views/Register/FormRegister";
-import Image from "next/image";
-import logoBanner from "@/public/images/home/logo-footer.png"
 import React, { useState } from "react";
 import FormVerifyEmail from "./FormVerifyEmail";
 import FormReceiveUpdate from "./FormReceiveUpdate";

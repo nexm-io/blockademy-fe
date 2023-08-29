@@ -5,10 +5,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
-import keyIcon from "@/public/icons/key.svg";
-import eyeIcon from "@/public/icons/eye.svg";
-import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import letterIcon from "@/public/icons/letter.svg";
 import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
@@ -60,6 +56,7 @@ const Login = () => {
               ></Image>
             </div>
             <Input
+              name="email"
               id="email"
               type="text"
               placeholder="Your email address"

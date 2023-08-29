@@ -3,10 +3,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
+import Input from "@/components/Common/Input";
 const schema = Yup.object({
   password: Yup.string()
     .required("Please enter your password")
@@ -62,6 +61,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
             <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
               <Input
                 id="password"
+                name="password"
                 type="password"
                 className="bg-white-200 h-12 rounded-lg"
                 placeholder="Password..."
