@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -9,6 +9,10 @@ import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { loginAuth } from "@/redux/features/auth/action";
+import keyIcon from "@/public/icons/key.svg";
+import eyeCloseIcon from "@/public/icons/eyeclose.svg";
+import eyeIcon from "@/public/icons/eye.svg";
+import Image from "next/image";
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
@@ -16,11 +20,20 @@ const schema = Yup.object({
     .trim()
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
+  password: Yup.string()
+    .required("Please enter your password")
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Password must have a lowercase letter, a number and one special character"
+    )
+    .min(8, "Length from 8 - 160 characters")
+    .max(160, "Length from 8 - 160 characters"),
 });
 
 type FormLogin = Yup.InferType<typeof schema>;
 
 const Login = () => {
+  const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
   const {
@@ -68,6 +81,44 @@ const Login = () => {
           {errors?.email && (
             <div className="text-red-500 text-sm mt-1">
               {errors.email.message}
+            </div>
+          )}
+
+          <div className="mt-3 mb-1">
+            <label
+              htmlFor="password"
+              className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
+            >
+              Password
+            </label>
+          </div>
+          <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
+            <Input
+              name="password"
+              id="password"
+              type={togglePassword ? "text" : "password"}
+              register={register}
+            />
+            {!togglePassword ? (
+              <Image
+                src={eyeCloseIcon}
+                onClick={() => setTogglePassword(true)}
+                alt="eye-show"
+                className="w-4 h-4 mr-4 cursor-pointer"
+              />
+            ) : (
+              <Image
+                src={eyeIcon}
+                onClick={() => setTogglePassword(false)}
+                alt="eye-show"
+                className="w-4 h-4 mr-4 cursor-pointer"
+              />
+            )}
+          </div>
+
+          {errors?.password && (
+            <div className="text-red-500 text-sm mt-1">
+              {errors.password.message}
             </div>
           )}
 
