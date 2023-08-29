@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
+import Button from "../Common/Button";
 
 const Header = () => {
   return (
@@ -14,17 +15,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="flex gap-2 md:w-auto w-[40%] prose">
-          <Link
-            href="/login"
-            className="border border-blue-100 md:text-sm text-[12px] flex items-center justify-center text-blue-100 rounded-[4px] w-[94px] h-[32px] btn__outline-shadow"
-          >
-            Log In
+          <Link href="/login">
+            <Button size="small" outlined className="w-[94px]">
+              Login
+            </Button>
           </Link>
-          <Link
-            href="/register"
-            className="bg-blue-100 text-white-100 md:text-sm text-[12px] flex items-center justify-center rounded-[4px] w-[94px] h-[32px] btn__contain-shadow"
-          >
-            Register
+          <Link href="/register">
+            <Button size="small" className="w-[94px]">Register</Button>
           </Link>
         </div>
       </div>

@@ -22,11 +22,10 @@ const NotToKnow = () => {
             Đừng lo. Hướng dẫn đơn giản dành cho người mới bắt đầu của chúng tôi
             sẽ giúp bạn nắm rõ.
           </p>
-          <div className="prose">
-            <Button
-              label="Join here"
-              className="lg:w-[165px] md:w-[130px] text-[14px] bg-blue-100 text-white-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn__contain-shadow mt-[29px] md:mx-0 mx-auto w-[80%]"
-            ></Button>
+          <div>
+            <Button rounded className="mt-[29px]">
+              Join here
+            </Button>
           </div>
         </div>
       </div>

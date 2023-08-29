@@ -19,9 +19,11 @@ const TutorialStart = () => {
               Take a closer look at our blockchain & crypto glossary.
             </p>
             <Button
-              label="Join here"
-              className="lg:w-[165px] w-[130px] text-[14px] bg-white-100 text-black-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn__contain-shadow hover:bg-blue-100 hover:text-white-100"
-            ></Button>
+              rounded
+              className="!text-black-100 !bg-white-100 hover:!bg-black-100 hover:!text-white-100"
+            >
+              Join here
+            </Button>
           </div>
         </div>
         {/* Slide 2 */}
@@ -35,9 +37,11 @@ const TutorialStart = () => {
               Watch Academy AMA, interviews, and online courses in Binance Live
             </p>
             <Button
-              label="Join here"
-              className="lg:w-[165px] w-[130px] text-[14px] bg-white-100 text-black-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn__contain-shadow hover:bg-blue-100 hover:text-white-100"
-            ></Button>
+              rounded
+              className="!text-black-100 !bg-white-100 hover:!bg-black-100 hover:!text-white-100"
+            >
+              Join here
+            </Button>
           </div>
         </div>
       </div>

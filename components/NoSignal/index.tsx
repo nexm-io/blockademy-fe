@@ -19,12 +19,11 @@ const NoSignal = () => {
             <input
               type="text"
               placeholder="Nhập địa chỉ email của bạn"
-              className="w-full outline-none border-none px-[19px] rounded-lg"
+              className="flex-1 outline-none border-none px-[19px] rounded-lg"
             />
-            <Button
-              label="Đăng ký"
-              className="bg-white-100 text-black-100 h-[48px] w-[110px] rounded-lg hover:text-white-100 hover:bg-blue-100"
-            ></Button>
+            <Button className="bg-white-100 !text-black-100 hover:!text-white-100 h-[48px]">
+              Đăng ký
+            </Button>
           </div>
           <div className="flex gap-[11px]">
             <input type="checkbox" id="checkbox" />

@@ -42,12 +42,13 @@ const CardItem: React.FC<CardItemProps> = ({
       <div className="m-6">
         <h2 className="text-black-100 text-lg font-bold leading-7">{title}</h2>
         <div className="flex lg:mt-[68px] mt-9 justify-between mr-6 items-center">
-          <Button
+          {/* TODO: chip component */}
+          {/* <Button
             label={buttonLabel}
             className="w-[90px] px-2 py-2 text-xs font-normal leading-3 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
           >
             <span className="active w-[6px] h-[6px] rounded-[4px] bg-green-100"></span>
-          </Button>
+          </Button> */}
           <span className="text-xs font-normal text-gray-300 leading-[23px]">
             {date}
           </span>

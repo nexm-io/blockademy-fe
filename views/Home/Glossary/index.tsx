@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import search from "@/public/icons/search.svg";
 import Button from "@/components/Common/Button";
 import arrowright from "@/public/icons/righticon.svg";
+import { ArrowRightShort } from "@styled-icons/bootstrap";
 
 const Glossary = () => {
   return (
@@ -40,10 +43,13 @@ const Glossary = () => {
             </div>
             <div>
               <Button
-                label="Định nghĩa đầy đủ"
-                className="text-sm font-normal leading-[20px] bg-gray-200 rounded-lg h-[40px] w-[195px] mt-[32px] flex gap-4 btn__contain-shadow"
+                size="small"
+                className="bg-gray-200 !text-black-100 hover:!text-white-100 hover:!bg-black-100 px-[26px]"
               >
-                <Image alt="arrowright" src={arrowright}></Image>
+                <div className="flex items-center gap-4">
+                  <span>Định nghĩa đầy đủ</span>
+                  <ArrowRightShort size={30} className="text-black-100" />
+                </div>
               </Button>
             </div>
           </div>
@@ -61,10 +67,13 @@ const Glossary = () => {
             </div>
             <div>
               <Button
-                label="Định nghĩa đầy đủ"
-                className="text-sm font-normal leading-[20px] bg-gray-200 rounded-lg h-[40px] w-[195px] mt-[32px] flex gap-4 btn__contain-shadow"
+                size="small"
+                className="bg-gray-200 !text-black-100 hover:!text-white-100 hover:!bg-black-100 px-[26px]"
               >
-                <Image alt="arrowright" src={arrowright}></Image>
+                <div className="flex items-center gap-4">
+                  <span>Định nghĩa đầy đủ</span>
+                  <ArrowRightShort size={30} className="text-black-100" />
+                </div>
               </Button>
             </div>
           </div>

@@ -32,12 +32,13 @@ export default function ArticleDetail({
           </h1>
         </div>
         <div className="flex lg:mt-7 w-[36%] justify-between mr-6 items-center mb-14">
-          <Button
+          {/* TODO: chip component */}
+          {/* <Button
             label={"Người mới"}
             className="w-[90px] px-2 py-2 text-xs font-normal leading-3 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
           >
             <span className="active w-[6px] h-[6px] rounded-[4px] bg-green-100"></span>
-          </Button>
+          </Button> */}
           <span className="text-xs font-normal text-gray-300 leading-[23px]">
             Published Jun 21, 2023
           </span>

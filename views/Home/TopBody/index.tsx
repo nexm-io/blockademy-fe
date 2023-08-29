@@ -21,11 +21,9 @@ const TopBody = () => {
           trying to understand mining or a veteran looking to develop a trading
           strategy, we&apos;ve got you covered.
         </p>
-        <div className="prose">
-          <Button
-            label="Join here"
-            className="bg-blue-100 text-white-100 h-[48px] py-[2px] mt-6 lg:mt-[47px] w-[110px] btn__contain-shadow"
-          ></Button>
+
+        <div className="mt-[47px]">
+          <Button rounded>Join here</Button>
         </div>
       </div>
       <div className="lg:w-[748px] md:absolute static right-0 md:w-[450px] w-full  h-auto md:pb-10 lg:pb-0 lg:h-[608px] flex-shrink-0 bg-gray-200 overflow-hidden">
@@ -54,12 +52,13 @@ const TopBody = () => {
               <span>9m</span>
             </div>
           </div>
-          <Button
+          {/* TODO: chip component */}
+          {/* <Button
             label="Beginner"
             className="w-[146px] py-[5px] px-1 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
           >
             <span className="active w-2 h-2 rounded-[4px] bg-green-100"></span>
-          </Button>
+          </Button> */}
         </div>
       </div>
     </section>
