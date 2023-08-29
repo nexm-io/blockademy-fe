@@ -53,75 +53,28 @@ const Login = () => {
     });
   };
   return (
-    <div className="max-w-[1200px] px-6 md:w-[405px] w-[350px] my-[100px] md:my-[140px] mx-auto border border-black-100 rounded-3xl">
-      <div className="flex flex-col items-center relative">
-        <h2 className="mt-[40px] text-[#0D1C68] text-[18px] font-medium leading-6">
-          Log in to your Academy account
+    <div className="max-w-[1200px] md:w-[405px] w-[350px] my-[100px] md:my-[140px] mx-auto rounded-3xl">
+      <div className="flex flex-col relative">
+        <h2 className="text-black-100 text-[30px] font-bold leading-6">
+          Log in
         </h2>
         <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center  w-full mt-4 rounded-md bg-white-200">
-            <div className="w-[40px] h-[40px] mx-2 flex items-center justify-center">
-              <Image
-                alt="message icon"
-                className="w-7 h-7 opacity-40 "
-                src={letterIcon}
-              ></Image>
-            </div>
-            <Input
-              id="email"
-              type="text"
-              placeholder="Your email address"
-              register={register}
-            />
+          <div className="mt-[29px] mb-1">
+            <label
+              htmlFor="email"
+              className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
+            >
+              Email / Phone Number
+            </label>
+          </div>
+          <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
+            <Input id="email" type="text" register={register} />
           </div>
           {errors?.email && (
             <div className="text-red-500 text-sm mt-1">
               {errors.email.message}
             </div>
           )}
-          <div className="flex items-center bg-white-200 w-full mt-4 rounded-md ">
-            <div className="w-[40px] h-[40px] mx-2 flex items-center  justify-center">
-              <Image
-                alt="message icon"
-                className="w-7 h-7 opacity-40 "
-                src={keyIcon}
-              ></Image>
-            </div>
-            <Input
-              id="password"
-              type={togglePassword ? "text" : "password"}
-              placeholder="Your password"
-              register={register}
-            />
-            {!togglePassword ? (
-              <Image
-                src={eyeCloseIcon}
-                onClick={() => setTogglePassword(true)}
-                alt="eye-show"
-                className="w-4 h-4 mr-4 cursor-pointer"
-              />
-            ) : (
-              <Image
-                src={eyeIcon}
-                onClick={() => setTogglePassword(false)}
-                alt="eye-show"
-                className="w-4 h-4 mr-4 cursor-pointer"
-              />
-            )}
-          </div>
-          {errors?.password && (
-            <div className="text-red-500 text-sm mt-1">
-              {errors.password.message}
-            </div>
-          )}
-          <div className="w-full text-right mb-6">
-            <Link
-              href="forgot-password"
-              className=" text-gray-400 text-[14px] hover:underline"
-            >
-              Forgot password?
-            </Link>
-          </div>
           {isSubmitting ? (
             <Button
               type="button"
@@ -146,22 +99,22 @@ const Login = () => {
               </svg>
             </Button>
           ) : (
-            <Button
-              label="Submit"
-              type="submit"
-              className="bg-[#0D0F35] text-white-100 min-w-[64px] leading-7 py-[10px] px-[25px] w-[160px] mx-auto hover:bg-[#1F37B3] my-4"
-            />
+            <div className="prose">
+              <Button
+                label="Next"
+                type="submit"
+                className="bg-blue-100 w-full rounded-[4px] text-white-100 leading-7 py-[12px] btn__contain-shadow mt-2"
+              />
+            </div>
           )}
-          <div className="w-full text-center mb-[40px]">
-            <p className="text-sm font-light text-gray-600">
-              Dont&apos;t have an account?{" "}
-              <Link
-                href="/register"
-                className="underline inline-block text-blue-700 "
-              >
-                Sign up here
-              </Link>
-            </p>
+
+          <div className="w-full mt-3">
+            <Link
+              href="/register"
+              className="inline-block hover:underline text-blue-100 "
+            >
+              Create a Blockademy Account
+            </Link>
           </div>
         </form>
       </div>

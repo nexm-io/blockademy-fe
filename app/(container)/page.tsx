@@ -15,9 +15,9 @@ import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
 
 export default function Home() {
-  const exampleRx = useAppSelector(selectExample);
+  // const exampleRx = useAppSelector(selectExample);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   return (
     <>
