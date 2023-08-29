@@ -14,12 +14,14 @@ module.exports = {
         black: {
           100: "#14151A",
           200: "#2B2F36",
-          300: "#000"
+          300: "#000",
+          400: "#1E2329"
         },
         white: {
           100: "#ffffff",
           200: "#FBFBFB",
-          300: "#EAECEF"
+          300: "#EAECEF",
+          400: "#707A8A"
         },
         gray: {
           100: "#474D57",
@@ -38,6 +40,9 @@ module.exports = {
           400: "#87E9FF",
           500: "#D7F1FF",
         },
+        red: {
+          100: "#FF1D1D",
+        },
         green: {
           100: "#02C0A9",
           900: "rgba(2, 192, 169, 0.20)",
@@ -46,8 +51,28 @@ module.exports = {
           100: "#869AFF",
         },
       },
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            ".btn__contain-shadow": {
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                background: "#1F37B3",
+                backgroundImage: "linear-gradient(rgb(0 0 0/20%) 0 0)",
+              },
+            },
+            ".btn__outline-shadow": {
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                background: "#1F37B3",
+                color: "#ffffff",
+              },
+            },
+          },
+        },
+      }),
     },
   },
 
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
