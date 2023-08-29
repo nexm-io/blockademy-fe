@@ -56,6 +56,7 @@ const Login = () => {
               ></Image>
             </div>
             <Input
+              name="email"
               id="email"
               type="text"
               placeholder="Your email address"

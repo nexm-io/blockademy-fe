@@ -3,7 +3,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
@@ -59,6 +58,7 @@ const FormPanel = () => {
       {/* first name */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="firstName"
           id="firstName"
           type="text"
           placeholder="Your first name"
@@ -74,6 +74,7 @@ const FormPanel = () => {
       {/* last name */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="lastName"
           id="lastName"
           type="text"
           placeholder="Your last name"
@@ -90,6 +91,7 @@ const FormPanel = () => {
       {/* Email */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="email"
           id="email"
           type="text"
           placeholder="Your email address"
@@ -105,6 +107,7 @@ const FormPanel = () => {
       {/* Phone */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="phone"
           id="phone"
           type="text"
           placeholder="Your phone number"
@@ -121,6 +124,7 @@ const FormPanel = () => {
       {/* Password */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="password"
           id="password"
           type="password"
           placeholder="Your password"
@@ -137,6 +141,7 @@ const FormPanel = () => {
       {/* Confirm password */}
       <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
+          name="confirm_password"
           id="confirm_password"
           type="password"
           placeholder="Your confirm password"
@@ -180,7 +185,7 @@ const FormPanel = () => {
         <Button
           label="Confirm"
           type="submit"
-          className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold my-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
+          className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold my-8 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
         />
       )}
     </form>
