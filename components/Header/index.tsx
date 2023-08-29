@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <header className="bg-white text-black w-full top-0 fixed z-[999] min-h-[74px]">
+    <header className="bg-white-100 text-black w-full top-0 fixed z-[999] min-h-[74px]">
       {/* Top Header */}
       <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4">
         <div className="md:w-full w-[40%]">

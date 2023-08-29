@@ -22,7 +22,7 @@ const TopBody = () => {
           strategy, we&apos;ve got you covered.
         </p>
         <Button
-          label="Get start"
+          label="Join here"
           className="bg-blue-100 text-white-100 h-[48px] py-[2px] mt-6 lg:mt-[47px] w-[110px] btn__contain-shadow"
         ></Button>
       </div>

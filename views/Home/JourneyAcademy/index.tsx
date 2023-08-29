@@ -16,7 +16,7 @@ const JourneyAcademy = () => {
             professional and streamlined application process to join our team.
           </p>
           <Button
-            label="Get start"
+            label="Join here"
             className="lg:w-[165px] w-[130px] text-[14px] bg-blue-100 text-white-100 h-[40px] lg:h-[48px] py-[2px] px-[24px] font-semibold leading-[24px] text-center btn__contain-shadow"
           ></Button>
         </div>
