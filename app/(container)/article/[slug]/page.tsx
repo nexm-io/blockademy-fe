@@ -1,3 +1,4 @@
+
 import BreadCumb from "@/components/BreadCumb";
 import banner from "@/public/images/home/article.png";
 import Image from "next/image";

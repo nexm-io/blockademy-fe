@@ -13,7 +13,7 @@ const BreadCumb = () => {
           </li>
           <li className="leading-[23px]">
             <span className="mx-2 text-neutral-500 dark:text-neutral-400">
-              {">"}
+            &gt;
             </span>
           </li>
           <li className="leading-[23px]">
@@ -26,10 +26,10 @@ const BreadCumb = () => {
           </li>
           <li>
             <span className="mx-2 text-neutral-500 dark:text-neutral-400">
-              {">"}
+            &gt;
             </span>
           </li>
-          <li className="text-neutral-500 dark:text-neutral-400">Bitcoin Spot ETF vs. Bitcoin Futures ETF: What's the Difference?</li>
+          <li className="text-neutral-500 dark:text-neutral-400">Bitcoin Spot ETF vs. Bitcoin Futures ETF: What	&gt;s the Difference?</li>
         </ol>
       </nav>
     </>
