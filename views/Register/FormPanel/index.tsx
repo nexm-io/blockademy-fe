@@ -9,15 +9,6 @@ import Input from "@/components/Common/Input";
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const schema = Yup.object({
-  firstName: Yup.string().required("Please enter your first name"),
-  lastName: Yup.string().required("Please enter your last name"),
-  email: Yup.string()
-    .required("Please enter your email address")
-    .email("Incorrect email format")
-    .trim()
-    .min(8, "Length from 8 - 160 characters")
-    .max(160, "Length from 8 - 160 characters"),
-  phone: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
   password: Yup.string()
     .required("Please enter your password")
     .matches(
@@ -70,82 +61,6 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
           </h1>
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5">
-              First Name
-            </span>
-            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
-              <Input
-                id="firstName"
-                name="firstName"
-                type="password"
-                className="bg-white-200 h-12 rounded-lg"
-                register={register}
-              />
-            </div>
-          </div>
-          {errors?.firstName && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.firstName.message}
-            </div>
-          )}
-          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-            <span className="text-sm text-black-400 self-start leading-5">
-              Last Name
-            </span>
-            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
-              <Input
-                id="lastName"
-                name="lastName"
-                type="password"
-                className="bg-white-200 h-12 rounded-lg"
-                register={register}
-              />
-            </div>
-          </div>
-          {errors?.lastName && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.lastName.message}
-            </div>
-          )}
-          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-            <span className="text-sm text-black-400 self-start leading-5">
-              Email
-            </span>
-            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
-              <Input
-                id="email"
-                name="email"
-                type="password"
-                className="bg-white-200 h-12 rounded-lg"
-                register={register}
-              />
-            </div>
-          </div>
-          {errors?.email && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.email.message}
-            </div>
-          )}
-          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-            <span className="text-sm text-black-400 self-start leading-5">
-              Phone
-            </span>
-            <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
-              <Input
-                id="phone"
-                name="phone"
-                type="password"
-                className="bg-white-200 h-12 rounded-lg"
-                register={register}
-              />
-            </div>
-          </div>
-          {errors?.phone && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.phone.message}
-            </div>
-          )}
-          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-            <span className="text-sm text-black-400 self-start leading-5">
               Password
             </span>
             <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
@@ -157,12 +72,12 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 register={register}
               />
             </div>
+            {errors?.password && (
+              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                {errors.password.message}
+              </div>
+            )}
           </div>
-          {errors?.password && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.password.message}
-            </div>
-          )}
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5">
               Confirm Password
@@ -176,12 +91,12 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 register={register}
               />
             </div>
+            {errors?.confirm_password && (
+              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                {errors.confirm_password.message}
+              </div>
+            )}
           </div>
-          {errors?.confirm_password && (
-            <div className="text-red-500 text-sm mt-1 w-full max-w-[384px] font-medium">
-              {errors.confirm_password.message}
-            </div>
-          )}
 
           {isSubmitting ? (
             <div className="flex justify-center">
@@ -189,7 +104,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 label="Next"
                 type="button"
                 disabled={true}
-                className=" bg-gray-300 text-white-100 font-semibold flex items-center justify-start py-3 px-6 w-full rounded-[4px] leading-6 h-12 float-right"
+                className=" bg-gray-300 text-white-100 mt-1.5 font-semibold flex items-center justify-start py-3 px-6 w-full rounded-[4px] leading-6 h-12 float-right"
               >
                 <svg
                   aria-hidden="true"
@@ -211,11 +126,11 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState }) => {
               </Button>
             </div>
           ) : (
-            <div className="flex justify-center">
+            <div className="flex justify-center prose">
               <Button
                 label="Next"
                 type="submit"
-                className="flex items-center justify-start py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100"
+                className="flex btn__contain-shadow mt-1.5 items-center justify-start py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] "
               />
             </div>
           )}

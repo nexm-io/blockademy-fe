@@ -72,7 +72,7 @@ const Login = () => {
               htmlFor="email"
               className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
             >
-              Email / Phone Number
+              Email 
             </label>
           </div>
           <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
@@ -124,8 +124,10 @@ const Login = () => {
 
           {isSubmitting ? (
             <Button
+              label="Next"
               type="button"
-              className=" bg-gray-500 mb-4 min-w-[64px] leading-7 py-[10px] px-[25px] w-[160px] mx-auto my-4 h-[48px] cursor-not-allowed"
+              disabled={true}
+              className=" bg-gray-500 w-full rounded-[4px] flex items-center gap-2 mt-10 text-white-100 leading-7 py-[12px] btn__contain-shadow"
             >
               <svg
                 aria-hidden="true"
@@ -150,7 +152,7 @@ const Login = () => {
               <Button
                 label="Next"
                 type="submit"
-                className="bg-blue-100 w-full rounded-[4px] text-white-100 leading-7 py-[12px] btn__contain-shadow mt-2"
+                className="bg-blue-100 w-full rounded-[4px] mt-10 text-white-100 leading-7 py-[12px] btn__contain-shadow"
               />
             </div>
           )}

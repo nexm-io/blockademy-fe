@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import Input from "@/components/Common/Input";
 import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
+import InfoGraphic from "../InfoGraphic";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -55,8 +56,8 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
             Sign Up with Email
           </h1>
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-2 rounded-md ">
-            <span className="text-sm text-black-400 self-start leading-5">
-              Email / Phone Number
+            <span className="text-sm text-black-400 self-start leading-5 pl-1">
+              Email
             </span>
             <div className="flex items-center bg-white-100 border rounded w-full justify-center">
               <div className="w-[40px] h-[40px]  mx-2 flex items-center  justify-center">
@@ -74,12 +75,12 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 register={register}
               />
             </div>
-          </div>
           {errors?.email && (
-            <div className="text-red-500 text-sm mt-1 w-full font-medium">
+            <div className="text-red-500 text-sm mt-1 w-full">
               {errors.email.message}
             </div>
           )}
+          </div>
 
           {isSubmitting ? (
             <div className="flex justify-center">
@@ -113,24 +114,24 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
               <Button
                 label="Send OTP"
                 type="submit"
-                className="flex items-center justify-start py-3 px-6 w-[336px] rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100"
+                className="flex items-center justify-start py-3 px-6 w-[336px] h-12 rounded-[4px] text-white-100 bg-[#ce1818] rounded min-h-[24px] min-w-[80px] hover:bg-[#a41212]"
               />
             </div>
           )}
 
-          <div className="w-full mb-[40px] font-medium text-blue-100">
-            <p className="text-sm font-light text-gray-600">
+          <div className="w-full mb-[40px] text-blue-100">
+            <p className="text-sm text-gray-600">
               Have an account?{" "}
               <Link
                 href="/login"
-                className="underline inline-block text-[#0d1c68] "
+                className="inline-block hover:underline text-blue-100 "
               >
                 Log in here
               </Link>
             </p>
           </div>
         </div>
-        <div className="lg:w-[424px] w-0"></div>
+        <InfoGraphic />
       </div>
     </form>
   );

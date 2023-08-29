@@ -57,8 +57,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
               </span>
               <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
                 <div className="absolute h-12 items-center right-[11px] mx-2 flex items-center text-sm text-white-400  justify-center">
-                  {" "}
-                  <span className="mr-1.5">Code sent</span>
+                  <span className="mr-1.5 mb-1 cursor-pointer">Code sent</span>
                   <Image alt="sent" src={exclamation} />
                 </div>
                 <Input
@@ -69,19 +68,19 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
                   register={register}
                 />
               </div>
-            </div>
             {errors?.otp && (
-            <div className="text-red-500 text-sm mt-1 w-full font-medium max-w-[340px]">
+            <div className="text-red-500 text-sm mt-1 w-full">
               {errors.otp.message}
             </div>
           )}
+            </div>
             {isSubmitting ? (
               <div className="flex justify-center">
                 <Button
                   label="Send OTP"
                   type="button"
                   disabled={true}
-                  className=" bg-gray-300 text-white-100 font-semibold flex items-center justify-start py-3 px-6 w-full rounded-[4px] leading-6 h-12 float-right"
+                  className=" bg-gray-300 text-white-100 mt-1.5 font-semibold flex items-center justify-start py-3 px-6 w-full rounded-[4px] leading-6 h-12 float-right"
                 >
                   <svg
                     aria-hidden="true"
@@ -103,18 +102,18 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 </Button>
               </div>
             ) : (
-              <div className="flex justify-center">
+              <div className="flex justify-center prose">
                 <Button
                   label="Send OTP"
                   type="submit"
-                  className="flex items-center justify-start py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100"
+                  className="flex items-center mt-1.5 h-12 justify-start btn__contain-shadow py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] border-[1px]"
                 />
               </div>
             )}
           </div>
 
-          <div className="w-full mt-[24px] font-medium text-blue-100">
-            <p className="text-sm font-medium text-blue-100">
+          <div className="w-full mt-[24px] text-blue-100">
+            <p className="text-sm font-medium text-blue-100 cursor-pointer">
               Didn't receive the code?
             </p>
           </div>
