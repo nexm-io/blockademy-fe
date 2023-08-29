@@ -1,5 +1,3 @@
-"use client";
-
 import TopBody from "@/views/Home/TopBody";
 import ListCard from "@/views/Home/ListCard";
 import JourneyAcademy from "@/views/Home/JourneyAcademy";
@@ -10,7 +8,11 @@ import TutorialStart from "@/views/Home/TutorialStart";
 import Glossary from "@/views/Home/Glossary";
 import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Home",
+};
 export default function Home() {
   return (
     <>

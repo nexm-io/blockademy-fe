@@ -1,18 +1,18 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-
-import keyIcon from "@/public/icons/key.svg";
-import eyeIcon from "@/public/icons/eye.svg";
-import eyeCloseIcon from "@/public/icons/eyeclose.svg";
-import letterIcon from "@/public/icons/letter.svg";
 import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hook";
+import { loginAuth } from "@/redux/features/auth/action";
+import keyIcon from "@/public/icons/key.svg";
+import eyeCloseIcon from "@/public/icons/eyeclose.svg";
+import eyeIcon from "@/public/icons/eye.svg";
+import Image from "next/image";
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
@@ -30,8 +30,11 @@ const schema = Yup.object({
     .max(160, "Length from 8 - 160 characters"),
 });
 
+type FormLogin = Yup.InferType<typeof schema>;
+
 const Login = () => {
   const [togglePassword, setTogglePassword] = useState(false);
+  const dispatch = useAppDispatch();
   const { push } = useRouter();
   const {
     register,
@@ -42,15 +45,20 @@ const Login = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
-  const onSubmit = (e: any) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        console.log(e);
-        resolve();
-        reset();
-        push("/");
-      }, 3000);
-    });
+  const onSubmit = async (data: FormLogin) => {
+    console.log("onSubmit ~ data:", data);
+    try {
+      const response = await dispatch(
+        loginAuth({
+          ...data,
+        })
+      ).unwrap();
+      response && push("/");
+    } catch (error) {
+      console.error("Login failed", error);
+    } finally {
+      reset();
+    }
   };
   return (
     <div className="max-w-[1200px] md:w-[405px] w-[350px] my-[100px] md:my-[140px] mx-auto rounded-3xl">
@@ -68,13 +76,52 @@ const Login = () => {
             </label>
           </div>
           <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
-            <Input id="email" type="text" register={register} />
+            <Input id="email" type="text" register={register} name="email" />
           </div>
           {errors?.email && (
             <div className="text-red-500 text-sm mt-1">
               {errors.email.message}
             </div>
           )}
+
+          <div className="mt-3 mb-1">
+            <label
+              htmlFor="password"
+              className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
+            >
+              Password
+            </label>
+          </div>
+          <div className="flex items-center border border-white-300 w-full rounded-md bg-white-100">
+            <Input
+              name="password"
+              id="password"
+              type={togglePassword ? "text" : "password"}
+              register={register}
+            />
+            {!togglePassword ? (
+              <Image
+                src={eyeCloseIcon}
+                onClick={() => setTogglePassword(true)}
+                alt="eye-show"
+                className="w-4 h-4 mr-4 cursor-pointer"
+              />
+            ) : (
+              <Image
+                src={eyeIcon}
+                onClick={() => setTogglePassword(false)}
+                alt="eye-show"
+                className="w-4 h-4 mr-4 cursor-pointer"
+              />
+            )}
+          </div>
+
+          {errors?.password && (
+            <div className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </div>
+          )}
+
           {isSubmitting ? (
             <Button
               type="button"
