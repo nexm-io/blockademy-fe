@@ -1,12 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Providers } from "@/redux/provider";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import PageContainer from "@/components/PageContainer";
-import TopicList from "@/views/Home/TopicList";
-import GiftHeader from "@/components/GiftHeader";
-import NoSignal from "@/components/NoSignal";
 
 export const metadata: Metadata = {
   description:
@@ -37,11 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <Header />
-          <PageContainer>{children}</PageContainer>
-          <Footer />
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
