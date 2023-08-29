@@ -124,6 +124,8 @@ const Login = () => {
 
           {isSubmitting ? (
             <Button
+              label="Next"
+              disabled={true}
               type="button"
               className=" bg-gray-500 w-full h-[52px] rounded-[4px] text-black-100 leading-7 py-[12px] btn__contain-shadow mt-8 cursor-not-allowed"
             >
