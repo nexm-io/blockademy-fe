@@ -82,11 +82,11 @@ export default function FormReceiveUpdate() {
           </Button>
         </div>
       ) : (
-        <div className="flex justify-center">
+        <div className="flex justify-center prose">
           <Button
             label="Next"
             type="submit"
-            className="flex items-center justify-start py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100"
+            className="flex items-center btn__contain-shadow justify-start py-3 px-6 w-full rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px]"
           />
         </div>
       )}

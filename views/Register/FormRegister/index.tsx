@@ -11,32 +11,33 @@ import googleIcon from "@/public/icons/google.svg";
 import registerbg from "@/public/icons/registerbg.svg";
 import apple from "@/public/icons/apple.svg";
 import Link from "next/link";
+import InfoGraphic from "../InfoGraphic";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
-const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSignup = () => {
-    setIsSubmitting(true)
+    setIsSubmitting(true);
     setTimeout(() => {
       setFormState("verifyemail");
     }, 3000);
-  }
+  };
 
   return (
-    <div className="w-full mt-4" >
+    <div className="w-full mt-4">
       <div className="flex flex-col lg:flex-row gap-[80px] justify-center items-center">
         <div className="">
           <div>
             <h1 className="text-[30px] leading-10 font-bold mb-10">
-              Welcome to Binance!
+              Welcome to Blockademy!
             </h1>
             {isSubmitting ? (
               <>
                 <Button
-                  label="Sign Up With Email or Phone"
+                  label="Sign Up With Email"
                   type="button"
                   disabled={true}
                   className=" bg-gray-300 text-white-100 flex items-center justify-start py-3 px-6 w-[336px] rounded-[4px] text-white-100 rounded min-h-[24px] min-w-[80px] "
@@ -61,10 +62,16 @@ const [isSubmitting, setIsSubmitting] = useState(false)
                 </Button>
               </>
             ) : (
-              <Button type="button" onClick={handleSignup} className="flex items-center justify-start py-3 px-6 w-[336px] rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] text-dark-300 border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100">
+              <div className="prose h-12">
+                <Button
+                type="submit"
+                onClick={handleSignup}
+                className="flex h-12 items-center justify-start py-3 h-12 px-6 w-[336px] rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] btn__contain-shadow"
+             >
                 <Image alt="human" src={human} className="" />
-                <span className="flex-1">Sign Up With Email or Phone</span>
+                <span className="flex-1">Sign Up With Email</span>
               </Button>
+              </div>
             )}
           </div>
 
@@ -73,39 +80,16 @@ const [isSubmitting, setIsSubmitting] = useState(false)
             <hr className="border w-full border-white-300/80 "></hr>
           </div>
 
-          
           <div className=" space-y-4 text-sm mt-6">
-            <p>
+            <p className="text-sm text-gray-600">
               Already have an account?  
               <Link href="/login">
-                <span className="text-blue-100 cursor-pointer">Log In</span>
+                <span className="text-blue-100 hover:underline cursor-pointer">Log In</span>
               </Link>
             </p>
-            <p>
-              Need an entity account?  
-              <span className="text-blue-100 cursor-pointer">Sign up</span>
-            </p>
           </div>
         </div>
-        <div className="w-[424px]">
-          <div className="px-9">
-            <Image
-              alt="background"
-              src={registerbg}
-              width={400}
-              height={222}
-              className=""
-            />
-            <p className="text-xl font-bold mt-9 mb-5 leading-7 max-w-[360px] text-center">
-              Sign up to get <strong className="text-blue-100">100 USDT</strong>{" "}
-              trading fee rebate!
-            </p>
-          </div>
-          <p className="text-sm leading-[22px] text-center max-w-[440px]">
-            Follow the registration steps to redeem your rewards and start your
-            crypto journey with us! <span className="text-blue-100">FAQ</span>
-          </p>
-        </div>
+        <InfoGraphic />
       </div>
     </div>
   );
