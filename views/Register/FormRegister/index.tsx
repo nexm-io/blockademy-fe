@@ -54,6 +54,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
           ></Image>
         </div>
         <Input
+          name="email"
           id="email"
           type="text"
           className="bg-white-200 rounded-lg"
@@ -99,7 +100,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
           <Button
             label="Send OTP"
             type="submit"
-            className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold mb-5 mt-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12"
+            className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold mb-5 mt-8 py-2.5 px-[25px] rounded-[4px] leading-6 h-12"
           />
         </div>
       )}
