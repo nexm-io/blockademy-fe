@@ -6,6 +6,7 @@ interface InputProps {
   placeholder?: string;
   register?: any;
   className?: string;
+  name: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -14,12 +15,14 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   register,
   className,
+  name,
 }) => {
   return (
     <input
       type={type || "text"}
       id={id}
-      {...register(id)}
+      name={name}
+      {...register(name)}
       placeholder={placeholder}
       className={`outline-none border-none rounded-md bg-white-100 min-h-[48px] text-black pl-[10px] pr-3 w-full ${className}`}
     />
