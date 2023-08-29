@@ -3,22 +3,26 @@ import FormOtp from "@/views/Register/FormOtp";
 import FormPanel from "@/views/Register/FormPanel";
 import FormRegister from "@/views/Register/FormRegister";
 import React, { useState } from "react";
+import FormVerifyEmail from "./FormVerifyEmail";
+import FormReceiveUpdate from "./FormReceiveUpdate";
 
 const Register = () => {
   const [formState, setFormState] = useState("register");
 
   return (
-    <div className="max-w-[1200px] px-6 w-[500px] my-[140px] relative mx-auto border border-blue-300 bg-transparent rounded-3xl">
+    <div className={`max-w-[1200px] px-6  my-[140px] relative mx-auto  bg-transparent rounded-3xl`}>
       <div className="flex flex-col items-center relative">
-        <h2 className="mt-[40px] text-[#0D1C68] text-[18px] font-medium leading-6">
-          Sign up to your Academy account
-        </h2>
         {formState === "register" && (
           <FormRegister setFormState={setFormState} />
         )}
+        {formState === "verifyemail" && (
+          <FormVerifyEmail setFormState={setFormState} />
+        )}
 
         {formState === "otp" && <FormOtp setFormState={setFormState} />}
-        {formState === "formRegister" && <FormPanel />}
+        {formState === "formRegister" && <FormPanel setFormState={setFormState}/>}
+        {formState === "fromReceive" && <FormReceiveUpdate />}
+
       </div>
     </div>
   );

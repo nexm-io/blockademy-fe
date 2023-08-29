@@ -1,122 +1,113 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/components/Common/Button";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Input from "@/components/Common/Input";
-import letterIcon from "@/public/icons/letter.svg";
+import human from "@/public/icons/human.svg";
+import googleIcon from "@/public/icons/google.svg";
+import registerbg from "@/public/icons/registerbg.svg";
+import apple from "@/public/icons/apple.svg";
 import Link from "next/link";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const schema = Yup.object({
-  email: Yup.string()
-    .required("Please enter your email address")
-    .email("Incorrect email format")
-    .trim()
-    .min(8, "Length from 8 - 160 characters")
-    .max(160, "Length from 8 - 160 characters"),
-});
-
 const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(schema),
-    mode: "onChange",
-  });
+const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onSubmit = async (e: any) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-        console.log("onSubmit called:", e);
-        setFormState("otp");
-        reset();
-      }, 3000);
-    });
-  };
+  const handleSignup = () => {
+    setIsSubmitting(true)
+    setTimeout(() => {
+      setFormState("verifyemail");
+    }, 3000);
+  }
 
   return (
-    <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 mb-2 rounded-md ">
-        <div className="w-[40px] h-[40px] mx-2 flex items-center  justify-center">
-          <Image
-            alt="message icon"
-            className="w-7 h-7 opacity-40 "
-            src={letterIcon}
-          ></Image>
-        </div>
-        <Input
-          name="email"
-          id="email"
-          type="text"
-          className="bg-white-200 rounded-lg"
-          placeholder="Your email address"
-          register={register}
-        />
-      </div>
-      {errors?.email && (
-        <div className="text-red-500 text-sm mt-1 w-[80%] mx-auto pl-5 font-medium">
-          {errors.email.message}
-        </div>
-      )}
+    <div className="w-full mt-4" >
+      <div className="flex flex-col lg:flex-row gap-[80px] justify-center items-center">
+        <div className="">
+          <div>
+            <h1 className="text-[30px] leading-10 font-bold mb-10">
+              Welcome to Binance!
+            </h1>
+            {isSubmitting ? (
+              <>
+                <Button
+                  label="Sign Up With Email or Phone"
+                  type="button"
+                  disabled={true}
+                  className=" bg-gray-300 text-white-100 flex items-center justify-start py-3 px-6 w-[336px] rounded-[4px] text-white-100 rounded min-h-[24px] min-w-[80px] "
+                >
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    className="inline w-4 h-4 text-white animate-spin ml-3"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="#E5E7EB"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </Button>
+              </>
+            ) : (
+              <Button type="button" onClick={handleSignup} className="flex items-center justify-start py-3 px-6 w-[336px] rounded-[4px] text-white-100 bg-blue-100 rounded min-h-[24px] min-w-[80px] text-dark-300 border-[1px] border-blue-100 hover:bg-white-100 hover:text-blue-100">
+                <Image alt="human" src={human} className="" />
+                <span className="flex-1">Sign Up With Email or Phone</span>
+              </Button>
+            )}
+          </div>
 
-      {isSubmitting ? (
-        <div className="flex justify-center">
-          <Button
-            label="Send OTP"
-            type="button"
-            disabled={true}
-            className=" bg-gray-300 text-white-100 font-semibold mb-5 mt-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
-          >
-            <svg
-              aria-hidden="true"
-              role="status"
-              className="inline w-4 h-4 text-white animate-spin ml-3"
-              viewBox="0 0 100 101"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                fill="#E5E7EB"
-              />
-              <path
-                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                fill="currentColor"
-              />
-            </svg>
-          </Button>
-        </div>
-      ) : (
-        <div className="flex justify-center">
-          <Button
-            label="Send OTP"
-            type="submit"
-            className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold mb-5 mt-8 py-2.5 px-[25px] rounded-[4px] leading-6 h-12"
-          />
-        </div>
-      )}
+          <div className="flex w-full items-center justify-center my-[15px]">
+            <hr className="border w-full border-white-300/80 "></hr>
+            <hr className="border w-full border-white-300/80 "></hr>
+          </div>
 
-      <div className="w-full text-center mb-[40px]">
-        <p className="text-sm font-light text-gray-600">
-          Have an account?{" "}
-          <Link
-            href="/login"
-            className="underline inline-block text-[#0d1c68] "
-          >
-            Log in here
-          </Link>
-        </p>
+          
+          <div className=" space-y-4 text-sm mt-6">
+            <p>
+              Already have an account?  
+              <Link href="/login">
+                <span className="text-blue-100 cursor-pointer">Log In</span>
+              </Link>
+            </p>
+            <p>
+              Need an entity account?  
+              <span className="text-blue-100 cursor-pointer">Sign up</span>
+            </p>
+          </div>
+        </div>
+        <div className="w-[424px]">
+          <div className="px-9">
+            <Image
+              alt="background"
+              src={registerbg}
+              width={400}
+              height={222}
+              className=""
+            />
+            <p className="text-xl font-bold mt-9 mb-5 leading-7 max-w-[360px] text-center">
+              Sign up to get <strong className="text-blue-100">100 USDT</strong>{" "}
+              trading fee rebate!
+            </p>
+          </div>
+          <p className="text-sm leading-[22px] text-center max-w-[440px]">
+            Follow the registration steps to redeem your rewards and start your
+            crypto journey with us! <span className="text-blue-100">FAQ</span>
+          </p>
+        </div>
       </div>
-    </form>
+    </div>
   );
 };
 

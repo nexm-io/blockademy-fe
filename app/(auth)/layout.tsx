@@ -15,8 +15,8 @@ export default function AuthLayout({
             <Image src={logo} alt="Wink" className="mx-auto" />
           </Link>
         </div>
-        <div className="w-full relative">{children}</div>
       </header>
+        <div className="w-full relative">{children}</div>
     </>
   );
 }
