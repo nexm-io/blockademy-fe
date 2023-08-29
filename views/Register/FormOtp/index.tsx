@@ -34,11 +34,16 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
       <h2 className="text-[20px] font-bold text-center">Enter OTP</h2>
       <OTPPanel register={register} otpDigits={otpDigits}></OTPPanel>
       {isSubmitting ? (
-        <Button type="button" className=" bg-gray-300 mb-4 mt-8">
+        <Button
+          label="Verify OTP!"
+          type="button"
+          disabled={true}
+          className=" bg-gray-300 text-white-100 font-semibold mb-5 mt-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
+        >
           <svg
             aria-hidden="true"
             role="status"
-            className="inline w-4 h-4 text-white animate-spin"
+            className="inline w-4 h-4 text-white animate-spin ml-3"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +62,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
         <Button
           label="Verify OTP!"
           type="submit"
-          className="bg-red-600 my-6"
+          className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold mb-5 mt-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
         ></Button>
       )}
     </form>

@@ -57,12 +57,13 @@ const FormPanel = () => {
   return (
     <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
       {/* first name */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="firstName"
           type="text"
           placeholder="Your first name"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.firstName && (
@@ -71,12 +72,13 @@ const FormPanel = () => {
         </div>
       )}
       {/* last name */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="lastName"
           type="text"
           placeholder="Your last name"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.lastName && (
@@ -86,12 +88,13 @@ const FormPanel = () => {
       )}
 
       {/* Email */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="email"
           type="text"
           placeholder="Your email address"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.email && (
@@ -100,12 +103,13 @@ const FormPanel = () => {
         </div>
       )}
       {/* Phone */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="phone"
           type="text"
           placeholder="Your phone number"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.phone && (
@@ -115,12 +119,13 @@ const FormPanel = () => {
       )}
 
       {/* Password */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="password"
           type="password"
           placeholder="Your password"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.password && (
@@ -130,12 +135,13 @@ const FormPanel = () => {
       )}
 
       {/* Confirm password */}
-      <div className="flex items-center bg-gray-100 w-[80%] mx-auto mt-4 rounded-md ">
+      <div className="flex items-center bg-white-200 w-[80%] mx-auto mt-4 rounded-md ">
         <Input
           id="confirm_password"
           type="password"
           placeholder="Your confirm password"
           register={register}
+          className="bg-white-200 rounded-lg"
         />
       </div>
       {errors?.confirm_password && (
@@ -146,11 +152,16 @@ const FormPanel = () => {
 
       {/* Button */}
       {isSubmitting ? (
-        <Button type="button" className=" bg-gray-300 mb-4 mt-8">
+        <Button
+          label="Confirm"
+          type="button"
+          disabled={true}
+          className=" bg-gray-300 text-white-100 font-semibold mb-5 mt-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
+        >
           <svg
             aria-hidden="true"
             role="status"
-            className="inline w-4 h-4 text-white animate-spin"
+            className="inline w-4 h-4 text-white animate-spin ml-3"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +180,7 @@ const FormPanel = () => {
         <Button
           label="Confirm"
           type="submit"
-          className="bg-[#CF1818] hover:opacity-70 my-8"
+          className="bg-[#CF1818] btn__contain-shadow hover:opacity-70 text-white-100 font-semibold my-8 h-6 py-2.5 px-[25px] rounded-[4px] leading-6 h-12 float-right"
         />
       )}
     </form>

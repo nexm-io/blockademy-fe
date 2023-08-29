@@ -7,7 +7,8 @@
   transition: all 0.2s ease-in-out;
 }
 .btn__contain-shadow:hover {
-  @apply bg-transparent border border-blue-100 text-blue-100;
+  @apply bg-blue-100;
+  background-image: linear-gradient(rgb(0 0 0/20%) 0 0);
 }
 .btn__outline-shadow {
   transition: all 0.2s ease-in-out;
