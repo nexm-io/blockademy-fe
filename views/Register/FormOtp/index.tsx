@@ -7,11 +7,15 @@ import Image from "next/image";
 import Input from "@/components/Common/Input";
 import exclamation from "@/public/icons/exclamation.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { verifyEmail } from "@/redux/features/auth/action";
+import { useAppDispatch } from "@/redux/hook";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
+  mail: string;
 }
 
-const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
+const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
+  const dispatch = useAppDispatch();
   const schema = Yup.object({
     otp: Yup.number()
       .typeError("Please Enter Number")
@@ -21,6 +25,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
   type FormData = Yup.InferType<typeof schema>;
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -29,20 +34,25 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
   });
 
   const handleOTPComplete = async (e: FormData) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-        console.log("otp here:", e);
-        setFormState("formRegister");
-      }, 3000);
-    });
+    const detail = {
+      email: mail,
+      code: e.otp,
+    };
+    try {
+      const res = await dispatch(verifyEmail(detail)).unwrap();
+      res.success && setFormState("formRegister");
+    } catch (e) {
+      console.error("Some thing wrong!", e);
+    } finally {
+      reset();
+    }
   };
   return (
     <form
-      className="space-y-[25px] min-w-[384px] mt-4 relative"
+      className="space-y-[25px] w-full md:min-w-[384px] mt-4 relative"
       onSubmit={handleSubmit(handleOTPComplete)}
     >
-      <div className="flex flex-col lg:flex-row gap-[80px] justify-center">
+      <div className="flex flex-col lg:flex-row gap-[80px] items-center justify-center">
         <div>
           <h1 className="text-[30px] leading-10 font-bold mb-10">
             Email Verification
@@ -75,14 +85,17 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState }) => {
                 </div>
               )}
             </div>
-            <Button
-              fullWidth
-              type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            >
-              Send OTP
-            </Button>
+            <div className="w-full">
+              <Button
+                fullWidth
+                type="submit"
+                loading={isSubmitting}
+                disabled={isSubmitting}
+                className="w-full"
+              >
+                Send OTP
+              </Button>
+            </div>
           </div>
 
           <div className="w-full mt-[24px] text-blue-100">

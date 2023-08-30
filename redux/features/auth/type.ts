@@ -4,10 +4,16 @@ export interface User {
   email: string;
   phone: string;
   password: string;
-  confirm_password: string;
+  password_confirmation?: string;
+}
+
+export interface VerifyDetail {
+  email: string;
+  code: number;
 }
 
 export interface AuthResponse {
+    success: boolean;
     error: boolean,
     message: string,
     data: any

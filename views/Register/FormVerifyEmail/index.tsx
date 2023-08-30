@@ -9,8 +9,11 @@ import Input from "@/components/Common/Input";
 import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
 import InfoGraphic from "../InfoGraphic";
+import { sendOtp } from "@/redux/features/auth/action";
+import { useAppDispatch } from "@/redux/hook";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
+  onMailChange: (newMail: string) => void;
 }
 
 const schema = Yup.object({
@@ -23,7 +26,8 @@ const schema = Yup.object({
 });
 type FormData = Yup.InferType<typeof schema>;
 
-const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
+const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState, onMailChange }) => {
+  const dispatch =useAppDispatch()
   const {
     register,
     handleSubmit,
@@ -35,19 +39,20 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
   });
 
   const onSubmit = async (e: FormData) => {
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-        console.log("onSubmit called:", e);
-        setFormState("otp");
-        reset();
-      }, 3000);
-    });
+    onMailChange(e.email);
+    try {
+      const res = await dispatch(sendOtp(e)).unwrap()
+      res.success && setFormState("otp");
+    } catch (e) {
+      console.error("Some thing wrong!", e);
+    } finally {
+      reset();
+    }
   };
 
   return (
     <form
-      className="space-y-[25px] min-w-[384px] mt-4 relative"
+      className="space-y-[25px] w-full md:min-w-[384px] mt-4 relative"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className=" flex flex-col lg:flex-row gap-[80px] justify-center">
@@ -86,7 +91,7 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({ setFormState }) => {
             type="submit"
             loading={isSubmitting}
             disabled={isSubmitting}
-            className="!bg-red-500 hover:!bg-red-100 w-[336px]"
+            className="!bg-red-500 hover:!bg-red-100 lg:w-[336px] w-full"
           >
             Send OTP
           </Button>

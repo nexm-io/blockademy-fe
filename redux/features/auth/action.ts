@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthResponse, User } from "./type";
+import { AuthResponse, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
 export const loginAuth = createAsyncThunk(
@@ -10,24 +10,26 @@ export const loginAuth = createAsyncThunk(
   }
 );
 
-export const register = createAsyncThunk<
+export const userRegister = createAsyncThunk<
   AuthResponse,
-  Pick<User, "email" | "password" | "confirm_password">
+  Pick<User, "email" | "password" | "password_confirmation">
 >("auth/register", async (userRegister) => {
   const response = await api.post("/api/v10/signup", userRegister);
   return response.data;
 });
 
-export const sendOtp = createAsyncThunk<
-  AuthResponse,
-  Pick<User, "email">
->("auth/send-otp", async (email) => {
-  try {
+export const sendOtp = createAsyncThunk<AuthResponse, Pick<User, "email">>(
+  "auth/send-otp",
+  async (email) => {
     const response = await api.post("/api/v10/send-verify-email", email);
     return response.data;
-  } catch (error : any) {
-    throw new Error(error);
   }
-});
+);
 
-
+export const verifyEmail = createAsyncThunk<AuthResponse, VerifyDetail>(
+  "auth/verify-email",
+  async (detail) => {
+    const response = await api.post("/api/v10/verify-otp", detail);
+    return response.data;
+  }
+);

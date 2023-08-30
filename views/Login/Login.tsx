@@ -46,7 +46,7 @@ const Login = () => {
     mode: "onChange",
   });
   const onSubmit = async (data: FormLogin) => {
-    console.log("onSubmit ~ data:", data);
+
     try {
       const response = await dispatch(
         loginAuth({
