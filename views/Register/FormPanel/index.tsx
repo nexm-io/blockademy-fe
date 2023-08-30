@@ -66,7 +66,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
       <div className="flex flex-col lg:flex-row gap-[80px] justify-center items-center">
         <div className="md:min-w-[384px] w-full lg:w-[384px] md:p-0 px-5 md:w-[450px]">
           <h1 className="text-[30px] leading-10 font-bold mb-10">
-            Set Infomation
+            Set Password
           </h1>
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5">
