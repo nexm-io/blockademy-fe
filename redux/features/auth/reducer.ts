@@ -1,23 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { loginAuth, register, sendOtp } from "./action";
+import { initialState } from "./type";
 
-interface AuthState {
-  isAuthenticated: boolean;
-  user: "";
-  isLoading: boolean;
-  success: boolean;
-  message: string;
-  error: boolean;
-}
-
-const initialState: AuthState = {
-  isAuthenticated: false,
-  user: "",
-  success: false,
-  isLoading: false,
-  message: " ",
-  error: false,
-};
 const authReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(loginAuth.pending, (state) => {
@@ -25,14 +9,14 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loginAuth.fulfilled, (state, action) => {
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.token = action.payload.data.token;
+      state.user = action.payload.data;
     })
     .addCase(loginAuth.rejected, (state) => {
       state.isAuthenticated = false;
     });
 
-
-    builder
+  builder
     .addCase(register.pending, (state) => {
       state.success = false;
     })
@@ -47,7 +31,7 @@ const authReducer = createReducer(initialState, (builder) => {
       // state.message = action.payload.message;
     });
 
-    builder
+  builder
     .addCase(sendOtp.pending, (state) => {
       state.isLoading = true;
       state.error = false;
@@ -55,7 +39,6 @@ const authReducer = createReducer(initialState, (builder) => {
     .addCase(sendOtp.fulfilled, (state, action) => {
       state.message = action.payload.message;
       state.isLoading = false;
-
     })
     .addCase(sendOtp.rejected, (state, action) => {
       state.isLoading = false;

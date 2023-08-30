@@ -11,11 +11,12 @@ import authReducer from "./features/auth/reducer";
 const persistConfig = {
   key: "blockademy-website",
   storage,
-  whitelist: [],
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({
   example: exampleReducer,
+  auth: authReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -26,18 +27,13 @@ const createStore = () => {
   });
 };
 
-// export let store = createStore();
+export let store = createStore();
 
-export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-  },
-});
 export const persistor = persistStore(store);
 
-// export const refreshStore = () => {
-//   store = createStore();
-// };
+export const refreshStore = () => {
+  store = createStore();
+};
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type StoreType = typeof store;
