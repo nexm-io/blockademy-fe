@@ -30,7 +30,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
     <div className="w-full mt-4">
       <div className="flex flex-col lg:flex-row gap-[80px] justify-center items-center">
         <div className="">
-          <div>
+          <div className="">
             <h1 className="text-[30px] leading-10 font-bold mb-10">
               Welcome to Blockademy!
             </h1>
@@ -41,7 +41,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
               disabled={isSubmitting}
               onClick={handleSignup}
             >
-              Sign Up With Email or Phone
+              Sign Up With Email
             </Button>
           </div>
 
