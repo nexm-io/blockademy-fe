@@ -5,14 +5,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Input from "@/components/Common/Input";
+import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { loginAuth } from "@/redux/features/auth/action";
+import keyIcon from "@/public/icons/key.svg";
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
-import Chip from "@/components/Common/Chip";
-
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
@@ -42,14 +42,13 @@ const Login = () => {
     mode: "onChange",
   });
   const onSubmit = async (data: FormLogin) => {
-    console.log("onSubmit ~ data:", data);
     try {
       const response = await dispatch(
         loginAuth({
           ...data,
         })
       ).unwrap();
-      response && push("/");
+      response.success && push("/");
     } catch (error) {
       console.error("Login failed", error);
     } finally {
@@ -117,14 +116,15 @@ const Login = () => {
               {errors.password.message}
             </div>
           )}
-          <Chip
-            label="Next"
+          <Button
             type="submit"
             fullWidth
             loading={isSubmitting}
             disabled={isSubmitting}
             className="mt-8"
-          ></Chip>
+          >
+            Next
+          </Button>
 
           <div className="w-full mt-3">
             <Link

@@ -2,13 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AuthResponse, User } from "./type";
 import api from "@/services/axios";
 
-export const loginAuth = createAsyncThunk(
-  "auth/login",
-  async (userLogin: Pick<User, "email" | "password">) => {
-    const response = await api.post("/api/v10/login", userLogin);
-    return response.data;
-  }
-);
+export const loginAuth = createAsyncThunk<
+  AuthResponse,
+  Pick<User, "email" | "password">
+>("auth/login", async (userLogin: Pick<User, "email" | "password">) => {
+  const response = await api.post("/api/v10/login", userLogin);
+  return response.data;
+});
 
 export const register = createAsyncThunk<
   AuthResponse,
@@ -18,16 +18,14 @@ export const register = createAsyncThunk<
   return response.data;
 });
 
-export const sendOtp = createAsyncThunk<
-  AuthResponse,
-  Pick<User, "email">
->("auth/send-otp", async (email) => {
-  try {
-    const response = await api.post("/api/v10/send-verify-email", email);
-    return response.data;
-  } catch (error : any) {
-    throw new Error(error);
+export const sendOtp = createAsyncThunk<AuthResponse, Pick<User, "email">>(
+  "auth/send-otp",
+  async (email) => {
+    try {
+      const response = await api.post("/api/v10/send-verify-email", email);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
-});
-
-
+);

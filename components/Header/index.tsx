@@ -21,7 +21,9 @@ const Header = () => {
             </Button>
           </Link>
           <Link href="/register">
-            <Button size="small" className="w-[94px]">Register</Button>
+            <Button size="small" className="w-[94px]">
+              Register
+            </Button>
           </Link>
         </div>
       </div>
