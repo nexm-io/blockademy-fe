@@ -16,29 +16,29 @@ const Glossary = () => {
             25
           </span>
           <p className="text-gray-100 text-[20px] font-normal mt-[20px] md:mb-[67px] mb-5">
-            Đây là số lượng thuật ngữ trong bảng thuật ngữ của chúng tôi. Bạn
-            biết bao nhiêu trong số này?
+            This is the term count in our glossary. How many of these do you
+            know?
           </p>
           <div className="flex items-center gap-[15px] border-b border-gray-300 w-[283px] p-2">
             <Image alt="search-icon" src={search}></Image>
             <input
               id="glossary"
-              placeholder="Tìm kiếm bảng thuật ngữ"
+              placeholder="Glossary search"
               className="outline-none border-none"
             />
           </div>
         </div>
         <div className="flex lg:flex-row flex-col gap-4 md:mr-5 mr-0 lg:mr-0">
-          <div className="w-[358px] bg-white-100 card-shadow rounded-2xl p-6 text-black-100 flex flex-col justify-between">
+          <div className="w-[358px] h-[328px] bg-white-100 card-shadow rounded-2xl p-6 text-black-100 flex flex-col justify-between">
             <div>
               <div className="rounded-full bg-black-100 text-white-100 text-[11px] flex items-center justify-center w-fit h-[22px] py-1 px-[15px]">
-                Bảng thuật ngữ
+                Glossary
               </div>
-              <h2 className="text-[30px] font-bold my-4">Các zk-SNARK</h2>
+              <h2 className="text-[30px] font-bold my-4">The zk-SNARK</h2>
               <span className="line w-[32px] h-[4px] bg-blue-100 rounded-[4px] block mb-4"></span>
               <p className="font-normal text-base">
                 “Zero-Knowledge Succinct Non- Interactive Argument of knowledge.
-                Đối số Zero-knowledge không tương tác cô đọ...
+                Zero-knowledge argument is non-interactive...
               </p>
             </div>
             <div>
@@ -47,7 +47,7 @@ const Glossary = () => {
                 className="bg-gray-200 !text-black-100 hover:!text-white-100 hover:!bg-black-100 px-[26px]"
               >
                 <div className="flex items-center gap-4">
-                  <span>Định nghĩa đầy đủ</span>
+                  <span>Full definition</span>
                   <ArrowRightShort size={30} className="text-black-100" />
                 </div>
               </Button>
@@ -56,13 +56,13 @@ const Glossary = () => {
           <div className="w-[358px] bg-white-100 card-shadow rounded-2xl p-6 text-black-100 flex flex-col justify-between">
             <div>
               <div className="rounded-full bg-black-100 text-white-100 text-[11px] flex items-center justify-center w-fit h-[22px] py-1 px-[15px]">
-                Bảng thuật ngữ
+                Glossary
               </div>
-              <h2 className="text-[30px] font-bold my-4">Cây Merkle</h2>
+              <h2 className="text-[30px] font-bold my-4">Merkle Tree</h2>
               <span className="line w-[32px] h-[4px] bg-blue-100 rounded-[4px] block mb-4"></span>
               <p className="font-normal text-base">
-                Một cách tổ chức và cấu trúc một lượng lớn dữ liệu để xử lý dễ
-                dàng hơn. Một cấu trúc dữ liệu dựa trên hàm ...
+                A way of organizing and structuring large amounts of data for
+                easier processing. A function-based data structure...
               </p>
             </div>
             <div>
@@ -71,7 +71,7 @@ const Glossary = () => {
                 className="bg-gray-200 !text-black-100 hover:!text-white-100 hover:!bg-black-100 px-[26px]"
               >
                 <div className="flex items-center gap-4">
-                  <span>Định nghĩa đầy đủ</span>
+                  <span>Full definition</span>
                   <ArrowRightShort size={30} className="text-black-100" />
                 </div>
               </Button>

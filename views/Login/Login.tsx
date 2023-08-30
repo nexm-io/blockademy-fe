@@ -56,7 +56,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="max-w-[1200px] md:w-[405px] w-[350px] my-[100px] md:my-[140px] mx-auto rounded-3xl">
+    <div className="max-w-[1200px] md:w-[405px] w-[350px] my-[140px] mx-auto rounded-3xl">
       <div className="flex flex-col relative">
         <h2 className="text-black-100 text-[30px] font-bold leading-6">
           Log in
@@ -116,6 +116,9 @@ const Login = () => {
               {errors.password.message}
             </div>
           )}
+          <div className="text-right w-full text-gray-300 font-normal text-sm">
+            <Link href="/forgot-password">Forgot password?</Link>
+          </div>
           <Button
             type="submit"
             fullWidth
@@ -123,7 +126,7 @@ const Login = () => {
             disabled={isSubmitting}
             className="mt-8"
           >
-            Next
+            Submit
           </Button>
 
           <div className="w-full mt-3">

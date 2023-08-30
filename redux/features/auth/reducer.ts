@@ -1,6 +1,11 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { loginAuth, userRegister, sendOtp, verifyEmail } from "./action";
-
+import { PayloadAction, createReducer } from "@reduxjs/toolkit";
+import {
+  forgotAuth,
+  loginAuth,
+  userRegister,
+  verifyEmail,
+  sendOtp,
+} from "./action";
 import { initialState } from "./type";
 
 const authReducer = createReducer(initialState, (builder) => {
@@ -17,8 +22,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.isAuthenticated = false;
     });
 
-
-    builder
+  builder
     .addCase(userRegister.pending, (state) => {
       state.success = false;
     })
@@ -46,8 +50,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.error = true;
     });
 
-
-    builder
+  builder
     .addCase(verifyEmail.pending, (state) => {
       state.isLoading = true;
       state.error = false;
@@ -60,6 +63,21 @@ const authReducer = createReducer(initialState, (builder) => {
     .addCase(verifyEmail.rejected, (state, action) => {
       state.isLoading = false;
       state.error = true;
+    });
+  builder
+    .addCase(forgotAuth.pending, (state) => {
+      state.success = false;
+      state.isLoading = true;
+    })
+    .addCase(forgotAuth.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.success = true;
+      state.message = action.payload.message;
+      state.data = action.payload.data;
+    })
+    .addCase(forgotAuth.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = true;
+      state.error = action.payload.error;
     });
 });
 

@@ -16,7 +16,7 @@ export default function FormReceiveUpdate({
   };
 }) {
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -25,16 +25,15 @@ export default function FormReceiveUpdate({
   } = useForm({
     mode: "onChange",
   });
-  
 
   const onSubmit = async (e: any) => {
     try {
-      const res = await dispatch(loginAuth(detail)).unwrap()
+      const res = await dispatch(loginAuth(detail)).unwrap();
       res.success && router.push("/");
     } catch (e) {
-      console.error(e)
+      console.error(e);
     } finally {
-      reset()
+      reset();
     }
   };
   return (

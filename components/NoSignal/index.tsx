@@ -10,26 +10,28 @@ const NoSignal = () => {
         <Image alt="mailbox" src={mailbox} width={200}></Image>
         <div className="md:mr-[155px] mx-2 md:mx-0">
           <h2 className="md:text-[60px] text-[40px] md:text-left text-center font-bold leading-[72px] w-full md:w-[70%] mb-[10px]">
-            Không ồn ào. Chỉ có tín hiệu.
+            No noise. Just signal.
           </h2>
           <p className="font-normal text-[20px] text-gray-100 mb-[33px]">
-            Nhận thông tin mới nhất về tiền mã hóa được gửi đến email hằng tuần.
+            Get the latest in crypto dropped to your email, every week.
           </p>
           <div className="flex gap-2 mb-[22px]">
             <input
               type="text"
-              placeholder="Nhập địa chỉ email của bạn"
+              placeholder="Enter your email address"
               className="flex-1 outline-none border-none px-[19px] rounded-lg"
             />
             <Button className="bg-white-100 !text-black-100 hover:!text-white-100 h-[48px]">
-              Đăng ký
+              Subscribe
             </Button>
           </div>
           <div className="flex gap-[11px]">
             <input type="checkbox" id="checkbox" />
             <p>
-              Tôi đã đọc vào đồng ý với{" "}
-              <span>Điều khoản Dịch vụ của Blockademy</span>
+              I have read and agree to Binance&lsquo;s{" "}
+              <span className="text-blue-100 cursor-pointer">
+                Terms of Service
+              </span>
             </p>
           </div>
         </div>

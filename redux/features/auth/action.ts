@@ -33,3 +33,11 @@ export const verifyEmail = createAsyncThunk<AuthResponse, VerifyDetail>(
     return response.data;
   }
 );
+
+export const forgotAuth = createAsyncThunk<AuthResponse, Pick<User, "email">>(
+  "auth/forgot-password",
+  async (userForgot: Pick<User, "email">) => {
+    const response = await api.post("/api/v10/forgot-password", userForgot);
+    return response.data;
+  }
+);

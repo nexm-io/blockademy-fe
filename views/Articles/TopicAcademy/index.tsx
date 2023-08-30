@@ -49,18 +49,18 @@ const TopicAcademy = () => {
               <div className="flex md:flex-row flex-col gap-[15px]">
                 <div className="text-black-100 font-medium text-base bg-green-100 bg-opacity-20 rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize w-fit h-[28px] relative">
                   <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-gray-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
                 <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] relative w-fit border border-blue-400">
                   <span className="status-difficulty active blue text-[12px] font-normal leading-[12px] text-gray-100">
-                    Trung cấp
+                    Intermediate
                   </span>
                 </div>
               </div>
               <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] w-fit relative border border-red-100 border-opacity-20">
                 <span className="status-difficulty active red text-[12px] font-normal leading-[12px] text-gray-100 ">
-                  Nâng cao
+                  Advanced
                 </span>
               </div>
             </div>
