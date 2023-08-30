@@ -2,13 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AuthResponse, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
-export const loginAuth = createAsyncThunk(
-  "auth/login",
-  async (userLogin: Pick<User, "email" | "password">) => {
-    const response = await api.post("/api/v10/login", userLogin);
-    return response.data;
-  }
-);
+export const loginAuth = createAsyncThunk<
+  AuthResponse,
+  Pick<User, "email" | "password">
+>("auth/login", async (userLogin: Pick<User, "email" | "password">) => {
+  const response = await api.post("/api/v10/login", userLogin);
+  return response.data;
+});
 
 export const userRegister = createAsyncThunk<
   AuthResponse,

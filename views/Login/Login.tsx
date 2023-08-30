@@ -22,10 +22,6 @@ const schema = Yup.object({
     .max(160, "Length from 8 - 160 characters"),
   password: Yup.string()
     .required("Please enter your password")
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    //   "Password must have a lowercase letter, a number and one special character"
-    // )
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
 });
@@ -46,14 +42,13 @@ const Login = () => {
     mode: "onChange",
   });
   const onSubmit = async (data: FormLogin) => {
-
     try {
       const response = await dispatch(
         loginAuth({
           ...data,
         })
       ).unwrap();
-      response && push("/");
+      response.success && push("/");
     } catch (error) {
       console.error("Login failed", error);
     } finally {
