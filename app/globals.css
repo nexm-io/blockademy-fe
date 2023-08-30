@@ -277,3 +277,8 @@ input[type="range"]::-webkit-slider-thumb:active {
   background-color: #f0f0f0;
   border-radius: 8px;
 }
+
+/* Course */
+.course-status.active {
+  @apply text-black-100 border-b-[3px] border-b-blue-100 pb-[23px];
+}

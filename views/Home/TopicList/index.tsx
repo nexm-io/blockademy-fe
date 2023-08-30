@@ -57,18 +57,18 @@ const TopicList = () => {
               <div className="flex md:flex-row flex-col gap-[15px]">
                 <div className="text-black-100 font-medium text-base bg-[#0F4945] rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize w-fit h-[28px] relative">
                   <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
                 <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] relative w-fit border border-[#1A3142]">
                   <span className="status-difficulty active blue text-[12px] font-normal leading-[12px] text-white-100">
-                    Trung cấp
+                    Intermediate
                   </span>
                 </div>
               </div>
               <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] w-fit relative border border-[#43171B]">
                 <span className="status-difficulty active red text-[12px] font-normal leading-[12px] text-white-100 ">
-                  Nâng cao
+                  Advanced
                 </span>
               </div>
             </div>
@@ -84,7 +84,7 @@ const TopicList = () => {
               ></Image>
               <div className="flex flex-col items-start justify-center md:pl-0 pl-4">
                 <h2 className="md:text-[30px]  text-[24px] font-bold leading-[40px] text-white-100 w-[80%] mb-2">
-                  Đào Tiền Mã Hóa Là Gì Và Việc Này Diễn Ra Như Thế Nào?
+                  What Is Cryptocurrency Mining And How Does It Work?
                 </h2>
                 <div className="flex gap-[36px] mb-[20px] ">
                   <span className="text-blue-400 font-normal text-base md:text-[20px]">
@@ -99,7 +99,7 @@ const TopicList = () => {
                 </div>
                 <div className="relative pl-[21px] md:mb-0 mb-[20px]">
                   <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
               </div>
@@ -107,7 +107,7 @@ const TopicList = () => {
             {/* h2 */}
             <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 md:mx-0 mx-3">
               <h3 className="text-lg font-bold text-white-100 p-4">
-                NFT Là Gì?
+                What is NFT?
               </h3>
               <div className="flex flex-col pb-[20px]">
                 <div className="flex gap-[36px] pl-[16px]">
@@ -123,7 +123,7 @@ const TopicList = () => {
                 </div>
                 <div className="relative pl-[30px] ">
                   <span className="status-difficulty md:before:left-[8%] before:left-[4%] active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
               </div>
@@ -131,7 +131,7 @@ const TopicList = () => {
             {/* h3 */}
             <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 md:mx-0 mx-3">
               <h3 className="text-lg font-bold text-white-100 p-4">
-                Cá Voi Tiền mã hoá là gì và làm sao để phát hiện họ?
+                What are Crypto Whales and how to spot them?
               </h3>
               <div className="flex flex-col pb-[20px]">
                 <div className="flex gap-[36px] pl-[16px]">
@@ -147,7 +147,7 @@ const TopicList = () => {
                 </div>
                 <div className="relative pl-[30px] ">
                   <span className="status-difficulty md:before:left-[8%] before:left-[4%] active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
               </div>
@@ -156,7 +156,7 @@ const TopicList = () => {
             <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end md:mx-0 mx-3">
               <div className="flex flex-col md:items-end items-start md:pl-0 pl-4 justify-center">
                 <h2 className="md:text-[30px] text-[24px] font-bold leading-[40px] text-white-100 mb-1">
-                  Tiền Mã Hóa Là Gì?
+                  What Is Cryptocurrency?
                 </h2>
                 <div className="flex gap-[36px] mb-6">
                   <span className="text-blue-400 font-normal text-base md:text-[20px]">
@@ -171,7 +171,7 @@ const TopicList = () => {
                 </div>
                 <div className="relative pl-[21px] mb-[20px] md:mb-0">
                   <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Người mới
+                    Newbie
                   </span>
                 </div>
               </div>
@@ -186,19 +186,19 @@ const TopicList = () => {
             <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 md:mx-0 mx-3">
               <Image alt="crypto-item-3" src={crypto3}></Image>
               <h3 className="text-lg font-bold text-white-100 p-4">
-                Cách giữ an toàn trong giao dịch ngang hàng (P2P)
+                How to stay safe in peer-to-peer transactions
               </h3>
             </div>
             {/* h6 */}
             <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 md:mx-0 mx-3">
               <Image alt="crypto-item-3" src={crypto4}></Image>
               <h3 className="text-lg font-bold text-white-100 p-4">
-                Cách giữ an toàn trong giao dịch ngang hàng (P2P)
+                How to stay safe in peer-to-peer transactions
               </h3>
             </div>
           </div>
           <div className="text-gray-500 flex items-center justify-center gap-4 w-full mt-[40px] pb-5 md:pb-0 hover:underline cursor-pointer">
-            <span>Xem thêm nội dung về chủ đề này</span>
+            <span>See more content on this topic</span>
             <HiOutlineArrowRight className="text-blue-400 text-[20px]" />
           </div>
         </div>

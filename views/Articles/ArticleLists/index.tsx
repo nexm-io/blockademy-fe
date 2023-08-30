@@ -52,7 +52,7 @@ const ArticleLists = () => {
             key={index}
             imgSrc={cardImg}
             nftTags={["NFT", "Altcoin", "+2"]}
-            title="Gaming Coin Tiền Mã Hóa Là Gì?"
+            title="Gaming Coin, What is Cryptocurrency?"
             buttonLabel="Beginner"
             date="Aug 15, 2023"
             timeDuration="9m"
