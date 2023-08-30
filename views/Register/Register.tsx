@@ -8,10 +8,16 @@ import FormReceiveUpdate from "./FormReceiveUpdate";
 
 const Register = () => {
   const [formState, setFormState] = useState("register");
-  const [mail, setMail] = useState("");
+  const [mail, setMail] = useState({
+    email: " ",
+    password: "",
+  });
 
-  const handleMailChange = (newMail: string) => {
-    setMail(newMail);
+  const handleMailChange = (key: string, value: string) => {
+    setMail((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   return (
@@ -31,12 +37,16 @@ const Register = () => {
         )}
 
         {formState === "otp" && (
-          <FormOtp email={mail} setFormState={setFormState} />
+          <FormOtp email={mail.email} setFormState={setFormState} />
         )}
         {formState === "formRegister" && (
-          <FormPanel email={mail} setFormState={setFormState} />
+          <FormPanel
+            email={mail.email}
+            onMailChange={handleMailChange}
+            setFormState={setFormState}
+          />
         )}
-        {formState === "fromReceive" && <FormReceiveUpdate />}
+        {formState === "fromReceive" && <FormReceiveUpdate detail={mail} />}
       </div>
     </div>
   );

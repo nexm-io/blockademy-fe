@@ -30,9 +30,10 @@ const schema = Yup.object({
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   email: string;
+  onMailChange: (key: string, value: string) => void;
 }
 
-const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
+const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailChange }) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -49,6 +50,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
   type FormData = Yup.InferType<typeof schema>;
 
   const onSubmit = async (e: FormData) => {
+    onMailChange("password", e.password);
     try {
       const res = await dispatch(userRegister({ email, ...e })).unwrap();
       res.success && setFormState("fromReceive");

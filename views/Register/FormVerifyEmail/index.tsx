@@ -13,7 +13,7 @@ import { sendOtp } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
-  onMailChange: (newMail: string) => void;
+  onMailChange: (key: string, value: string) => void;
 }
 
 const schema = Yup.object({
@@ -42,7 +42,7 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
   });
 
   const onSubmit = async (e: FormData) => {
-    onMailChange(e.email);
+    onMailChange("email", e.email);
     try {
       const res = await dispatch(sendOtp(e)).unwrap();
       res.success && setFormState("otp");

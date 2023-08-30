@@ -100,7 +100,7 @@ const resendEmail = async () => {
                 disabled={isSubmitting}
                 className="w-full"
               >
-                Send OTP
+                Submit
               </Button>
             </div>
           </div>
