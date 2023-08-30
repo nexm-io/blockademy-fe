@@ -5,14 +5,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Input from "@/components/Common/Input";
-import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { loginAuth } from "@/redux/features/auth/action";
-import keyIcon from "@/public/icons/key.svg";
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
+import Chip from "@/components/Common/Chip";
+
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
@@ -22,10 +22,6 @@ const schema = Yup.object({
     .max(160, "Length from 8 - 160 characters"),
   password: Yup.string()
     .required("Please enter your password")
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    //   "Password must have a lowercase letter, a number and one special character"
-    // )
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
 });
@@ -121,15 +117,14 @@ const Login = () => {
               {errors.password.message}
             </div>
           )}
-          <Button
+          <Chip
+            label="Next"
             type="submit"
             fullWidth
             loading={isSubmitting}
             disabled={isSubmitting}
             className="mt-8"
-          >
-            Next
-          </Button>
+          ></Chip>
 
           <div className="w-full mt-3">
             <Link
