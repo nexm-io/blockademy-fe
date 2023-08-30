@@ -5,10 +5,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import account from "@/public/icons/usersuccess.svg";
 import Image from "next/image";
-<<<<<<< HEAD
-
-export default function FormReceiveUpdate() {
-=======
 import { loginAuth } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
 export default function FormReceiveUpdate({
@@ -19,9 +15,8 @@ export default function FormReceiveUpdate({
     password: string;
   };
 }) {
->>>>>>> develop
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -30,16 +25,15 @@ export default function FormReceiveUpdate({
   } = useForm({
     mode: "onChange",
   });
-  
 
   const onSubmit = async (e: any) => {
     try {
-      const res = await dispatch(loginAuth(detail)).unwrap()
+      const res = await dispatch(loginAuth(detail)).unwrap();
       res.success && router.push("/");
     } catch (e) {
-      console.error(e)
+      console.error(e);
     } finally {
-      reset()
+      reset();
     }
   };
   return (
