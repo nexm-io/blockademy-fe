@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { loginAuth, register, sendOtp } from "./action";
+import { loginAuth, userRegister, sendOtp, verifyEmail } from "./action";
+
 import { initialState } from "./type";
 
 const authReducer = createReducer(initialState, (builder) => {
@@ -16,19 +17,19 @@ const authReducer = createReducer(initialState, (builder) => {
       state.isAuthenticated = false;
     });
 
-  builder
-    .addCase(register.pending, (state) => {
+
+    builder
+    .addCase(userRegister.pending, (state) => {
       state.success = false;
     })
-    .addCase(register.fulfilled, (state, action) => {
+    .addCase(userRegister.fulfilled, (state, action) => {
       state.isLoading = false;
       state.error = action.payload.error;
       state.message = action.payload.message;
     })
-    .addCase(register.rejected, (state, action) => {
+    .addCase(userRegister.rejected, (state) => {
       state.isLoading = false;
       state.error = true;
-      // state.message = action.payload.message;
     });
 
   builder
@@ -40,10 +41,25 @@ const authReducer = createReducer(initialState, (builder) => {
       state.message = action.payload.message;
       state.isLoading = false;
     })
-    .addCase(sendOtp.rejected, (state, action) => {
+    .addCase(sendOtp.rejected, (state) => {
       state.isLoading = false;
-      // state.error = action.payload.error;
-      // state.message = action.payload.message;
+      state.error = true;
+    });
+
+
+    builder
+    .addCase(verifyEmail.pending, (state) => {
+      state.isLoading = true;
+      state.error = false;
+    })
+    .addCase(verifyEmail.fulfilled, (state, action) => {
+      state.success = action.payload.success;
+      state.message = action.payload.message;
+      state.isLoading = false;
+    })
+    .addCase(verifyEmail.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = true;
     });
 });
 

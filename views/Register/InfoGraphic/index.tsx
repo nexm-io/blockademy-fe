@@ -5,7 +5,7 @@ import registerbg from "@/public/icons/registerbg.svg";
 
 export default function InfoGraphic() {
   return (
-    <div className="w-[424px]">
+    <div className="w-full lg:w-[424px] flex flex-col items-center justify-center">
           <div className="px-9">
             <Image
               alt="background"

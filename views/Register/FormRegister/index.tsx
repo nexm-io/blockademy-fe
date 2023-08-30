@@ -41,7 +41,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
               disabled={isSubmitting}
               onClick={handleSignup}
             >
-              Sign Up With Email or Phone
+              Sign Up With Email
             </Button>
           </div>
 
