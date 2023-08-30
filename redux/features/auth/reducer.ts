@@ -1,5 +1,5 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { loginAuth, register, sendOtp } from "./action";
+import { PayloadAction, createReducer } from "@reduxjs/toolkit";
+import { forgotAuth, loginAuth, register, sendOtp } from "./action";
 import { initialState } from "./type";
 
 const authReducer = createReducer(initialState, (builder) => {
@@ -44,6 +44,21 @@ const authReducer = createReducer(initialState, (builder) => {
       state.isLoading = false;
       // state.error = action.payload.error;
       // state.message = action.payload.message;
+    });
+  builder
+    .addCase(forgotAuth.pending, (state) => {
+      state.success = false;
+      state.isLoading = true;
+    })
+    .addCase(forgotAuth.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.success = true;
+      state.message = action.payload.message;
+      state.data = action.payload.data;
+    })
+    .addCase(forgotAuth.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = true;
+      state.error = action.payload.error;
     });
 });
 

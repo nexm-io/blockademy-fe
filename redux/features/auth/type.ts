@@ -44,6 +44,7 @@ export interface AuthState {
   message: string;
   error: boolean;
   token: string;
+  data: any;
 }
 
 export const initialState: AuthState = {
@@ -54,4 +55,5 @@ export const initialState: AuthState = {
   message: " ",
   error: false,
   token: "",
+  data: {},
 };
