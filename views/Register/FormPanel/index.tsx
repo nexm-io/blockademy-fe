@@ -11,6 +11,7 @@ import Button from "@/components/Common/Button";
 import Image from "next/image";
 import Input from "@/components/Common/Input";
 import { useAppDispatch } from "@/redux/hook";
+import InfoGraphic from "../InfoGraphic";
 const schema = Yup.object({
   password: Yup.string().required("Please enter your password")
   .trim()
@@ -29,9 +30,10 @@ const schema = Yup.object({
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   email: string;
+  onMailChange: (key: string, value: string) => void;
 }
 
-const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
+const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailChange }) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -48,6 +50,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
   type FormData = Yup.InferType<typeof schema>;
 
   const onSubmit = async (e: FormData) => {
+    onMailChange("password", e.password);
     try {
       const res = await dispatch(userRegister({ email, ...e })).unwrap();
       res.success && setFormState("fromReceive");
@@ -59,13 +62,13 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
   };
   return (
     <form
-      className="space-y-[25px] w-full mt-4 relative"
+      className="space-y-[25px] w-full md:min-w-[384px] mt-4 relative"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex flex-col lg:flex-row gap-[80px] justify-center">
-        <div className="md:min-w-[384px] w-full">
+      <div className="flex flex-col lg:flex-row gap-[80px] justify-center items-center">
+        <div className="md:min-w-[384px] w-full lg:w-[384px] md:p-0 px-5 md:w-[450px]">
           <h1 className="text-[30px] leading-10 font-bold mb-10">
-            Set Infomation
+            Set Password
           </h1>
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5">
@@ -141,10 +144,10 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            Next
+            Submit
           </Button>
-        </div>
-        <div className="w-[424px]"></div>
+        </div>     
+      <InfoGraphic/>
       </div>
     </form>
   );

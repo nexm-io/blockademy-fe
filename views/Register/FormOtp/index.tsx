@@ -7,14 +7,15 @@ import Image from "next/image";
 import Input from "@/components/Common/Input";
 import exclamation from "@/public/icons/exclamation.svg";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { verifyEmail } from "@/redux/features/auth/action";
+import { sendOtp, verifyEmail } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
+import InfoGraphic from "../InfoGraphic";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
-  mail: string;
+  email: string;
 }
 
-const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
+const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
   const dispatch = useAppDispatch();
   const schema = Yup.object({
     otp: Yup.number()
@@ -27,6 +28,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
     register,
     reset,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
@@ -35,7 +37,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
 
   const handleOTPComplete = async (e: FormData) => {
     const detail = {
-      email: mail,
+      email: email,
       code: e.otp,
     };
     try {
@@ -47,6 +49,11 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
       reset();
     }
   };
+
+const resendEmail = async () => {
+  await dispatch(sendOtp({email})).unwrap();
+}
+
   return (
     <form
       className="space-y-[25px] w-full md:min-w-[384px] mt-4 relative"
@@ -93,18 +100,18 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, mail }) => {
                 disabled={isSubmitting}
                 className="w-full"
               >
-                Send OTP
+                Submit
               </Button>
             </div>
           </div>
 
           <div className="w-full mt-[24px] text-blue-100">
-            <p className="text-sm font-medium text-blue-100 cursor-pointer">
+            <p onClick={resendEmail} className="text-sm font-medium text-blue-100 cursor-pointer">
               {`Didn't receive the code?`}
             </p>
           </div>
         </div>
-        <div className="lg:w-[424px] w-0"></div>
+        <InfoGraphic/>
       </div>
     </form>
   );
