@@ -21,10 +21,9 @@ const schema = Yup.object({
   //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
   //   "Password must have a lowercase letter, a number and one special character"
   // ),
-  password_confirmation: Yup.string().trim().oneOf(
-    [Yup.ref("password")],
-    "The password confirmation does not match"
-  ),
+  password_confirmation: Yup.string()
+    .trim()
+    .oneOf([Yup.ref("password")], "The password confirmation does not match"),
 });
 
 interface FormRegisterProps {
@@ -33,7 +32,11 @@ interface FormRegisterProps {
   onMailChange: (key: string, value: string) => void;
 }
 
-const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailChange }) => {
+const FormPanel: React.FC<FormRegisterProps> = ({
+  setFormState,
+  email,
+  onMailChange,
+}) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -146,8 +149,8 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailCha
           >
             Submit
           </Button>
-        </div>     
-      <InfoGraphic/>
+        </div>
+        <InfoGraphic />
       </div>
     </form>
   );

@@ -50,36 +50,6 @@ html {
   grid-area: h6;
 }
 
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  .crypto__list {
-    display: grid;
-    grid-template-areas:
-      "h1"
-      "h2"
-      "h3"
-      "h4"
-      "h5"
-      "h6";
-    gap: 16px;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-}
-
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  /* For ipad phones: */
-  .crypto__list {
-    display: grid;
-    grid-template-areas:
-      "h1 h1"
-      "h2 h3"
-      "h4 h4"
-      "h5 h6";
-    gap: 16px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 /* Fix text justify */
 .text__spacing {
   text-align: justify;
@@ -266,4 +236,66 @@ input[type="range"]::-webkit-slider-thumb:active {
 /* Course */
 .course-status.active {
   @apply text-black-100 border-b-[3px] border-b-blue-100 pb-[23px];
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .crypto__list {
+    display: grid;
+    grid-template-areas:
+      "h1"
+      "h2"
+      "h3"
+      "h4"
+      "h5"
+      "h6";
+    gap: 16px;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .slider-track {
+    width: 70%;
+    left: 15%;
+  }
+  input[type="range"] {
+    margin-inline: auto;
+    left: 15%;
+    width: 70%;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    height: 10px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    height: 16px;
+    width: 16px;
+    margin-top: -3px;
+  }
+  .labels {
+    width: 70%;
+    margin-inline: auto;
+  }
+  .label-1m,
+  .label-3m,
+  .label-5m,
+  .label-10m,
+  .label-15m,
+  .label-20m,
+  .label-25m {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /* For ipad phones: */
+  .crypto__list {
+    display: grid;
+    grid-template-areas:
+      "h1 h1"
+      "h2 h3"
+      "h4 h4"
+      "h5 h6";
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

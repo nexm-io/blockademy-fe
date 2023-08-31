@@ -1,5 +1,4 @@
 "use client";
-import Button from "@/components/Common/Button";
 import article1 from "@/public/images/home/article1.png";
 import article2 from "@/public/images/home/article2.png";
 import article3 from "@/public/images/home/article3.png";

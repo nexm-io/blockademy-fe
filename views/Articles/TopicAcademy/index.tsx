@@ -4,16 +4,16 @@ import React from "react";
 
 const TopicAcademy = () => {
   return (
-    <div className="bg-white-100 h-[400px]">
+    <div className="bg-white-100 md:h-[400px] h-auto pl-4 md:pl-0">
       <h1 className="text-black-100 font-bold leading-[40px] text-3xl pt-[49px]">
         Topics at Academy
       </h1>
-      <div className="flex gap-[90px]">
+      <div className="flex md:gap-[90px] md:flex-row flex-col gap-8">
         <div className="mt-5 basis-1/2">
           <p className="text-black-100 text-base font-normal leading-6 mb-[11px]">
             Topic
           </p>
-          <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap">
+          <div className="flex md:flex-row flex-col md:gap-[15px] gap-4 md:flex-wrap">
             <div className="flex gap-2 md:gap-[15px]">
               <span className="text-black-100 font-medium text-base text-center bg-gray-500 rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize">
                 #all
@@ -43,7 +43,7 @@ const TopicAcademy = () => {
             </div>
           </div>
         </div>
-        <div className="mt-5 basis-1/2">
+        <div className="md:mt-5 mt-0 basis-1/2">
           <div>
             <p>Difficulty</p>
             <div className="flex gap-[15px] mt-[11px] mb-[30px]">
