@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Providers } from "@/redux/provider";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const metadata: Metadata = {
   title: {
     template: "%s | Blockademy",
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+      <ToastContainer />
         <Providers>{children}</Providers>
       </body>
     </html>

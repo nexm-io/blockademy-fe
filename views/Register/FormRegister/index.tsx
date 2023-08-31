@@ -21,9 +21,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
 
   const handleSignup = () => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      setFormState("verifyemail");
-    }, 3000);
+    setFormState("verifyemail");
   };
 
   return (

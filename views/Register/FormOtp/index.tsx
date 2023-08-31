@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { sendOtp, verifyEmail } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
+import { toast } from "react-toastify";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   email: string;
@@ -45,6 +46,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
       res.success && setFormState("formRegister");
     } catch (e) {
       console.error("Some thing wrong!", e);
+      toast.error("Otp is not correct!")
     } finally {
       reset();
     }
