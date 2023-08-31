@@ -61,9 +61,12 @@ const Button: React.FC<Props> = ({
         </div>
       ) : null}{" "}
       <span
-        className={cn({
-          invisible: loading,
-        })}
+        className={cn(
+          {
+            invisible: loading,
+          },
+          "w-max"
+        )}
       >
         {children}
       </span>
