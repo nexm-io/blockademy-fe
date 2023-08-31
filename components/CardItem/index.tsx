@@ -2,6 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import clockIcon from "@/public/icons/clock.svg";
 import Button from "../Common/Button";
+import Chip from "../Common/Chip";
 
 interface CardItemProps {
   imgSrc: StaticImageData;
@@ -20,7 +21,7 @@ const CardItem: React.FC<CardItemProps> = ({
   timeDuration,
 }) => {
   return (
-    <div className="w-[352px] lg:h-[370px] h-[340px] flex-shrink-0 shadow-lg rounded-2xl cursor-pointer">
+    <div className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer">
       <div className="w-full h-[198px] relative">
         <div className="absolute flex gap-2 top-6 left-6 text-white-100 z-20">
           {nftTags.map((tag, index) => (
@@ -39,16 +40,13 @@ const CardItem: React.FC<CardItemProps> = ({
           className="w-full h-full object-cover rounded-2xl relative"
         ></Image>
       </div>
-      <div className="m-6">
-        <h2 className="text-black-100 text-lg font-bold leading-7">{title}</h2>
-        <div className="flex lg:mt-[68px] mt-9 justify-between mr-6 items-center">
+      <div className="flex justify-between flex-col h-full flex-1">
+        <h2 className=" m-6 text-black-100 text-lg font-bold leading-7 line-clamp-2">
+          {title}
+        </h2>
+        <div className="flex justify-between mt-auto px-6 pb-6 items-center">
           {/* TODO: chip component */}
-          {/* <Button
-            label={buttonLabel}
-            className="w-[90px] px-2 py-2 text-xs font-normal leading-3 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
-          >
-            <span className="active w-[6px] h-[6px] rounded-[4px] bg-green-100"></span>
-          </Button> */}
+          <Chip label="Intermediate" intermediate size="small"></Chip>
           <span className="text-xs font-normal text-gray-300 leading-[23px]">
             {date}
           </span>

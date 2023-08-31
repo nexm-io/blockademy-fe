@@ -4,6 +4,7 @@ import img from "@/public/images/home/home-1.png";
 import clockIcon from "@/public/icons/clock.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
+import Chip from "@/components/Common/Chip";
 
 const TopBody = () => {
   return (
@@ -53,12 +54,7 @@ const TopBody = () => {
             </div>
           </div>
           {/* TODO: chip component */}
-          {/* <Button
-            label="Beginner"
-            className="w-[146px] py-[5px] px-1 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
-          >
-            <span className="active w-2 h-2 rounded-[4px] bg-green-100"></span>
-          </Button> */}
+          <Chip label="Newbie" newbie size="small"></Chip>
         </div>
       </div>
     </section>

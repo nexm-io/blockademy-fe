@@ -7,6 +7,7 @@ import crypto4 from "@/public/images/home/home-7.png";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import PageContainer from "@/components/PageContainer";
+import Chip from "@/components/Common/Chip";
 
 const TopicList = () => {
   return (
@@ -49,27 +50,38 @@ const TopicList = () => {
             </div>
           </div>
           {/* Difficulty */}
-          <div className="flex gap-4 pt-[28px] items-start md:items-center pl-2">
+          <div className="flex gap-[18px] pt-[28px] items-start md:items-center pl-2">
             <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg">
               Difficulty:
             </h3>
             <div className="flex gap-[15px]">
               <div className="flex md:flex-row flex-col gap-[15px]">
-                <div className="text-black-100 font-medium text-base bg-[#0F4945] rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize w-fit h-[28px] relative">
-                  <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Newbie
-                  </span>
+                <div className="text-black-100 font-medium text-base  rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize w-fit h-[28px] relative">
+                  <Chip
+                    label="Newbie"
+                    newbie
+                    size="small"
+                    className="text-white-100"
+                  ></Chip>
                 </div>
-                <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] relative w-fit border border-[#1A3142]">
-                  <span className="status-difficulty active blue text-[12px] font-normal leading-[12px] text-white-100">
-                    Intermediate
-                  </span>
+                <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] relative w-fit">
+                  <Chip
+                    label="Intermediate"
+                    intermediate
+                    size="small"
+                    outline
+                    className="text-white-100"
+                  ></Chip>
                 </div>
               </div>
-              <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize  h-[28px] w-fit relative border border-[#43171B]">
-                <span className="status-difficulty active red text-[12px] font-normal leading-[12px] text-white-100 ">
-                  Advanced
-                </span>
+              <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] w-fit relative border border-[#43171B]">
+                <Chip
+                  label="Advanced"
+                  advanced
+                  size="small"
+                  outline
+                  className="text-white-100"
+                ></Chip>
               </div>
             </div>
           </div>
@@ -97,10 +109,14 @@ const TopicList = () => {
                     </span>
                   </div>
                 </div>
-                <div className="relative pl-[21px] md:mb-0 mb-[20px]">
-                  <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Newbie
-                  </span>
+                <div className="relative md:mb-0 mb-[20px]">
+                  <Chip
+                    label="Newbie"
+                    newbie
+                    size="small"
+                    outline
+                    className="text-white-100 border-none"
+                  ></Chip>
                 </div>
               </div>
             </div>
@@ -109,8 +125,8 @@ const TopicList = () => {
               <h3 className="text-lg font-bold text-white-100 p-4">
                 What is NFT?
               </h3>
-              <div className="flex flex-col pb-[20px]">
-                <div className="flex gap-[36px] pl-[16px]">
+              <div className="flex flex-col pb-5">
+                <div className="flex gap-[36px] pl-4">
                   <span className="text-blue-400 font-normal text-base">
                     Apr 13, 2023
                   </span>
@@ -121,10 +137,14 @@ const TopicList = () => {
                     </span>
                   </div>
                 </div>
-                <div className="relative pl-[30px] ">
-                  <span className="status-difficulty md:before:left-[8%] before:left-[4%] active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Newbie
-                  </span>
+                <div className="relative pl-4">
+                  <Chip
+                    label="Newbie"
+                    newbie
+                    size="small"
+                    outline
+                    className="text-white-100 border-none"
+                  ></Chip>
                 </div>
               </div>
             </div>
@@ -145,10 +165,14 @@ const TopicList = () => {
                     </span>
                   </div>
                 </div>
-                <div className="relative pl-[30px] ">
-                  <span className="status-difficulty md:before:left-[8%] before:left-[4%] active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Newbie
-                  </span>
+                <div className="relative pl-4 ">
+                  <Chip
+                    label="Newbie"
+                    newbie
+                    size="small"
+                    outline
+                    className="text-white-100 border-none"
+                  ></Chip>
                 </div>
               </div>
             </div>
@@ -169,10 +193,14 @@ const TopicList = () => {
                     </span>
                   </div>
                 </div>
-                <div className="relative pl-[21px] mb-[20px] md:mb-0">
-                  <span className="status-difficulty active green text-[12px] font-normal leading-[12px] text-white-100">
-                    Newbie
-                  </span>
+                <div className="relative mb-[20px] md:mb-0">
+                  <Chip
+                    label="Newbie"
+                    newbie
+                    size="small"
+                    outline
+                    className="text-white-100 border-none"
+                  ></Chip>
                 </div>
               </div>
 

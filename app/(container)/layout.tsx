@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import PageContainer from "@/components/PageContainer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
   title: {
@@ -21,6 +23,7 @@ export default function MainLayout({
         <Header />
         <PageContainer>{children}</PageContainer>
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   );
