@@ -28,7 +28,7 @@ const ListCard: React.FC<ListCardProps> = ({ cardTitle, cardLabel, mTop }) => {
         <CardItem
           imgSrc={cardImg}
           nftTags={["NFT", "Altcoin", "+2"]}
-          title="Gaming Coin, What is Cryptocurrency?"
+          title="Gaming Coin, What is Cryptocurrency?,Gaming Coin, What is Cryptocurrency?"
           buttonLabel="Beginner"
           date="Aug 15, 2023"
           timeDuration="9m"

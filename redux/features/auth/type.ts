@@ -43,7 +43,7 @@ export interface UserProps {
 }
 export interface AuthState {
   isAuthenticated: boolean;
-  user: "";
+  user: UserProps | null;
   isLoading: boolean;
   success: boolean;
   message: string;
@@ -54,7 +54,7 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   isAuthenticated: false,
-  user: "",
+  user: null,
   success: false,
   isLoading: false,
   message: " ",

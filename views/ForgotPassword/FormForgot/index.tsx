@@ -50,11 +50,11 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
     }
   };
   return (
-    <div className="flex flex-col items-center relative">
-      <h2 className="mt-[40px] text-[#0D1C68] text-[18px] font-medium leading-6">
-        Log in to your Academy account
+    <div className="flex flex-col relative">
+      <h2 className="mt-[40px] text-black-100 text-center text-[30px] font-bold ">
+        Forgot your Blockademy account?
       </h2>
-      <form className="w-full mt-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+      <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-[29px] mb-1">
           <label
             htmlFor="email"
