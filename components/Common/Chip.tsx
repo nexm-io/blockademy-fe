@@ -1,3 +1,4 @@
+"use client";
 import cn from "@/services/cn";
 import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { TiDelete } from "react-icons/ti";
@@ -49,7 +50,7 @@ const Chip: React.FC<ChipProps> = ({
           {
             " !border !bg-transparent": !disabled && outline,
             "opacity-70 !cursor-not-allowed": disabled,
-            "px-[18px] py-[5px] text-[14px] leading-[20px] font-normal":
+            "px-[18px] py-[5px] text-xs leading-[20px] font-normal":
               size === "small",
             "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": newbie,
             "!bg-[#37B7FF]/20 !border-[#37B7FF]/20": intermediate,
@@ -68,7 +69,7 @@ const Chip: React.FC<ChipProps> = ({
               "!text-[#FF1D1D]": advanced,
             },
             className,
-            " absolute left-[8px] top-[4px] inline-flex items-center justify-center text-[24px] mr-2"
+            " absolute left-[7px] top-[4px] inline-flex items-center justify-center text-[20px] mr-2"
           )}
         >
           &#x2022;

@@ -12,28 +12,6 @@
     0px 7px 14px 0px rgba(71, 77, 87, 0.08),
     0px 0px 1px 0px rgba(20, 21, 26, 0.1);
 }
-.status-difficulty::before {
-  content: "";
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  top: 50%;
-  left: 12%;
-  transform: translate(-50%, -50%);
-  border-radius: 100rem;
-  flex-shrink: 0;
-}
-.status-difficulty.green::before {
-  background: #02c076;
-}
-
-.status-difficulty.blue::before {
-  background: #37b7ff;
-}
-
-.status-difficulty.red::before {
-  background: #ff1d1d;
-}
 
 .crypto__list {
   display: grid;

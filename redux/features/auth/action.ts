@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { AuthResponse, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
@@ -9,6 +9,14 @@ export const loginAuth = createAsyncThunk<
   const response = await api.post("/api/v10/login", userLogin);
   return response.data;
 });
+export const logoutAuth = createAsyncThunk<AuthResponse>(
+  "auth/logout",
+  async () => {
+    const response = await api.get("/api/v10/user/logout");
+    return response.data;
+  }
+);
+// export const logoutAuth = createAction("/api/v10/user/logout");
 
 export const userRegister = createAsyncThunk<
   AuthResponse,

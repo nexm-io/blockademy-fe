@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -9,10 +9,15 @@ import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
 import { loginAuth } from "@/redux/features/auth/action";
-import keyIcon from "@/public/icons/key.svg";
+
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
+
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
@@ -29,6 +34,9 @@ const schema = Yup.object({
 type FormLogin = Yup.InferType<typeof schema>;
 
 const Login = () => {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -48,13 +56,18 @@ const Login = () => {
           ...data,
         })
       ).unwrap();
-      response.success && push("/");
+      response.success && toast.success("Login Successfully") && push("/");
     } catch (error) {
       console.error("Login failed", error);
     } finally {
       reset();
     }
   };
+  useEffect(() => {
+    if (isAuthenticated) {
+      push("/");
+    }
+  }, [isAuthenticated, push]);
   return (
     <div className="max-w-[1200px] md:w-[405px] w-[350px] my-[140px] mx-auto rounded-3xl">
       <div className="flex flex-col relative">

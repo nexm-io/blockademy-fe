@@ -4,7 +4,12 @@ import CourseFAQ from "@/views/Courses/CourseFAQ";
 import CourseLists from "@/views/Courses/CourseLists";
 import CourseRewards from "@/views/Courses/CourseRewards";
 import CourseStatus from "@/views/Courses/CourseStatus";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Course",
+};
 
 const CoursePage = () => {
   return (
