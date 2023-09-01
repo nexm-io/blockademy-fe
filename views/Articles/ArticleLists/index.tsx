@@ -36,7 +36,7 @@ const ArticleLists = () => {
   };
   return (
     <section>
-      <div className="flex justify-between mt-[39px] mb-6">
+      <div className="flex justify-between mt-[39px] mb-6 px-4">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
           Articles
         </h2>
@@ -46,7 +46,7 @@ const ArticleLists = () => {
           </Dropdown>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-10">
+      <div className="grid md:grid-cols-3 md:gap-10 grid-cols-1 pl-4 gap-4">
         {Array.from({ length: 15 }, (_, index) => (
           <CardItem
             key={index}
@@ -64,11 +64,11 @@ const ArticleLists = () => {
           breakLabel="..."
           nextLabel=">"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={1}
           pageCount={pageCount}
           previousLabel="<"
           renderOnZeroPageCount={null}
-          className="pagination flex items-center justify-center gap-6"
+          className="pagination flex items-center justify-center md:gap-6 gap-4"
         />
       </div>
     </section>

@@ -12,6 +12,7 @@ import { logoutAuth } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
 import user from "@/public/images/home/home-iconuser.png";
 import { hideEmail } from "@/utils/hideEmail";
+import { UserCircle } from "@styled-icons/boxicons-solid";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -57,34 +58,32 @@ const Header = () => {
   return (
     <header className="bg-white-100 text-black w-full top-0 fixed z-[999] min-h-[74px]">
       {/* Top Header */}
-      <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4">
+      <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4 md:px-0 px-4">
         <div className="md:w-full w-[40%] flex items-center">
           <div className="mr-[82px]">
             <Link href="/">
-              <Image alt="logo" src={logo}></Image>
+              <Image alt="logo" src={logo} className=""></Image>
             </Link>
           </div>
-          <div className="flex gap-[50px] text-base font-normal text-black-100">
-            <Link href="/article" className="hover:text-blue-100">
+          <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
+            <Link href="/articles" className="hover:text-blue-100">
               Articles
             </Link>
-            <Link href="/course" className="hover:text-blue-100">
+            <Link href="/courses" className="hover:text-blue-100">
               Courses
             </Link>
           </div>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%] prose">
+        <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
           {isAuthenticated ? (
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <div
-                className="w-[30px] h-[30px] relative not-prose"
+                className="md:w-[30px] w-6 h-6 md:h-[30px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
-                <Image
-                  alt="user-icon"
-                  src={user}
-                  className="w-full h-full cursor-pointer object-cover"
+                <UserCircle
                   onClick={handleUserIconClick}
+                  className={`${isOpen ? "fill-blue-100 " : ""}`}
                 />
                 {isOpen && (
                   <ul
@@ -99,7 +98,10 @@ const Header = () => {
                         </Link>
                       </li>
                       <li className="px-4">
-                        <Button size="small" className="bg-red-500">
+                        <Button
+                          size="small"
+                          className="bg-red-600 hover:bg-red-800"
+                        >
                           Logout
                         </Button>
                       </li>

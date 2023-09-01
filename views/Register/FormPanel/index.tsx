@@ -13,18 +13,25 @@ import Input from "@/components/Common/Input";
 import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
 const schema = Yup.object({
+<<<<<<< HEAD
   password: Yup.string().required("Please enter your password")
   .trim()
   .min(6, "Length from 6 - 160 characters")
   .max(160, "Length from 6 - 160 characters"),
+=======
+  password: Yup.string()
+    .required("Please enter your password")
+    .trim()
+    .min(8, "Length from 8 - 160 characters")
+    .max(160, "Length from 8 - 160 characters"),
+>>>>>>> 5db4962c71e8e71111d8e740915b6cd9e7789efd
   // .matches(
   //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
   //   "Password must have a lowercase letter, a number and one special character"
   // ),
-  password_confirmation: Yup.string().trim().oneOf(
-    [Yup.ref("password")],
-    "The password confirmation does not match"
-  ),
+  password_confirmation: Yup.string()
+    .trim()
+    .oneOf([Yup.ref("password")], "The password confirmation does not match"),
 });
 
 interface FormRegisterProps {
@@ -33,7 +40,11 @@ interface FormRegisterProps {
   onMailChange: (key: string, value: string) => void;
 }
 
-const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailChange }) => {
+const FormPanel: React.FC<FormRegisterProps> = ({
+  setFormState,
+  email,
+  onMailChange,
+}) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -146,8 +157,8 @@ const FormPanel: React.FC<FormRegisterProps> = ({ setFormState, email, onMailCha
           >
             Submit
           </Button>
-        </div>     
-      <InfoGraphic/>
+        </div>
+        <InfoGraphic />
       </div>
     </form>
   );
