@@ -7,6 +7,10 @@
   font-weight: normal;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .card-shadow {
   box-shadow: 0px 3px 6px 0px rgba(20, 21, 26, 0.08),
     0px 7px 14px 0px rgba(71, 77, 87, 0.08),
@@ -69,7 +73,10 @@
   box-shadow: 0 0 0 100vmax #f5f5f5;
   clip-path: inset(0 -100vmax);
 }
-
+.full-bleed__footerArticle {
+  box-shadow: 0 0 0 100vmax #1F37B3;
+  clip-path: inset(0 -100vmax);
+}
 /* Slider Double Range */
 /* .double-range-slider {
   display: flex;

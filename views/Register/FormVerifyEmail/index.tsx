@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/components/Common/Button";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,9 @@ import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
 import InfoGraphic from "../InfoGraphic";
 import { sendOtp } from "@/redux/features/auth/action";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   onMailChange: (key: string, value: string) => void;
@@ -30,6 +32,8 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
   setFormState,
   onMailChange,
 }) => {
+  const [message, setMessage] = useState("");
+
   const dispatch = useAppDispatch();
   const {
     register,
@@ -43,11 +47,13 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
 
   const onSubmit = async (e: FormData) => {
     onMailChange("email", e.email);
+
     try {
       const res = await dispatch(sendOtp(e)).unwrap();
       res.success && setFormState("otp");
     } catch (e) {
-      console.error("Some thing wrong!", e);
+      console.error(e);
+      toast.error("Email is exist!");
     } finally {
       reset();
     }
