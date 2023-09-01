@@ -14,16 +14,22 @@ import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
 const schema = Yup.object({
 <<<<<<< HEAD
+<<<<<<< HEAD
   password: Yup.string().required("Please enter your password")
   .trim()
   .min(6, "Length from 6 - 160 characters")
   .max(160, "Length from 6 - 160 characters"),
 =======
+=======
+>>>>>>> 5db4962c71e8e71111d8e740915b6cd9e7789efd
   password: Yup.string()
     .required("Please enter your password")
     .trim()
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
+<<<<<<< HEAD
+>>>>>>> 5db4962c71e8e71111d8e740915b6cd9e7789efd
+=======
 >>>>>>> 5db4962c71e8e71111d8e740915b6cd9e7789efd
   // .matches(
   //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
