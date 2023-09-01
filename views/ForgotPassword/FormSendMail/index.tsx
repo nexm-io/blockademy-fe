@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import sendemail from "@/public/images/forgot/send-email.png";
+import mailbox from "@/public/icons/mailbox.svg";
+
 import Link from "next/link";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
@@ -12,11 +13,7 @@ const FormSendMail: React.FC<FormRegisterProps> = ({ setFormState }) => {
         Reset your Academy account
       </h2>
       <div className="mt-8 mb-1 w-[200px] h-auto">
-        <Image
-          alt="send-email"
-          src={sendemail}
-          className="w-full h-full object-cover"
-        ></Image>
+        <Image alt="mailbox" src={mailbox} width={200}></Image>
       </div>
 
       <div className="text-right mt-6 w-[80%]">
