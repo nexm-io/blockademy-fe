@@ -74,7 +74,11 @@ html {
   clip-path: inset(0 -100vmax);
 }
 .full-bleed__footerArticle {
-  box-shadow: 0 0 0 100vmax #1F37B3;
+  box-shadow: 0 0 0 100vmax #1f37b3;
+  clip-path: inset(0 -100vmax);
+}
+.full-bleed__learn {
+  box-shadow: 0 0 0 100vmax #0b0e11;
   clip-path: inset(0 -100vmax);
 }
 /* Slider Double Range */

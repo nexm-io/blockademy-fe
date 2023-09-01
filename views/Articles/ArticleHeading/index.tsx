@@ -1,4 +1,4 @@
-import BreadCumb from "@/components/BreadCumb";
+import BreadCrumb from "@/components/BreadCrumb";
 import Chip from "@/components/Common/Chip";
 import banner from "@/public/images/home/article.png";
 import clockIcon from "@/public/icons/clock.svg";
@@ -9,7 +9,7 @@ const ArticleHeading = () => {
       <div>
         <Image alt="banner" src={banner} className="w-full" />
         <div className="py-6">
-          <BreadCumb />
+          <BreadCrumb />
         </div>
         <h1 className="text-[45px] font-bold text-black-100 mb-[27px]">
           Bitcoin Spot ETF vs. Bitcoin Futures ETF: Whats the Difference?

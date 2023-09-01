@@ -1,4 +1,3 @@
-
 "use client";
 import article1 from "@/public/images/home/article1.png";
 import article2 from "@/public/images/home/article2.png";
@@ -16,7 +15,7 @@ import IsLoginForm from "@/components/isLoginForm";
 import ArticleRelate from "@/views/Articles/ArticleRelate";
 import { useState } from "react";
 import clockIcon from "@/public/icons/clock.svg";
-import BreadCumb from "@/components/BreadCumb";
+import BreadCrumb from "@/components/BreadCrumb";
 import Button from "@/components/Common/Button";
 import banner from "@/public/images/home/article.png";
 import Image from "next/image";
@@ -26,7 +25,6 @@ export default function ArticleDetail({
 }: {
   params: { slug: string };
 }) {
-
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const posts = [
     {
@@ -104,5 +102,5 @@ export default function ArticleDetail({
         <span className="ml-5 font-bold cursor-pointer">&rarr;</span>
       </div>
     </>
-  )
+  );
 }

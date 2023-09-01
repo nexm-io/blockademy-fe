@@ -1,12 +1,16 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 import img from "@/public/images/home/home-1.png";
 import Button from "@/components/Common/Button";
-import check from "@/public/icons/check.svg";
-import clock from "@/public/icons/clock.svg";
-import play from "@/public/icons/play.svg";
+import CoursePanel from "../CoursePanel";
+import { useRouter } from "next/navigation";
 
 const CourseLists = () => {
+  const { push } = useRouter();
+  const handleClick = () => {
+    push("/courses/blockchain-details");
+  };
   return (
     <section>
       <div className="mt-12 ">
@@ -34,7 +38,10 @@ const CourseLists = () => {
                 </p>
               </div>
               <div>
-                <Button className="capitalize text-base font-medium md:mt-0 mt-4">
+                <Button
+                  className="capitalize text-base font-medium md:mt-0 mt-4"
+                  onClick={handleClick}
+                >
                   start course
                 </Button>
               </div>
@@ -46,156 +53,12 @@ const CourseLists = () => {
             </h3>
             <div className="flex flex-col gap-4 px-4 md:px-0">
               {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%] line-clamp-1">
-                      1. Blockchain Deep Dive
-                    </span>
-                    <div className=" flex items-center gap-[10px] basis-[20%] line-clamp-1">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">77 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-blue-100 basis-[30%] justify-end">
-                    <Image alt="play-icon" src={play}></Image>
-                    <span className="line-clamp-1 hidden md:block">
-                      Learn Now
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%]  line-clamp-1">
-                      2. Blockchain Deep Dive
-                    </span>
-                    <div className="flex items-center gap-[10px] basis-[20%]">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">0 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-gray-400 basis-[30%] justify-end">
-                    <span className="line-clamp-1">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%]  line-clamp-1">
-                      2. Blockchain Deep Dive
-                    </span>
-                    <div className="flex items-center gap-[10px] basis-[20%]">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">0 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-gray-400 basis-[30%] justify-end">
-                    <span className="line-clamp-1">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
-              {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%]  line-clamp-1">
-                      2. Blockchain Deep Dive
-                    </span>
-                    <div className="flex items-center gap-[10px] basis-[20%]">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">0 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-gray-400 basis-[30%] justify-end">
-                    <span className="line-clamp-1">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%]  line-clamp-1">
-                      2. Blockchain Deep Dive
-                    </span>
-                    <div className="flex items-center gap-[10px] basis-[20%]">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">0 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-gray-400 basis-[30%] justify-end">
-                    <span className="line-clamp-1">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Item Course */}
-              <div className="flex gap-4 items-center">
-                <div className="w-[40px] h-[40px]">
-                  <Image
-                    alt="check-icon"
-                    src={check}
-                    className="w-full h-full object-cover flex-shrink-0"
-                  ></Image>
-                </div>
-                <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
-                  <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                    <span className="basis-[70%]  line-clamp-1">
-                      2. Blockchain Deep Dive
-                    </span>
-                    <div className="flex items-center gap-[10px] basis-[20%]">
-                      <Image alt="clock-icon" src={clock}></Image>
-                      <span className="line-clamp-1">0 Min</span>
-                    </div>
-                  </div>
-                  <div className=" flex items-center gap-[10px] pr-4 text-gray-400 basis-[30%] justify-end">
-                    <span className="line-clamp-1">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
+              <CoursePanel status="watching" />
+              <CoursePanel />
+              <CoursePanel />
+              <CoursePanel />
+              <CoursePanel />
+              <CoursePanel />
 
               {/*  */}
             </div>
