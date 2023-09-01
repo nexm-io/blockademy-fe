@@ -32,9 +32,10 @@ const authReducer = createReducer(initialState, (builder) => {
       state.error = action.payload.error;
       state.message = action.payload.message;
     })
-    .addCase(userRegister.rejected, (state) => {
+    .addCase(userRegister.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.error = true;
+      state.message = action.payload.message;
     });
 
   builder
@@ -61,9 +62,10 @@ const authReducer = createReducer(initialState, (builder) => {
       state.message = action.payload.message;
       state.isLoading = false;
     })
-    .addCase(verifyEmail.rejected, (state, action) => {
+    .addCase(verifyEmail.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.error = true;
+      state.message = action.payload.message;
     });
   builder
     .addCase(forgotAuth.pending, (state) => {

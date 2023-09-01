@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { sendOtp, verifyEmail } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
+import { toast } from "react-toastify";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   email: string;
@@ -45,6 +46,7 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
       res.success && setFormState("formRegister");
     } catch (e) {
       console.error("Some thing wrong!", e);
+      toast.error("Otp is not correct!")
     } finally {
       reset();
     }
@@ -66,7 +68,7 @@ const resendEmail = async () => {
           </h1>
           <span className="max-w-[424px] block text-sm leading-[22px] text-white-400">
             Please enter the 6-digit verification code that was sent to
-            hopi.shirt@gmail.com. The code is valid for 30 minutes.
+            {email} The code is valid for 30 minutes.
           </span>
           <div className="w-full pr-12">
             <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
