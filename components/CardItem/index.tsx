@@ -11,6 +11,7 @@ interface CardItemProps {
   buttonLabel: string;
   date: string;
   timeDuration: string;
+  onClick?: () => void;
 }
 const CardItem: React.FC<CardItemProps> = ({
   imgSrc,
@@ -19,9 +20,13 @@ const CardItem: React.FC<CardItemProps> = ({
   buttonLabel,
   date,
   timeDuration,
+  onClick,
 }) => {
   return (
-    <div className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer">
+    <div
+      className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer"
+      onClick={onClick}
+    >
       <div className="w-full h-[198px] relative">
         <div className="absolute flex gap-2 top-6 left-6 text-white-100 z-20">
           {nftTags.map((tag, index) => (

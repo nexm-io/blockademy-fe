@@ -1,26 +1,34 @@
+"use client";
 import Image from "next/image";
 import React, { useEffect } from "react";
 
 import Button from "@/components/Common/Button";
-import check from "@/public/icons/check.svg";
-import clock from "@/public/icons/clock.svg";
-import play from "@/public/icons/play.svg";
+import { useRouter } from "next/navigation";
 import { CourseTypes } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
+import { getListCourse } from "@/redux/features/courses/action";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
+  const { push } = useRouter();
+  const handleClick = () => {
+    push("/courses/blockchain-details");
+  };
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    dispatch(getListCourse());
+  }, [dispatch]);
   return (
     <>
       {!details ? (
         <SkeletonCourse />
       ) : (
         details.map((section: CourseTypes) => (
-          <div className="mt-12 ">
+          <div className="mt-12 " key={section.title}>
             <div>
               <h2 className="text-black-100 md:text-[40px] ml-4 md:ml-0 text-[25px] font-bold w-max border-b-[6px] border-b-blue-100">
                 {section.title}
@@ -41,7 +49,10 @@ const CourseLists = function () {
                     />
                   </div>
                   <div>
-                    <Button className="capitalize text-base font-medium md:mt-0 mt-4">
+                    <Button
+                      className="capitalize text-base font-medium md:mt-0 mt-4"
+                      onClick={handleClick}
+                    >
                       start course
                     </Button>
                   </div>
@@ -61,7 +72,7 @@ const CourseLists = function () {
                     ></Image>
                   </div>
                   <div
-                    className={`bg-gray-200 flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
+                    className={`bg-gray-200 flex md:items-center md:flex-row flex-col items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
                   >
                     <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
                       <span

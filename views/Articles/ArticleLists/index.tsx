@@ -1,11 +1,11 @@
 "use client";
-import Button from "@/components/Common/Button";
 import Image from "next/image";
 import React, { useState } from "react";
 import arrow from "@/public/icons/arrowbottom.svg";
 import CardItem from "@/components/CardItem";
 import cardImg from "@/public/images/home/home-1.png";
 import ReactPaginate from "react-paginate";
+import { useRouter } from "next/navigation";
 import Dropdown from "@/components/Common/Dropdown";
 
 const options = [
@@ -23,16 +23,14 @@ const itemsPerPage = 20;
 const ArticleLists = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-  // const pageCount = Math.ceil(items.length / itemsPerPage);
-
-  // Invoke when user click to request another page.
   const handlePageClick = (event: any) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
+
     setItemOffset(newOffset);
+  };
+  const { push } = useRouter();
+  const handleClick = () => {
+    push("/articles/article-details");
   };
   return (
     <section>
@@ -56,6 +54,7 @@ const ArticleLists = () => {
             buttonLabel="Beginner"
             date="Aug 15, 2023"
             timeDuration="9m"
+            onClick={handleClick}
           />
         ))}
       </div>

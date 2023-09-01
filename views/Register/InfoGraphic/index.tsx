@@ -1,24 +1,41 @@
-import React from 'react'
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import registerbg from "@/public/icons/registerbg.svg";
 
-export default function InfoGraphic() {
+interface GraphicProps {
+  description?: string;
+  coming_soon?: boolean;
+  color_text?: string;
+}
+
+export default function InfoGraphic(props: GraphicProps) {
+  const {
+    description = "Follow the registration steps to redeem your rewards and start your crypto journey with us!",
+    coming_soon = false,
+    color_text,
+  } = props;
   return (
     <div className="w-full lg:w-[424px] flex flex-col items-center justify-center">
-          <div className="px-9">
-            <Image
-              alt="background"
-              src={registerbg}
-              width={400}
-              height={222}
-              className=""
-            />
-          </div>
-          <p className="text-sm leading-[22px] mt-9 mb-5 text-center max-w-[440px]">
-            Follow the registration steps to redeem your rewards and start your
-            crypto journey with us!
-          </p>
-        </div>
-  )
+      <div className="px-9">
+        <Image
+          alt="background"
+          src={registerbg}
+          width={400}
+          height={222}
+          className=""
+        />
+      </div>
+      {coming_soon && (
+        <h2 className="md:text-[46px] text-3xl font-bold text-white-300 md:mt-[70px] mt-10">
+          Coming soon
+        </h2>
+      )}
+      <p
+        className={`${color_text} text-sm leading-[22px] mt-6 mb-5 text-center md:max-w-[440px] max-w-full px-6 md:px-0 pb-10 md:pb-[103px]`}
+      >
+        {description}
+      </p>
+    </div>
+  );
 }
