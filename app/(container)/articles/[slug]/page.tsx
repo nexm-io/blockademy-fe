@@ -91,7 +91,7 @@ export default function ArticleDetail({
             <ArticleShare />
             <ArticlesLine onTitleClick={handleTitleClick} data={array} />
             <ArticleRelate data={posts} />
-            {isLogin && <IsLoginForm />}
+            {!isLogin && <IsLoginForm />}
           </div>
         </div>
       </div>

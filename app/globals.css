@@ -303,3 +303,10 @@ input[type="range"]::-webkit-slider-thumb:active {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+.richtext-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 55px;
+}

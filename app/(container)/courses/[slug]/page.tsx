@@ -4,7 +4,6 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import CourseLists from "@/views/Courses/CourseLists";
 import CourseModule from "@/components/CourseModule";
 import CoursePanel from "@/views/Courses/CoursePanel";
 import NoSignal from "@/components/NoSignal";
@@ -12,10 +11,12 @@ import BreadCrumb from "@/components/BreadCrumb";
 import { useState } from "react";
 import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
+import CourseLesson from "@/views/Courses/CourseLesson";
+import { useAppSelector } from "@/redux/hook";
 
 export default function CoursesSlug({ params }: { params: { slug: string } }) {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
-
+  const data = useAppSelector((state) => state.courses.data);
   return (
     <div className="mt-[74px]">
       <GiftHeader />
@@ -111,7 +112,7 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
           <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
             Other Courses
           </h2>
-          <CoursePanel status="watching" />
+          <CoursePanel />
           <CoursePanel />
           <CoursePanel />
           <CoursePanel />
