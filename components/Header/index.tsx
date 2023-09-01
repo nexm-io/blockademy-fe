@@ -46,15 +46,15 @@ const Header = () => {
     event.stopPropagation(); // Ngăn sự kiện lan truyền ra bên ngoài
     setIsOpen(!isOpen); // Mở hoặc đóng dropdown
   };
-  // const handleLogout = async () => {
-  //   try {
-  //     const res = await dispatch(logoutAuth()).unwrap();
-  //     console.log("handleLogout ~ res:", res);
-  //     toast.success("Logout Successfully");
-  //   } catch (error) {
-  //     toast.error("Logout Failed");
-  //   }
-  // };
+  const handleLogout = async () => {
+    try {
+      const res = await dispatch(logoutAuth()).unwrap();
+      console.log("handleLogout ~ res:", res);
+      toast.success("Logout Successfully");
+    } catch (error) {
+      toast.error("Logout Failed");
+    }
+  };
   return (
     <header className="bg-white-100 text-black w-full top-0 fixed z-[999] min-h-[74px]">
       {/* Top Header */}
@@ -101,6 +101,7 @@ const Header = () => {
                         <Button
                           size="small"
                           className="bg-red-600 hover:bg-red-800"
+                          onClick={handleLogout}
                         >
                           Logout
                         </Button>
