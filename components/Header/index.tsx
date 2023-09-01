@@ -49,7 +49,6 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const res = await dispatch(logoutAuth()).unwrap();
-      console.log("handleLogout ~ res:", res);
       toast.success("Logout Successfully");
     } catch (error) {
       toast.error("Logout Failed");

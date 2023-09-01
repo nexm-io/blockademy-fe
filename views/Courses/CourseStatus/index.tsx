@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 const CourseStatus = () => {
   const pathname = usePathname();
-  console.log("CourseStatus ~ pathname:", pathname);
   return (
     <div className="flex gap-[50px] md:pt-[480px] pt-[200px] items-start text-white-400 text-base font-normal leading-4 capitalize px-4 md:px-0">
       <Link

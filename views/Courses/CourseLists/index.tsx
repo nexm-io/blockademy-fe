@@ -3,13 +3,13 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 
 import Button from "@/components/Common/Button";
-import CoursePanel from "../CoursePanel";
 import { useRouter } from "next/navigation";
 import { CourseTypes } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
+import { getListCourse } from "@/redux/features/courses/action";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
@@ -17,6 +17,11 @@ const CourseLists = function () {
   const handleClick = () => {
     push("/courses/blockchain-details");
   };
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getListCourse());
+  }, [dispatch]);
   return (
     <>
       {!details ? (

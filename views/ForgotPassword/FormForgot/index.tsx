@@ -41,7 +41,6 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
           ...data,
         })
       ).unwrap();
-      console.log("onSubmit ~ response:", response);
       response.success && setFormState("formsendmail");
     } catch (error) {
       console.error("Login failed", error);

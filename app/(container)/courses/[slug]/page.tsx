@@ -11,7 +11,6 @@ import BreadCrumb from "@/components/BreadCrumb";
 import { useState } from "react";
 import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
-import CourseLesson from "@/views/Courses/CourseLesson";
 import { useAppSelector } from "@/redux/hook";
 
 export default function CoursesSlug({ params }: { params: { slug: string } }) {

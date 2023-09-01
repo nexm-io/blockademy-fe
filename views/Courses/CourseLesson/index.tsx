@@ -5,10 +5,7 @@ import play from "@/public/icons/play.svg";
 import { ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import Image from "next/image";
-import CoursePanel from "../CoursePanel";
 const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
-  console.log(details);
-
   return (
     <div className="flex flex-col gap-4 px-4 md:px-0">
       {/* Item Course */}
