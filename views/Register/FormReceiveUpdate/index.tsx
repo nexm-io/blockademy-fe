@@ -11,7 +11,6 @@ import { useAppDispatch } from "@/redux/hook";
 type IFormValues = {
     email: string;
     password: string;
-    checked: boolean;
 } 
 
 export default function FormReceiveUpdate({
@@ -64,7 +63,7 @@ export default function FormReceiveUpdate({
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
-          {...register("checked")}
+          // {...register("checked")}
         />
       </div>
 
