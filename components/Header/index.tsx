@@ -49,7 +49,6 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       const res = await dispatch(logoutAuth()).unwrap();
-      console.log("handleLogout ~ res:", res);
       toast.success("Logout Successfully");
     } catch (error) {
       toast.error("Logout Failed");
@@ -72,13 +71,16 @@ const Header = () => {
             <Link href="/courses" className="hover:text-blue-100">
               Courses
             </Link>
+            <Link href="/learn-and-earn" className="hover:text-blue-100">
+              Learn & Earn
+            </Link>
           </div>
         </div>
         <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
           {isAuthenticated ? (
             <div className="flex gap-2 items-center">
               <div
-                className="md:w-[30px] w-6 h-6 md:h-[30px] relative not-prose cursor-pointer select-none"
+                className="md:w-[40px] w-6 h-6 md:h-[40px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
                 <UserCircle

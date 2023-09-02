@@ -1,4 +1,4 @@
-import BreadCumb from "@/components/BreadCumb";
+import BreadCrumb from "@/components/BreadCrumb";
 import Chip from "@/components/Common/Chip";
 import banner from "@/public/images/home/article.png";
 import clockIcon from "@/public/icons/clock.svg";
@@ -7,15 +7,15 @@ const ArticleHeading = () => {
   return (
     <>
       <div>
-        <Image alt="banner" src={banner} className="w-full" />
+        <Image alt="banner" src={banner} className="w-full px-4 md:px-0" />
         <div className="py-6">
-          <BreadCumb />
+          <BreadCrumb />
         </div>
-        <h1 className="text-[45px] font-bold text-black-100 mb-[27px]">
+        <h1 className="md:text-[45px] text-3xl font-bold text-black-100 leading-10 md:leading-[46px] mb-[27px] px-4 md:px-0">
           Bitcoin Spot ETF vs. Bitcoin Futures ETF: Whats the Difference?
         </h1>
       </div>
-      <div className="flex lg:mt-7 w-full justify-start gap-[24px] mr-6 items-center mb-14">
+      <div className="flex lg:mt-7 w-full justify-start gap-[24px] mr-6 items-center md:mb-14 mb-8 mx-4 md:mx-0">
         <Chip size="small" label="Newbie" newbie />
         <span className="text-xs font-normal text-gray-300 leading-[23px]">
           Published Jun 21, 2023

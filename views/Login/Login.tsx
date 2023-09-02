@@ -56,7 +56,11 @@ const Login = () => {
           ...data,
         })
       ).unwrap();
-      response.success && toast.success("Login Successfully") && push("/");
+      console.log("onSubmit ~ response:", response);
+      if (response.success) {
+        toast.success("Login Successfully");
+        push("/");
+      }
     } catch (error) {
       console.error("Login failed", error);
     } finally {

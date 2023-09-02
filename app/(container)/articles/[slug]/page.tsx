@@ -1,4 +1,3 @@
-
 "use client";
 import article1 from "@/public/images/home/article1.png";
 import article2 from "@/public/images/home/article2.png";
@@ -15,18 +14,12 @@ import Link from "next/link";
 import IsLoginForm from "@/components/isLoginForm";
 import ArticleRelate from "@/views/Articles/ArticleRelate";
 import { useState } from "react";
-import clockIcon from "@/public/icons/clock.svg";
-import BreadCumb from "@/components/BreadCumb";
-import Button from "@/components/Common/Button";
-import banner from "@/public/images/home/article.png";
-import Image from "next/image";
 
 export default function ArticleDetail({
   params,
 }: {
   params: { slug: string };
 }) {
-
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const posts = [
     {
@@ -81,15 +74,15 @@ export default function ArticleDetail({
   return (
     <>
       <GiftHeader />
-      <div className=" flex flex-col md:gap-[85px] xl:gap-[170px] mb-14 px-8 xl:px-0 md:flex-row">
-        <div className="pb-[75px] md:w-[75%] w-full">
+      <div className=" flex flex-col md:gap-[85px] xl:gap-[170px] mb-14 md:flex-row">
+        <div className="md:pb-[75px] pb-8 md:w-[75%] w-full">
           <ArticleTag />
           <ArticleHeading />
           <ArticleSummary />
           <ArticlesSection id={currentSectionIndex} sections={sections} />
         </div>
         <div className="w-full md:w-[25%] ">
-          <div className="sticky top-[30px] flex flex-col gap-[75px]">
+          <div className="sticky top-[30px] flex flex-col md:gap-[75px] gap-4">
             <ArticleShare />
             <ArticlesLine onTitleClick={handleTitleClick} data={array} />
             <ArticleRelate data={posts} />
@@ -104,5 +97,5 @@ export default function ArticleDetail({
         <span className="ml-5 font-bold cursor-pointer">&rarr;</span>
       </div>
     </>
-  )
+  );
 }

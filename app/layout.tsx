@@ -39,8 +39,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-      <ToastContainer />
         <Providers>{children}</Providers>
+        <ToastContainer />
       </body>
     </html>
   );
