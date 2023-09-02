@@ -1,4 +1,5 @@
 import React from "react";
+import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface InputProps {
   id: string;

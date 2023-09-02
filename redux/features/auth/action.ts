@@ -1,5 +1,5 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthResponse, User, VerifyDetail } from "./type";
+import { AuthResponse, ResetDetail, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
 export const loginAuth = createAsyncThunk<
@@ -16,7 +16,6 @@ export const logoutAuth = createAsyncThunk<AuthResponse>(
     return response.data;
   }
 );
-// export const logoutAuth = createAction("/api/v10/user/logout");
 
 export const userRegister = createAsyncThunk<
   AuthResponse,
@@ -46,6 +45,14 @@ export const forgotAuth = createAsyncThunk<AuthResponse, Pick<User, "email">>(
   "auth/forgot-password",
   async (userForgot: Pick<User, "email">) => {
     const response = await api.post("/api/v10/forgot-password", userForgot);
+    return response.data;
+  }
+);
+
+export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
+  "auth/reset-password",
+  async (detail) => {
+    const response = await api.post(`/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`, detail.data);
     return response.data;
   }
 );
