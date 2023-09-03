@@ -2,18 +2,21 @@ import Button from "@/components/Common/Button";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import account from "@/public/icons/usersuccess.svg";
 import Image from "next/image";
 import { loginAuth } from "@/redux/features/auth/action";
 import { useAppDispatch } from "@/redux/hook";
+
+type IFormValues = {
+    email: string;
+    password: string;
+} 
+
 export default function FormReceiveUpdate({
   detail,
 }: {
-  detail: {
-    email: string;
-    password: string;
-  };
+  detail: IFormValues
 }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -22,11 +25,11 @@ export default function FormReceiveUpdate({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<IFormValues>({
     mode: "onChange",
   });
 
-  const onSubmit = async (e: any) => {
+  const onSubmit: SubmitHandler<typeof detail> = async (e) => {
     try {
       const res = await dispatch(loginAuth(detail)).unwrap();
       res.success && router.push("/");
@@ -60,7 +63,7 @@ export default function FormReceiveUpdate({
           type="checkbox"
           role="switch"
           id="flexSwitchCheckDefault"
-          {...register("checked")}
+          // {...register("checked")}
         />
       </div>
 

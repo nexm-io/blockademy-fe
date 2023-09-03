@@ -11,6 +11,8 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
+import { resetPassword } from "@/redux/features/auth/action";
+
 const schema = Yup.object({
   password: Yup.string()
     .required("Please enter your password")
@@ -29,7 +31,6 @@ const schema = Yup.object({
 type FormResetPass = Yup.InferType<typeof schema>;
 const FormReset = () => {
   const [togglePassword, setTogglePassword] = useState(false);
-
   const dispatch = useAppDispatch();
   const { push } = useRouter();
   const {
@@ -41,8 +42,13 @@ const FormReset = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+
   const onSubmit = async (data: FormResetPass) => {
-    console.log(data);
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get("email");
+    const code = urlParams.get("activation_code");
+    const res = await dispatch(resetPassword({ data, email, code })).unwrap();
+    res.success === true && push("/login");
     reset();
   };
   return (

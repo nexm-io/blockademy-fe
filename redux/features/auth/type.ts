@@ -62,3 +62,9 @@ export const initialState: AuthState = {
   token: "",
   data: {},
 };
+
+export interface ResetDetail {
+  data: Pick<User, "password" | "password_confirmation">
+  email: string | null,
+  code: string | null,
+}

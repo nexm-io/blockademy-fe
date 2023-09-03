@@ -1,13 +1,13 @@
 import Image from "next/image";
 import articleList from "@/public/icons/articleList.svg";
 
-const ArticlesLine = ({data, onTitleClick } : {data: any, onTitleClick: any}) => {
+const ArticlesLine = ({data, onTitleClick } : {data: any, onTitleClick: (title : number)=>void }) => {
   
     return (
         <div>
         <ul>
           {data.map((item : any, index: number) => (
-            <li onClick={() => onTitleClick(item.title)} className="cursor-pointer flex-col hidden lg:flex relative" key={item.title}>
+            <li onClick={() => onTitleClick(Number(item.title))} className="cursor-pointer flex-col hidden lg:flex relative" key={item.title}>
               <div className="flex relative items-center justify-start gap-[19px] before:w-1 before:h-full before:content-[''] before:bg-white-300 before:absolute before:left-[5px] before:top-[12px]">
                 <Image
                   alt="title"
