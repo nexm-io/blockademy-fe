@@ -1,4 +1,5 @@
 export interface CourseTypes {
+  id: number;
   title: string;
   description: string;
   status: number;
@@ -31,4 +32,41 @@ export interface ImageCourse {
   big_image: string;
   thumbnail_two: string;
   small_image_two: string;
+}
+
+export interface Course_question {
+  question_id: number;
+  question: string;
+  question_type: string;
+  question_duration: string;
+  answers: Array<Course_answer>;
+}
+
+export interface Lesson {
+  lesson_id: number;
+  lesson_title: string;
+  lesson_description: string;
+  lesson_link: string;
+  lesson_duration: number;
+  question_detail: Course_question;
+  lesson_type: string;
+  is_complete: number;
+}
+
+export interface Course_answer {
+  id: number;
+  answer_text: string;
+}
+
+export interface CourseDetail {
+  id: number;
+  title: string;
+  slug: string;
+  order: number;
+  lesson_data: Array<Lesson>;
+}
+export interface CourseResponse {
+  isLoading: boolean;
+  data: Array<CourseTypes>;
+  error: any;
 }
