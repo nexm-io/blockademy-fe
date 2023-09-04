@@ -1,15 +1,7 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getListCourse } from "./action";
+import { getDetailCourse, getListCourse } from "./action";
 import { error } from "console";
-import { CourseTypes } from "./type";
-
-
-
-interface CourseResponse {
-  isLoading: boolean;
-  data: Array<CourseTypes>;
-  error: any;
-}
+import { CourseResponse, CourseTypes } from "./type";
 
 const initialState: CourseResponse = {
   isLoading: false,
@@ -20,19 +12,33 @@ const initialState: CourseResponse = {
 const courseReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(getListCourse.pending, (state) => {
-        state.isLoading = true;
-        state.error= null;
+      state.isLoading = true;
+      state.error = null;
     })
     .addCase(getListCourse.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.data = action.payload.data;
-        state.error= null;
+      state.isLoading = false;
+      state.data = action.payload.data;
+      state.error = null;
     })
-    .addCase(getListCourse.rejected, (state, action : PayloadAction<any>) => {
-        state.isLoading = false;
-        state.error= action.payload.data;
+    .addCase(getListCourse.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      state.error = action.payload.data;
+    });
+
+  builder
+    .addCase(getDetailCourse.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getDetailCourse.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload.data;
+      state.error = null;
+    })
+    .addCase(getDetailCourse.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      state.error = action.payload.data;
     });
 });
 
-
-export {courseReducer}
+export { courseReducer };
