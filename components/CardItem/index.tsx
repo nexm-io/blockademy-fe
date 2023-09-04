@@ -24,7 +24,7 @@ const CardItem: React.FC<CardItemProps> = ({
 }) => {
   return (
     <div
-      className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer"
+      className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
       onClick={onClick}
     >
       <div className="w-full h-[198px] relative">
