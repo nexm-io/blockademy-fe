@@ -62,6 +62,7 @@ const Login = () => {
         push("/");
       }
     } catch (error) {
+      toast.error("Incorrect email or password");
       console.error("Login failed", error);
     } finally {
       reset();
