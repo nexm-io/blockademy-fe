@@ -54,6 +54,10 @@ module.exports = {
           100: "#869AFF",
         },
       },
+      boxShadow: {
+        "3xl":
+          "rgba(20, 21, 26, 0.1) 0px 0px 1px, rgba(71, 77, 87, 0.16) 0px 16px 32px, rgba(20, 21, 26, 0.16) 0px 8px 16px",
+      },
       typography: () => ({
         DEFAULT: {
           css: {

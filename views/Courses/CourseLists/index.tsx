@@ -42,9 +42,9 @@ const CourseLists = function () {
                   />
                 </div>
                 <div className="flex flex-col justify-between basis-1/2 mx-4 md:mx-0">
-                  <div className="flex flex-col gap-4 text-xl font-normal  pt-2">
+                  <div className="flex flex-col gap-4 font-normal pt-2">
                     <div
-                      className="flex flex-col gap-3"
+                      className="flex flex-col gap-3 text-base"
                       dangerouslySetInnerHTML={{ __html: section.description }}
                     />
                   </div>
@@ -58,7 +58,7 @@ const CourseLists = function () {
                   </div>
                 </div>
               </div>
-              <div className="md:mt-[80px] md:mb-[160px] mb-16 mt-10">
+              <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
                   {section.list_courses.data.length} Courses
                 </h3>

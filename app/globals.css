@@ -203,10 +203,6 @@ input[type="range"]::-webkit-slider-thumb:active {
   @apply text-gray-400 cursor-not-allowed;
 }
 
-.pagination li a:hover {
-  @apply bg-white-300 rounded-[4px] inline-flex items-center justify-center;
-}
-
 /* Dropdown */
 .dropdown {
   position: relative;

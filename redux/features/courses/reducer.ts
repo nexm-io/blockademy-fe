@@ -22,7 +22,7 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getListCourse.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
-      state.error = action.payload.data;
+      // state.error = action.payload.data;
     });
 
   builder
