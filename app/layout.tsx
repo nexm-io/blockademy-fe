@@ -40,7 +40,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>{children}</Providers>
-        <ToastContainer />
+        <ToastContainer autoClose={1000} pauseOnHover={false} />
       </body>
     </html>
   );

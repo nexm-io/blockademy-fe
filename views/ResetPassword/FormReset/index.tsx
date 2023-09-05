@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import { resetPassword } from "@/redux/features/auth/action";
+import { toast } from "react-toastify";
 
 const schema = Yup.object({
   password: Yup.string()
@@ -48,7 +49,11 @@ const FormReset = () => {
     const email = urlParams.get("email");
     const code = urlParams.get("activation_code");
     const res = await dispatch(resetPassword({ data, email, code })).unwrap();
-    res.success === true && push("/login");
+    if (res.success === true) {
+      push("/login");
+    } else {
+      toast.error("Incorrect password or password confirmation does not match");
+    }
     reset();
   };
   return (
