@@ -129,12 +129,10 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
                   to learn more.
                 </h3>
               </div>
-              {/*  */}
             </div>
-            {/* Right */}
             <div className="flex flex-col gap-4 px-4 md:px-0">
               {courseDetail.lesson_data.map((lesson, index) => (
-                <div className="cursor-pointer" onClick={()=> router.push(`/courses/${slugify(courseDetail?.campaign_title || "", {
+                <div key={index} className="cursor-pointer" onClick={()=> router.push(`/courses/${slugify(courseDetail?.campaign_title || "", {
                   lower: true,
                 })}/${slugify(courseDetail?.lesson_data[index].lesson_title || "")}`)}>
                   <CourseModule
