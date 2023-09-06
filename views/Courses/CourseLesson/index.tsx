@@ -4,7 +4,6 @@ import play from "@/public/icons/play.svg";
 import { ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
-
 import Image from "next/image";
 const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
   return (
