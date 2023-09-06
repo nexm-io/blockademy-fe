@@ -7,6 +7,7 @@ const initialState: CourseResponse = {
   isLoading: false,
   data: [],
   error: null,
+  details: undefined,
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -32,7 +33,7 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getDetailCourse.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data = action.payload.data;
+      state.details = action.payload.data;
       state.error = null;
     })
     .addCase(getDetailCourse.rejected, (state, action: PayloadAction<any>) => {

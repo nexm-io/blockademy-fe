@@ -61,12 +61,22 @@ export interface Course_answer {
 export interface CourseDetail {
   id: number;
   title: string;
+  campaign_title: string;
   slug: string;
   order: number;
   lesson_data: Array<Lesson>;
+  lesson_type: string;
+  is_complete: number;
 }
 export interface CourseResponse {
   isLoading: boolean;
   data: Array<CourseTypes>;
+  error: any;
+  details?: CourseDetail;
+}
+
+export interface CourseDetailResponse {
+  isLoading: boolean;
+  data: CourseDetail;
   error: any;
 }

@@ -10,6 +10,8 @@ import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import { getListCourse } from "@/redux/features/courses/action";
+import Link from "next/link";
+import slugify from "slugify";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
@@ -49,12 +51,14 @@ const CourseLists = function () {
                     />
                   </div>
                   <div>
+                    <Link href={`/courses/${slugify(section.title, {lower: true})}`}>
                     <Button
                       className="capitalize text-base font-medium md:mt-0 mt-4"
                       onClick={handleClick}
                     >
                       start course
                     </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
