@@ -19,26 +19,20 @@ import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
 
-export default function CoursesSlug({ params }: { params: { slug: string } }) {
+export default function CoursesSlug() {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
-  const [param, setParam] = useState("test pin");
-  // const details = useAppSelector((state) => state.courses.data);
-
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const handle = () => {
-    let params1 = courseDetail?.lesson_data[0].lesson_title;
-    console.log("asdasdadad", `/courses/${slugify(param)}/${params1}`);
-  };
+  const router = useRouter();
+
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
-  const router = useRouter();
 
   useEffect(() => {
     const getValues = async () => {
       const detail = { campaign_id: 1, course_id: 3 };
-      const res = await dispatch(getDetailCourse({ detail })).unwrap();
+      await dispatch(getDetailCourse({ detail })).unwrap();
     };
     getValues();
   }, [dispatch]);
@@ -66,10 +60,7 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
       ) : (
         <section className="md:mt-[56px] mt-8">
           <div>
-            <h1
-              onClick={handle}
-              className="text-black-100 font-bold md:text-[37px] text-3xl mb-4 px-4 md:px-0"
-            >
+            <h1 className="text-black-100 font-bold md:text-[37px] text-3xl mb-4 px-4 md:px-0">
               {courseDetail.title}
             </h1>
 

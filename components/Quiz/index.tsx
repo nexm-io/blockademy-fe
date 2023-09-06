@@ -32,8 +32,6 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
     }
   };
   const handleSubmit = async () => {
-    console.log("hihi");
-
     try {
       const lesson = {
         campaign_id: 1,
@@ -43,7 +41,6 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
         answer_id: selected,
       };
       const res = await dispatch(getAnswerQuiz({ lesson })).unwrap();
-      console.log("handleSubmit ~ res:", res.data.is_correct);
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
@@ -56,7 +53,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
         // );
       }
     } catch (error) {
-      console.warn("Logout Failed");
+      console.log("Logout Failed");
     }
   };
   useEffect(() => {

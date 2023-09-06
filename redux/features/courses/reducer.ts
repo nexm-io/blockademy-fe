@@ -1,7 +1,6 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
 import { getAnswerQuiz, getDetailCourse, getListCourse } from "./action";
-import { error } from "console";
-import { CourseResponse, CourseTypes } from "./type";
+import { CourseResponse } from "./type";
 
 const initialState: CourseResponse = {
   isLoading: false,

@@ -45,16 +45,15 @@ const FormOtp: React.FC<FormRegisterProps> = ({ setFormState, email }) => {
       const res = await dispatch(verifyEmail(detail)).unwrap();
       res.success && setFormState("formRegister");
     } catch (e) {
-      console.error("Some thing wrong!", e);
-      toast.error("Otp is not correct!")
+      toast.error("Otp is not correct!");
     } finally {
       reset();
     }
   };
 
-const resendEmail = async () => {
-  await dispatch(sendOtp({email})).unwrap();
-}
+  const resendEmail = async () => {
+    await dispatch(sendOtp({ email })).unwrap();
+  };
 
   return (
     <form
@@ -108,12 +107,15 @@ const resendEmail = async () => {
           </div>
 
           <div className="w-full mt-[24px] text-blue-100">
-            <p onClick={resendEmail} className="text-sm font-medium text-blue-100 cursor-pointer">
+            <p
+              onClick={resendEmail}
+              className="text-sm font-medium text-blue-100 cursor-pointer"
+            >
               {`Didn't receive the code?`}
             </p>
           </div>
         </div>
-        <InfoGraphic/>
+        <InfoGraphic />
       </div>
     </form>
   );
