@@ -10,13 +10,11 @@ import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import { getListCourse } from "@/redux/features/courses/action";
+import slugify from "slugify";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const { push } = useRouter();
-  const handleClick = () => {
-    push("/courses/blockchain-details");
-  };
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -38,7 +36,7 @@ const CourseLists = function () {
                   <img
                     alt="img-course1"
                     src={section.image?.original_image}
-                    className="rounded-lg w-full h-full object-cover max-h-[330px] max-w-[580px] "
+                    className="rounded-lg w-full h-full object-cover max-h-[330px] max-w-[580px]"
                   />
                 </div>
                 <div className="flex flex-col justify-between basis-1/2 mx-4 md:mx-0">
@@ -51,7 +49,11 @@ const CourseLists = function () {
                   <div>
                     <Button
                       className="capitalize text-base font-medium md:mt-0 mt-4"
-                      onClick={handleClick}
+                      onClick={() =>
+                        push(
+                          `/courses/${slugify(section.title, { lower: true })}`
+                        )
+                      }
                     >
                       start course
                     </Button>

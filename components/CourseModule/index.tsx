@@ -5,9 +5,11 @@ import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
 import bar from "@/public/icons/bar.svg";
 import check from "@/public/icons/check.svg";
+import { Lesson } from "@/redux/features/courses/type";
 
 interface CourseModuleProps {
   status?: "watching" | "completed";
+  lesson: Lesson;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({

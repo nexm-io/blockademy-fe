@@ -61,6 +61,7 @@ export interface Course_answer {
 export interface CourseDetail {
   id: number;
   title: string;
+  campaign_title: string;
   slug: string;
   order: number;
   lesson_data: Array<Lesson>;
@@ -69,4 +70,22 @@ export interface CourseResponse {
   isLoading: boolean;
   data: Array<CourseTypes>;
   error: any;
+  details: CourseDetail | null;
+  quiz: QuizDataResponse;
+}
+
+export interface CourseDetailResponse {
+  isLoading: boolean;
+  data: CourseDetail;
+  error: any;
+}
+
+export interface QuizResponse {
+  success: boolean;
+  message: string;
+  data: QuizDataResponse;
+}
+
+export interface QuizDataResponse {
+  is_correct: boolean;
 }
