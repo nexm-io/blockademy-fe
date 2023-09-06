@@ -3,8 +3,8 @@ import Link from "next/link";
 
 const ArticleRelate = ({ data }: { data: any }) => {
   return (
-    <div className="flex flex-col gap-6 px-4 md:px-0">
-      <span className="block font-semibold text-[20px] text-black-100 md:mb-6 leading-28px">
+    <div className="flex flex-col gap-6 px-4 md:px-0 mt-8 md:mt-0">
+      <span className="block font-semibold text-[20px] text-black-100 leading-28px">
         Related Articles
       </span>
       {data.map((post: any, index: number) => (

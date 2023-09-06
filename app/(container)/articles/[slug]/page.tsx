@@ -84,7 +84,7 @@ export default function ArticleDetail({
         <div className="w-full md:w-[25%] ">
           <div className="sticky top-[30px] flex flex-col md:gap-[75px] gap-4">
             <ArticleShare />
-            <ArticlesLine onTitleClick={handleTitleClick} data={array} />
+            {/* <ArticlesLine onTitleClick={handleTitleClick} data={array} /> */}
             <ArticleRelate data={posts} />
             {!isLogin && <IsLoginForm />}
           </div>
