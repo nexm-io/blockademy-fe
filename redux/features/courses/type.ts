@@ -65,6 +65,8 @@ export interface CourseDetail {
   slug: string;
   order: number;
   lesson_data: Array<Lesson>;
+  lesson_type: string;
+  is_complete: number;
 }
 export interface CourseResponse {
   isLoading: boolean;

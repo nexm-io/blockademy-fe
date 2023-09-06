@@ -3,6 +3,7 @@ import React from "react";
 import check from "@/public/icons/check.svg";
 import clock from "@/public/icons/clock.svg";
 import play from "@/public/icons/play.svg";
+import { CircleCheck } from "@styled-icons/fa-solid";
 
 interface CoursePanelProps {
   status?: "watching" | "unwatching";
@@ -11,12 +12,8 @@ interface CoursePanelProps {
 const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" }) => {
   return (
     <div className="flex gap-4 items-center">
-      <div className="md:w-[40px] w-[30px] h-[30px] md:h-[40px]">
-        <Image
-          alt="check-icon"
-          src={check}
-          className="w-full h-full object-cover flex-shrink-0"
-        ></Image>
+      <div className="w-[30px] h-[30px]">
+        <CircleCheck className={`${"text-white-300"}`} />
       </div>
       <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5">
         <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">

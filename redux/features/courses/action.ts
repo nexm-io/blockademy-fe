@@ -5,7 +5,11 @@ import { CourseDetailResponse, QuizResponse } from "./type";
 export const getListCourse = createAsyncThunk(
   "courses/all-courses",
   async () => {
-    const response = await api.get("/api/v10/campaign");
+    const response = await api.get("/api/v10/campaign", {
+      headers: {
+        apiKey: "",
+      },
+    });
     return response.data;
   }
 );
@@ -15,7 +19,12 @@ export const getDetailCourse = createAsyncThunk<
   { detail: { campaign_id: number; course_id: number } }
 >("courses/detail-course", async ({ detail }) => {
   const response = await api.get(
-    `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`
+    `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`,
+    {
+      headers: {
+        apiKey: "",
+      },
+    }
   );
   return response.data;
 });

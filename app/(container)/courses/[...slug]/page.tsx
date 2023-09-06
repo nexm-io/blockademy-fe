@@ -14,19 +14,15 @@ import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import slugify from "slugify";
-import slugifyText from "@/utils/slugifyText";
 import { getLastPathName } from "@/utils/getPathName";
+import slugifyText from "@/utils/slugifyText";
 
 export default function CoursesSlug({ params }: { params: { slug: string } }) {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [param, setParam] = useState("test pin");
   // const details = useAppSelector((state) => state.courses.data);
-
-  const courseDetail = useAppSelector(
-    (state: RootState) => state.courses.details
-  );
 
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -34,6 +30,10 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
     let params1 = courseDetail?.lesson_data[0].lesson_title;
     console.log("asdasdadad", `/courses/${slugify(param)}/${params1}`);
   };
+  const courseDetail = useAppSelector(
+    (state: RootState) => state.courses.details
+  );
+  const router = useRouter();
 
   useEffect(() => {
     const getValues = async () => {
@@ -82,7 +82,6 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
               </span>
             </div>
           </div>
-
           <div className="mt-10 flex gap-12 md:flex-row flex-col">
             {/* Left */}
             <div className="md:w-[753px] w-full px-4 md:px-0">
@@ -91,7 +90,6 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
                 {formState === "video" && (
                   <>
                     <VideoPlayer />
-
                     <Button
                       className="mt-4"
                       onClick={() => setFormState("quiz")}
@@ -133,7 +131,6 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
                     What Is Hashing?
                   </Link>
                 </div>
-
                 <h3 className="text-black-100 md:text-[19px] text-base font-bold italic">
                   How to claim my certificate for this course? Click{" "}
                   <Link className="text-blue-100 underline" href="#">
@@ -142,18 +139,36 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
                   to learn more.
                 </h3>
               </div>
-              {/*  */}
             </div>
-            {/* Right */}
             <div className="flex flex-col gap-4 px-4 md:px-0">
               {courseDetail.lesson_data.map((lesson, index) => (
-                <CourseModule key={index} lesson={lesson} status="watching" />
+                <div
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      `/courses/${slugify(courseDetail?.campaign_title || "", {
+                        lower: true,
+                      })}/${slugify(
+                        courseDetail?.lesson_data[index].lesson_title || ""
+                      )}`
+                    )
+                  }
+                >
+                  <CourseModule
+                    status={
+                      getLastPathName(pathname) === slugify(lesson.lesson_title)
+                        ? "already"
+                        : undefined
+                    }
+                    key={index}
+                    lesson={lesson}
+                  />
+                </div>
               ))}
             </div>
           </div>
-
           {/* Other */}
-
           <div className="flex flex-col gap-4 md:mt-[100px] mt-10 max-w-[753px] w-full px-4 md:px-0">
             <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
               Other Courses
