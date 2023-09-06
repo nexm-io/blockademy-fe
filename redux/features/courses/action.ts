@@ -5,7 +5,11 @@ import { CourseDetailResponse, CourseResponse, CourseTypes } from "./type";
 export const getListCourse = createAsyncThunk(
   "courses/all-courses",
   async () => {
-    const response = await api.get("/api/v10/campaign");
+    const response = await api.get("/api/v10/campaign", {
+      headers: {
+        apiKey: "",
+      },
+    });
     return response.data;
   }
 );
