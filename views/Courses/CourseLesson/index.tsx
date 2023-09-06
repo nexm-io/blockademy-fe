@@ -14,7 +14,7 @@ const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
         <>
           {/* <CoursePanel data={course} /> */}
           <div key={course.id} className={`flex gap-4 items-center `}>
-            <div className="w-[40px] h-[40px]">
+            <div className="w-[25px] h-[25px]">
               <CircleCheck
                 className={`${
                   course.is_completed === 1 ? "text-blue-100" : "text-white-300"
