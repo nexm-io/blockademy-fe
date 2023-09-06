@@ -56,14 +56,12 @@ const Login = () => {
           ...data,
         })
       ).unwrap();
-      console.log("onSubmit ~ response:", response);
       if (response.success) {
         toast.success("Login Successfully");
         push("/");
       }
     } catch (error) {
       toast.error("Incorrect email or password");
-      console.error("Login failed", error);
     } finally {
       reset();
     }

@@ -17,24 +17,25 @@ import { getDetailCourse } from "@/redux/features/courses/action";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
+import slugifyText from "@/utils/slugifyText";
 
-export default function CoursesSlug({ params }: { params: { slug: string } }) {
+export default function CoursesSlug() {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
-  const courseDetail = useAppSelector(
-    (state: RootState) => state.courses.details
-  );
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const courseDetail = useAppSelector(
+    (state: RootState) => state.courses.details
+  );
+
   useEffect(() => {
     const getValues = async () => {
       const detail = { campaign_id: 1, course_id: 3 };
-      const res = await dispatch(getDetailCourse({ detail })).unwrap();
+      await dispatch(getDetailCourse({ detail })).unwrap();
     };
     getValues();
   }, [dispatch]);
-
   useEffect(() => {
     if (
       pathname ===
@@ -43,7 +44,7 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
       redirect(
         `/courses/${slugify(courseDetail?.campaign_title || "", {
           lower: true,
-        })}/${slugify(courseDetail?.lesson_data[0].lesson_title || "")}`
+        })}/${slugifyText(courseDetail?.lesson_data[0].lesson_title || "")}`
       );
     }
   }, [courseDetail?.campaign_title, courseDetail?.lesson_data, pathname]);
@@ -62,6 +63,7 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
             <h1 className="text-black-100 font-bold md:text-[37px] text-3xl mb-4 px-4 md:px-0">
               {courseDetail.title}
             </h1>
+
             <div className="bg-blue-200 py-3 px-4 flex gap-4">
               <Image alt="gift-icon" src={gift}></Image>
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
@@ -87,21 +89,20 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
                     </Button>
                   </>
                 )}
-                {formState === "quiz" && <Quiz />}
-
                 {courseDetail.lesson_data.map((lesson, index) => (
                   <>
-                    {getLastPathName(pathname) ===
-                      slugify(lesson.lesson_title) && (
-                      <>
-                        <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
-                          {lesson.lesson_title}
-                        </h2>
-                        <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
-                          {lesson.lesson_description}
-                        </p>
-                      </>
-                    )}
+                    {formState === "quiz" &&
+                      getLastPathName(pathname) ===
+                        slugify(lesson.lesson_title, { lower: true }) && (
+                        <Quiz lesson={lesson} index={index} />
+                      )}
+                    <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
+                      {lesson.lesson_title}
+                    </h2>
+
+                    <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
+                      {lesson.lesson_description}
+                    </p>
                   </>
                 ))}
                 <h3 className="text-black-100 font-bold md:text-[19px] text-base">
@@ -132,9 +133,19 @@ export default function CoursesSlug({ params }: { params: { slug: string } }) {
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
               {courseDetail.lesson_data.map((lesson, index) => (
-                <div key={index} className="cursor-pointer" onClick={()=> router.push(`/courses/${slugify(courseDetail?.campaign_title || "", {
-                  lower: true,
-                })}/${slugify(courseDetail?.lesson_data[index].lesson_title || "")}`)}>
+                <div
+                  key={index}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      `/courses/${slugify(courseDetail?.campaign_title || "", {
+                        lower: true,
+                      })}/${slugify(
+                        courseDetail?.lesson_data[index].lesson_title || ""
+                      )}`
+                    )
+                  }
+                >
                   <CourseModule
                     status={
                       getLastPathName(pathname) === slugify(lesson.lesson_title)

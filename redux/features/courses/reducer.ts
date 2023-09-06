@@ -1,13 +1,15 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getDetailCourse, getListCourse } from "./action";
-import { error } from "console";
-import { CourseResponse, CourseTypes } from "./type";
+import { getAnswerQuiz, getDetailCourse, getListCourse } from "./action";
+import { CourseResponse } from "./type";
 
 const initialState: CourseResponse = {
   isLoading: false,
   data: [],
   error: null,
-  details: undefined,
+  details: null,
+  quiz: {
+    is_correct: false,
+  },
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -37,6 +39,20 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(getDetailCourse.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      state.error = action.payload.data;
+    });
+
+  builder
+    .addCase(getAnswerQuiz.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getAnswerQuiz.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.quiz = action.payload.data;
+    })
+    .addCase(getAnswerQuiz.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.error = action.payload.data;
     });

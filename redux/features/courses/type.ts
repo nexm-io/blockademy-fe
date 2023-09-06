@@ -72,11 +72,22 @@ export interface CourseResponse {
   isLoading: boolean;
   data: Array<CourseTypes>;
   error: any;
-  details?: CourseDetail;
+  details: CourseDetail | null;
+  quiz: QuizDataResponse;
 }
 
 export interface CourseDetailResponse {
   isLoading: boolean;
   data: CourseDetail;
   error: any;
+}
+
+export interface QuizResponse {
+  success: boolean;
+  message: string;
+  data: QuizDataResponse;
+}
+
+export interface QuizDataResponse {
+  is_correct: boolean;
 }
