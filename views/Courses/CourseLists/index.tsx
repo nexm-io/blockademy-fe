@@ -64,7 +64,7 @@ const CourseLists = function () {
                 </h3>
                 <CourseLesson details={section.list_courses.data} />
                 <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
-                  <div className="w-[40px] h-[40px] flex flex-col md:flex-row items-center justify-center ">
+                  <div className="w-[30px] h-[30px] flex flex-col md:flex-row items-center justify-center ">
                     <Image
                       alt="check-icon"
                       src={certificate}

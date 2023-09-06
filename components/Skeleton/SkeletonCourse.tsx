@@ -5,7 +5,7 @@ export default function SkeletonCourse() {
   return (
     <div className="mt-12 animate-pulse">
       <div role="status">
-      <div className="h-[65px] bg-gray-200  dark:bg-gray-700 w-[320px] mb-4"></div>
+        <div className="h-[65px] bg-gray-200  dark:bg-gray-700 w-[320px] mb-4"></div>
         <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
           <div
             role="status"
@@ -77,7 +77,7 @@ export default function SkeletonCourse() {
             <span className="sr-only">Loading...</span>
           </div>
           <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
-            <div className="w-[40px] h-[40px] flex flex-col md:flex-row items-center justify-center "></div>
+            <div className="w-[25px] h-[25px] flex flex-col md:flex-row items-center justify-center "></div>
             <div
               className={`bg-gray-200 flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
             >
