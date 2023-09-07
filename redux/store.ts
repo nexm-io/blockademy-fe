@@ -9,6 +9,7 @@ import storage from "redux-persist/lib/storage";
 import exampleReducer from "./features/example/reducer";
 import authReducer from "./features/auth/reducer";
 import { courseReducer } from "./features/courses/reducer";
+import { articleReducer } from "./features/articles/reducer";
 const persistConfig = {
   key: "blockademy-website",
   storage,
@@ -18,7 +19,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   example: exampleReducer,
   auth: authReducer,
-  courses: courseReducer
+  courses: courseReducer,
+  articles: articleReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -27,9 +29,9 @@ const createStore = () => {
   return configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false
-    }),
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
 };
 

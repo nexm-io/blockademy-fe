@@ -7,6 +7,7 @@ interface GraphicProps {
   description?: string;
   coming_soon?: boolean;
   color_text?: string;
+  error?: boolean;
 }
 
 export default function InfoGraphic(props: GraphicProps) {
@@ -14,6 +15,7 @@ export default function InfoGraphic(props: GraphicProps) {
     description = "Follow the registration steps to redeem your rewards and start your crypto journey with us!",
     coming_soon = false,
     color_text,
+    error = false,
   } = props;
   return (
     <div className="w-full lg:w-[424px] flex flex-col items-center justify-center">
@@ -31,8 +33,13 @@ export default function InfoGraphic(props: GraphicProps) {
           Coming soon
         </h2>
       )}
+      {error && (
+        <h2 className="md:text-[106px] text-3xl font-bold text-white-300 md:mt-[70px] mb-6">
+          404
+        </h2>
+      )}
       <p
-        className={`${color_text} text-sm leading-[22px] mt-6 mb-5 text-center md:max-w-[440px] max-w-full px-6 md:px-0 pb-10 md:pb-[103px]`}
+        className={`${color_text} text-sm leading-[22px] mt-6 mb-5 text-center md:max-w-[440px] max-w-full px-6 md:px-0`}
       >
         {description}
       </p>

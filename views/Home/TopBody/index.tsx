@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import img from "@/public/images/home/home-1.png";
@@ -5,8 +6,11 @@ import clockIcon from "@/public/icons/clock.svg";
 import Button from "@/components/Common/Button";
 import Link from "next/link";
 import Chip from "@/components/Common/Chip";
+import { useRouter } from "next/navigation";
 
 const TopBody = () => {
+  const { push } = useRouter();
+
   return (
     <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
       <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px] ">
@@ -23,7 +27,7 @@ const TopBody = () => {
           strategy, we&apos;ve got you covered.
         </p>
 
-        <div className="mt-[47px]">
+        <div className="mt-[47px]" onClick={() => push("/courses")}>
           <Button rounded>Join here</Button>
         </div>
       </div>

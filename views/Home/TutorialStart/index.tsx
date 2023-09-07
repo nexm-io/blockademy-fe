@@ -1,10 +1,14 @@
+"use client";
 import Button from "@/components/Common/Button";
 import Image from "next/image";
 import React from "react";
 import img1 from "@/public/images/home/home-2.png";
 import img2 from "@/public/images/home/home-3.png";
+import { useRouter } from "next/navigation";
 
 const TutorialStart = () => {
+  const { push } = useRouter();
+
   return (
     <section className="md:mt-[106px] mt-11">
       <div className="flex lg:flex-row flex-col gap-4 mx-4 lg:mx-0">
@@ -20,6 +24,7 @@ const TutorialStart = () => {
             </p>
             <Button
               rounded
+              onClick={() => push("/courses")}
               className="!text-black-100 !bg-white-100 hover:!bg-black-100 hover:!text-white-100"
             >
               Join here
@@ -39,6 +44,7 @@ const TutorialStart = () => {
             <Button
               rounded
               className="!text-black-100 !bg-white-100 hover:!bg-black-100 hover:!text-white-100"
+              onClick={() => push("/courses")}
             >
               Join here
             </Button>

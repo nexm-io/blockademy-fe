@@ -1,9 +1,12 @@
+"use client";
 import React from "react";
 import journeyIcon from "@/public/icons/journey.svg";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
+import { useRouter } from "next/navigation";
 
 const JourneyAcademy = () => {
+  const { push } = useRouter();
   return (
     <section className="lg:py-[46px] p-4 lg:px-[50px]  gap-8 lg:gap-[130px] w-full lg:w-[1150px] rounded-[20px] h-full lg:h-[627px] flex-shrink-0 bg-blue-200 mx-auto mt-[86px]">
       <div className="flex lg:flex-row flex-col-reverse gap-4 justify-between">
@@ -16,7 +19,7 @@ const JourneyAcademy = () => {
             professional and streamlined application process to join our team.
           </p>
           <div>
-            <Button rounded>
+            <Button rounded onClick={() => push("/courses")}>
               Join here
             </Button>
           </div>
