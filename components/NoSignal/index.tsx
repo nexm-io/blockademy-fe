@@ -21,18 +21,7 @@ const NoSignal = () => {
               placeholder="Enter your email address"
               className="flex-1 outline-none border-none px-[19px] rounded-lg py-5 md:py-0 mx-6 md:mx-0"
             />
-            <Button className="bg-white-100 !text-black-100 hover:!text-white-100 h-[48px] mx-6 md:mx-0">
-              Subscribe
-            </Button>
-          </div>
-          <div className="flex gap-[11px] mx-6 md:mx-0">
-            <input type="checkbox" id="checkbox" />
-            <p>
-              I have read and agree to Binance&lsquo;s{" "}
-              <span className="text-blue-100 cursor-pointer">
-                Terms of Service
-              </span>
-            </p>
+            <Button className=" h-[48px] mx-6 md:mx-0">Subscribe</Button>
           </div>
         </div>
       </div>

@@ -1,9 +1,13 @@
+"use client";
 import React from "react";
 import nottoknow from "@/public/icons/nottoknow.svg";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
+import { useRouter } from "next/navigation";
 
 const NotToKnow = () => {
+  const { push } = useRouter();
+
   return (
     <section className="mt-[76px]">
       <div className="flex md:flex-row flex-col gap-8 ">
@@ -23,7 +27,11 @@ const NotToKnow = () => {
             the hang of it.
           </p>
           <div>
-            <Button rounded className="mt-[29px]">
+            <Button
+              rounded
+              className="mt-[29px]"
+              onClick={() => push("/courses")}
+            >
               Join here
             </Button>
           </div>

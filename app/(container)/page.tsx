@@ -5,7 +5,6 @@ import SpecialContent from "@/views/Home/SpecialContent";
 import TopicList from "@/views/Home/TopicList";
 import NotToKnow from "@/views/Home/NotToKnow";
 import TutorialStart from "@/views/Home/TutorialStart";
-import Glossary from "@/views/Home/Glossary";
 import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
 import type { Metadata } from "next";
@@ -39,7 +38,6 @@ export default function Home() {
         mTop="mt-[60px] md:mt-[100px]"
       />
       <TutorialStart />
-      <Glossary />
       <NoSignal />
     </>
   );

@@ -95,7 +95,10 @@ const Header = () => {
                     <li className="font-bold mx-4">{email}</li>
                     <ul className="capitalize flex flex-col gap-2 mt-3 ">
                       <li className=" px-4 ">
-                        <Link className="hover:text-blue-100 " href="#">
+                        <Link
+                          className="hover:text-blue-100 "
+                          href="/my-rewards"
+                        >
                           my rewards
                         </Link>
                       </li>

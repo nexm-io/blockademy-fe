@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import arrow from "@/public/icons/arrowbottom.svg";
 import CardItem from "@/components/CardItem";
 import cardImg from "@/public/images/home/home-1.png";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
 import Dropdown from "@/components/Common/Dropdown";
+import { useAppDispatch } from "@/redux/hook";
 
 const options = [
   "Recently published",
@@ -32,6 +33,7 @@ const ArticleLists = () => {
   const handleClick = () => {
     push("/articles/article-details");
   };
+
   return (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">

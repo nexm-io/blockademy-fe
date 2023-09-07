@@ -6,7 +6,12 @@ import Image from "next/image";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { SortList, SortMenu } from "@/components/Icon";
 
-const ArticleFilter = () => {
+type ArticleFilterProps = {
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const ArticleFilter: React.FC<ArticleFilterProps> = ({ show, setShow }) => {
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
       <div className="bg-gray-200 flex gap-7 items-center w-full md:h-[64px] justify-between full-bleed__articleFilter flex-wrap h-auto py-4 md:pt-4 px-4 md:px-0">
@@ -41,7 +46,10 @@ const ArticleFilter = () => {
             outlined
             className="bg-white-100 !text-black-100 hover:bg-black-100 hover:!text-white-100"
           >
-            <div className="flex gap-3 items-center">
+            <div
+              className="flex gap-3 items-center"
+              onClick={() => setShow(!show)}
+            >
               <CheveronDown size={15} className="rotate-180" />
               <span>Hide filters</span>
             </div>
