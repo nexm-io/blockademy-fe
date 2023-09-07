@@ -202,6 +202,10 @@ input[type="range"]::-webkit-slider-thumb:active {
 .pagination .next.disabled {
   @apply text-gray-400 cursor-not-allowed;
 }
+.pagination .previous.disabled a,
+.pagination .next.disabled a {
+  @apply cursor-not-allowed;
+}
 
 /* Dropdown */
 .dropdown {
@@ -236,6 +240,25 @@ input[type="range"]::-webkit-slider-thumb:active {
 /* Course */
 .course-status.active {
   @apply text-black-100 border-b-[3px] border-b-blue-100 pb-[23px];
+}
+
+/* Skeleton */
+.skeleton {
+  background-color: #eee;
+  background-image: linear-gradient(
+    110deg,
+    #ececec 8%,
+    #f5f5f5 18%,
+    #ececec 33%
+  );
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
 }
 
 @media only screen and (max-width: 768px) {

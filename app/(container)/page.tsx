@@ -21,20 +21,28 @@ export default function Home() {
         cardTitle="Latest Releases"
         cardLabel="Latest releases"
         mTop="lg:mt-[160px] md:mt-[100px] mt-[60px]"
+        urlApi="carousel-post"
       />
       <JourneyAcademy />
       <SpecialContent />
-      <ListCard cardTitle="Trending" cardLabel="Trending" mTop="mt-[60px]" />
+      <ListCard
+        cardTitle="Trending"
+        cardLabel="Trending"
+        mTop="mt-[60px]"
+        urlApi="carousel-post"
+      />
       <TopicList />
       <NotToKnow />
       <ListCard
         cardTitle="Backend"
         cardLabel="Backend"
+        urlApi="carousel-post"
         mTop="mt-[60px] md:mt-[100px]"
       />
       <ListCard
         cardTitle="Frontend"
         cardLabel="Frontend"
+        urlApi="carousel-post"
         mTop="mt-[60px] md:mt-[100px]"
       />
       <TutorialStart />
