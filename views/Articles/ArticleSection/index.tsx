@@ -3,8 +3,8 @@ import React from "react";
 
 export default function ArticlesSection({ sections, id }: any) {
   return (
-    <div className="md:mt-12 mt-6 md:px-12 px-8">
-      {sections.map((section: any, sectionIndex: any) => (
+    <div className=" mt-6 md:px-0 ">
+      {/* {sections.map((section: any, sectionIndex: any) => (
         <div className="mb-6" key={sectionIndex}>
           <h2
             id={id}
@@ -46,7 +46,11 @@ export default function ArticlesSection({ sections, id }: any) {
             </span>
           </div>
         </div>
-      ))}
+      ))} */}
+       <div
+            className="article_content flex flex-col gap-3 text-base"
+            dangerouslySetInnerHTML={{ __html: sections }}
+          />
     </div>
   );
 }
