@@ -1,5 +1,6 @@
+'use client'
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
 import { Lesson } from "@/redux/features/courses/type";
@@ -9,12 +10,21 @@ import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
 interface CourseModuleProps {
   status?: string;
   lesson: Lesson;
+  is_complete?: number
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
   lesson,
+  is_complete,
   status = "pending",
 }) => {
+  const [active, setActive] = useState(status)
+  useEffect(() => {
+    if(is_complete === 1) {
+      setActive('completed')
+    }
+  }, [is_complete])
+
   return (
     <div className="md:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
       <div className="flex flex-col">
@@ -36,20 +46,20 @@ const CourseModule: React.FC<CourseModuleProps> = ({
           </div>
         </div>
       </div>
-      {status === "pending" && (
+      {active === "pending" && (
         <div className="w-[18px] h-full flex items-center">
           <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
         </div>
       )}
-      {status === "already" && (
+      {active === "already" && (
         <div className="w-[18px] h-full flex items-center">
           <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
         </div>
       )}
       {/* {status === "watching" && <Image alt="bar-chart" src={bar}></Image>} */}
-      {status === "completed" && (
+      {active === "completed" && (
         <div className="w-[18px] h-full flex items-center">
-          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
+          <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
         </div>
       )}
     </div>

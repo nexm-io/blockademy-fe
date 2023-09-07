@@ -1,6 +1,15 @@
 export interface ArticleListResponse {
   success: boolean;
-  data: ArticleDataResponse;
+  data: Array<ArticleIntoData>;
+  isLoading: boolean,
+  error: any;
+  detail: ArticleDetail | null;
+}
+
+export interface ArticleDetailResponse {
+  success?: boolean;
+  data: ArticleDetail;
+  message?: string;
 }
 
 export interface ArticleDataResponse {
@@ -16,11 +25,31 @@ export interface ArticleDataResponse {
   prev_page_url: null;
   to: number;
   total: number;
+
+}
+
+export interface ArticleDetail {
+  id: number;
+  category_id: number;
+  content: string;
+  image_id: number;
+  user_id: number;
+  title: string;
+  slug: string;
+  post_type: string;
+  tags: Array<{tag: string, slug: string}>; 
+  meta_description: string;
+  created_at: string;
+  commentsCount: number;
+  image: ImageArticle;
+  category: CategoryArticle;
+  user: UserArticle;
 }
 
 export interface ArticleIntoData {
   id: number;
   category_id: number;
+  content: string;
   image_id: number;
   user_id: number;
   title: string;
