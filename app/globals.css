@@ -221,6 +221,10 @@ input[type="range"]::-webkit-slider-thumb:active {
 .pagination .next.disabled {
   @apply text-gray-400 cursor-not-allowed;
 }
+.pagination .previous.disabled a,
+.pagination .next.disabled a {
+  @apply cursor-not-allowed;
+}
 
 /* Dropdown */
 .dropdown {
@@ -255,6 +259,73 @@ input[type="range"]::-webkit-slider-thumb:active {
 /* Course */
 .course-status.active {
   @apply text-black-100 border-b-[3px] border-b-blue-100 pb-[23px];
+}
+
+/* Skeleton */
+.skeleton {
+  background-color: #eee;
+  background-image: linear-gradient(
+    110deg,
+    #ececec 8%,
+    #f5f5f5 18%,
+    #ececec 33%
+  );
+  background-size: 200% 100%;
+  animation: 1.5s shine linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+/* Article Detail */
+.richtext-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 55px;
+}
+
+.article_content {
+  font-family: "Inter", sans-serif;
+}
+
+.article_content h2 {
+  font-size: 32px;
+  padding-top: 16px;
+  padding-bottom: 4px;
+}
+
+.article_content h3 {
+  font-size: 24px;
+  padding-top: 16px;
+}
+
+.article_content h4 {
+  font-size: 22px;
+}
+.article_content p {
+  font-size: 16px;
+  padding: 12px 0;
+  line-height: 23px;
+  color: #474d57;
+  text-align: justify;
+}
+
+.article_content ul {
+  color: #474d57;
+}
+
+.article_content ul li {
+  font-size: 16px;
+  padding: 2px 0;
+  color: #474d57;
+}
+
+.article_content strong {
+  font-size: 24px;
 }
 
 @media only screen and (max-width: 768px) {
@@ -317,49 +388,4 @@ input[type="range"]::-webkit-slider-thumb:active {
     gap: 16px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
-
-.richtext-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 55px;
-}
-
-.article_content {
-  font-family: "Inter", sans-serif;
-}
-
-.article_content h2 {
-  font-size: 32px;
-  padding-top: 36px;
-  padding-bottom: 4px;
-}
-
-.article_content h3 {
-  font-size: 24px;
-  padding-top: 36px;
-}
-
-.article_content h4 {
-  font-size: 22px;
-}
-.article_content p {
-  font-size: 20px;
-  padding: 12px 0;
-  line-height: 23px;
-  color: #474D57;
-  text-align: justify;
-}
-
-.article_content ul {
-  font-size: 20px;
-  color: #474D57;
-
-}
-
-.article_content ul li {
-  padding: 4px 0;
-  color: #474D57;
-
 }

@@ -61,9 +61,11 @@ const Login = () => {
         push("/");
       }
     } catch (error) {
-      toast.error("Incorrect email or password");
+      toast.error("Incorrect password");
     } finally {
-      reset();
+      reset({
+        password: "",
+      });
     }
   };
   useEffect(() => {

@@ -3,8 +3,8 @@ import Chip from "@/components/Common/Chip";
 import banner from "@/public/images/home/article.png";
 import clockIcon from "@/public/icons/clock.svg";
 import Image from "next/image";
-import { formatISODateToMonthDayYear } from "@/utils/formatDate";
-const ArticleHeading = ({title , date} : {title: string, date: string}) => {
+import { formatDate } from "@/utils/formatDate";
+const ArticleHeading = ({ title, date }: { title: string; date: string }) => {
   return (
     <>
       <div>
@@ -19,7 +19,7 @@ const ArticleHeading = ({title , date} : {title: string, date: string}) => {
       <div className="flex lg:mt-7 w-full justify-start gap-[24px] mr-6 items-center mb-4 mx-4 md:mx-0">
         <Chip size="small" label="Newbie" newbie />
         <span className="text-xs font-normal text-gray-300 leading-[23px]">
-          {formatISODateToMonthDayYear(date)}
+          Published {formatDate(date)}
         </span>
         <div className="flex gap-1 items-center text-gray-300">
           <Image alt="" src={clockIcon}></Image>
