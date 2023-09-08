@@ -5,6 +5,7 @@ import React from "react";
 import Image from "next/image";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { SortList, SortMenu } from "@/components/Icon";
+import { ArrowUpS } from "@styled-icons/remix-line";
 
 type ArticleFilterProps = {
   show: boolean;
@@ -50,7 +51,11 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({ show, setShow }) => {
               className="flex gap-3 items-center"
               onClick={() => setShow(!show)}
             >
-              <CheveronDown size={15} className="rotate-180" />
+              {show ? (
+                <CheveronDown size={15} className="rotate-180" />
+              ) : (
+                <ArrowUpS size={15} className="rotate-180" />
+              )}
               <span>Hide filters</span>
             </div>
           </Button>

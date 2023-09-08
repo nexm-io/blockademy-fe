@@ -1,7 +1,9 @@
 export interface ArticleListResponse {
   success: boolean;
-  data: Array<ArticleIntoData>;
-  isLoading: boolean,
+  isLoading: boolean;
+  data: Array<ArticleIntoData> | null;
+  pagination?: PaginationArticle;
+  dataLatest?: Array<ArticleIntoData>;
   error: any;
   detail: ArticleDetail | null;
 }
@@ -11,21 +13,12 @@ export interface ArticleDetailResponse {
   data: ArticleDetail;
   message?: string;
 }
-
-export interface ArticleDataResponse {
-  current_page: number;
-  data: Array<ArticleIntoData>;
-  first_page_url: string;
-  from: number;
-  last_page: number;
-  last_page_url: string;
-  next_page_url: string;
-  path: string;
-  per_page: string;
-  prev_page_url: null;
-  to: number;
+export interface PaginationArticle {
   total: number;
-
+  count: number;
+  per_page: number;
+  current_page: number;
+  total_pages: number;
 }
 
 export interface ArticleDetail {
@@ -37,7 +30,7 @@ export interface ArticleDetail {
   title: string;
   slug: string;
   post_type: string;
-  tags: Array<{tag: string, slug: string}>; 
+  tags: Array<{ tag: string; slug: string }>;
   meta_description: string;
   created_at: string;
   commentsCount: number;
@@ -45,7 +38,6 @@ export interface ArticleDetail {
   category: CategoryArticle;
   user: UserArticle;
 }
-
 export interface ArticleIntoData {
   id: number;
   category_id: number;
@@ -55,13 +47,22 @@ export interface ArticleIntoData {
   title: string;
   slug: string;
   post_type: string;
-  tags: string;
   meta_description: string;
-  created_at: string;
-  commentsCount: number;
+  comments_count?: number;
+  total_hit?: null;
+  images: ImageArticle;
   image: ImageArticle;
-  category: CategoryArticle;
+  created_at: string;
+  read_time: null;
+  level: null;
   user: UserArticle;
+  category: CategoryArticle;
+  tags: Array<TagArticle>;
+}
+
+export interface TagArticle {
+  title: string;
+  slug: string;
 }
 
 export interface ImageArticle {
@@ -88,4 +89,7 @@ export interface UserArticle {
   id: number;
   first_name: string;
   last_name: string;
+  profile_image: null;
+  bio: null;
+  created_at: null;
 }
