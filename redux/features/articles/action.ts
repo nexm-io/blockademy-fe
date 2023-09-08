@@ -1,6 +1,6 @@
 import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ArticleListResponse } from "./type";
+import { ArticleDetailResponse, ArticleListResponse } from "./type";
 
 export const getArticleCourse = createAsyncThunk<
   ArticleListResponse,
@@ -22,3 +22,19 @@ export const getLatestArticle = createAsyncThunk<
   const response = await api.get(`/api/v10/${params}?limit=${page}`);
   return response.data;
 });
+
+export const getArticleDetail = createAsyncThunk<ArticleDetailResponse, string>(
+  "article/detail-article",
+  async (slug) => {
+    const response = await api.get(`/api/v10/detail/${slug}`);
+    return response.data;
+  }
+);
+
+export const getRelateArticle = createAsyncThunk<ArticleListResponse, number>(
+  "article/relate-article",
+  async (id) => {
+    const response = await api.get(`/api/v10/relate-post/${id}`);
+    return response.data;
+  }
+);

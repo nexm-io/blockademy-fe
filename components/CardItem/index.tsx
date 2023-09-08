@@ -19,7 +19,7 @@ const CardItem: React.FC<CardItemProps> = ({ timeDuration, data }) => {
   const visibleTags = showAll ? data.tags : data.tags.slice(0, 2);
 
   return (
-    <Link href={`/courses/${data.slug}`}>
+    <Link href={`/articles/${data.slug}`}>
       <div className="w-[352px] lg:h-[370px] h-[340px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear">
         <div className="w-full h-[198px] relative">
           <div className="absolute flex gap-2 top-6 left-6 text-white-100 z-20">
@@ -41,7 +41,7 @@ const CardItem: React.FC<CardItemProps> = ({ timeDuration, data }) => {
 
           <Image
             alt="card-img"
-            src={data.images.original_image}
+            src={data.image.original_image}
             width={352}
             height={198}
             className="w-full h-full object-cover rounded-2xl relative"

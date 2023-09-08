@@ -4,6 +4,14 @@ export interface ArticleListResponse {
   data: Array<ArticleIntoData> | null;
   pagination?: PaginationArticle;
   dataLatest?: Array<ArticleIntoData>;
+  error: any;
+  detail: ArticleDetail | null;
+}
+
+export interface ArticleDetailResponse {
+  success?: boolean;
+  data: ArticleDetail;
+  message?: string;
 }
 export interface PaginationArticle {
   total: number;
@@ -12,47 +20,30 @@ export interface PaginationArticle {
   current_page: number;
   total_pages: number;
 }
-// export interface ArticleLatestResponse {
-//   success: boolean;
-//   isLoading: boolean;
-//   error: any;
-//   data?: Array<ArticleLatestData>;
-// }
 
-// export interface ArticleDataResponse {
-//   current_page?: number;
-//   data: Array<ArticleIntoData>;
-//   first_page_url?: string;
-//   from?: number;
-//   last_page?: number;
-//   last_page_url?: string;
-//   next_page_url?: string;
-//   path?: string;
-//   per_page?: string;
-//   prev_page_url?: null;
-//   to?: number;
-//   total?: number;
-// }
-
-// export interface ArticleLatestData {
-//   comments_count?: number;
-//   id: number;
-//   category_id: number;
-//   image_id: number;
-//   user_id: number;
-//   title: string;
-//   slug: string;
-//   post_type: string;
-//   tags: string;
-//   meta_description: string;
-//   created_at: string;
-//   commentsCount: number;
-//   image: ImageArticle;
-//   category: CategoryArticle;
-//   user: UserArticle;
-// }
+export interface ArticleDetail {
+  id: number;
+  category_id: number;
+  content: string;
+  image_id: number;
+  user_id: number;
+  title: string;
+  slug: string;
+  post_type: string;
+  tags: Array<{ tag: string; slug: string }>;
+  meta_description: string;
+  created_at: string;
+  commentsCount: number;
+  image: ImageArticle;
+  category: CategoryArticle;
+  user: UserArticle;
+}
 export interface ArticleIntoData {
   id: number;
+  category_id: number;
+  content: string;
+  image_id: number;
+  user_id: number;
   title: string;
   slug: string;
   post_type: string;
@@ -60,6 +51,7 @@ export interface ArticleIntoData {
   comments_count?: number;
   total_hit?: null;
   images: ImageArticle;
+  image: ImageArticle;
   created_at: string;
   read_time: null;
   level: null;

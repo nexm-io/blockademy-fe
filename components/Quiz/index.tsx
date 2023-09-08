@@ -3,14 +3,17 @@ import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAnswerQuiz } from "@/redux/features/courses/action";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
+import slugify from "slugify";
+import slugifyText from "@/utils/slugifyText";
 
 const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
   const dispatch = useAppDispatch();
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [selected, setSelected] = useState<number[]>([]);
   const questionType = lesson.question_detail.question_type;
+  const router = useRouter();
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -44,21 +47,12 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
-        // redirect(
-        //   `/courses/${slugify(courseDetail?.campaign_title || "", {
-        //     lower: true,
-        //   })}/${slugifyText(
-        //     courseDetail?.lesson_data[0 + 1].lesson_title || ""
-        //   )}`
-        // );
       }
     } catch (error) {
       console.log("Logout Failed");
     }
   };
-  useEffect(() => {
-    console.log(isCorrect);
-  });
+
 
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
@@ -85,12 +79,6 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
                   : "border-gray-400 bg-transparent"
               }`}
             >
-              {/* {isCorrect !== null && !isCorrect && (
-                <div className="text-red-500">Text error</div>
-              )}
-              {isCorrect !== null && isCorrect && (
-                <div className="text-green-500">Text success</div>
-              )} */}
               <p>
                 <span>{item.answer_text}</span>
               </p>
@@ -107,7 +95,11 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
               Submit
             </Button>
             {isCorrect && (
-              <Button className="w-[180px] px-2" onClick={() => index + 1}>
+              <Button className="w-[180px] px-2" onClick={() => router.push(`/courses/${slugify(courseDetail?.campaign_title || "", {
+                lower: true,
+              })}/${slugifyText(
+                courseDetail?.lesson_data[index + 1].lesson_title || ""
+              )}`)}>
                 Next Module
               </Button>
             )}

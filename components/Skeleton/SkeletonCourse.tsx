@@ -3,13 +3,13 @@ import Button from "../Common/Button";
 
 export default function SkeletonCourse() {
   return (
-    <div className="mt-12 animate-pulse">
+    <div className="mt-12 skeleton">
       <div role="status">
         <div className="h-[65px] bg-gray-200  dark:bg-gray-700 w-[320px] mb-4"></div>
         <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
           <div
             role="status"
-            className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center"
+            className="space-y-8 animate-pulse w-[750px] md:space-y-0 md:space-x-8 md:flex md:items-center"
           >
             <div className="flex items-center justify-center min-w-[330px] h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
               <svg

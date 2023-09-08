@@ -1,5 +1,3 @@
-// utils/dateUtils.js
-
 export function formatDate(inputDateStr: string) {
   const originalDate = new Date(inputDateStr);
   const months = [
@@ -21,3 +19,12 @@ export function formatDate(inputDateStr: string) {
   const year = originalDate.getFullYear();
   return `${month} ${day.toString().padStart(2, "0")}, ${year}`;
 }
+export const formatISODateToMonthDayYear = (isoDate: string): string => {
+  const date = new Date(isoDate);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString(undefined, options);
+};

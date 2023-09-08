@@ -1,5 +1,10 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getArticleCourse, getLatestArticle } from "./action";
+import {
+  getArticleCourse,
+  getArticleDetail,
+  getLatestArticle,
+  getRelateArticle,
+} from "./action";
 import { ArticleListResponse } from "./type";
 
 const initialState: ArticleListResponse = {
@@ -13,6 +18,8 @@ const initialState: ArticleListResponse = {
     current_page: 0,
     total_pages: 0,
   },
+  detail: null,
+  error: null,
 };
 
 const articleReducer = createReducer(initialState, (builder) => {
@@ -38,6 +45,34 @@ const articleReducer = createReducer(initialState, (builder) => {
       state.data = action.payload.data;
     })
     .addCase(getLatestArticle.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+    });
+
+  builder
+    .addCase(getRelateArticle.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getRelateArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload.data;
+      state.error = null;
+    })
+    .addCase(getRelateArticle.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      // state.error = action.payload.data;
+    });
+  builder
+    .addCase(getArticleDetail.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getArticleDetail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.detail = action.payload.data;
+      state.error = null;
+    })
+    .addCase(getArticleDetail.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       // state.error = action.payload.data;
     });
