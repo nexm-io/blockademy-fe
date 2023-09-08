@@ -48,16 +48,12 @@ const CourseLists = function () {
                     />
                   </div>
                   <div>
-                    <Link
-                      href={`/courses/${slugify(section.title, {
-                        lower: true,
-                      })}`}
-                    >
+
                       <Button
                         className="capitalize text-base font-medium md:mt-0 mt-4"
                         onClick={() =>
                           push(
-                            `/courses/${slugify(section.title, {
+                            `/courses/${section.id}/${section.list_courses.data[0].id}/${slugify(section.title, {
                               lower: true,
                             })}`
                           )
@@ -65,7 +61,7 @@ const CourseLists = function () {
                       >
                         start course
                       </Button>
-                    </Link>
+       
                   </div>
                 </div>
               </div>

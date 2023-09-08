@@ -32,7 +32,7 @@ export const getDetailCourse = createAsyncThunk<
 export const getAnswerQuiz = createAsyncThunk<
   QuizResponse,
   {
-    lesson: {
+    lessonDetail: {
       campaign_id: number;
       course_id: number;
       lesson_id: number;
@@ -40,9 +40,9 @@ export const getAnswerQuiz = createAsyncThunk<
       answer_id: number[];
     };
   }
->("courses/quiz", async ({ lesson }) => {
+>("courses/quiz", async ({ lessonDetail }) => {
   const response = await api.get(
-    `/api/v10/campaign/${lesson.campaign_id}/course/${lesson.course_id}/lesson/${lesson.lesson_id}/quiz/${lesson.quiz_id}/check-correct-answer?answer_id[0]=${lesson.answer_id}`
+    `/api/v10/campaign/${lessonDetail.campaign_id}/course/${lessonDetail.course_id}/lesson/${lessonDetail.lesson_id}/quiz/${lessonDetail.quiz_id}/check-correct-answer?answer_id=${lessonDetail.answer_id}`
   );
   return response.data;
 });

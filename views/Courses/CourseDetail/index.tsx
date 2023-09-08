@@ -11,7 +11,7 @@ import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import { getDetailCourse, getListCourse } from "@/redux/features/courses/action";
 import { redirect, usePathname, useRouter } from "next/navigation";
 import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
@@ -20,28 +20,36 @@ import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 
 const CourseDetail = () => {
     const [formState, setFormState] = useState<"video" | "quiz">("video");
-    const pathname = usePathname();
+    const [course, setCourse] = useState<number>()
+    const pathname = usePathname(); 
+    const path = Number(pathname.split('/')[2])
+    const courseId = Number(pathname.split('/')[3])
+    
     const dispatch = useAppDispatch();
     const router = useRouter();
-  
     const courseDetail = useAppSelector(
       (state: RootState) => state.courses.details
     );
-  
+
+      
     useEffect(() => {
+    
       const getValues = async () => {
-        const detail = { campaign_id: 1, course_id: 3 };
-        await dispatch(getDetailCourse({ detail })).unwrap();
+        const detail = { 
+          campaign_id: path, 
+          course_id: courseId 
+        };
+           dispatch(getDetailCourse({ detail })).unwrap();
       };
       getValues();
     }, [dispatch]);
     useEffect(() => {
       if (
         pathname ===
-        `/courses/${slugify(courseDetail?.campaign_title || "", { lower: true })}`
+        `/courses/${path}/${courseId}/${slugify(courseDetail?.campaign_title || "", { lower: true })}`
       ) {
         redirect(
-          `/courses/${slugify(courseDetail?.campaign_title || "", {
+          `/courses/${path}/${courseId}/${slugify(courseDetail?.campaign_title || "", {
             lower: true,
           })}/${slugifyText(courseDetail?.lesson_data[0].lesson_title || "")}`
         );
@@ -83,7 +91,7 @@ const CourseDetail = () => {
                     </Button>
                   </>
                 )}
-                {courseDetail.lesson_data.map((lesson, index) => (
+                {courseDetail && courseDetail.lesson_data.map((lesson, index) => (
                   <>
                   {getLastPathName(pathname) ===
                     slugify(lesson.lesson_title, {lower: true}) && (
@@ -102,18 +110,21 @@ const CourseDetail = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
-              {courseDetail.lesson_data.map((lesson, index) => (
+              {courseDetail && courseDetail.lesson_data.map((lesson, index) => (
                 <div
                   key={index}
                   className="cursor-pointer"
-                  onClick={() =>
+                  onClick={() => {
+                    setCourse(lesson.lesson_id)
                     router.push(
-                      `/courses/${slugify(courseDetail?.campaign_title || "", {
+                      `/courses/${path}/${courseId}/${slugify(courseDetail?.campaign_title || "", {
                         lower: true,
                       })}/${slugify(
                         courseDetail?.lesson_data[index].lesson_title || ""
                       , {lower:true})}`
                     )
+                  }
+                   
                   }
                 >
                   <CourseModule

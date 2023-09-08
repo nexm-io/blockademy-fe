@@ -3,7 +3,7 @@ import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAnswerQuiz } from "@/redux/features/courses/action";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import slugify from "slugify";
 import slugifyText from "@/utils/slugifyText";
@@ -14,6 +14,9 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
   const [selected, setSelected] = useState<number[]>([]);
   const questionType = lesson.question_detail.question_type;
   const router = useRouter();
+  const pathname = usePathname(); 
+  const path = Number(pathname.split('/')[2])
+  const courseId = Number(pathname.split('/')[3])
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -34,16 +37,18 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       }
     }
   };
+
+  
   const handleSubmit = async () => {
     try {
-      const lesson = {
-        campaign_id: 1,
-        course_id: 3,
-        lesson_id: 1,
-        quiz_id: 1,
+      const lessonDetail = {
+        campaign_id: path,
+        course_id: courseId,
+        lesson_id: lesson.lesson_id,
+        quiz_id: lesson.question_detail.question_id,
         answer_id: selected,
       };
-      const res = await dispatch(getAnswerQuiz({ lesson })).unwrap();
+      const res = await dispatch(getAnswerQuiz({ lessonDetail })).unwrap();
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
