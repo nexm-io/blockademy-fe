@@ -1,17 +1,10 @@
 "use client";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import crypto1 from "@/public/images/home/home-4.png";
-import crypto2 from "@/public/images/home/home-5.png";
-import crypto3 from "@/public/images/home/home-6.png";
-import crypto4 from "@/public/images/home/home-7.png";
-import { AiOutlineClockCircle } from "react-icons/ai";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import {
   getArticleCourse,
-  getLatestArticle,
   getListTags,
 } from "@/redux/features/articles/action";
 import CardItem from "@/components/CardItem";

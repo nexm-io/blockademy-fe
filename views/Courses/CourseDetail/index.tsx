@@ -78,11 +78,14 @@ const CourseDetail = () => {
           <div className="mt-10 flex gap-[48px]">
             <SkeletionCard height="500px" width="753px" radius="16px" />
             <div className="flex flex-col gap-4">
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
+              {Array.from({ length: 5 }, (_, index) => (
+                <SkeletionCard
+                  height="76px"
+                  width="352px"
+                  radius="16px"
+                  key={index}
+                />
+              ))}
             </div>
           </div>
           <SkeletionCard height="36px" width="340px" radius="16px" />

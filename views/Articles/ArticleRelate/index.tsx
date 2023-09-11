@@ -39,9 +39,14 @@ const ArticleRelate = ({ id }: { id: number }) => {
         ))
       ) : (
         <>
-          <SkeletionCard height="150px" width="250px" radius="16px" />
-          <SkeletionCard height="150px" width="250px" radius="16px" />
-          <SkeletionCard height="150px" width="250px" radius="16px" />
+          {Array.from({ length: 3 }, (_, index) => (
+            <SkeletionCard
+              height="150px"
+              width="250px"
+              radius="16px"
+              key={index}
+            />
+          ))}
         </>
       )}
     </div>

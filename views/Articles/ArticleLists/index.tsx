@@ -4,14 +4,19 @@ import React, { useEffect, useState } from "react";
 import arrow from "@/public/icons/arrowbottom.svg";
 import CardItem from "@/components/CardItem";
 import ReactPaginate from "react-paginate";
-import { useRouter } from "next/navigation";
 import Dropdown from "@/components/Common/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getArticleCourse } from "@/redux/features/articles/action";
+import {
+  getLatestArticle,
+  getTrendingArticle,
+} from "@/redux/features/articles/action";
 import { RootState } from "@/redux/store";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
-const options = ["Recently published", "Mostly viewed"];
+const options: ("Recently published" | "Mostly viewed")[] = [
+  "Recently published",
+  "Mostly viewed",
+];
 
 interface ArticleListsProps {
   status?: "list" | "menu";
@@ -19,12 +24,17 @@ interface ArticleListsProps {
 }
 
 const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
+  const [selectedOption, setSelectedOption] = useState(options[0]);
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.articles.data);
+  const dataTrending = useAppSelector(
+    (state: RootState) => state.articles.dataTrending
+  );
   const pagination = useAppSelector(
     (state: RootState) => state.articles.pagination
   );
   const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
@@ -38,9 +48,16 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
     setPage(selectedPage);
   };
 
+  const currentData =
+    selectedOption === "Recently published" ? data : dataTrending;
+
   useEffect(() => {
-    dispatch(getArticleCourse({ page }));
-  }, [dispatch, page]);
+    if (selectedOption === "Recently published") {
+      dispatch(getLatestArticle({ limit, page }));
+    } else if (selectedOption === "Mostly viewed") {
+      dispatch(getTrendingArticle({ limit, page }));
+    }
+  }, [dispatch, page, selectedOption, limit]);
 
   return (
     <section>
@@ -49,7 +66,11 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
           Articles
         </h2>
         <div>
-          <Dropdown options={options}>
+          <Dropdown
+            options={options}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          >
             <Image alt="arrow-bottom" src={arrow}></Image>
           </Dropdown>
         </div>
@@ -63,8 +84,8 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
             : ""
         } grid md:gap-10 pl-4 gap-4`}
       >
-        {data ? (
-          data.map((item, index) => (
+        {currentData ? (
+          currentData.map((item, index) => (
             <CardItem
               key={index}
               data={item}
@@ -75,16 +96,14 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
           ))
         ) : (
           <>
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
+            {Array.from({ length: 15 }, (_, index) => (
+              <SkeletionCard
+                key={index}
+                width="352px"
+                height="370px"
+                radius="16px"
+              />
+            ))}
           </>
         )}
       </div>

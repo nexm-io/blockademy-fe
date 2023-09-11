@@ -48,9 +48,14 @@ const ListCard: React.FC<ListCardProps> = ({
             .map((item, index) => <CardItem data={item} key={index} />)
         ) : (
           <>
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
-            <SkeletionCard width="352px" height="370px" radius="16px" />
+            {Array.from({ length: 3 }, (_, index) => (
+              <SkeletionCard
+                width="352px"
+                height="370px"
+                radius="16px"
+                key={index}
+              />
+            ))}
           </>
         )}
       </div>

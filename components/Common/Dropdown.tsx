@@ -1,22 +1,31 @@
 import React, { useState } from "react";
-import styles from "./Dropdown.module.css";
 
 interface DropdownProps {
   options: string[];
   children?: React.ReactNode;
+  selectedOption: "Recently published" | "Mostly viewed";
+  setSelectedOption: React.Dispatch<
+    React.SetStateAction<"Recently published" | "Mostly viewed">
+  >;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ options, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  options,
+  children,
+  selectedOption,
+  setSelectedOption,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
-    setIsOpen(false);
+    if (option === "Recently published" || option === "Mostly viewed") {
+      setSelectedOption(option);
+      setIsOpen(false);
+    }
   };
 
   return (
