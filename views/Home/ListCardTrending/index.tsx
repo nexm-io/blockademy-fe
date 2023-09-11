@@ -5,7 +5,7 @@ import vectorIcon from "@/public/icons/arrowright.svg";
 import CardItem from "@/components/CardItem";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getLatestArticle } from "@/redux/features/articles/action";
+import { getTrendingArticle } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
 interface ListCardProps {
@@ -15,17 +15,20 @@ interface ListCardProps {
   urlApi?: string;
 }
 
-const ListCard: React.FC<ListCardProps> = ({
+const ListCardTrending: React.FC<ListCardProps> = ({
   cardTitle,
   cardLabel,
   mTop,
   urlApi,
 }) => {
   const dispatch = useAppDispatch();
-  const data = useAppSelector((state: RootState) => state.articles.data);
+
+  const data = useAppSelector(
+    (state: RootState) => state.articles.dataTrending
+  );
 
   useEffect(() => {
-    dispatch(getLatestArticle({ params: urlApi }));
+    dispatch(getTrendingArticle({ params: urlApi }));
   }, [dispatch, urlApi]);
 
   return (
@@ -58,4 +61,4 @@ const ListCard: React.FC<ListCardProps> = ({
   );
 };
 
-export default ListCard;
+export default ListCardTrending;

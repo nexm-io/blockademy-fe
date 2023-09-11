@@ -11,14 +11,14 @@ import { getArticleCourse } from "@/redux/features/articles/action";
 import { RootState } from "@/redux/store";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
-const options = [
-  "Recently published",
-  "Mostly viewed",
-  "Recently published",
-  "Recently updated",
-];
+const options = ["Recently published", "Mostly viewed"];
 
-const ArticleLists = () => {
+interface ArticleListsProps {
+  status?: "list" | "menu";
+  setStatus?: React.Dispatch<React.SetStateAction<"list" | "menu">>;
+}
+
+const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.articles.data);
   const pagination = useAppSelector(
@@ -37,7 +37,6 @@ const ArticleLists = () => {
     setItemOffset(newOffset);
     setPage(selectedPage);
   };
-  const { push } = useRouter();
 
   useEffect(() => {
     dispatch(getArticleCourse({ page }));
@@ -55,10 +54,24 @@ const ArticleLists = () => {
           </Dropdown>
         </div>
       </div>
-      <div className="grid md:grid-cols-3 md:gap-10 grid-cols-1 pl-4 gap-4">
+      <div
+        className={`${
+          status === "list"
+            ? "md:grid-cols-3 grid-cols-1"
+            : status === "menu"
+            ? "grid-cols-1"
+            : ""
+        } grid md:gap-10 pl-4 gap-4`}
+      >
         {data ? (
           data.map((item, index) => (
-            <CardItem key={index} data={item} timeDuration="3mins" />
+            <CardItem
+              key={index}
+              data={item}
+              status={status}
+              setStatus={setStatus}
+              topic={false}
+            />
           ))
         ) : (
           <>

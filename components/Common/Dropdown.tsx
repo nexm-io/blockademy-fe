@@ -21,10 +21,10 @@ const Dropdown: React.FC<DropdownProps> = ({ options, children }) => {
 
   return (
     <div
-      className={`dropdown relative cursor-pointer rounded-lg inline-flex items-center justify-between py-[6px] px-3 flex-shrink-0 border border-white-300`}
+      className={`dropdown relative cursor-pointer rounded-lg inline-flex items-center justify-between py-[6px] px-3 flex-shrink-0 border border-white-300 w-[200px]`}
     >
       <div
-        className={`selectedOption flex items-center gap-5 rounded-lg`}
+        className={`selectedOption flex items-center justify-between gap-5 rounded-lg`}
         onClick={toggleDropdown}
       >
         {selectedOption} {children}

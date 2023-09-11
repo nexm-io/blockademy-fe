@@ -22,7 +22,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
       </span>
       {relateList ? (
         relateList.map((post, index: number) => (
-          <Link href="#" key={index}>
+          <Link href={`/articles/${post.slug}`} key={index}>
             <div className="flex flex-col md:max-w-[250px]">
               <Image
                 alt="img-post"

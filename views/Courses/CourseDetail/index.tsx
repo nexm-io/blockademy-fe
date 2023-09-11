@@ -98,9 +98,9 @@ const CourseDetail = () => {
             <div className="bg-blue-200 py-3 px-4 flex gap-4">
               <Image alt="gift-icon" src={gift}></Image>
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                Log into your Binance a ccount to track progress and claim your
-                certificate. You may lose your learning progress without logging
-                in.
+                Log into your Blockademy a ccount to track progress and claim
+                your certificate. You may lose your learning progress without
+                logging in.
               </span>
             </div>
           </div>

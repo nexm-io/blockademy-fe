@@ -1,6 +1,10 @@
 import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ArticleDetailResponse, ArticleListResponse } from "./type";
+import {
+  ArticleDetailResponse,
+  ArticleListResponse,
+  TagsResponse,
+} from "./type";
 
 export const getArticleCourse = createAsyncThunk<
   ArticleListResponse,
@@ -8,7 +12,7 @@ export const getArticleCourse = createAsyncThunk<
     page: number;
   }
 >("articles/all", async ({ page }: { page: number }) => {
-  const response = await api.get(`/api/v10/list-post?limit=9&page=${page}`);
+  const response = await api.get(`/api/v10/list-post?limit=15&page=${page}`);
   return response.data;
 });
 
@@ -17,11 +21,31 @@ export const getLatestArticle = createAsyncThunk<
   {
     params?: string;
     page?: number;
+    limit?: number;
   }
->("articles/latest", async ({ params = "carousel-post", page = 3 }) => {
-  const response = await api.get(`/api/v10/${params}?limit=${page}`);
+>("articles/latest", async ({ limit = 3, page = 1, params = "created_at" }) => {
+  const response = await api.get(
+    `/api/v10/list-post?limit=${limit}&page=${page}&sort_field=${params}`
+  );
   return response.data;
 });
+
+export const getTrendingArticle = createAsyncThunk<
+  ArticleListResponse,
+  {
+    params?: string;
+    page?: number;
+    limit?: number;
+  }
+>(
+  "articles/trending",
+  async ({ limit = 3, page = 1, params = "total_hit" }) => {
+    const response = await api.get(
+      `/api/v10/list-post?limit=${limit}&page=${page}&sort_field=${params}`
+    );
+    return response.data;
+  }
+);
 
 export const getArticleDetail = createAsyncThunk<ArticleDetailResponse, string>(
   "article/detail-article",
@@ -38,3 +62,13 @@ export const getRelateArticle = createAsyncThunk<ArticleListResponse, number>(
     return response.data;
   }
 );
+
+export const getListTags = createAsyncThunk<
+  TagsResponse,
+  {
+    limit: number;
+  }
+>("article/list-tags", async ({ limit }: { limit: number }) => {
+  const response = await api.get(`/api/v10/list-tags?limit=${limit}`);
+  return response.data;
+});

@@ -15,19 +15,19 @@ const CourseFAQ = () => {
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
           </div>
@@ -36,19 +36,19 @@ const CourseFAQ = () => {
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
             <div className="flex gap-[14px]">
               <Image alt="add-icon" src={icon}></Image>
               <p className="font-normal text-base text-black-100">
-                What are the Binance Academy educational courses?
+                What are the Blockademy Academy educational courses?
               </p>
             </div>
           </div>
