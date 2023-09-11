@@ -12,7 +12,6 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
-  console.log("ArticleDetailPage ~ detailArticle:", detailArticle);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
 
   const dispatch = useAppDispatch();
@@ -23,6 +22,8 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
     getDetail();
   }, [dispatch, params.slug]);
 
+
+  
   return (
     <>
       {!detailArticle ? (

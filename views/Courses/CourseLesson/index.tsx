@@ -3,16 +3,20 @@ import clock from "@/public/icons/clock.svg";
 import play from "@/public/icons/play.svg";
 import { ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
+import slugifyText from "@/utils/slugifyText";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import Image from "next/image";
-const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
+import { useRouter } from "next/navigation";
+import slugify from "slugify";
+const CourseLesson = ({ details, campaign_id, title }: { details: Array<ListCourse>, campaign_id: number, title: string}) => {
+  const router = useRouter()
+  
   return (
     <div className="flex flex-col gap-4 px-4 md:px-0">
-      {/* Item Course */}
+
       {details.map((course) => (
-        <>
-          {/* <CoursePanel data={course} /> */}
-          <div key={course.id} className={`flex gap-4 items-center `}>
+        <div key={course.id}>
+          <div  className={`flex gap-4 items-center `}>
             <div className="w-[25px] h-[25px]">
               <CircleCheck
                 className={`${
@@ -21,6 +25,9 @@ const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
               />
             </div>
             <div
+              onClick={() => router.push(`/courses/${campaign_id}/${course.id}/${slugifyText(title)}/${slugify(course.title, {
+                lower: true,
+              })}`)}
               className={`bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
             >
               <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
@@ -40,7 +47,7 @@ const CourseLesson = ({ details }: { details: Array<ListCourse> }) => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

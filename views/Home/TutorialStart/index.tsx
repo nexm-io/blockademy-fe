@@ -39,7 +39,7 @@ const TutorialStart = () => {
               Up for more learning materials?
             </h2>
             <p className="font-normal text-base mb-[47px]">
-              Watch Academy AMA, interviews, and online courses in Binance Live
+              Watch Academy AMA, interviews, and online courses in Blockakedy Live
             </p>
             <Button
               rounded
