@@ -11,7 +11,16 @@ export interface CourseTypes {
   is_finished: number;
 }
 
+export interface CourseResponse {
+  isLoading: boolean;
+  data: Array<CourseTypes>;
+  error: any;
+  details: CourseDetail | null;
+  quiz: QuizDataResponse;
+}
+
 export interface ListCourse {
+  type?: string;
   id: number;
   title: string;
   duration: number;
@@ -68,13 +77,7 @@ export interface CourseDetail {
   lesson_type: string;
   is_complete: number;
 }
-export interface CourseResponse {
-  isLoading: boolean;
-  data: Array<CourseTypes>;
-  error: any;
-  details: CourseDetail | null;
-  quiz: QuizDataResponse;
-}
+
 
 export interface CourseDetailResponse {
   isLoading: boolean;

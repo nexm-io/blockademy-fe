@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 const CourseAll = () => {
+  
   return (
     <div className="mt-[74px]">
       <CourseBanner />

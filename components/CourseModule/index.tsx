@@ -7,6 +7,10 @@ import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
+import { usePathname } from "next/navigation";
+import { getLastPathName } from "@/utils/getPathName";
+import slugify from "slugify";
+import slugifyText from "@/utils/slugifyText";
 interface CourseModuleProps {
   status?: string;
   lesson: Lesson;
@@ -19,11 +23,14 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   status = "pending",
 }) => {
   const [active, setActive] = useState(status)
+  const pathname = usePathname();
+  
   useEffect(() => {
     if(is_complete === 1) {
       setActive('completed')
     }
   }, [is_complete])
+
 
   return (
     <div className="md:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
@@ -46,16 +53,15 @@ const CourseModule: React.FC<CourseModuleProps> = ({
           </div>
         </div>
       </div>
-      {active === "pending" && (
-        <div className="w-[18px] h-full flex items-center">
-          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
-        </div>
-      )}
-      {active === "already" && (
+      {(active !== "completed" && (getLastPathName(pathname) === slugifyText(lesson.lesson_title) || active === "already")) ? (
         <div className="w-[18px] h-full flex items-center">
           <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
         </div>
-      )}
+      ) : (active === "pending" && (
+        <div className="w-[18px] h-full flex items-center">
+          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
+        </div>
+      ))}
       {/* {status === "watching" && <Image alt="bar-chart" src={bar}></Image>} */}
       {active === "completed" && (
         <div className="w-[18px] h-full flex items-center">

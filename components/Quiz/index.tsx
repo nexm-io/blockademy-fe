@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getAnswerQuiz } from "@/redux/features/courses/action";
+import { getAnswerQuiz, saveAnswerQuiz } from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import slugify from "slugify";
@@ -53,12 +53,24 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
+        dispatch(saveAnswerQuiz({ lessonDetail }))
       }
     } catch (error) {
       console.log("Logout Failed");
     }
   };
 
+  // const saveAnswer = async () => {
+  //   const lessonDetail = {
+  //     campaign_id: path,
+  //     course_id: courseId,
+  //     lesson_id: lesson.lesson_id,
+  //     quiz_id: lesson.question_detail.question_id,
+  //     answer_id: selected,
+  //   };
+  //   await dispatch(saveAnswerQuiz({ lessonDetail }))
+  // }
+ 
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
@@ -103,6 +115,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
               <Button
                 className="w-[180px] px-2"
                 onClick={() =>
+                  // saveAnswer()
                   router.push(
                     `/courses/${path}/${courseId}/${slugify(
                       courseDetail?.campaign_title || "",
