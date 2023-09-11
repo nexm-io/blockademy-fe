@@ -1,29 +1,22 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const VideoPlayer = () => {
-  const videoRef = useRef(null);
-
-  const handlePlay = () => {
-    console.log("Video bắt đầu chơi");
-  };
-
-  const handleEnded = () => {
-    console.log("Video kết thúc");
+const VideoPlayer = ({ onChangeForm }: any) => {
+  const handleEnd = () => {
+    onChangeForm(true);
   };
 
   return (
-    <div>
-      <video
-        ref={videoRef}
-        controls
+    <video width="753" height="437" controls onEnded={handleEnd}>
+      <source
         src={
-          "https://cdn-beta.blockademy.ai/videos/2023/09/1694422478meet-vzr-pxqc-vsq-and-3-more-pages-personal-microsoft-edge-2023-09-08-15-37-01.mp4"
+          "https://cdn-beta.blockademy.ai/videos/2023/09/1694422478meet-vzr-pxqc-vsq-and-3-more-pages-personal-microsoft-edge-2023-09-08-15-37-01mp425mp4"
         }
-        onPlay={handlePlay}
-        onEnded={handleEnded}
-      ></video>
-    </div>
+        type="video/mp4"
+      />
+      Your browser does not support the video tag.
+    </video>
+    // <iframe width="753" height="437" src=""></iframe>
   );
 };
 

@@ -4,12 +4,15 @@ import check from "@/public/icons/check.svg";
 import clock from "@/public/icons/clock.svg";
 import play from "@/public/icons/play.svg";
 import { CircleCheck } from "@styled-icons/fa-solid";
+import { ListCourse } from "@/redux/features/courses/type";
 
 interface CoursePanelProps {
   status?: "watching" | "unwatching";
+  course?: any
 }
 
-const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" }) => {
+const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" , course}) => {
+  
   return (
     <div className="flex gap-4 items-center">
       <div className="w-[30px] h-[30px]">

@@ -12,8 +12,8 @@ const CourseRewards = () => {
         </h2>
         <p className="text-gray-100 text-center font-normal text-xl md:mb-[60px] mb-10">
           Advance your knowledge for free through our fun, interactive courses.
-          Blockademy Academy presents the most comprehensive educational courses
-          lineup for beginners, intermediate and advanced learners.
+          Blockademy presents the most comprehensive educational courses lineup
+          for beginners, intermediate and advanced learners.
         </p>
         <div className="flex justify-between items-center md:flex-row flex-col gap-6 md:gap-0">
           {/* Sub-reward 1 */}
@@ -45,7 +45,7 @@ const CourseRewards = () => {
               One-Stop Learning Hub
             </h3>
             <p className="font-normal text-sm text-center w-[65%]">
-              Join millions and start learning from Blockademy Academy’s
+              Join millions and start learning from Blockademy’s
               standard-setting educational programs
             </p>
           </div>

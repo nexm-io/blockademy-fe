@@ -1,5 +1,5 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getAnswerQuiz, getDetailCourse, getListCourse } from "./action";
+import { getAnswerQuiz, getDetailCourse, getListCourse, saveAnswerQuiz } from "./action";
 import { CourseResponse } from "./type";
 
 const initialState: CourseResponse = {
@@ -45,15 +45,24 @@ const courseReducer = createReducer(initialState, (builder) => {
 
   builder
     .addCase(getAnswerQuiz.pending, (state) => {
-      state.isLoading = true;
       state.error = null;
     })
     .addCase(getAnswerQuiz.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.error = null;
       state.quiz = action.payload.data;
     })
     .addCase(getAnswerQuiz.rejected, (state, action: PayloadAction<any>) => {
-      state.isLoading = false;
+      state.error = action.payload.data;
+    });
+
+    builder
+    .addCase(saveAnswerQuiz.pending, (state) => {
+      state.error = null;
+    })
+    .addCase(saveAnswerQuiz.fulfilled, (state, action) => {
+      state.error = null;
+    })
+    .addCase(saveAnswerQuiz.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.data;
     });
 });

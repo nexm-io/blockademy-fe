@@ -28,12 +28,14 @@ const CourseDetail = () => {
   const pathname = usePathname();
   const path = Number(pathname.split("/")[2]);
   const courseId = Number(pathname.split("/")[3]);
-
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
+  const isLoading = useAppSelector(
+    (state: RootState) => state.courses.isLoading
+  );
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const getValues = async () => {
@@ -45,6 +47,7 @@ const CourseDetail = () => {
     };
     getValues();
   }, [dispatch, courseId, path]);
+
   useEffect(() => {
     if (
       pathname ===
@@ -69,9 +72,16 @@ const CourseDetail = () => {
     courseId,
     path,
   ]);
+
+  const handleChangeForm = (status: boolean) => {
+    if (status) {
+      setFormState(`quiz`);
+    }
+  };
+
   return (
     <>
-      {!courseDetail ? (
+      {isLoading ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -95,13 +105,13 @@ const CourseDetail = () => {
         <section className="md:mt-[56px] mt-8">
           <div>
             <h1 className="text-black-100 font-bold md:text-[37px] text-3xl mb-4 px-4 md:px-0">
-              {courseDetail.title}
+              {courseDetail?.title}
             </h1>
 
             <div className="bg-blue-200 py-3 px-4 flex gap-4">
               <Image alt="gift-icon" src={gift}></Image>
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                Log into your Blockademy a ccount to track progress and claim
+                Log into your Blockademy account to track progress and claim
                 your certificate. You may lose your learning progress without
                 logging in.
               </span>
@@ -114,20 +124,15 @@ const CourseDetail = () => {
               <div>
                 {formState === "video" && (
                   <>
-                    <VideoPlayer />
-                    <Button
-                      className="mt-4"
-                      onClick={() => setFormState("quiz")}
-                    >
-                      Watch done
-                    </Button>
+                    <VideoPlayer onChangeForm={handleChangeForm} />
                   </>
                 )}
                 {courseDetail &&
+                  courseDetail.lesson_data.length != 0 &&
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===
-                        slugify(lesson.lesson_title, { lower: true }) && (
+                        slugifyText(lesson.lesson_title) && (
                         <>
                           {formState === "quiz" && (
                             <Quiz lesson={lesson} index={index} />
@@ -158,21 +163,14 @@ const CourseDetail = () => {
                           {
                             lower: true,
                           }
-                        )}/${slugify(
-                          courseDetail?.lesson_data[index].lesson_title || "",
-                          { lower: true }
+                        )}/${slugifyText(
+                          courseDetail?.lesson_data[index].lesson_title || ""
                         )}`
                       );
                     }}
                   >
                     <CourseModule
                       is_complete={lesson.is_complete}
-                      status={
-                        getLastPathName(pathname) ===
-                        slugify(lesson.lesson_title, { lower: true })
-                          ? "already"
-                          : undefined
-                      }
                       key={index}
                       lesson={lesson}
                     />
