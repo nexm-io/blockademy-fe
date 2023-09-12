@@ -43,7 +43,6 @@ build_docker_prod:
     env: $ENV_PROD
   only:
     - master
-    - dockerize
 
 deploy_dev: &deploy
   stage: deploy
@@ -83,4 +82,3 @@ deploy_prod:
     IP_SERVER: $SERVER_PROD
   only:
     - master
-    - dockerize
