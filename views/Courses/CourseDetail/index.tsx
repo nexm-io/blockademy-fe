@@ -73,11 +73,11 @@ const CourseDetail = () => {
     path,
   ]);
 
-const handleChangeForm = (status: boolean) => {
-  if(status) {
-    setFormState(`quiz`)
-  }
-}
+  const handleChangeForm = (status: boolean) => {
+    if (status) {
+      setFormState(`quiz`);
+    }
+  };
 
   return (
     <>
@@ -88,11 +88,14 @@ const handleChangeForm = (status: boolean) => {
           <div className="mt-10 flex gap-[48px]">
             <SkeletionCard height="500px" width="753px" radius="16px" />
             <div className="flex flex-col gap-4">
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
-              <SkeletionCard height="76px" width="352px" radius="16px" />
+              {Array.from({ length: 5 }, (_, index) => (
+                <SkeletionCard
+                  height="76px"
+                  width="352px"
+                  radius="16px"
+                  key={index}
+                />
+              ))}
             </div>
           </div>
           <SkeletionCard height="36px" width="340px" radius="16px" />
@@ -108,9 +111,9 @@ const handleChangeForm = (status: boolean) => {
             <div className="bg-blue-200 py-3 px-4 flex gap-4">
               <Image alt="gift-icon" src={gift}></Image>
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                Log into your Blockademy a ccount to track progress and claim your
-                certificate. You may lose your learning progress without logging
-                in.
+                Log into your Blockademy account to track progress and claim
+                your certificate. You may lose your learning progress without
+                logging in.
               </span>
             </div>
           </div>
@@ -121,10 +124,11 @@ const handleChangeForm = (status: boolean) => {
               <div>
                 {formState === "video" && (
                   <>
-                    <VideoPlayer onChangeForm={handleChangeForm}/>
+                    <VideoPlayer onChangeForm={handleChangeForm} />
                   </>
                 )}
-                {(courseDetail && courseDetail.lesson_data.length != 0) &&
+                {courseDetail &&
+                  courseDetail.lesson_data.length != 0 &&
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===

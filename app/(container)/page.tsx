@@ -8,6 +8,7 @@ import TutorialStart from "@/views/Home/TutorialStart";
 import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
 import type { Metadata } from "next";
+import ListCardTrending from "@/views/Home/ListCardTrending";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -21,30 +22,19 @@ export default function Home() {
         cardTitle="Latest Releases"
         cardLabel="Latest releases"
         mTop="lg:mt-[160px] md:mt-[100px] mt-[60px]"
-        urlApi="carousel-post"
+        urlApi="created_at"
       />
       <JourneyAcademy />
       <SpecialContent />
-      <ListCard
+      <ListCardTrending
         cardTitle="Trending"
         cardLabel="Trending"
         mTop="mt-[60px]"
-        urlApi="carousel-post"
+        urlApi="total_hit"
       />
-      <TopicList />
+      <TopicList urlApi="created_at" />
       <NotToKnow />
-      <ListCard
-        cardTitle="Backend"
-        cardLabel="Backend"
-        urlApi="carousel-post"
-        mTop="mt-[60px] md:mt-[100px]"
-      />
-      <ListCard
-        cardTitle="Frontend"
-        cardLabel="Frontend"
-        urlApi="carousel-post"
-        mTop="mt-[60px] md:mt-[100px]"
-      />
+
       <TutorialStart />
       <NoSignal />
     </>

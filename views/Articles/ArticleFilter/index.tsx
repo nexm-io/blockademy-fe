@@ -1,8 +1,6 @@
 "use client";
-
 import Button from "@/components/Common/Button";
-import React from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { SortList, SortMenu } from "@/components/Icon";
 import { ArrowUpS } from "@styled-icons/remix-line";
@@ -10,9 +8,22 @@ import { ArrowUpS } from "@styled-icons/remix-line";
 type ArticleFilterProps = {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  status?: "list" | "menu";
+  setStatus?: React.Dispatch<React.SetStateAction<"list" | "menu">>;
 };
 
-const ArticleFilter: React.FC<ArticleFilterProps> = ({ show, setShow }) => {
+const ArticleFilter: React.FC<ArticleFilterProps> = ({
+  show,
+  setShow,
+  status,
+  setStatus,
+}) => {
+  const handleSortListClick = () => {
+    setStatus?.("list");
+  };
+  const handleSortMenuClick = () => {
+    setStatus?.("menu");
+  };
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
       <div className="bg-gray-200 flex gap-7 items-center w-full md:h-[64px] justify-between full-bleed__articleFilter flex-wrap h-auto py-4 md:pt-4 px-4 md:px-0">
@@ -20,11 +31,27 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({ show, setShow }) => {
           <span className="text-gray-100 text-base mr-7">Layout</span>
 
           <div className="flex md:gap-5 gap-3 items-center">
-            <div className="cursor-pointer">
-              <SortList fill="#14151A" />
+            <div className="cursor-pointer" onClick={handleSortListClick}>
+              <SortList
+                fill={`${
+                  status === "list"
+                    ? "#14151A"
+                    : status === "menu"
+                    ? "#AEB4BC"
+                    : ""
+                }`}
+              />
             </div>
-            <div className="cursor-pointer">
-              <SortMenu fill="#AEB4BC" />
+            <div className="cursor-pointer" onClick={handleSortMenuClick}>
+              <SortMenu
+                fill={`${
+                  status === "menu"
+                    ? "#14151A"
+                    : status === "list"
+                    ? "#AEB4BC"
+                    : ""
+                }`}
+              />
             </div>
             <Button
               size="small"
