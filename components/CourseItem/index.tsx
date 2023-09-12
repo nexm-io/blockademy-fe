@@ -13,6 +13,7 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
+import { format } from "date-fns";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,9 @@ const CourseItem = () => {
     }
   }, [dispatch, pathname]);
 
+  console.log(details);
   const LessonCourse = ({ detail }: { detail: Array<ListCourse> }) => {
+    
     return (
       detail && (
         <>
@@ -87,7 +90,11 @@ const CourseItem = () => {
                     height={186}
                     className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
                   />
-                  <div></div>
+                  {getLastPathName(pathname) === STATUS.COMPLETED ? <div
+                      className="flex flex-col gap-3 text-base min-w-[300px]"
+                      dangerouslySetInnerHTML={{ __html: detail.description }}
+                    /> : ""}
+                    <span className="text-xs truncate leading-6">{`Completed ${format(new Date(detail.completed_at || 1 * 1000 ), "EEE MMM dd yyyy HH:mm:ss")}`}</span>
                   <LessonCourse detail={detail.list_courses?.data} />
                 </div>
               </div>

@@ -81,7 +81,7 @@ const CourseDetail = () => {
 
   return (
     <>
-      {isLoading ? (
+      {(isLoading && courseDetail) ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
