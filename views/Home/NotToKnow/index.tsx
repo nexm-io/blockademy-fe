@@ -29,7 +29,7 @@ const NotToKnow = () => {
           <div>
             <Button
               rounded
-              className="mt-[29px]"
+              className="mt-[29px] ml-3 md:ml-auto"
               onClick={() => push("/courses")}
             >
               Join here

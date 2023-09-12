@@ -45,6 +45,8 @@ export interface ArticleDetail {
   image: ImageArticle;
   category: CategoryArticle;
   user: UserArticle;
+  level: string;
+  read_time: number;
 }
 export interface ArticleIntoData {
   id: number;
