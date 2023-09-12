@@ -22,8 +22,6 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
     getDetail();
   }, [dispatch, params.slug]);
 
-
-  
   return (
     <>
       {!detailArticle ? (
@@ -56,8 +54,10 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
             <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
               <ArticleTag tags={detailArticle.tags} />
               <ArticleHeading
+                level={detailArticle.level}
                 title={detailArticle.title}
                 date={detailArticle.created_at}
+                duration={detailArticle.read_time}
               />
               {/* <ArticleSummary /> */}
               <ArticlesSection sections={detailArticle.content} />
