@@ -3,13 +3,18 @@ import {
   getArticleCourse,
   getArticleDetail,
   getLatestArticle,
+  getListTags,
+  getRecommendArticle,
   getRelateArticle,
+  getTrendingArticle,
 } from "./action";
 import { ArticleListResponse } from "./type";
 
 const initialState: ArticleListResponse = {
   success: false,
   data: null,
+  dataTrending: null,
+  dataRecommend: null,
   isLoading: false,
   pagination: {
     total: 0,
@@ -20,6 +25,7 @@ const initialState: ArticleListResponse = {
   },
   detail: null,
   error: null,
+  tags: null,
 };
 
 const articleReducer = createReducer(initialState, (builder) => {
@@ -49,6 +55,30 @@ const articleReducer = createReducer(initialState, (builder) => {
     });
 
   builder
+    .addCase(getTrendingArticle.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getTrendingArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.dataTrending = action.payload.data;
+    })
+    .addCase(getTrendingArticle.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+  builder
+    .addCase(getRecommendArticle.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getRecommendArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.dataRecommend = action.payload.data;
+    })
+    .addCase(getRecommendArticle.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+  builder
     .addCase(getRelateArticle.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -73,6 +103,21 @@ const articleReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(getArticleDetail.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      // state.error = action.payload.data;
+    });
+
+  builder
+    .addCase(getListTags.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getListTags.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.tags = action.payload.data;
+      state.error = null;
+    })
+    .addCase(getListTags.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       // state.error = action.payload.data;
     });

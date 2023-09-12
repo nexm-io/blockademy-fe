@@ -6,11 +6,18 @@ import ArticleLists from "../ArticleLists";
 
 const ArticlePage = () => {
   const [show, setShow] = useState(true);
+  const [status, setStatus] = useState<"list" | "menu">("list");
+  const [time, setTime] = useState<number[]>([]);
   return (
     <section>
       <TopicAcademy show={show} setShow={setShow} />
-      <ArticleFilter show={show} setShow={setShow} />
-      <ArticleLists />
+      <ArticleFilter
+        show={show}
+        setShow={setShow}
+        status={status}
+        setStatus={setStatus}
+      />
+      <ArticleLists status={status} setStatus={setStatus} />
     </section>
   );
 };

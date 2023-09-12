@@ -29,10 +29,14 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
       {!detailArticle ? (
         <div className="my-[60px]">
           <div className="flex gap-2 mb-[48px]">
-            <SkeletionCard height="22px" width="70px" radius="16px" />
-            <SkeletionCard height="22px" width="70px" radius="16px" />
-            <SkeletionCard height="22px" width="70px" radius="16px" />
-            <SkeletionCard height="22px" width="70px" radius="16px" />
+            {Array.from({ length: 4 }, (_, index) => (
+              <SkeletionCard
+                height="22px"
+                width="70px"
+                radius="16px"
+                key={index}
+              />
+            ))}
           </div>
           <div className="flex flex-col gap-4">
             <SkeletionCard height="425px" width="760px" radius="16px" />

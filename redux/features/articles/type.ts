@@ -2,10 +2,18 @@ export interface ArticleListResponse {
   success: boolean;
   isLoading: boolean;
   data: Array<ArticleIntoData> | null;
+  dataTrending: Array<ArticleIntoData> | null;
+  dataRecommend: Array<ArticleIntoData> | null;
   pagination?: PaginationArticle;
   dataLatest?: Array<ArticleIntoData>;
   error: any;
   detail: ArticleDetail | null;
+  tags: ListTagsIntoData | null;
+}
+export interface TagsResponse {
+  success?: boolean;
+  data: ListTagsIntoData;
+  message?: string;
 }
 
 export interface ArticleDetailResponse {
@@ -92,4 +100,28 @@ export interface UserArticle {
   profile_image: null;
   bio: null;
   created_at: null;
+}
+
+export interface ListTagsIntoData {
+  current_page: number;
+  data: Array<TagsData>;
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  next_page_url: string;
+  path: string;
+  per_page: number;
+  prev_page_url: null;
+  to: number;
+  total: number;
+}
+export interface TagsData {
+  id: number;
+  title: string;
+  total_hit: number;
+  status: number;
+  slug: null;
+  created_at: string;
+  updated_at: string;
 }
