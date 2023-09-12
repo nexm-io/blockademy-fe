@@ -4,6 +4,7 @@ import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { TiDelete } from "react-icons/ti";
 import React from "react";
 import { ArticleIntoData } from "@/redux/features/articles/type";
+import { LEVELS } from "@/utils/levels";
 
 interface ChipProps {
   label?: "beginner" | "intermediate" | "advance";
@@ -55,17 +56,18 @@ const Chip: React.FC<ChipProps> = ({
   };
   if (data) {
     let level: "beginner" | "intermediate" | "advance" = "beginner";
-    if (data.level === "intermediate") {
+    if (data.level === LEVELS.INTERMEDIATE) {
       level = "intermediate";
-    } else if (data.level === "advance") {
+    } else if (data.level === LEVELS.ADVANCE) {
       level = "advance";
     }
     const topicStyles = topic
       ? {}
       : {
-          "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": level === "beginner",
-          "!bg-[#37B7FF]/20 !border-[#37B7FF]/20": level === "intermediate",
-          "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": level === "advance",
+          "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": level === LEVELS.BEGINNER,
+          "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
+            level === LEVELS.INTERMEDIATE,
+          "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": level === LEVELS.ADVANCE,
         };
     return (
       <div className="prose">
@@ -91,9 +93,9 @@ const Chip: React.FC<ChipProps> = ({
           <span
             className={cn(
               {
-                "!text-[#02C0A9]": level === "beginner",
-                "!text-[#37B7FF]": level === "intermediate",
-                "!text-[#FF1D1D]": level === "advance",
+                "!text-[#02C0A9]": level === LEVELS.BEGINNER,
+                "!text-[#37B7FF]": level === LEVELS.INTERMEDIATE,
+                "!text-[#FF1D1D]": level === LEVELS.ADVANCE,
               },
               className,
               " absolute left-[7px] top-[4px] inline-flex items-center justify-center text-[20px] mr-2"
@@ -122,7 +124,7 @@ const Chip: React.FC<ChipProps> = ({
               `${deleteIcon && "flex items-center justify-center"}`
             )}
           >
-            <span className="capitalize">{data?.level || "Beginner"}</span>
+            <span className="capitalize">{data?.level || LEVELS.BEGINNER}</span>
             {deleteIcon && (
               <span className="ml-2" onClick={handleDelete}>
                 <TiDelete className="w-5 h-5" />
@@ -146,11 +148,12 @@ const Chip: React.FC<ChipProps> = ({
               "text-white-100": topic,
               "text-gray-100": !topic,
               "!bg-[#02C0A9]/20 !border-[#02C0A9]/20":
-                (newbie && levelParam) || levelDetail === "beginner",
+                (newbie && levelParam) || levelDetail === LEVELS.BEGINNER,
               "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
-                (intermediate && levelParam) || levelDetail === "intermediate",
+                (intermediate && levelParam) ||
+                levelDetail === LEVELS.INTERMEDIATE,
               "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20":
-                (advanced && levelParam) || levelDetail === "advance",
+                (advanced && levelParam) || levelDetail === LEVELS.ADVANCE,
             },
             className,
             " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in"
