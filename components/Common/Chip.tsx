@@ -4,9 +4,10 @@ import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { TiDelete } from "react-icons/ti";
 import React from "react";
 import { ArticleIntoData } from "@/redux/features/articles/type";
+import { LEVELS } from "@/utils/levels";
 
 interface ChipProps {
-  label?: "beginner" | "intermediate" | "advanced";
+  label?: "beginner" | "intermediate" | "advance";
   outline?: boolean;
   avatar?: React.ReactElement;
   deleteIcon?: boolean;
@@ -22,6 +23,7 @@ interface ChipProps {
   fullWidth?: boolean;
   data?: ArticleIntoData;
   topic?: boolean;
+  levelParam?: "beginner" | "intermediate" | "advance";
 }
 
 const Chip: React.FC<ChipProps> = ({
@@ -41,6 +43,7 @@ const Chip: React.FC<ChipProps> = ({
   size = "normal",
   data,
   topic = false,
+  levelParam,
 }) => {
   const handleDelete = (event: React.MouseEvent) => {
     if (onDelete) {
@@ -48,18 +51,19 @@ const Chip: React.FC<ChipProps> = ({
     }
   };
   if (data) {
-    let level: "beginner" | "intermediate" | "advanced" = "beginner";
-    if (data.level === "intermediate") {
+    let level: "beginner" | "intermediate" | "advance" = "beginner";
+    if (data.level === LEVELS.INTERMEDIATE) {
       level = "intermediate";
-    } else if (data.level === "advanced") {
-      level = "advanced";
+    } else if (data.level === LEVELS.ADVANCE) {
+      level = "advance";
     }
     const topicStyles = topic
       ? {}
       : {
-          "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": level === "beginner",
-          "!bg-[#37B7FF]/20 !border-[#37B7FF]/20": level === "intermediate",
-          "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": level === "advanced",
+          "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": level === LEVELS.BEGINNER,
+          "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
+            level === LEVELS.INTERMEDIATE,
+          "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": level === LEVELS.ADVANCE,
         };
     return (
       <div className="prose">
@@ -85,9 +89,9 @@ const Chip: React.FC<ChipProps> = ({
           <span
             className={cn(
               {
-                "!text-[#02C0A9]": level === "beginner",
-                "!text-[#37B7FF]": level === "intermediate",
-                "!text-[#FF1D1D]": level === "advanced",
+                "!text-[#02C0A9]": level === LEVELS.BEGINNER,
+                "!text-[#37B7FF]": level === LEVELS.INTERMEDIATE,
+                "!text-[#FF1D1D]": level === LEVELS.ADVANCE,
               },
               className,
               " absolute left-[7px] top-[4px] inline-flex items-center justify-center text-[20px] mr-2"
@@ -116,7 +120,7 @@ const Chip: React.FC<ChipProps> = ({
               `${deleteIcon && "flex items-center justify-center"}`
             )}
           >
-            <span className="capitalize">{data?.level || "Beginner"}</span>
+            <span className="capitalize">{data?.level || LEVELS.BEGINNER}</span>
             {deleteIcon && (
               <span className="ml-2" onClick={handleDelete}>
                 <TiDelete className="w-5 h-5" />
@@ -132,16 +136,19 @@ const Chip: React.FC<ChipProps> = ({
         <span
           className={cn(
             {
-              " !border !bg-transparent": !disabled && outline,
+              " !border !bg-transparent": !disabled && outline && levelParam,
               "opacity-70 !cursor-not-allowed": disabled,
               "px-[18px] py-[5px] text-xs leading-[20px] font-normal":
                 size === "small",
               "w-full": fullWidth,
               "text-white-100": topic,
               "text-gray-100": !topic,
-              "!bg-[#02C0A9]/20 !border-[#02C0A9]/20": newbie,
-              "!bg-[#37B7FF]/20 !border-[#37B7FF]/20": intermediate,
-              "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": advanced,
+              "!bg-[#02C0A9]/20 !border-[#02C0A9]/20":
+                newbie && levelParam === LEVELS.BEGINNER,
+              "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
+                intermediate && levelParam === LEVELS.INTERMEDIATE,
+              "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20":
+                advanced && levelParam === LEVELS.ADVANCE,
             },
             className,
             " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in"

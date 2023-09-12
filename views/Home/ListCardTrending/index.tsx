@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getTrendingArticle } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import Link from "next/link";
 
 interface ListCardProps {
   cardTitle: string;
@@ -38,9 +39,11 @@ const ListCardTrending: React.FC<ListCardProps> = ({
           {cardTitle}
         </h4>
         <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
-          <span className="text-black-100 text-xs font-normal uppercase">
-            see all {cardLabel}
-          </span>
+          <Link href="/articles">
+            <span className="text-black-100 text-xs font-normal uppercase">
+              see all {cardLabel}
+            </span>
+          </Link>
           <Image alt="vector" src={vectorIcon}></Image>
         </div>
       </div>

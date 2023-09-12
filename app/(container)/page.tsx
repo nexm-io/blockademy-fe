@@ -9,6 +9,7 @@ import GiftHeader from "@/components/GiftHeader";
 import NoSignal from "@/components/NoSignal";
 import type { Metadata } from "next";
 import ListCardTrending from "@/views/Home/ListCardTrending";
+import ListCardRecommend from "@/views/Home/ListCardRecommend";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -34,7 +35,11 @@ export default function Home() {
       />
       <TopicList urlApi="created_at" />
       <NotToKnow />
-
+      <ListCardRecommend
+        cardTitle="Recommend"
+        cardLabel="Recommend"
+        mTop="mt-[60px]"
+      />
       <TutorialStart />
       <NoSignal />
     </>

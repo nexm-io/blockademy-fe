@@ -3,6 +3,7 @@ export interface ArticleListResponse {
   isLoading: boolean;
   data: Array<ArticleIntoData> | null;
   dataTrending: Array<ArticleIntoData> | null;
+  dataRecommend: Array<ArticleIntoData> | null;
   pagination?: PaginationArticle;
   dataLatest?: Array<ArticleIntoData>;
   error: any;

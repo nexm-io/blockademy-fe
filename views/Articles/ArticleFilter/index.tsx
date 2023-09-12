@@ -10,6 +10,8 @@ type ArticleFilterProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   status?: "list" | "menu";
   setStatus?: React.Dispatch<React.SetStateAction<"list" | "menu">>;
+  time?: number;
+  setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
 const ArticleFilter: React.FC<ArticleFilterProps> = ({
@@ -17,6 +19,8 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   setShow,
   status,
   setStatus,
+  time,
+  setTime,
 }) => {
   const handleSortListClick = () => {
     setStatus?.("list");

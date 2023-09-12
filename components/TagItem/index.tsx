@@ -1,32 +1,45 @@
 "use client";
 import { ListTagsIntoData } from "@/redux/features/articles/type";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;
-  choose: string | undefined;
-  setChoose: React.Dispatch<React.SetStateAction<string | undefined>>;
+  choose: string[] | undefined;
+  setChoose: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   academy?: boolean;
+  handleTagClick?: (tag: string) => void | undefined;
 }
 const TagItem: React.FC<TagItemProps> = ({
   dataTags,
   choose,
-  setChoose,
   academy,
+  handleTagClick,
+  setChoose,
 }) => {
-  useEffect(() => {
-    if (dataTags && dataTags.data.length > 0 && choose === undefined) {
-      setChoose(dataTags.data[0].title);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const toggleTagSelection = (tagTitle: string) => {
+    if (selectedTags.includes(tagTitle)) {
+      // Nếu đã chọn, loại bỏ nó khỏi danh sách chọn
+      setSelectedTags(selectedTags.filter((item) => item !== tagTitle));
+    } else {
+      // Nếu chưa chọn, thêm nó vào danh sách chọn
+      setSelectedTags([...selectedTags, tagTitle]);
     }
-  }, [dataTags, choose, setChoose]);
+
+    if (handleTagClick) {
+      handleTagClick(tagTitle);
+    }
+  };
+
   return (
     <>
       {dataTags &&
         dataTags.data.map((item, index) => (
           <span
             key={index}
-            className={`text-base text-center rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-[21px] capitalize ${
-              choose === item.title
+            className={`text-sm text-center rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-3 capitalize ${
+              selectedTags.includes(item.title)
                 ? academy
                   ? "bg-gray-400 text-black-100 font-medium"
                   : "bg-gray-50 text-black-100"
@@ -34,9 +47,7 @@ const TagItem: React.FC<TagItemProps> = ({
                 ? "bg-gray-50 text-gray-500 font-normal"
                 : "border border-gray-600 text-gray-500"
             }`}
-            onClick={() =>
-              setChoose(choose === item.title ? undefined : item.title)
-            }
+            onClick={() => toggleTagSelection(item.title)}
           >
             &#35;{item.title}
           </span>
