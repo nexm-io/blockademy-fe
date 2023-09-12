@@ -1,7 +1,10 @@
+import ListRewards from "@/views/Rewards/ListRewards";
 import React from "react";
 
 const MyReward = () => {
-  return <div className="mt-[74px]">MyReward</div>;
+  return <div className="mt-[74px]">
+      <ListRewards />
+  </div>;
 };
 
 export default MyReward;

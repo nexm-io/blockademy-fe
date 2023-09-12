@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { CourseTypes } from "@/redux/features/courses/type";
@@ -9,18 +8,36 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
-import { getListCourse } from "@/redux/features/courses/action";
+import { claimReward, getListCourse } from "@/redux/features/courses/action";
 import Link from "next/link";
 import slugify from "slugify";
+import { convertEpochToDateTime } from "@/utils/convertEpochToDateTime";
+import { formatDate, getDate } from "@/utils/formatDate";
+import { toast } from "react-toastify";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
+  const [currentDay, setCurrentDay] = useState<Date | string>("")
   const { push } = useRouter();
   const dispatch = useAppDispatch();
-
+  
   useEffect(() => {
+    const dateObject = new Date();
+    setCurrentDay(dateObject)
     dispatch(getListCourse());
   }, [dispatch]);
+
+  const handleClaim = async (section : CourseTypes) => {
+    if(section.reward_is_claimed === 1) {
+      toast.error("Reward has been received")
+    } else {
+      const res = await dispatch(claimReward(section.id)).unwrap()
+      res.success && toast.success("Claim reward successfully") 
+    }
+  }
+  
+  
+
   return (
     <>
       {!details ? (
@@ -90,10 +107,11 @@ const CourseLists = function () {
                         Certificate
                       </span>
                     </div>
-                    <div className="prose flex items-center gap-[10px] pr-4 text-blue-100 basis-[30%] justify-end">
+                    <div className="prose flex-col flex items-center gap-1 pr-4 text-blue-100 basis-[30%] justify-end">
                       <Button
                         type="button"
-                        disabled={section.is_finished === 0}
+                        onClick={() => handleClaim(section)}
+                        disabled={ (getDate(currentDay) <= getDate(convertEpochToDateTime(section.reward_released_date || 0)) || section.is_finished === 0)}
                         className={`line-clamp-1 md:block   ${
                           section.is_finished === 0
                             ? "opacity-30"
@@ -101,7 +119,12 @@ const CourseLists = function () {
                         }`}
                       >
                         Claim reward
+                        
                       </Button>
+                      {
+                       section.is_finished === 1 && getDate(currentDay) <= getDate(convertEpochToDateTime(section.reward_released_date || 0)) ?
+                        <span className="text-red-500 text-xs truncate">Reward will be released in {convertEpochToDateTime(section.reward_released_date || 0)}</span> : " "
+                      }
                     </div>
                   </div>
                 </div>

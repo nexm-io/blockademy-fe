@@ -71,3 +71,19 @@ export const saveAnswerQuiz = createAsyncThunk<
   );
   return response.data;
 });
+
+
+export const claimReward = createAsyncThunk<
+CourseResponse,
+  number
+>("courses/claim-reward", async (campaign_id) => {
+  const response = await api.post(
+    `/api/v10/campaign/${campaign_id}/reward/claimed-reward`,
+    {
+      headers: {
+        apiKey: "",
+      },
+    }
+  );
+  return response.data;
+});
