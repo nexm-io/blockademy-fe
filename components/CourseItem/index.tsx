@@ -12,6 +12,7 @@ import { CourseTypes, ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
+import { STATUS } from "@/utils/status";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ const CourseItem = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (getLastPathName(pathname) == "completed") {
+    if (getLastPathName(pathname) === STATUS.COMPLETED) {
       dispatch(getListCourse("3"));
     } else {
       dispatch(getListCourse("2"));

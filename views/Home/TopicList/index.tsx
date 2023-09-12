@@ -48,7 +48,6 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
 
   const handleTagClick = (tagTitle: string) => {
     const newTagParam = tagParam ? [...tagParam] : [];
-    console.log("handleTagClick ~ newTagParam:", newTagParam);
     if (newTagParam.includes(tagTitle)) {
       const index = newTagParam.indexOf(tagTitle);
       if (index > -1) {
