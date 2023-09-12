@@ -48,7 +48,6 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
 
   const handleTagClick = (tagTitle: string) => {
     const newTagParam = tagParam ? [...tagParam] : [];
-    console.log("handleTagClick ~ newTagParam:", newTagParam);
     if (newTagParam.includes(tagTitle)) {
       const index = newTagParam.indexOf(tagTitle);
       if (index > -1) {
@@ -75,8 +74,8 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg ">
               Topics:
             </h3>
-            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap">
-              <div className="flex gap-2 md:gap-[15px]">
+            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap overflow-hidden ">
+              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-full flex-wrap">
                 {dataTags ? (
                   <TagItem
                     dataTags={dataTags}

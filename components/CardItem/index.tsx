@@ -38,7 +38,7 @@ const CardItem: React.FC<CardItemProps> = ({
           status === "list"
             ? "flex-col w-[352px] shadow-lg hover:shadow-3xl lg:h-[370px] h-[340px]"
             : status === "menu"
-            ? "w-full"
+            ? "w-[352px] md:w-full md:flex-row flex-col"
             : ""
         } ${topicBalance ? "h-[100px]" : "h-auto"} ${
           topicReverse ? "flex-row-reverse" : "flex-row"
@@ -104,25 +104,25 @@ const CardItem: React.FC<CardItemProps> = ({
           } flex justify-between flex-col  flex-1`}
         >
           <h2
-            className={`
-           ${
-             topicShort
-               ? "text-lg text-white-100"
-               : topic
-               ? "text-[30px] text-white-100"
-               : "text-lg text-black-100 leading-7"
-           }
-           ${topic || topicShort ? "ml-6" : "m-6"}
-          ${topicReverse ? "text-right" : ""}
-           ${topic ? "mb-2" : ""} ${topicBalance ? "text-white-100" : ""}
-           font-bold
-           line-clamp-2
+            className={`${
+              topicShort
+                ? "text-lg text-white-100"
+                : topic
+                ? "text-[30px] text-white-100"
+                : "text-lg text-black-100 leading-7"
+            } ${
+              topic || topicShort
+                ? "ml-6"
+                : "md:m-6 mt-6 ml-2 md:ml-6 mb-4 md:mb-6"
+            } ${topicReverse ? "text-right" : ""} ${topic ? "mb-2" : ""} ${
+              topicBalance ? "text-white-100" : ""
+            } font-bold line-clamp-2
          `}
           >
             {data.title}
           </h2>
           {status === "menu" && !topic && !topicBalance && (
-            <p className="ml-6 text-black-100 font-normal leading-7 line-clamp-3">
+            <p className="hidden md:block ml-6 text-black-100 font-normal leading-7 line-clamp-3">
               {data.meta_description}
             </p>
           )}
@@ -140,7 +140,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 topicShort || topic
                   ? "flex-col-reverse"
                   : "mt-auto items-center"
-              } ${topicReverse ? "px-0 items-end" : "px-6"} flex 
+              } ${topicReverse ? "px-0 items-end" : "md:px-6 px-2"} flex 
          `}
             >
               {/* TODO: chip component */}

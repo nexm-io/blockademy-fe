@@ -4,14 +4,26 @@ import React, { useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { SortList, SortMenu } from "@/components/Icon";
 import { ArrowUpS } from "@styled-icons/remix-line";
+import { useAppDispatch } from "@/redux/hook";
+import { getArticleCourse } from "@/redux/features/articles/action";
 
 type ArticleFilterProps = {
-  show: boolean;
+  show?: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   status?: "list" | "menu";
   setStatus?: React.Dispatch<React.SetStateAction<"list" | "menu">>;
-  time?: number;
+  time?: number[];
   setTime?: React.Dispatch<React.SetStateAction<number[]>>;
+  choose?: string[] | undefined;
+  setChoose?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  levelParam?: "beginner" | "intermediate" | "advance";
+  setLevelParam?: React.Dispatch<
+    React.SetStateAction<"beginner" | "intermediate" | "advance" | undefined>
+  >;
+  tagParam?: string[] | undefined;
+  setTagParam?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  page?: number;
+  limit?: number;
 };
 
 const ArticleFilter: React.FC<ArticleFilterProps> = ({
@@ -21,13 +33,34 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   setStatus,
   time,
   setTime,
+  levelParam,
+  setLevelParam,
+  tagParam,
+  setTagParam,
+  page = 1,
+  limit = 20,
+  choose,
+  setChoose,
 }) => {
+  const dispatch = useAppDispatch();
+
   const handleSortListClick = () => {
     setStatus?.("list");
   };
   const handleSortMenuClick = () => {
     setStatus?.("menu");
   };
+
+  const handleClickTotal = () => {
+    const dispatchParams = {
+      page,
+      levelParam: levelParam,
+      tagParam: choose || [],
+      time: time || [],
+    };
+    dispatch(getArticleCourse(dispatchParams));
+  };
+
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
       <div className="bg-gray-200 flex gap-7 items-center w-full md:h-[64px] justify-between full-bleed__articleFilter flex-wrap h-auto py-4 md:pt-4 px-4 md:px-0">
@@ -59,7 +92,12 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
             </div>
             <Button
               size="small"
-              className="!bg-black-100 hover:!bg-black-500 !px-3"
+              className={`${
+                levelParam || (choose && choose.length > 0)
+                  ? "!bg-black-100 !text-white-100"
+                  : "!bg-transparent !text-black-100"
+              } !px-3`}
+              onClick={handleClickTotal}
             >
               Apply filters
             </Button>
