@@ -2,7 +2,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 const labels = ["1m", "3m", "5m", "10m", "15m", "20m", "25m", "∞"];
 
-const DoubleRangeSlider = () => {
+interface DoubleRangeSlider {
+  time?: number[];
+  setTime?: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
   const [sliderValues, setSliderValues] = useState([3, 15]);
 
   const handleSliderChange = (event: any) => {
@@ -41,10 +46,17 @@ const DoubleRangeSlider = () => {
     fillColor();
   }, [fillColor, sliderOneValue, sliderTwoValue]);
 
+  const updateParentTime = useCallback(() => {
+    if (setTime) {
+      setTime([sliderOneValue, sliderTwoValue]);
+    }
+  }, [setTime, sliderOneValue, sliderTwoValue]);
+
   useEffect(() => {
     slideOne();
     slideTwo();
-  }, [slideOne, slideTwo]);
+    updateParentTime();
+  }, [slideOne, slideTwo, updateParentTime]);
 
   return (
     <>

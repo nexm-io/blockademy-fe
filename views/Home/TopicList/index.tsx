@@ -74,8 +74,8 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg ">
               Topics:
             </h3>
-            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap">
-              <div className="flex gap-2 md:gap-[15px]">
+            <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap overflow-hidden ">
+              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-full flex-wrap">
                 {dataTags ? (
                   <TagItem
                     dataTags={dataTags}
