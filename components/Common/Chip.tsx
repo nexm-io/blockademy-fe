@@ -23,6 +23,8 @@ interface ChipProps {
   data?: ArticleIntoData;
   topic?: boolean;
   levelParam?: "beginner" | "intermediate" | "advance";
+  levelDetail?: string;
+  labelDetails?: string;
 }
 
 const Chip: React.FC<ChipProps> = ({
@@ -43,6 +45,8 @@ const Chip: React.FC<ChipProps> = ({
   data,
   topic = false,
   levelParam,
+  labelDetails,
+  levelDetail,
 }) => {
   const handleDelete = (event: React.MouseEvent) => {
     if (onDelete) {
@@ -142,11 +146,11 @@ const Chip: React.FC<ChipProps> = ({
               "text-white-100": topic,
               "text-gray-100": !topic,
               "!bg-[#02C0A9]/20 !border-[#02C0A9]/20":
-                newbie && levelParam === "beginner",
+                (newbie && levelParam) || levelDetail === "beginner",
               "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
-                intermediate && levelParam === "intermediate",
+                (intermediate && levelParam) || levelDetail === "intermediate",
               "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20":
-                advanced && levelParam === "advance",
+                (advanced && levelParam) || levelDetail === "advance",
             },
             className,
             " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in"
@@ -186,7 +190,7 @@ const Chip: React.FC<ChipProps> = ({
               `${deleteIcon && "flex items-center justify-center"}`
             )}
           >
-            <span className="capitalize">{label}</span>
+            <span className="capitalize">{label || labelDetails}</span>
             {deleteIcon && (
               <span className="ml-2" onClick={handleDelete}>
                 <TiDelete className="w-5 h-5" />
