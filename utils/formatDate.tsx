@@ -1,4 +1,4 @@
-export function formatDate(inputDateStr: string | Date ) {
+export function formatDate(inputDateStr: string | Date | number) {
   const originalDate = new Date(inputDateStr);
   const months = [
     "Jan",

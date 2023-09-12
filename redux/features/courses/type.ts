@@ -1,6 +1,6 @@
 export interface CourseTypes {
   reward_is_claimed: number;
-  reward_released_date?: number ;
+  reward_released_date: number ;
   completed_at?: number;
   id: number;
   title: string;
@@ -27,6 +27,7 @@ export interface CourseResponse {
 export interface ListCourse {
   type?: string;
   id: number;
+  slug?: string;
   title: string;
   duration: number;
   is_completed: number;
@@ -81,6 +82,9 @@ export interface CourseDetail {
   lesson_data: Array<Lesson>;
   lesson_type: string;
   is_complete: number;
+  other_courses: {
+    data: Array<ListCourse>
+  }
 }
 
 

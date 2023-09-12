@@ -1,7 +1,8 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { fetchReward } from "./action";
+import { fetchDetail, fetchReward } from "./action";
 
 interface Reward {
+  is_claimed: number;
   id: number;
   title: string;
   name: string;
@@ -19,6 +20,7 @@ interface UserResponse {
   isLoading: boolean;
   data: Array<Reward>;
   error: any;
+  detail: Reward | null;
 }
 
 const initialState: UserResponse = {
@@ -26,6 +28,7 @@ const initialState: UserResponse = {
   isLoading: false,
   data: [],
   error: null,
+  detail: null,
 };
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -40,6 +43,21 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(fetchReward.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      // state.error = action.payload.data;
+    });
+
+    builder
+    .addCase(fetchDetail.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(fetchDetail.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.detail = action.payload.data;
+      state.error = null;
+    })
+    .addCase(fetchDetail.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       // state.error = action.payload.data;
     });

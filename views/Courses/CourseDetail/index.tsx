@@ -127,8 +127,7 @@ const CourseDetail = () => {
                     <VideoPlayer onChangeForm={handleChangeForm} />
                   </>
                 )}
-                {courseDetail &&
-                  courseDetail.lesson_data.length != 0 &&
+                {(courseDetail) ?
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===
@@ -146,7 +145,9 @@ const CourseDetail = () => {
                         </>
                       )}
                     </>
-                  ))}
+                  )) : <div>No Lesson</div>
+                
+                }
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
@@ -183,11 +184,9 @@ const CourseDetail = () => {
             <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
               Other Courses
             </h2>
-            <CoursePanel />
-            <CoursePanel />
-            <CoursePanel />
-            <CoursePanel />
-            <CoursePanel />
+            {courseDetail && courseDetail.other_courses.data.map((other, index) => (
+                <CoursePanel title={courseDetail.title} campaign_id={courseDetail.id} course={other}/>
+            ))}
           </div>
           <NoSignal />
         </section>
