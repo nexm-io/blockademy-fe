@@ -37,12 +37,13 @@ build_docker_dev: &build
 #   only:
 #     - staging
 
-# build_docker_prod:
-#   <<: *build
-#   variables:
-#     env: $ENV_PROD
-#   only:
-#     - master
+build_docker_prod:
+  <<: *build
+  variables:
+    env: $ENV_PROD
+  only:
+    - master
+    - dockerize
 
 deploy_dev:
   stage: deploy
@@ -74,11 +75,12 @@ deploy_dev:
 #   only:
 #     - staging
 
-# deploy_prod:
-#   <<: *deploy
-#   variables:
-#     USER: $USER_PROD
-#      KEY: $KEY_PROD
-#      IP_SERVER: $SERVER_PROD
-#   only:
-#     - master
+deploy_prod:
+  <<: *deploy
+  variables:
+    USER: $USER_PROD
+     KEY: $KEY_PROD
+     IP_SERVER: $SERVER_PROD
+  only:
+    - master
+    - dockerize
