@@ -79,8 +79,8 @@ deploy_prod:
   <<: *deploy
   variables:
     USER: $USER_PROD
-     KEY: $KEY_PROD
-     IP_SERVER: $SERVER_PROD
+    KEY: $KEY_PROD
+    IP_SERVER: $SERVER_PROD
   only:
     - master
     - dockerize
