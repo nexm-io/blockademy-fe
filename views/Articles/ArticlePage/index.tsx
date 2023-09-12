@@ -7,7 +7,7 @@ import ArticleLists from "../ArticleLists";
 const ArticlePage = () => {
   const [show, setShow] = useState(true);
   const [status, setStatus] = useState<"list" | "menu">("list");
-
+  const [time, setTime] = useState<number[]>([]);
   return (
     <section>
       <TopicAcademy show={show} setShow={setShow} />

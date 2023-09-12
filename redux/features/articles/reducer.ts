@@ -4,6 +4,7 @@ import {
   getArticleDetail,
   getLatestArticle,
   getListTags,
+  getRecommendArticle,
   getRelateArticle,
   getTrendingArticle,
 } from "./action";
@@ -13,6 +14,7 @@ const initialState: ArticleListResponse = {
   success: false,
   data: null,
   dataTrending: null,
+  dataRecommend: null,
   isLoading: false,
   pagination: {
     total: 0,
@@ -61,6 +63,18 @@ const articleReducer = createReducer(initialState, (builder) => {
       state.dataTrending = action.payload.data;
     })
     .addCase(getTrendingArticle.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+  builder
+    .addCase(getRecommendArticle.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getRecommendArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.dataRecommend = action.payload.data;
+    })
+    .addCase(getRecommendArticle.rejected, (state) => {
       state.isLoading = false;
     });
 

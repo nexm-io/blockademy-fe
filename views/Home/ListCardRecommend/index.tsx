@@ -5,7 +5,7 @@ import vectorIcon from "@/public/icons/arrowright.svg";
 import CardItem from "@/components/CardItem";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getLatestArticle } from "@/redux/features/articles/action";
+import { getRecommendArticle } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
 
@@ -16,17 +16,19 @@ interface ListCardProps {
   urlApi?: string;
 }
 
-const ListCard: React.FC<ListCardProps> = ({
+const ListCardRecommend: React.FC<ListCardProps> = ({
   cardTitle,
   cardLabel,
   mTop,
   urlApi,
 }) => {
   const dispatch = useAppDispatch();
-  const data = useAppSelector((state: RootState) => state.articles.data);
+  const data = useAppSelector(
+    (state: RootState) => state.articles.dataRecommend
+  );
 
   useEffect(() => {
-    dispatch(getLatestArticle({ params: urlApi }));
+    dispatch(getRecommendArticle({}));
   }, [dispatch, urlApi]);
 
   return (
@@ -47,11 +49,11 @@ const ListCard: React.FC<ListCardProps> = ({
       <div className="flex lg:gap-[47px] gap-8 ml-4 lg:ml-0 md:flex-row flex-col md:flex-wrap">
         {data ? (
           data
-            .slice(0, 6)
+            .slice(2, 5)
             .map((item, index) => <CardItem data={item} key={index} />)
         ) : (
           <>
-            {Array.from({ length: 6 }, (_, index) => (
+            {Array.from({ length: 3 }, (_, index) => (
               <SkeletionCard
                 width="352px"
                 height="370px"
@@ -66,4 +68,4 @@ const ListCard: React.FC<ListCardProps> = ({
   );
 };
 
-export default ListCard;
+export default ListCardRecommend;

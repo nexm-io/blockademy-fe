@@ -11,13 +11,18 @@ import CardItem from "@/components/CardItem";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Chip from "../../../components/Common/Chip";
 import TagItem from "@/components/TagItem";
+import Link from "next/link";
 
 interface TopicListProps {
   urlApi?: string;
 }
 
 const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
-  const [choose, setChoose] = useState<string | undefined>(undefined);
+  const [choose, setChoose] = useState<string[] | undefined>(undefined);
+  const [levelParam, setLevelParam] = useState<
+    "beginner" | "intermediate" | "advance" | undefined
+  >(undefined);
+  const [tagParam, setTagParam] = useState<string[] | undefined>(undefined);
   const [page] = useState<number>(1);
   const [limit] = useState<number>(7);
   const dispatch = useAppDispatch();
@@ -30,6 +35,36 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
     dispatch(getArticleCourse({ page }));
     dispatch(getListTags({ limit }));
   }, [dispatch, page, limit]);
+
+  const handleChipClick = (level: "beginner" | "intermediate" | "advance") => {
+    const dispatchParams = {
+      page,
+      levelParam: level,
+      tagParam: tagParam || [],
+    };
+    setLevelParam(level);
+    dispatch(getArticleCourse(dispatchParams));
+  };
+
+  const handleTagClick = (tagTitle: string) => {
+    const newTagParam = tagParam ? [...tagParam] : [];
+    console.log("handleTagClick ~ newTagParam:", newTagParam);
+    if (newTagParam.includes(tagTitle)) {
+      const index = newTagParam.indexOf(tagTitle);
+      if (index > -1) {
+        newTagParam.splice(index, 1);
+      }
+    } else {
+      newTagParam.push(tagTitle);
+    }
+    setTagParam(newTagParam);
+    const dispatchParams = {
+      page,
+      tagParam: tagParam ? [...tagParam] : [],
+      levelParam: levelParam,
+    };
+    dispatch(getArticleCourse(dispatchParams));
+  };
 
   return (
     <section className="my-[82px] full-bleed">
@@ -47,6 +82,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                     dataTags={dataTags}
                     choose={choose}
                     setChoose={setChoose}
+                    handleTagClick={handleTagClick}
                   />
                 ) : (
                   <>
@@ -87,30 +123,40 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             </h3>
             <div className="flex gap-[15px]">
               <div className="flex md:flex-row flex-col gap-[15px]">
-                <div className="text-black-100 font-medium text-base  rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize w-fit h-[28px] relative">
+                <div
+                  className="text-black-100 font-medium text-base  rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize w-fit h-[28px] relative border border-[#02C0A9] border-opacity-40"
+                  onClick={() => handleChipClick("beginner")}
+                >
                   <Chip
                     label="beginner"
+                    levelParam={levelParam}
                     newbie
                     size="small"
                     className="text-white-100"
                   ></Chip>
                 </div>
-                <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] relative w-fit">
+                <div
+                  className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] relative w-fit border border-[#37B7FF] border-opacity-40"
+                  onClick={() => handleChipClick("intermediate")}
+                >
                   <Chip
                     label="intermediate"
+                    levelParam={levelParam}
                     size="small"
                     intermediate
-                    outline
                     className="text-white-100"
                   ></Chip>
                 </div>
               </div>
-              <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] w-fit relative border border-[#43171B]">
+              <div
+                className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] w-fit relative border border-[#FF1D1D] border-opacity-40"
+                onClick={() => handleChipClick("advance")}
+              >
                 <Chip
-                  label="advanced"
+                  label="advance"
+                  levelParam={levelParam}
                   advanced
                   size="small"
-                  outline
                   className="text-white-100"
                 ></Chip>
               </div>
@@ -157,7 +203,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 md:mx-0 mx-3">
               {!isLoading && data ? (
                 data
-                  .slice(3, 4)
+                  .slice(2, 3)
                   .map((item, index) => (
                     <CardItem
                       data={item}
@@ -178,7 +224,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end md:mx-0 mx-3">
               {!isLoading && data ? (
                 data
-                  .slice(10, 11)
+                  .slice(3, 4)
                   .map((item, index) => (
                     <CardItem
                       data={item}
@@ -198,7 +244,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 md:mx-0 mx-3">
               {!isLoading && data ? (
                 data
-                  .slice(7, 8)
+                  .slice(4, 5)
                   .map((item, index) => (
                     <CardItem
                       data={item}
@@ -217,7 +263,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 md:mx-0 mx-3">
               {!isLoading && data ? (
                 data
-                  .slice(8, 9)
+                  .slice(5, 6)
                   .map((item, index) => (
                     <CardItem
                       data={item}
@@ -234,8 +280,10 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
             </div>
           </div>
           <div className="text-gray-500 flex items-center justify-center gap-4 w-full mt-[40px] pb-5 md:pb-0 hover:underline cursor-pointer">
-            <span>See more content on this topic</span>
-            <HiOutlineArrowRight className="text-blue-400 text-[20px]" />
+            <Link href="/articles" className="flex gap-4">
+              <span>See more content on this topic</span>
+              <HiOutlineArrowRight className="text-blue-400 text-[20px]" />
+            </Link>
           </div>
         </div>
       </div>

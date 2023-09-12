@@ -10,11 +10,18 @@ import React, { useEffect, useState } from "react";
 type TopicAcademyProps = {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  time?: number;
+  setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 };
 
-const TopicAcademy: React.FC<TopicAcademyProps> = ({ show }) => {
-  const [choose, setChoose] = useState<string | undefined>(undefined);
-  const [limit] = useState<number>(7);
+const TopicAcademy: React.FC<TopicAcademyProps> = ({
+  show,
+  setShow,
+  time,
+  setTime,
+}) => {
+  const [choose, setChoose] = useState<string[] | undefined>(undefined);
+  const [limit] = useState<number>(20);
   const dispatch = useAppDispatch();
   const dataTags = useAppSelector((state: RootState) => state.articles.tags);
 
@@ -49,7 +56,7 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({ show }) => {
               <div className="flex gap-[15px] mt-[11px] mb-[30px]">
                 <div className="flex md:flex-row flex-col gap-[15px]">
                   <div className="text-black-100 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize w-fit h-[28px] relative">
-                    <Chip label="beginner" newbie size="small"></Chip>
+                    <Chip label="beginner" outline newbie size="small"></Chip>
                   </div>
                   <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] relative w-fit">
                     <Chip
@@ -61,7 +68,7 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({ show }) => {
                   </div>
                 </div>
                 <div className="text-gray-500 font-medium text-base rounded-full cursor-pointer py-[2px] flex items-center justify-center capitalize  h-[28px] w-fit relative">
-                  <Chip label="advanced" advanced size="small" outline></Chip>
+                  <Chip label="advance" advanced size="small" outline></Chip>
                 </div>
               </div>
             </div>
