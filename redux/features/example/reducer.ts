@@ -9,6 +9,6 @@ const exampleReducer = createReducer(defaultExampleReducer, (builder: any) => {
   });
 });
 
-export const selectExample = (state: RootState) => state.example;
+export const selectExample = (state: RootState) => state;
 
 export default exampleReducer;

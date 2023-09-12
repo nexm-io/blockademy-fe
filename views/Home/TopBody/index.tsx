@@ -1,14 +1,31 @@
-import React from "react";
-import Image from "next/image";
-import img from "@/public/images/home/home-1.png";
-import clockIcon from "@/public/icons/clock.svg";
+"use client";
+import React, { useEffect } from "react";
 import Button from "@/components/Common/Button";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { RootState } from "@/redux/store";
+import { getTrendingArticle } from "@/redux/features/articles/action";
+import CardItemTop from "@/components/CardItemTop";
+import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
-const TopBody = () => {
+interface TopBodyProps {
+  urlApi?: string;
+}
+
+const TopBody: React.FC<TopBodyProps> = ({ urlApi }) => {
+  const { push } = useRouter();
+  const dispatch = useAppDispatch();
+
+  const data = useAppSelector(
+    (state: RootState) => state.articles.dataTrending
+  );
+
+  useEffect(() => {
+    dispatch(getTrendingArticle({ params: urlApi }));
+  }, [dispatch, urlApi]);
   return (
-    <section className="flex gap-[46px] justify-between w-full md:mt-[123px] mt-[140px] md:flex-row flex-col">
-      <div className="lg:basis-[50%] basis-[40%] flex flex-col text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px]">
+    <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
+      <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px] ">
         <h3 className="lg:text-[15px] text-[12px] font-bold uppercase mb-2">
           LEARN ALL ABOUT
         </h3>
@@ -21,43 +38,29 @@ const TopBody = () => {
           trying to understand mining or a veteran looking to develop a trading
           strategy, we&apos;ve got you covered.
         </p>
-        <Button
-          label="Get start"
-          className="bg-blue-100 text-white-100 h-[48px] py-[2px] mt-6 lg:mt-[47px] w-[110px] btn__contain-shadow"
-        ></Button>
+
+        <div className="mt-[47px]" onClick={() => push("/courses")}>
+          <Button rounded>Join here</Button>
+        </div>
       </div>
       <div className="lg:w-[748px] md:absolute static right-0 md:w-[450px] w-full  h-auto md:pb-10 lg:pb-0 lg:h-[608px] flex-shrink-0 bg-gray-200 overflow-hidden">
         <div className="lg:my-[72px] m-4 md:m-12 lg:mx-[53px] text-black-100">
           <h3 className="text-[15px] font-bold uppercase mb-2">Featured</h3>
-          <Image
-            alt="banner"
-            src={img}
-            priority
-            width={520}
-            height={292}
-            className="cursor-pointer"
-          ></Image>
-          <Link
-            href="#"
-            className="text-lg font-bold leading-[28px] mt-[26px] mb-[16px] block"
-          >
-            How to Read the Most Popular Crypto Candlestick Patterns
-          </Link>
-          <div className="flex gap-6 text-gray-300 items-center mb-[15px]">
-            <span className=" text-base font-normal leading-[23px]">
-              Aug 15, 2023
-            </span>
-            <div className="flex gap-1 items-center">
-              <Image alt="" src={clockIcon}></Image>
-              <span>9m</span>
+          {data ? (
+            data
+              .slice(0, 1)
+              .map((item, index) => <CardItemTop data={item} key={index} />)
+          ) : (
+            <div className="flex flex-col gap-3">
+              <SkeletionCard width="521px" height="293px" radius="16px" />
+              <SkeletionCard width="521px" height="28px" radius="16px" />
+              <div className="flex gap-2">
+                <SkeletionCard width="100px" height="28px" radius="16px" />
+                <SkeletionCard width="80px" height="28px" radius="16px" />
+              </div>
+              <SkeletionCard width="146px" height="36px" radius="16px" />
             </div>
-          </div>
-          <Button
-            label="Beginner"
-            className="w-[146px] py-[5px] px-1 bg-green-900 text-gray-100 flex flex-row-reverse gap-2 items-center"
-          >
-            <span className="active w-2 h-2 rounded-[4px] bg-green-100"></span>
-          </Button>
+          )}
         </div>
       </div>
     </section>

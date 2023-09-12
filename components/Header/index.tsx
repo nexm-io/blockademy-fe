@@ -1,47 +1,135 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
-import gift from "@/public/icons/gift.svg";
+import Button from "../Common/Button";
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useAppDispatch } from "@/redux/hook";
+import { logoutAuth } from "@/redux/features/auth/action";
+import { toast } from "react-toastify";
+import user from "@/public/images/home/home-iconuser.png";
+import { hideEmail } from "@/utils/hideEmail";
+import { UserCircle } from "@styled-icons/boxicons-solid";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const data = useSelector((state: RootState) => state.auth.user);
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+  const userIconRef = useRef<HTMLDivElement | null>(null);
+  let email = "";
+  if (data !== null) {
+    email = hideEmail(data.email);
+  }
+  const [isOpen, setIsOpen] = useState(false);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !userIconRef.current?.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+  const handleUserIconClick = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Ngăn sự kiện lan truyền ra bên ngoài
+    setIsOpen(!isOpen); // Mở hoặc đóng dropdown
+  };
+  const handleLogout = async () => {
+    try {
+      const res = await dispatch(logoutAuth()).unwrap();
+      toast.success("Logout Successfully");
+    } catch (error) {
+      toast.error("Logout Failed");
+    }
+  };
   return (
-    <header className="bg-white text-black w-full top-0 absolute z-[999] min-h-[74px]">
+    <header className="bg-white-100 text-black w-full top-0 fixed z-[999] min-h-[74px]">
       {/* Top Header */}
-      <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4">
-        <div className="md:w-full w-[40%]">
-          <Link href="/">
-            <Image alt="logo" src={logo}></Image>
-          </Link>
+      <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4 md:px-0 px-4">
+        <div className="md:w-full w-[40%] flex items-center">
+          <div className="mr-[82px]">
+            <Link href="/">
+              <Image alt="logo" src={logo} className=""></Image>
+            </Link>
+          </div>
+          <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
+            <Link href="/articles" className="hover:text-blue-100">
+              Articles
+            </Link>
+            <Link href="/courses" className="hover:text-blue-100">
+              Courses
+            </Link>
+            <Link href="/learn-and-earn" className="hover:text-blue-100">
+              Learn & Earn
+            </Link>
+          </div>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%]">
-          <Link
-            href="/login"
-            className="border border-blue-100 md:text-sm text-[12px] flex items-center justify-center text-blue-100 rounded-[4px] w-[94px] h-[32px] btn__outline-shadow"
-          >
-            Log In
-          </Link>
-          <Link
-            href="/register"
-            className="bg-blue-100 text-white-100 md:text-sm text-[12px] flex items-center justify-center rounded-[4px] w-[94px] h-[32px] btn__contain-shadow"
-          >
-            Register
-          </Link>
-        </div>
-      </div>
-      {/* Gift Header */}
-      <div className="bg-blue-200 flex items-center justify-center h-[57px]">
-        <div className="flex items-center">
-          <Image alt="gift-icon" src={gift}></Image>
-          <span className="ml-3 mr-6 md:text-sm text-[12px]">
-            Earn FREE Crypto While You Learn
-          </span>
-          <Link
-            href="#"
-            className="capitalize text-white-100 flex items-center justify-center md:text-sm text-[12px] font-medium leading-5 bg-blue-100 rounded-[4px] min-w-[52px] min-h-[24px] py-[6px] px-[18px] btn__contain-shadow"
-          >
-            learn now
-          </Link>
+        <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
+          {isAuthenticated ? (
+            <div className="flex gap-2 items-center">
+              <div
+                className="md:w-[40px] w-6 h-6 md:h-[40px] relative not-prose cursor-pointer select-none"
+                ref={userIconRef}
+              >
+                <UserCircle
+                  onClick={handleUserIconClick}
+                  className={`${isOpen ? "fill-blue-100 " : ""}`}
+                />
+                {isOpen && (
+                  <ul
+                    className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"
+                    ref={dropdownRef}
+                  >
+                    <li className="font-bold mx-4">{email}</li>
+                    <ul className="capitalize flex flex-col gap-2 mt-3 ">
+                      <li className=" px-4 ">
+                        <Link
+                          className="hover:text-blue-100 "
+                          href="/my-rewards"
+                        >
+                          my rewards
+                        </Link>
+                      </li>
+                      <li className="px-4">
+                        <Button
+                          size="small"
+                          className="bg-red-600 hover:bg-red-800"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </Button>
+                      </li>
+                    </ul>
+                  </ul>
+                )}
+              </div>
+            </div>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button size="small" outlined className="w-[94px]">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button size="small" className="w-[94px]">
+                  Register
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>
