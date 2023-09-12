@@ -29,6 +29,8 @@ export interface ListCourse {
   id: number;
   slug?: string;
   title: string;
+  total_lesson? : number;
+  total_lesson_completed: number;
   duration: number;
   is_completed: number;
   order: number;
