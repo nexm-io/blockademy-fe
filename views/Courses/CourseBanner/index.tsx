@@ -7,7 +7,7 @@ const CourseBanner = () => {
     <Image
       alt="banner-course"
       src={banner}
-      className="absolute left-0 w-full md:h-auto h-[150px]"
+      className="absolute left-0 w-full md:h-auto h-[150px] max-h-[450px]"
     ></Image>
   );
 };

@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { CourseTypes } from "@/redux/features/courses/type";
@@ -9,18 +8,34 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
-import { getListCourse } from "@/redux/features/courses/action";
+import { claimReward, getListCourse } from "@/redux/features/courses/action";
 import Link from "next/link";
 import slugify from "slugify";
-
+import { convertEpochToDateTime } from "@/utils/convertEpochToDateTime";
+import { formatDate, getDate } from "@/utils/formatDate";
+import { toast } from "react-toastify";
+import { format, compareAsc, isBefore } from "date-fns";
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
+  const [currentDay, setCurrentDay] = useState<Date | string>("");
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const dateObject = new Date();
+    setCurrentDay(dateObject);
     dispatch(getListCourse());
   }, [dispatch]);
+
+  const handleClaim = async (section: CourseTypes) => {
+    if (section.reward_is_claimed === 1) {
+      toast.error("Reward has been received");
+    } else {
+      const res = await dispatch(claimReward(section.id)).unwrap();
+      res.success && toast.success("Claim reward successfully");
+    }
+  };
+
   return (
     <>
       {!details ? (
@@ -70,7 +85,11 @@ const CourseLists = function () {
                   {section.list_courses.data.length} Courses
                 </h3>
 
-                <CourseLesson campaign_id={section.id} title={section.title} details={section.list_courses.data} />
+                <CourseLesson
+                  campaign_id={section.id}
+                  title={section.title}
+                  details={section.list_courses.data}
+                />
 
                 <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
                   <div className="w-[30px] h-[30px] flex flex-col md:flex-row items-center justify-center ">
@@ -90,10 +109,11 @@ const CourseLists = function () {
                         Certificate
                       </span>
                     </div>
-                    <div className="prose flex items-center gap-[10px] pr-4 text-blue-100 basis-[30%] justify-end">
+                    <div className="prose flex-col flex items-center gap-1 pr-4 text-blue-100 basis-[30%] justify-end">
                       <Button
                         type="button"
-                        disabled={section.is_finished === 0}
+                        onClick={() => handleClaim(section)}
+                        disabled={ isBefore(new Date(), new Date(section.reward_released_date * 1000 )) || section.is_finished === 0}
                         className={`line-clamp-1 md:block   ${
                           section.is_finished === 0
                             ? "opacity-30"
@@ -102,6 +122,21 @@ const CourseLists = function () {
                       >
                         Claim reward
                       </Button>
+                      {section.is_finished === 1 &&
+                      isBefore(
+                        new Date(),
+                        new Date(section.reward_released_date * 1000)
+                      ) ? (
+                        <span className="text-blue-100 text-xs truncate">
+                          Reward will be released on{" "}
+                          {format(
+                            section.reward_released_date * 1000,
+                            "EEE MMM dd yyyy HH:mm:ss"
+                          )}
+                        </span>
+                      ) : (
+                        " "
+                      )}
                     </div>
                   </div>
                 </div>
