@@ -3,11 +3,20 @@ import Chip from "@/components/Common/Chip";
 import clockIcon from "@/public/icons/clock.svg";
 import Image from "next/image";
 import { formatDate } from "@/utils/formatDate";
-const ArticleHeading = ({ title, date }: { title: string; date: string }) => {
+const ArticleHeading = ({
+  title,
+  date,
+  level,
+  duration,
+}: {
+  title: string;
+  date: string;
+  level?: string;
+  duration: number;
+}) => {
   return (
     <>
       <div>
-        {/* <Image alt="banner" src={banner} className="w-full px-4 md:px-0" /> */}
         <div className="py-6">
           <BreadCrumb />
         </div>
@@ -16,13 +25,13 @@ const ArticleHeading = ({ title, date }: { title: string; date: string }) => {
         </h1>
       </div>
       <div className="flex lg:mt-7 w-full justify-start gap-[24px] mr-6 items-center mb-4 mx-4 md:mx-0">
-        <Chip size="small" label="beginner" />
+        <Chip size="small" labelDetails={level} levelDetail={level} />
         <span className="text-xs font-normal text-gray-300 leading-[23px]">
           Published {formatDate(date)}
         </span>
         <div className="flex gap-1 items-center text-gray-300">
           <Image alt="" src={clockIcon}></Image>
-          <span className="text-xs font-normal leading-4">3 mins</span>
+          <span className="text-xs font-normal leading-4">{duration} mins</span>
         </div>
       </div>
     </>

@@ -2,35 +2,24 @@ import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { CourseDetailResponse, CourseResponse, QuizResponse } from "./type";
 
-export const getListCourse = createAsyncThunk<CourseResponse, string | undefined>(
-  "courses/all-courses",
-  async (params) => {
-    let url = `/api/v10/campaign?process_status=`
-    if(params) {
-      url = `${url}${params}`
-    }
-    const response = await api.get(url, {
-      headers: {
-        apiKey: "",
-      },
-    });
-    return response.data;
+export const getListCourse = createAsyncThunk<
+  CourseResponse,
+  string | undefined
+>("courses/all-courses", async (params) => {
+  let url = `/api/v10/campaign?process_status=`;
+  if (params) {
+    url = `${url}${params}`;
   }
-);
-
-
+  const response = await api.get(url);
+  return response.data;
+});
 
 export const getDetailCourse = createAsyncThunk<
   CourseDetailResponse,
   { detail: { campaign_id: number; course_id: number } }
 >("courses/detail-course", async ({ detail }) => {
   const response = await api.get(
-    `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`,
-    {
-      headers: {
-        apiKey: "",
-      },
-    }
+    `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`
   );
   return response.data;
 });
@@ -53,7 +42,6 @@ export const getAnswerQuiz = createAsyncThunk<
   return response.data;
 });
 
-
 export const saveAnswerQuiz = createAsyncThunk<
   QuizResponse,
   {
@@ -71,3 +59,13 @@ export const saveAnswerQuiz = createAsyncThunk<
   );
   return response.data;
 });
+
+export const claimReward = createAsyncThunk<CourseResponse, number>(
+  "courses/claim-reward",
+  async (campaign_id) => {
+    const response = await api.post(
+      `/api/v10/campaign/${campaign_id}/reward/claimed-reward`
+    );
+    return response.data;
+  }
+);

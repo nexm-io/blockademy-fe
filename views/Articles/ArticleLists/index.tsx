@@ -12,6 +12,7 @@ import {
 } from "@/redux/features/articles/action";
 import { RootState } from "@/redux/store";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import { ArticleIntoData } from "@/redux/features/articles/type";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -21,12 +22,26 @@ const options: ("Recently published" | "Mostly viewed")[] = [
 interface ArticleListsProps {
   status?: "list" | "menu";
   setStatus?: React.Dispatch<React.SetStateAction<"list" | "menu">>;
+  choose?: string[] | undefined;
+  setChoose?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  levelParam?: "beginner" | "intermediate" | "advance";
+  setLevelParam?: React.Dispatch<
+    React.SetStateAction<"beginner" | "intermediate" | "advance" | undefined>
+  >;
+  tagParam?: string[] | undefined;
+  setTagParam?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
+  show: boolean;
+  setShow: React.Dispatch<React.SetStateAction<boolean>>;
+  data?: ArticleIntoData[] | null;
 }
 
-const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
+const ArticleLists: React.FC<ArticleListsProps> = ({
+  status,
+  setStatus,
+  data,
+}) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const dispatch = useAppDispatch();
-  const data = useAppSelector((state: RootState) => state.articles.data);
   const dataTrending = useAppSelector(
     (state: RootState) => state.articles.dataTrending
   );
@@ -47,9 +62,10 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
     setItemOffset(newOffset);
     setPage(selectedPage);
   };
+  const dataStatus = useAppSelector((state: RootState) => state.articles.data);
 
   const currentData =
-    selectedOption === "Recently published" ? data : dataTrending;
+    selectedOption === "Recently published" ? dataStatus || data : dataTrending;
 
   useEffect(() => {
     if (selectedOption === "Recently published") {
@@ -78,11 +94,11 @@ const ArticleLists: React.FC<ArticleListsProps> = ({ status, setStatus }) => {
       <div
         className={`${
           status === "list"
-            ? "md:grid-cols-3 grid-cols-1"
+            ? "md:grid-cols-3 grid-cols-1 gap-4"
             : status === "menu"
-            ? "grid-cols-1"
+            ? "grid-cols-1 md:gap-4 gap-8"
             : ""
-        } grid md:gap-10 pl-4 gap-4`}
+        } grid md:gap-10 pl-4 `}
       >
         {currentData ? (
           currentData.map((item, index) => (
