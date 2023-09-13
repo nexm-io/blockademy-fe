@@ -40,10 +40,14 @@ const CourseLists = function () {
 
   return (
     <>
-      {isLoading ? (
-        <SkeletonCourse />
-      ) : details.length === 0 ? (
-        <></>
+      {(details && isLoading) ? (
+        <>
+          {Array.from({ length: 3 }, (_, index) => (
+            <>
+              <SkeletonCourse />
+            </>
+          ))}
+        </>
       ) : (
         details.map((section: CourseTypes) => (
           <div className="mt-12 lg:mx-0 mx-6" key={section.title}>

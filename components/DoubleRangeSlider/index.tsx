@@ -20,8 +20,8 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
   const sliderOneRef = useRef<HTMLInputElement | null>(null);
   const sliderTwoRef = useRef<HTMLInputElement | null>(null);
   const sliderTrackRef = useRef<HTMLDivElement | null>(null);
-  const [sliderOneValue, setSliderOneValue] = useState(30);
-  const [sliderTwoValue, setSliderTwoValue] = useState(70);
+  const [sliderOneValue, setSliderOneValue] = useState(0);
+  const [sliderTwoValue, setSliderTwoValue] = useState(30);
   const sliderMaxValue = 100;
   const minGap = 0;
 
