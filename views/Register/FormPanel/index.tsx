@@ -15,8 +15,8 @@ import InfoGraphic from "../InfoGraphic";
 const schema = Yup.object({
   password: Yup.string().required("Please enter your password")
   .trim()
-  .min(6, "Length from 6 - 160 characters")
-  .max(160, "Length from 6 - 160 characters"),
+  .min(8, "Length from 8 - 160 characters")
+  .max(160, "Length from 8 - 160 characters"),
   // .matches(
   //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
   //   "Password must have a lowercase letter, a number and one special character"

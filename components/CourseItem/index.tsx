@@ -10,16 +10,17 @@ import clock from "@/public/icons/clock.svg";
 import quiz from "@/public/icons/quiz.svg";
 import { CourseTypes, ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
+import { format } from "date-fns";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
   const details = useAppSelector((state) => state.courses.data);
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
-
+  const route = useRouter();
   useEffect(() => {
     if (getLastPathName(pathname) === STATUS.COMPLETED) {
       dispatch(getListCourse("3"));
@@ -51,8 +52,21 @@ const CourseItem = () => {
                 </div>
               </div>
               <div className="flex justify-between">
-                <div>Processing</div>
-                <Button className="md:w-[180px] px-[6px]">
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: item.total_lesson || 5}, (_, index) => (
+                   
+                    <div
+                      key={index}
+                      className="h-1 w-6 rounded-lg bg-neutral-200"
+                    >
+                      {index + 1 <= item.total_lesson_completed && <div 
+                      className={`h-1 bg-blue-100 rounded-lg`}
+                      ></div>}
+                    </div>
+                  ))}
+                  <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
+                </div>
+                <Button onClick={() => route.push('/courses/all')} className="md:w-[180px] px-[6px]">
                   Continue Learning
                 </Button>
               </div>
@@ -71,13 +85,15 @@ const CourseItem = () => {
           <p className="text-gray-100 text-base font-normal ">
             You will find your finished courses here.
           </p>
-          <Button>Start Learning</Button>
+          <Button onClick={() => route.push("/courses/all")}>
+            Start Learning
+          </Button>
         </div>
       ) : (
         <div className="w-full flex flex-col">
           {!isLoading &&
             details.map((detail, index) => (
-              <div key={index} className="mt-10">
+              <div key={index} className="">
                 <h1 className="md:text-[40px] font-semibold">{detail.title}</h1>
                 <div className="flex md:flex-row flex-col w-full mt-[38px] gap-10">
                   <Image
@@ -87,7 +103,20 @@ const CourseItem = () => {
                     height={186}
                     className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
                   />
-                  <div></div>
+                  {getLastPathName(pathname) === STATUS.COMPLETED ? (
+                    <>
+                      <div
+                        className="flex flex-col gap-3 text-base min-w-[300px]"
+                        dangerouslySetInnerHTML={{ __html: detail.description }}
+                      />
+                      <span className="text-xs truncate leading-6">{`Completed ${format(
+                        new Date(detail.completed_at || 1 * 1000),
+                        "EEE MMM dd yyyy HH:mm:ss"
+                      )}`}</span>
+                    </>
+                  ) : (
+                    ""
+                  )}
                   <LessonCourse detail={detail.list_courses?.data} />
                 </div>
               </div>

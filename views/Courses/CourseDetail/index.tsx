@@ -81,7 +81,7 @@ const CourseDetail = () => {
 
   return (
     <>
-      {isLoading ? (
+      {(isLoading && courseDetail) ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -185,7 +185,7 @@ const CourseDetail = () => {
               Other Courses
             </h2>
             {courseDetail && courseDetail.other_courses.data.map((other, index) => (
-                <CoursePanel title={courseDetail.title} campaign_id={courseDetail.id} course={other}/>
+                <CoursePanel title={courseDetail.campaign_title} campaign_id={path} course={other}/>
             ))}
           </div>
           <NoSignal />

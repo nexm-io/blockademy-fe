@@ -17,7 +17,6 @@ interface CoursePanelProps {
 }
 
 const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" , course, campaign_id, title}) => {
-  console.log(course);
   
   return (
     <div className="flex gap-4 items-center">

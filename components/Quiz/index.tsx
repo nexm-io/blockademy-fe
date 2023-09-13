@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getAnswerQuiz, saveAnswerQuiz } from "@/redux/features/courses/action";
+import { claimReward, getAnswerQuiz, saveAnswerQuiz } from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import slugify from "slugify";
 import slugifyText from "@/utils/slugifyText";
+import { toast } from "react-toastify";
 
 const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
   const dispatch = useAppDispatch();
@@ -60,17 +61,10 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
     }
   };
 
-  // const saveAnswer = async () => {
-  //   const lessonDetail = {
-  //     campaign_id: path,
-  //     course_id: courseId,
-  //     lesson_id: lesson.lesson_id,
-  //     quiz_id: lesson.question_detail.question_id,
-  //     answer_id: selected,
-  //   };
-  //   await dispatch(saveAnswerQuiz({ lessonDetail }))
-  // }
- 
+  // const handleClaim = async () => {
+  //     const res = await dispatch(claimReward(path)).unwrap();
+  //     res.success && toast.success("Claim reward successfully");
+  // };
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
@@ -131,6 +125,21 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
                 Next Module
               </Button>
             )}
+            {
+              (isCorrect && isLastLesson) && (
+                <Button
+                className="w-[180px] px-2"
+                onClick={() =>
+                  // saveAnswer()
+                  router.push(
+                    `/courses/all`
+                  )
+                }
+              >
+                Claim Reward
+              </Button>
+              )
+            }
           </div>
         </div>
       </div>
