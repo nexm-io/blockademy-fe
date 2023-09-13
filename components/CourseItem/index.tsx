@@ -14,6 +14,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
 import { format } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
+import { toast } from "react-toastify";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
@@ -28,6 +30,11 @@ const CourseItem = () => {
       dispatch(getListCourse("2"));
     }
   }, [dispatch, pathname]);
+
+  const handleClaimReward = async (id: number) => {
+    const res = await dispatch(claimInWallet(id)).unwrap();
+    res && toast.success("Claim reward successfully!");
+  };
 
   const LessonCourse = ({ detail }: { detail: Array<ListCourse> }) => {
     return (
@@ -53,20 +60,25 @@ const CourseItem = () => {
               </div>
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
-                  {Array.from({ length: item.total_lesson || 5}, (_, index) => (
-                   
-                    <div
-                      key={index}
-                      className="h-1 w-6 rounded-lg bg-neutral-200"
-                    >
-                      {index + 1 <= item.total_lesson_completed && <div 
-                      className={`h-1 bg-blue-100 rounded-lg`}
-                      ></div>}
-                    </div>
-                  ))}
+                  {Array.from(
+                    { length: item.total_lesson || 5 },
+                    (_, index) => (
+                      <div
+                        key={index}
+                        className="h-1 w-6 rounded-lg bg-neutral-200"
+                      >
+                        {index + 1 <= item.total_lesson_completed && (
+                          <div className={`h-1 bg-blue-100 rounded-lg`}></div>
+                        )}
+                      </div>
+                    )
+                  )}
                   <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
                 </div>
-                <Button onClick={() => route.push('/courses/all')} className="md:w-[180px] px-[6px]">
+                <Button
+                  onClick={() => route.push("/courses/all")}
+                  className="md:w-[180px] px-[6px]"
+                >
                   Continue Learning
                 </Button>
               </div>
@@ -109,10 +121,19 @@ const CourseItem = () => {
                         className="flex flex-col gap-3 text-base min-w-[300px]"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
-                      <span className="text-xs truncate leading-6">{`Completed ${format(
-                        new Date(detail.completed_at || 1 * 1000),
-                        "EEE MMM dd yyyy HH:mm:ss"
-                      )}`}</span>
+                      <div className="text-xs flex flex-col justify-between">
+                        <span className="truncate leading-6">
+                          {`Completed: ${format(
+                            new Date(detail.completed_at || 1 * 1000),
+                            "EEE MMM dd yyyy HH:mm:ss"
+                          )}`}
+                        </span>
+                        {detail.reward_is_claimed === 1 ? (
+                          <Button disabled>Claimed</Button>
+                        ) : (
+                          <Button onClick={() => handleClaimReward(detail.reward_id)}>Claim reward</Button>
+                        )}
+                      </div>
                     </>
                   ) : (
                     ""

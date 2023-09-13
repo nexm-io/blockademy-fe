@@ -20,14 +20,21 @@ import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
+import certificate from "@/public/icons/certificate.svg";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import { format, isBefore } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
+import { toast } from "react-toastify";
+import { CourseTypes } from "@/redux/features/courses/type";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
-  const path = Number(pathname.split("/")[2]);
-  const courseId = Number(pathname.split("/")[3]);
+  const path = pathname.split("/")[2];
+  const courseId = pathname.split("/")[3];
+  const [isClaimed, setIsClaimed] = useState<boolean>(false);
+
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -56,14 +63,25 @@ const CourseDetail = () => {
         { lower: true }
       )}`
     ) {
-      redirect(
-        `/courses/${path}/${courseId}/${slugify(
-          courseDetail?.campaign_title || "",
-          {
-            lower: true,
-          }
-        )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title || "")}`
-      );
+      if(courseDetail?.lesson_data.length === 0) {
+        redirect(
+          `/courses/${path}/${courseId}/${slugify(
+            courseDetail?.campaign_title || "",
+            {
+              lower: true,
+            }
+          )}/${slugifyText( "/not-have-lesson")}`
+        );
+      } else  {
+        redirect(
+          `/courses/${path}/${courseId}/${slugify(
+            courseDetail?.campaign_title || "",
+            {
+              lower: true,
+            }
+          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
+        );
+      }
     }
   }, [
     courseDetail?.campaign_title,
@@ -72,6 +90,12 @@ const CourseDetail = () => {
     courseId,
     path,
   ]);
+
+  const handleClaim = async (id : number) => {
+      const res = await dispatch(claimInWallet(id)).unwrap();
+      res.success && toast.success("Claim reward successfully");
+      setIsClaimed(true);
+  };
 
   const handleChangeForm = (status: boolean) => {
     if (status) {
@@ -187,7 +211,78 @@ const CourseDetail = () => {
             {courseDetail && courseDetail.other_courses.data.map((other, index) => (
                 <CoursePanel title={courseDetail.campaign_title} campaign_id={path} course={other}/>
             ))}
+             <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
+                  <div className="w-[30px] h-[30px] flex flex-col md:flex-row items-center justify-center ">
+                    <Image
+                      alt="check-icon"
+                      src={certificate}
+                      className={`w-full h-full object-cover flex-shrink-0 rounded-full p-1 bg-blue-100`}
+                    ></Image>
+                  </div>
+                  <div
+                    className={`bg-gray-200 flex md:items-center md:flex-row flex-col items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
+                  >
+                    <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
+                      <span
+                        className={`basis-[70%] line-clamp-1 text-[20px] leading-7 text-[#094298]`}
+                      >
+                        Certificate
+                      </span>
+                    </div>
+                    <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
+                      {courseDetail?.reward_is_claimed === 0 ? (
+                        <Button
+                          type="button"
+                          onClick={() => handleClaim(courseDetail.reward_id)}
+                          disabled={
+                            isBefore(
+                              new Date(),
+                              new Date(courseDetail.reward_released_date * 1000)
+                            ) ||
+                            courseDetail.is_finished === 0 ||
+                            isClaimed
+                          }
+                          className={`line-clamp-1 md:block   ${
+                            courseDetail.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claim reward
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          disabled={true}
+                          className={`line-clamp-1 md:block   ${
+                            courseDetail?.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claimed
+                        </Button>
+                      )}
+                      {courseDetail?.is_finished === 1 &&
+                      isBefore(
+                        new Date(),
+                        new Date(courseDetail.reward_released_date * 1000)
+                      ) ? (
+                        <span className="text-blue-100 text-xs truncate">
+                          Reward will be released on{" "}
+                          {format(
+                            courseDetail.reward_released_date * 1000,
+                            "EEE MMM dd yyyy HH:mm:ss"
+                          )}
+                        </span>
+                      ) : (
+                        " "
+                      )}
+                    </div>
+                  </div>
+                </div>
           </div>
+
           <NoSignal />
         </section>
       )}

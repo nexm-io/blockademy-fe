@@ -11,14 +11,14 @@ import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import { claimReward, getListCourse } from "@/redux/features/courses/action";
 import Link from "next/link";
 import slugify from "slugify";
-import { convertEpochToDateTime } from "@/utils/convertEpochToDateTime";
-import { formatDate, getDate } from "@/utils/formatDate";
 import { toast } from "react-toastify";
-import { format, compareAsc, isBefore } from "date-fns";
+import { format, isBefore } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
-  const [isClaimed, setIsClaimed] = useState<boolean>(false)
+  const [isClaimed, setIsClaimed] = useState<boolean>(false);
+  const isLoading = useAppSelector((state) => state.courses.isLoading);
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
@@ -32,16 +32,18 @@ const CourseLists = function () {
     if (section.reward_is_claimed === 1) {
       toast.error("Reward has been received");
     } else {
-      const res = await dispatch(claimReward(section.id)).unwrap();
+      const res = await dispatch(claimInWallet(section.reward_id)).unwrap();
       res.success && toast.success("Claim reward successfully");
-      setIsClaimed(true)
+      setIsClaimed(true);
     }
   };
 
   return (
     <>
-      {!details ? (
+      {isLoading ? (
         <SkeletonCourse />
+      ) : details.length === 0 ? (
+        <></>
       ) : (
         details.map((section: CourseTypes) => (
           <div className="mt-12 lg:mx-0 mx-6" key={section.title}>
@@ -112,18 +114,39 @@ const CourseLists = function () {
                       </span>
                     </div>
                     <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
-                      <Button
-                        type="button"
-                        onClick={() => handleClaim(section)}
-                        disabled={ isBefore(new Date(), new Date(section.reward_released_date * 1000 )) || section.is_finished === 0 || isClaimed}
-                        className={`line-clamp-1 md:block   ${
-                          section.is_finished === 0
-                            ? "opacity-30"
-                            : "btn__contain-shadow "
-                        }`}
-                      >
-                        Claim reward
-                      </Button>
+                      {section.reward_is_claimed === 0 ? (
+                        <Button
+                          type="button"
+                          onClick={() => handleClaim(section)}
+                          disabled={
+                            isBefore(
+                              new Date(),
+                              new Date(section.reward_released_date * 1000)
+                            ) ||
+                            section.is_finished === 0 ||
+                            isClaimed
+                          }
+                          className={`line-clamp-1 md:block   ${
+                            section.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claim reward
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          disabled={true}
+                          className={`line-clamp-1 md:block   ${
+                            section.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claimed
+                        </Button>
+                      )}
                       {section.is_finished === 1 &&
                       isBefore(
                         new Date(),

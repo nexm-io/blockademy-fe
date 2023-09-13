@@ -2,40 +2,33 @@
 import Button from "@/components/Common/Button";
 import {
   claimInWallet,
-  fetchDetail,
   fetchRewardAvailable,
+  fetchRewardClaimed,
 } from "@/redux/features/user/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import empty from "@/public/icons/emptybox.svg";
 import Image from "next/image";
-import banner from "@/public/images/course/course-1.png";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import CourseBanner from "@/views/Courses/CourseBanner";
 import { toast } from "react-toastify";
-export default function ListRewards() {
+export default function ListClaimed() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
-  const listRewards = useAppSelector((state) => state.user.data);
+  const listsClaimed = useAppSelector((state) => state.user.data);
   const isLoading = useAppSelector((state) => state.user.isLoading);
   const message = useAppSelector((state) => state.user.message);
   const router = useRouter();
 
   useEffect(() => {
     const getRewards = async () => {
-      const res = await dispatch(fetchRewardAvailable());
+      const res = await dispatch(fetchRewardClaimed());
     };
     getRewards();
-  }, [dispatch, pathname, listRewards.length, listRewards.length]);
+  }, [dispatch, pathname, listsClaimed.length]);
 
-
-  const handleClaimReward = async (id: number) => {
-    const res = await dispatch(claimInWallet(id)).unwrap();
-    res && toast.success("Claim reward successfully!");
-    router.push("/my-rewards/claimed-rewards")
-  };
 
   return (
     <>
@@ -58,9 +51,9 @@ export default function ListRewards() {
           Claimed rewards
         </Link>
       </div>
-      {listRewards && !isLoading ? (
+      {listsClaimed && !isLoading ? (
         <div className="h-full flex flex-col w-full">
-          {listRewards?.length === 0 && listRewards && (
+          {listsClaimed?.length === 0 && listsClaimed && (
             <div className="flex items-center justify-center h-full w-full flex-col gap-9">
               <Image alt="empty-box" src={empty} />
               <p className="text-gray-100 text-base font-normal ">
@@ -72,11 +65,12 @@ export default function ListRewards() {
             </div>
           )}
           <div className="grid md:grid-cols-3 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
-            {!(listRewards?.length === 0) &&
-              listRewards?.map((reward, index) => (
+            {!(listsClaimed?.length === 0) &&
+              listsClaimed?.map((reward, index) => (
                 <>
                   <div
                     key={index}
+                    
                     className="w-[220px] lg:h-[320px] h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-md cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
                   >
                     <div className="w-[220px] h-[220px] relative">
@@ -95,16 +89,7 @@ export default function ListRewards() {
                         </h2>
                         <span className="truncate text-sm">{reward.name}</span>
                       </div>
-                      <div className="flex justify-center items-center">
-                        {pathname !== "/my-rewards/listRewards-rewards" && (
-                          <Button
-                            onClick={() => handleClaimReward(reward.id)}
-                            className="h-5 text-xs w-15"
-                          >
-                            Claim
-                          </Button>
-                        )}
-                      </div>
+                     
                     </div>
                   </div>
                 </>

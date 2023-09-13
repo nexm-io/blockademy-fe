@@ -17,8 +17,8 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
   const questionType = lesson.question_detail.question_type;
   const router = useRouter();
   const pathname = usePathname();
-  const path = Number(pathname.split("/")[2]);
-  const courseId = Number(pathname.split("/")[3]);
+  const path = pathname.split("/")[2];
+  const courseId = pathname.split("/")[3];
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
