@@ -52,7 +52,7 @@ const CourseItem = () => {
                 </div>
               </div>
               <div className="flex justify-between">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   {Array.from({ length: item.total_lesson || 5}, (_, index) => (
                    
                     <div
@@ -64,6 +64,7 @@ const CourseItem = () => {
                       ></div>}
                     </div>
                   ))}
+                  <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
                 </div>
                 <Button onClick={() => route.push('/courses/all')} className="md:w-[180px] px-[6px]">
                   Continue Learning
@@ -92,7 +93,7 @@ const CourseItem = () => {
         <div className="w-full flex flex-col">
           {!isLoading &&
             details.map((detail, index) => (
-              <div key={index} className="mt-10">
+              <div key={index} className="">
                 <h1 className="md:text-[40px] font-semibold">{detail.title}</h1>
                 <div className="flex md:flex-row flex-col w-full mt-[38px] gap-10">
                   <Image
