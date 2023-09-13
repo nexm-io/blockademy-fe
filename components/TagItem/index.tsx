@@ -1,6 +1,5 @@
-"use client";
 import { ListTagsIntoData } from "@/redux/features/articles/type";
-import React, { useState } from "react";
+import React from "react";
 
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;

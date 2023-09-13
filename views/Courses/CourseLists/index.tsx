@@ -18,6 +18,7 @@ import { format, compareAsc, isBefore } from "date-fns";
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
+  const [isClaimed, setIsClaimed] = useState<boolean>(false);
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
@@ -25,7 +26,7 @@ const CourseLists = function () {
     const dateObject = new Date();
     setCurrentDay(dateObject);
     dispatch(getListCourse());
-  }, [dispatch]);
+  }, [dispatch, isClaimed]);
 
   const handleClaim = async (section: CourseTypes) => {
     if (section.reward_is_claimed === 1) {
@@ -33,6 +34,7 @@ const CourseLists = function () {
     } else {
       const res = await dispatch(claimReward(section.id)).unwrap();
       res.success && toast.success("Claim reward successfully");
+      setIsClaimed(true);
     }
   };
 
@@ -48,7 +50,7 @@ const CourseLists = function () {
         </>
       ) : (
         details.map((section: CourseTypes) => (
-          <div className="mt-12 " key={section.title}>
+          <div className="mt-12 lg:mx-0 mx-6" key={section.title}>
             <div>
               <h2 className="text-black-100 md:text-[40px] ml-4 md:ml-0 text-[25px] font-bold w-max border-b-[6px] border-b-blue-100">
                 {section.title}
@@ -115,7 +117,7 @@ const CourseLists = function () {
                         Certificate
                       </span>
                     </div>
-                    <div className="prose flex-col flex items-center gap-1 pr-4 text-blue-100 basis-[30%] justify-end">
+                    <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
                       <Button
                         type="button"
                         onClick={() => handleClaim(section)}
@@ -123,7 +125,9 @@ const CourseLists = function () {
                           isBefore(
                             new Date(),
                             new Date(section.reward_released_date * 1000)
-                          ) || section.is_finished === 0
+                          ) ||
+                          section.is_finished === 0 ||
+                          isClaimed
                         }
                         className={`line-clamp-1 md:block   ${
                           section.is_finished === 0

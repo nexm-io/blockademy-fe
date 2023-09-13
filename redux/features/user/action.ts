@@ -14,3 +14,10 @@ export const fetchDetail = createAsyncThunk("user/detail-reward", async (id : nu
   );
   return response.data;
 });
+
+export const claimInWallet =  createAsyncThunk("user/claimed-reward", async (id : number) => {
+  const response = await api.post(
+    `/api/v10/user/claimed-reward/${id}`
+  );
+  return response.data;
+});

@@ -1,31 +1,13 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { fetchDetail, fetchReward } from "./action";
+import { claimInWallet, fetchDetail, fetchReward } from "./action";
+import { UserResponse } from "./type";
 
-interface Reward {
-  is_claimed: number;
-  id: number;
-  title: string;
-  name: string;
-  description: string;
-  owner: string;
-  quantity: number;
-  image: {
-    original: string;
-    thumbnail: string;
-  };
-}
 
-interface UserResponse {
-  success: boolean;
-  isLoading: boolean;
-  data: Array<Reward>;
-  error: any;
-  detail: Reward | null;
-}
 
 const initialState: UserResponse = {
   success: false,
   isLoading: false,
+  message: "",
   data: [],
   error: null,
   detail: null,
@@ -58,6 +40,21 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(fetchDetail.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      // state.error = action.payload.data;
+    });
+
+    builder
+    .addCase(claimInWallet.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(claimInWallet.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.message = action.payload.message;
+      state.error = null;
+    })
+    .addCase(claimInWallet.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       // state.error = action.payload.data;
     });

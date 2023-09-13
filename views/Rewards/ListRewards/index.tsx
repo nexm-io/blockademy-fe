@@ -1,47 +1,56 @@
 "use client";
 import Button from "@/components/Common/Button";
-import { fetchDetail, fetchReward } from "@/redux/features/user/action";
+import {
+  claimInWallet,
+  fetchDetail,
+  fetchReward,
+} from "@/redux/features/user/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import empty from "@/public/icons/emptybox.svg";
 import Image from "next/image";
 import banner from "@/public/images/course/course-1.png";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import CourseBanner from "@/views/Courses/CourseBanner";
+import { toast } from "react-toastify";
 export default function ListRewards() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const listRewards = useAppSelector((state) => state.user.data);
-  const [claimed, setClaimed] = useState<Array<any>>()
+  const isLoading = useAppSelector((state) => state.user.isLoading);
+  const message = useAppSelector((state) => state.user.message);
+  const [claimed, setClaimed] = useState<Array<any>>([]);
+  const router = useRouter();
+
   useEffect(() => {
     const getRewards = async () => {
       const res = await dispatch(fetchReward());
     };
     getRewards();
-    const filteredData =
-      pathname === "/my-rewards"
-        ? listRewards.filter((item) => item.is_claimed === 0)
-        : location.pathname === "/my-rewards/claimed-rewards"
-        ? listRewards.filter((item) => item.is_claimed === 1)
-        : [];
-        setClaimed(filteredData)
-  }, [dispatch]);
 
-  const handleClaimReward = (id: number) => {
-    dispatch(fetchDetail(id));
+    if (listRewards) {
+      const filteredData =
+        pathname === "/my-rewards"
+          ? listRewards.filter((item) => item.is_claimed === 0)
+          : pathname === "/my-rewards/claimed-rewards"
+          ? listRewards.filter((item) => item.is_claimed === 1)
+          : [];
+      setClaimed(filteredData);
+    }
+  }, [dispatch, pathname, listRewards.length, claimed.length]);
+
+  const handleClaimReward = async (id: number) => {
+    const res = await dispatch(claimInWallet(id)).unwrap();
+    res && toast.success("Claim reward successfully!");
+    router.push("/my-rewards/claimed-rewards")
   };
-
-  console.log(pathname);
 
   return (
     <>
-      <Image
-        alt="banner-course"
-        src={banner}
-        className="absolute left-0 w-full md:h-auto h-[150px] max-h-[450px]"
-      ></Image>
-      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[480px] pt-[200px] items-start text-white-400 text-base font-normal leading-4 capitalize px-4 md:px-0">
+      <CourseBanner />
+      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[480px] pt-[200px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
         <Link
           href="/my-rewards"
           className={`course-status ${
@@ -52,55 +61,69 @@ export default function ListRewards() {
         </Link>
         <Link
           href="/my-rewards/claimed-rewards"
-          className={`claimed-rewards ${
+          className={`course-status ${
             pathname === "/my-rewards/claimed-rewards" ? "active" : ""
           }`}
         >
           Claimed rewards
         </Link>
       </div>
-      {listRewards ? (
+      {listRewards && !isLoading ? (
         <div className="h-full flex flex-col w-full">
-          <div className="grid md:grid-cols-4 md:gap-10 grid-cols-1 pl-4 gap-4">
-            {claimed?.length == 0 ? (
-              <div className="flex items-center justify-center h-full w-full flex-col gap-9">
-                <Image alt="empty-box" src={empty} />
-                <p className="text-gray-100 text-base font-normal ">
-                  Not have rewards available.
-                </p>
-                <Button>Start Learning</Button>
-              </div>
-            ) : (
+          {claimed?.length === 0 && claimed && (
+            <div className="flex items-center justify-center h-full w-full flex-col gap-9">
+              <Image alt="empty-box" src={empty} />
+              <p className="text-gray-100 text-base font-normal ">
+                Not have rewards available.
+              </p>
+              <Button onClick={() => router.push("/courses/all")}>
+                Start Learning
+              </Button>
+            </div>
+          )}
+          <div className="grid md:grid-cols-3 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
+            {!(claimed?.length === 0) &&
               claimed?.map((reward, index) => (
                 <>
                   <div
-                      key={index}
-                      onClick={() => handleClaimReward(reward.id)}
-                      className="w-[250px] lg:h-[300px] h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-2xl cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
-                    >
-                      <div className="w-full h-[198px] relative">
-                        <Image
-                          alt="card-img"
-                          src={reward.image.original}
-                          width={352}
-                          height={198}
-                          className="w-full h-full object-fit rounded-2xl relative"
-                        ></Image>
-                      </div>
-                      <div className=" p-4 flex justify-around flex-col h-full flex-1">
-                        <h2 className="  text-black-100 text-lg font-bold line-clamp-2">
+                    key={index}
+                    onClick={() => handleClaimReward(reward.id)}
+                    className="w-[220px] lg:h-[320px] h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-md cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
+                  >
+                    <div className="w-[220px] h-[220px] relative">
+                      <Image
+                        alt="card-img"
+                        src={reward.image.original}
+                        width={352}
+                        height={198}
+                        className="w-full h-full object-fit rounded-md relative"
+                      ></Image>
+                    </div>
+                    <div className=" px-4 py-2 flex justify-between flex-col h-full flex-1">
+                      <div className="flex flex-col">
+                        <h2 className="  text-blue-100 text-sm font-bold line-clamp-2">
                           {reward.title}
                         </h2>
                         <span className="truncate text-sm">{reward.name}</span>
                       </div>
+                      <div className="flex justify-center items-center">
+                        {pathname !== "/my-rewards/claimed-rewards" && (
+                          <Button
+                            onClick={() => handleClaimReward(reward.id)}
+                            className="h-5 text-xs w-15"
+                          >
+                            Claim
+                          </Button>
+                        )}
+                      </div>
                     </div>
+                  </div>
                 </>
-              ))
-            )}
+              ))}
           </div>
         </div>
       ) : (
-        <div className="grid md:grid-cols-4 md:gap-10 grid-cols-1 pl-4 gap-4">
+        <div className="grid md:grid-cols-3 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
           <SkeletionCard width="250px" height="300px" radius="16px" />
           <SkeletionCard width="250px" height="300px" radius="16px" />
           <SkeletionCard width="250px" height="300px" radius="16px" />

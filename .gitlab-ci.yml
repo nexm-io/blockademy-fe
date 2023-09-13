@@ -37,14 +37,14 @@ build_docker_dev: &build
 #   only:
 #     - staging
 
-# build_docker_prod:
-#   <<: *build
-#   variables:
-#     env: $ENV_PROD
-#   only:
-#     - master
+build_docker_prod:
+  <<: *build
+  variables:
+    env: $ENV_PROD
+  only:
+    - master
 
-deploy_dev:
+deploy_dev: &deploy
   stage: deploy
   image: alpine:3.15
   variables:
@@ -74,11 +74,11 @@ deploy_dev:
 #   only:
 #     - staging
 
-# deploy_prod:
-#   <<: *deploy
-#   variables:
-#     USER: $USER_PROD
-#      KEY: $KEY_PROD
-#      IP_SERVER: $SERVER_PROD
-#   only:
-#     - master
+deploy_prod:
+  <<: *deploy
+  variables:
+    USER: $USER_PROD
+    KEY: $KEY_PROD
+    IP_SERVER: $SERVER_PROD
+  only:
+    - master
