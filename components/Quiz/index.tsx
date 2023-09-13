@@ -125,21 +125,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
                 Next Module
               </Button>
             )}
-            {
-              (isCorrect && isLastLesson) && (
-                <Button
-                className="w-[180px] px-2"
-                onClick={() =>
-                  // saveAnswer()
-                  router.push(
-                    `/courses/all`
-                  )
-                }
-              >
-                Claim Reward
-              </Button>
-              )
-            }
+
           </div>
         </div>
       </div>
