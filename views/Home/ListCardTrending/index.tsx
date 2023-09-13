@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { getTrendingArticle } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
+import CardItemSkeleton from "@/components/CardItemSkeleton";
 
 interface ListCardProps {
   cardTitle: string;
@@ -55,12 +56,7 @@ const ListCardTrending: React.FC<ListCardProps> = ({
         ) : (
           <>
             {Array.from({ length: 3 }, (_, index) => (
-              <SkeletionCard
-                width="352px"
-                height="370px"
-                radius="16px"
-                key={index}
-              />
+              <CardItemSkeleton key={index} />
             ))}
           </>
         )}

@@ -38,8 +38,14 @@ const CourseLists = function () {
 
   return (
     <>
-      {!details ? (
-        <SkeletonCourse />
+      {details.length === 0 ? (
+        <>
+          {Array.from({ length: 3 }, (_, index) => (
+            <>
+              <SkeletonCourse />
+            </>
+          ))}
+        </>
       ) : (
         details.map((section: CourseTypes) => (
           <div className="mt-12 " key={section.title}>
@@ -113,7 +119,12 @@ const CourseLists = function () {
                       <Button
                         type="button"
                         onClick={() => handleClaim(section)}
-                        disabled={ isBefore(new Date(), new Date(section.reward_released_date * 1000 )) || section.is_finished === 0}
+                        disabled={
+                          isBefore(
+                            new Date(),
+                            new Date(section.reward_released_date * 1000)
+                          ) || section.is_finished === 0
+                        }
                         className={`line-clamp-1 md:block   ${
                           section.is_finished === 0
                             ? "opacity-30"

@@ -41,7 +41,7 @@ const CardItem: React.FC<CardItemProps> = ({
             ? "w-[352px] md:w-full md:flex-row flex-col"
             : ""
         } ${topicBalance ? "h-[100px]" : "h-auto"} ${
-          topicReverse ? "flex-row-reverse" : "flex-row"
+          topicReverse ? "!flex-row-reverse" : "flex-row"
         } flex flex-shrink-0 rounded-2xl cursor-pointer transition-all duration-300 ease-linear`}
       >
         <div

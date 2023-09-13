@@ -3,6 +3,7 @@ interface SkeletonCardProps {
   height: string;
   width?: string;
   radius?: string;
+  skeleton?: boolean;
 }
 
 export const SkeletionCard: React.FC<SkeletonCardProps> = ({
@@ -10,10 +11,11 @@ export const SkeletionCard: React.FC<SkeletonCardProps> = ({
   height,
   width = "100%",
   radius,
+  skeleton = true,
 }) => {
   return (
     <div
-      className={`skeleton ${className}`}
+      className={`${skeleton ? "skeleton" : ""} ${className}`}
       style={{
         height,
         width,
