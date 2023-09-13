@@ -12,6 +12,7 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Chip from "../../../components/Common/Chip";
 import TagItem from "@/components/TagItem";
 import Link from "next/link";
+import TagItemSkeleton from "@/components/TagItemSkeleton";
 
 interface TopicListProps {
   urlApi?: string;
@@ -75,7 +76,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               Topics:
             </h3>
             <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap overflow-hidden ">
-              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-full flex-wrap">
+              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-full flex-wrap h-8">
                 {dataTags ? (
                   <TagItem
                     dataTags={dataTags}
@@ -85,31 +86,13 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   />
                 ) : (
                   <>
-                    <SkeletionCard
-                      height="32px"
-                      width="150px"
-                      radius="999px"
-                    ></SkeletionCard>
-                    <SkeletionCard
-                      height="32px"
-                      width="90px"
-                      radius="999px"
-                    ></SkeletionCard>
-                    <SkeletionCard
-                      height="32px"
-                      width="110px"
-                      radius="999px"
-                    ></SkeletionCard>
-                    <SkeletionCard
-                      height="32px"
-                      width="130px"
-                      radius="999px"
-                    ></SkeletionCard>
-                    <SkeletionCard
-                      height="32px"
-                      width="110px"
-                      radius="999px"
-                    ></SkeletionCard>
+                    <TagItemSkeleton className="w-[150px] h-6" />
+                    <TagItemSkeleton className="w-[70px] h-6" />
+                    <TagItemSkeleton className="w-[110px] h-6" />
+                    <TagItemSkeleton className="w-[80px] h-6" />
+                    <TagItemSkeleton className="w-[120px] h-6" />
+                    <TagItemSkeleton className="w-[150px] h-6" />
+                    <TagItemSkeleton className="w-[70px] h-6" />
                   </>
                 )}
               </div>
@@ -173,7 +156,33 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="860px" height="332px" radius="16px" />
+                  <div className="w-[860px] h-[332px] rounded-2xl flex gap-4 items-center">
+                    <SkeletionCard width="370px" height="332px" radius="16px" />
+                    <div>
+                      <SkeletionCard
+                        width="380px"
+                        height="120px"
+                        radius="16px"
+                      />
+                      <div className="flex gap-4 my-4">
+                        <SkeletionCard
+                          width="180px"
+                          height="40px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="80px"
+                          height="40px"
+                          radius="16px"
+                        />
+                      </div>
+                      <SkeletionCard
+                        width="110px"
+                        height="32px"
+                        radius="16px"
+                      />
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -194,7 +203,24 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="276px" height="332px" radius="16px" />
+                  <div className="w-[276px] h-[332px] rounded-2xl flex flex-col justify-between mt-4 mx-4">
+                    <SkeletionCard width="246px" height="40px" radius="16px" />
+                    <div className="flex flex-col gap-2 mb-4">
+                      <div className="flex gap-6">
+                        <SkeletionCard
+                          width="110px"
+                          height="28px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="76px"
+                          height="28px"
+                          radius="16px"
+                        />
+                      </div>
+                      <SkeletionCard width="96px" height="28px" radius="16px" />
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -215,7 +241,24 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="276px" height="332px" radius="16px" />
+                  <div className="w-[276px] h-[332px] rounded-2xl flex flex-col justify-between mt-4 mx-4">
+                    <SkeletionCard width="246px" height="40px" radius="16px" />
+                    <div className="flex flex-col gap-2 mb-4">
+                      <div className="flex gap-6">
+                        <SkeletionCard
+                          width="110px"
+                          height="28px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="76px"
+                          height="28px"
+                          radius="16px"
+                        />
+                      </div>
+                      <SkeletionCard width="96px" height="28px" radius="16px" />
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -235,7 +278,34 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="860px" height="332px" radius="16px" />
+                  <div className="w-[860px] h-[332px] rounded-2xl flex flex-row-reverse gap-4 items-center">
+                    <SkeletionCard width="370px" height="332px" radius="16px" />
+                    <div>
+                      <SkeletionCard
+                        width="380px"
+                        height="120px"
+                        radius="16px"
+                      />
+                      <div className="flex gap-4 my-4 justify-end">
+                        <SkeletionCard
+                          width="180px"
+                          height="40px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="80px"
+                          height="40px"
+                          radius="16px"
+                        />
+                      </div>
+                      <SkeletionCard
+                        width="110px"
+                        height="32px"
+                        radius="16px"
+                        className="ml-auto"
+                      />
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -254,7 +324,10 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="552px" height="99px" radius="16px" />
+                  <div className="flex gap-4 items-center w-[552px] h-[99px]">
+                    <SkeletionCard width="200px" height="99px" radius="16px" />
+                    <SkeletionCard width="300px" height="56px" radius="16px" />
+                  </div>
                 </>
               )}
             </div>
@@ -273,7 +346,10 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <SkeletionCard width="552px" height="99px" radius="16px" />
+                  <div className="flex gap-4 items-center">
+                    <SkeletionCard width="200px" height="99px" radius="16px" />
+                    <SkeletionCard width="300px" height="56px" radius="16px" />
+                  </div>
                 </>
               )}
             </div>

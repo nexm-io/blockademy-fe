@@ -1,3 +1,4 @@
+import CardItemSkeleton from "@/components/CardItemSkeleton";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { getRelateArticle } from "@/redux/features/articles/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -40,12 +41,12 @@ const ArticleRelate = ({ id }: { id: number }) => {
       ) : (
         <>
           {Array.from({ length: 3 }, (_, index) => (
-            <SkeletionCard
-              height="150px"
-              width="250px"
-              radius="16px"
-              key={index}
-            />
+            <>
+              <div className="w-[250px] h-[210px] bg-gray-200 flex flex-col gap-2 rounded-2xl">
+                <SkeletionCard width="250px" height="140px" radius="16px" />
+                <SkeletionCard width="250px" height="70px" radius="16px" />
+              </div>
+            </>
           ))}
         </>
       )}

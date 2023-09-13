@@ -21,6 +21,7 @@ import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import CardItemSkeleton from "@/components/CardItemSkeleton";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -81,7 +82,7 @@ const CourseDetail = () => {
 
   return (
     <>
-      {(isLoading && courseDetail) ? (
+      {isLoading && courseDetail ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -89,12 +90,7 @@ const CourseDetail = () => {
             <SkeletionCard height="500px" width="753px" radius="16px" />
             <div className="flex flex-col gap-4">
               {Array.from({ length: 5 }, (_, index) => (
-                <SkeletionCard
-                  height="76px"
-                  width="352px"
-                  radius="16px"
-                  key={index}
-                />
+                <CardItemSkeleton key={index} />
               ))}
             </div>
           </div>
@@ -127,7 +123,7 @@ const CourseDetail = () => {
                     <VideoPlayer onChangeForm={handleChangeForm} />
                   </>
                 )}
-                {(courseDetail) ?
+                {courseDetail ? (
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===
@@ -145,9 +141,10 @@ const CourseDetail = () => {
                         </>
                       )}
                     </>
-                  )) : <div>No Lesson</div>
-                
-                }
+                  ))
+                ) : (
+                  <div>No Lesson</div>
+                )}
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
@@ -184,9 +181,15 @@ const CourseDetail = () => {
             <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
               Other Courses
             </h2>
-            {courseDetail && courseDetail.other_courses.data.map((other, index) => (
-                <CoursePanel title={courseDetail.campaign_title} campaign_id={path} course={other}/>
-            ))}
+            {courseDetail &&
+              courseDetail.other_courses.data.map((other, index) => (
+                <CoursePanel
+                  key={index}
+                  title={courseDetail.campaign_title}
+                  campaign_id={path}
+                  course={other}
+                />
+              ))}
           </div>
           <NoSignal />
         </section>

@@ -1,6 +1,5 @@
-"use client";
 import { ListTagsIntoData } from "@/redux/features/articles/type";
-import React, { useState } from "react";
+import React from "react";
 
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;
@@ -42,7 +41,7 @@ const TagItem: React.FC<TagItemProps> = ({
             className={`text-sm text-center rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-3 capitalize select-none ${
               choose.includes(item.title)
                 ? academy
-                  ? "bg-[#37B7FF]/40 text-black-100 font-medium"
+                  ? "bg-[#37B7FF] bg-opacity-40 text-black-100 font-medium"
                   : "bg-gray-50 text-black-100"
                 : academy
                 ? "bg-gray-50 text-gray-500 font-normal"

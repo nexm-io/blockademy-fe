@@ -18,7 +18,7 @@ import { format, compareAsc, isBefore } from "date-fns";
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
-  const [isClaimed, setIsClaimed] = useState<boolean>(false)
+  const [isClaimed, setIsClaimed] = useState<boolean>(false);
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
@@ -34,14 +34,20 @@ const CourseLists = function () {
     } else {
       const res = await dispatch(claimReward(section.id)).unwrap();
       res.success && toast.success("Claim reward successfully");
-      setIsClaimed(true)
+      setIsClaimed(true);
     }
   };
 
   return (
     <>
-      {!details ? (
-        <SkeletonCourse />
+      {details.length === 0 ? (
+        <>
+          {Array.from({ length: 3 }, (_, index) => (
+            <>
+              <SkeletonCourse />
+            </>
+          ))}
+        </>
       ) : (
         details.map((section: CourseTypes) => (
           <div className="mt-12 lg:mx-0 mx-6" key={section.title}>
@@ -115,7 +121,14 @@ const CourseLists = function () {
                       <Button
                         type="button"
                         onClick={() => handleClaim(section)}
-                        disabled={ isBefore(new Date(), new Date(section.reward_released_date * 1000 )) || section.is_finished === 0 || isClaimed}
+                        disabled={
+                          isBefore(
+                            new Date(),
+                            new Date(section.reward_released_date * 1000)
+                          ) ||
+                          section.is_finished === 0 ||
+                          isClaimed
+                        }
                         className={`line-clamp-1 md:block   ${
                           section.is_finished === 0
                             ? "opacity-30"

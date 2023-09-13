@@ -13,6 +13,7 @@ import {
 import { RootState } from "@/redux/store";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { ArticleIntoData } from "@/redux/features/articles/type";
+import CardItemSkeleton from "@/components/CardItemSkeleton";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -113,12 +114,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         ) : (
           <>
             {Array.from({ length: 15 }, (_, index) => (
-              <SkeletionCard
-                key={index}
-                width="352px"
-                height="370px"
-                radius="16px"
-              />
+              <CardItemSkeleton key={index} />
             ))}
           </>
         )}
