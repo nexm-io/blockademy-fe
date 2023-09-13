@@ -90,7 +90,7 @@ const CourseLists = function () {
               </div>
               <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
-                  {section.list_courses.data.length} Courses
+                  {section.list_courses.data ? section.list_courses.data.length : 0} Courses
                 </h3>
 
                 <CourseLesson
