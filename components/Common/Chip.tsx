@@ -69,6 +69,7 @@ const Chip: React.FC<ChipProps> = ({
             level === LEVELS.INTERMEDIATE,
           "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": level === LEVELS.ADVANCE,
         };
+
     return (
       <div className="prose">
         <span
@@ -86,7 +87,7 @@ const Chip: React.FC<ChipProps> = ({
               "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20": advanced,
             },
             className,
-            " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in",
+            " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in select-none",
             topicStyles
           )}
         >
@@ -148,23 +149,26 @@ const Chip: React.FC<ChipProps> = ({
               "text-white-100": topic,
               "text-gray-100": !topic,
               "!bg-[#02C0A9]/20 !border-[#02C0A9]/20":
-                (newbie && levelParam) || levelDetail === LEVELS.BEGINNER,
+                (newbie && levelParam) === LEVELS.BEGINNER ||
+                levelDetail === LEVELS.BEGINNER,
               "!bg-[#37B7FF]/20 !border-[#37B7FF]/20":
-                (intermediate && levelParam) ||
+                (intermediate && levelParam) === LEVELS.INTERMEDIATE ||
                 levelDetail === LEVELS.INTERMEDIATE,
               "!bg-[#FF1D1D]/20 !border-[#FF1D1D]/20":
-                (advanced && levelParam) || levelDetail === LEVELS.ADVANCE,
+                (advanced && levelParam) === LEVELS.ADVANCE ||
+                levelDetail === LEVELS.ADVANCE,
             },
             className,
-            " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in"
+            " relative inline-flex items-center justify-center outline-none px-10 py-3 border-0 border-transparent font-medium rounded-[30px]  transition-all duration-350 ease-in select-none"
           )}
         >
           <span
             className={cn(
               {
-                "!text-[#02C0A9]": newbie,
-                "!text-[#37B7FF]": intermediate,
-                "!text-[#FF1D1D]": advanced,
+                "!text-[#02C0A9]": newbie || levelDetail === LEVELS.BEGINNER,
+                "!text-[#37B7FF]":
+                  intermediate || levelDetail === LEVELS.INTERMEDIATE,
+                "!text-[#FF1D1D]": advanced || levelDetail === LEVELS.ADVANCE,
               },
               className,
               " absolute left-[7px] top-[4px] inline-flex items-center justify-center text-[20px] mr-2"

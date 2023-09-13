@@ -42,6 +42,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   choose,
   setChoose,
 }) => {
+  console.log("choose:", choose);
   const dispatch = useAppDispatch();
 
   const handleSortListClick = () => {
@@ -60,7 +61,10 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     };
     dispatch(getArticleCourse(dispatchParams));
   };
-
+  const handleClearFilters = () => {
+    setChoose && setChoose([]);
+    setLevelParam && setLevelParam(undefined);
+  };
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
       <div className="bg-gray-200 flex gap-7 items-center w-full md:h-[64px] justify-between full-bleed__articleFilter flex-wrap h-auto py-4 md:pt-4 px-4 md:px-0">
@@ -105,6 +109,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
             <Button
               size="small"
               className="border-none bg-transparent hover:!bg-transparent hover:!text-opacity-20 !text-black-100"
+              onClick={handleClearFilters}
             >
               Clear filters
             </Button>
