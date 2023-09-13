@@ -1,5 +1,5 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { claimInWallet, fetchDetail, fetchReward } from "./action";
+import { claimInWallet, fetchDetail, fetchRewardAvailable, fetchRewardClaimed } from "./action";
 import { UserResponse } from "./type";
 
 
@@ -15,16 +15,31 @@ const initialState: UserResponse = {
 
 const userReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(fetchReward.pending, (state) => {
+    .addCase(fetchRewardAvailable.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     })
-    .addCase(fetchReward.fulfilled, (state, action) => {
+    .addCase(fetchRewardAvailable.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
       state.error = null;
     })
-    .addCase(fetchReward.rejected, (state, action: PayloadAction<any>) => {
+    .addCase(fetchRewardAvailable.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = false;
+      // state.error = action.payload.data;
+    });
+
+    builder
+    .addCase(fetchRewardClaimed.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(fetchRewardClaimed.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.data = action.payload.data;
+      state.error = null;
+    })
+    .addCase(fetchRewardClaimed.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       // state.error = action.payload.data;
     });

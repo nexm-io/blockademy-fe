@@ -11,14 +11,14 @@ import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import { claimReward, getListCourse } from "@/redux/features/courses/action";
 import Link from "next/link";
 import slugify from "slugify";
-import { convertEpochToDateTime } from "@/utils/convertEpochToDateTime";
-import { formatDate, getDate } from "@/utils/formatDate";
 import { toast } from "react-toastify";
-import { format, compareAsc, isBefore } from "date-fns";
+import { format, isBefore } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
+  const isLoading = useAppSelector((state) => state.courses.isLoading);
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
@@ -32,7 +32,7 @@ const CourseLists = function () {
     if (section.reward_is_claimed === 1) {
       toast.error("Reward has been received");
     } else {
-      const res = await dispatch(claimReward(section.id)).unwrap();
+      const res = await dispatch(claimInWallet(section.reward_id)).unwrap();
       res.success && toast.success("Claim reward successfully");
       setIsClaimed(true);
     }
@@ -40,7 +40,7 @@ const CourseLists = function () {
 
   return (
     <>
-      {details.length === 0 ? (
+      {(details && isLoading) ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -90,7 +90,7 @@ const CourseLists = function () {
               </div>
               <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
-                  {section.list_courses.data.length} Courses
+                  {section.list_courses.data ? section.list_courses.data.length : 0} Courses
                 </h3>
 
                 <CourseLesson
@@ -118,25 +118,39 @@ const CourseLists = function () {
                       </span>
                     </div>
                     <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
-                      <Button
-                        type="button"
-                        onClick={() => handleClaim(section)}
-                        disabled={
-                          isBefore(
-                            new Date(),
-                            new Date(section.reward_released_date * 1000)
-                          ) ||
-                          section.is_finished === 0 ||
-                          isClaimed
-                        }
-                        className={`line-clamp-1 md:block   ${
-                          section.is_finished === 0
-                            ? "opacity-30"
-                            : "btn__contain-shadow "
-                        }`}
-                      >
-                        Claim reward
-                      </Button>
+                      {section.reward_is_claimed === 0 ? (
+                        <Button
+                          type="button"
+                          onClick={() => handleClaim(section)}
+                          disabled={
+                            isBefore(
+                              new Date(),
+                              new Date(section.reward_released_date * 1000)
+                            ) ||
+                            section.is_finished === 0 ||
+                            isClaimed
+                          }
+                          className={`line-clamp-1 md:block   ${
+                            section.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claim reward
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          disabled={true}
+                          className={`line-clamp-1 md:block   ${
+                            section.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claimed
+                        </Button>
+                      )}
                       {section.is_finished === 1 &&
                       isBefore(
                         new Date(),

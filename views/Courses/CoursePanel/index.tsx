@@ -12,11 +12,12 @@ import slugifyText from "@/utils/slugifyText";
 interface CoursePanelProps {
   status?: "watching" | "unwatching";
   course?: any
-  campaign_id?: number;
+  campaign_id?: string;
   title?: string;
 }
 
 const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" , course, campaign_id, title}) => {
+  console.log(course);
   
   return (
     <div className="flex gap-4 items-center">
@@ -26,7 +27,7 @@ const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" , cours
       <div className="bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] gap-5">
       <Link
       className="flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5"
-        href={`/courses/${campaign_id}/${course.id}/${slugifyText(title || "")}/${course.slug}`}
+        href={`/courses/${campaign_id}/${course.id}/${slugifyText(title || "")}/`}
       >
         <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
           <span className="basis-[70%] line-clamp-1">

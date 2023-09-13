@@ -1,9 +1,16 @@
 import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-export const fetchReward = createAsyncThunk("user/list-reward", async () => {
+export const fetchRewardAvailable = createAsyncThunk("user/list-reward-available", async () => {
   const response = await api.get(
-    `/api/v10/user/reward-list?limit=`
+    `/api/v10/user/reward-list-available?limit=`
+  );
+  return response.data;
+});
+
+export const fetchRewardClaimed = createAsyncThunk("user/list-reward-claimed", async () => {
+  const response = await api.get(
+    `/api/v10/user/reward-list-claimed?limit`
   );
   return response.data;
 });

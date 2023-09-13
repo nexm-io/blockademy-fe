@@ -16,7 +16,7 @@ export const getListCourse = createAsyncThunk<
 
 export const getDetailCourse = createAsyncThunk<
   CourseDetailResponse,
-  { detail: { campaign_id: number; course_id: number } }
+  { detail: { campaign_id: string; course_id: string } }
 >("courses/detail-course", async ({ detail }) => {
   const response = await api.get(
     `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`
@@ -28,8 +28,8 @@ export const getAnswerQuiz = createAsyncThunk<
   QuizResponse,
   {
     lessonDetail: {
-      campaign_id: number;
-      course_id: number;
+      campaign_id: string;
+      course_id: string;
       lesson_id: number;
       quiz_id: number;
       answer_id: number[];
@@ -46,8 +46,8 @@ export const saveAnswerQuiz = createAsyncThunk<
   QuizResponse,
   {
     lessonDetail: {
-      campaign_id: number;
-      course_id: number;
+      campaign_id: string;
+      course_id: string;
       lesson_id: number;
       quiz_id: number;
       answer_id: number[];
@@ -60,7 +60,7 @@ export const saveAnswerQuiz = createAsyncThunk<
   return response.data;
 });
 
-export const claimReward = createAsyncThunk<CourseResponse, number>(
+export const claimReward = createAsyncThunk<CourseResponse, string>(
   "courses/claim-reward",
   async (campaign_id) => {
     const response = await api.post(

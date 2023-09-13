@@ -14,6 +14,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
 import { format } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
+import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
 
 const CourseItem = () => {
@@ -30,9 +32,14 @@ const CourseItem = () => {
     }
   }, [dispatch, pathname]);
 
+  const handleClaimReward = async (id: number) => {
+    const res = await dispatch(claimInWallet(id)).unwrap();
+    res && toast.success("Claim reward successfully!");
+  };
+
   const LessonCourse = ({ detail }: { detail: Array<ListCourse> }) => {
     return (
-      detail && (
+      (detail && !isLoading)  && (
         <>
           {detail.map((item, index) => (
             <div
@@ -115,10 +122,19 @@ const CourseItem = () => {
                         className="flex flex-col gap-3 text-base min-w-[300px]"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
-                      <span className="text-xs truncate leading-6">{`Completed ${format(
-                        new Date(detail.completed_at || 1 * 1000),
-                        "EEE MMM dd yyyy HH:mm:ss"
-                      )}`}</span>
+                      <div className="text-xs flex flex-col justify-between">
+                        <span className="truncate leading-6">
+                          {`Completed: ${format(
+                            new Date(detail.completed_at || 1 * 1000),
+                            "EEE MMM dd yyyy HH:mm:ss"
+                          )}`}
+                        </span>
+                        {detail.reward_is_claimed === 1 ? (
+                          <Button disabled>Claimed</Button>
+                        ) : (
+                          <Button onClick={() => handleClaimReward(detail.reward_id)}>Claim reward</Button>
+                        )}
+                      </div>
                     </>
                   ) : (
                     ""

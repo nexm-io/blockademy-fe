@@ -1,8 +1,9 @@
 export interface CourseTypes {
+  reward_id: number;
   reward_is_claimed: number;
   reward_released_date: number ;
   completed_at?: number;
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: number;
@@ -26,7 +27,7 @@ export interface CourseResponse {
 
 export interface ListCourse {
   type?: string;
-  id: number;
+  id: string;
   slug?: string;
   title: string;
   total_lesson? : number;
@@ -76,6 +77,7 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  reward_id: number;
   id: number;
   title: string;
   campaign_title: string;
@@ -84,6 +86,9 @@ export interface CourseDetail {
   lesson_data: Array<Lesson>;
   lesson_type: string;
   is_complete: number;
+  reward_is_claimed: number;
+  reward_released_date: number;
+  is_finished: number;
   other_courses: {
     data: Array<ListCourse>
   }
