@@ -13,16 +13,18 @@ interface CardItemTopProps {
 const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
   return (
     <>
-      <Image
-        alt="banner"
-        src={data.image.original_image}
-        priority
-        width={520}
-        height={292}
-        className="cursor-pointer"
-      ></Image>
+      <Link href={`/articles/${data.slug}`}>
+        <Image
+          alt="banner"
+          src={data.image.original_image}
+          priority
+          width={520}
+          height={292}
+          className="cursor-pointer"
+        ></Image>
+      </Link>
       <Link
-        href="#"
+        href={`/articles/${data.slug}`}
         className="text-lg font-bold leading-[28px] mt-[26px] mb-[16px] block"
       >
         {data.title}

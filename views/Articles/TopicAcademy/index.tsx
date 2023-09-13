@@ -53,7 +53,11 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
 
   const handleChipClick = (level: "beginner" | "intermediate" | "advance") => {
     if (setLevelParam) {
-      setLevelParam(level);
+      if (levelParam === level) {
+        setLevelParam(undefined);
+      } else {
+        setLevelParam(level);
+      }
     }
   };
 

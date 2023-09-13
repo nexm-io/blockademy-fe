@@ -11,20 +11,20 @@ interface TagItemProps {
 }
 const TagItem: React.FC<TagItemProps> = ({
   dataTags,
+  choose = [],
   academy,
   handleTagClick,
   setChoose,
 }) => {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  // const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const toggleTagSelection = (tagTitle: string) => {
     let updatedSelectedTags: string[] = [];
-    if (selectedTags.includes(tagTitle)) {
-      updatedSelectedTags = selectedTags.filter((item) => item !== tagTitle);
+    if (choose.includes(tagTitle)) {
+      updatedSelectedTags = choose.filter((item) => item !== tagTitle);
     } else {
-      updatedSelectedTags = [...selectedTags, tagTitle];
+      updatedSelectedTags = [...choose, tagTitle];
     }
-    setSelectedTags(updatedSelectedTags);
     if (setChoose) {
       setChoose(updatedSelectedTags);
     }
@@ -40,7 +40,7 @@ const TagItem: React.FC<TagItemProps> = ({
           <span
             key={index}
             className={`text-sm text-center rounded-full btn__outline-shadow cursor-pointer py-[2px] flex items-center justify-center px-3 capitalize select-none ${
-              selectedTags.includes(item.title)
+              choose.includes(item.title)
                 ? academy
                   ? "bg-[#37B7FF]/40 text-black-100 font-medium"
                   : "bg-gray-50 text-black-100"
