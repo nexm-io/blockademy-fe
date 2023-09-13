@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import check from "@/public/icons/check.svg";
 import clock from "@/public/icons/clock.svg";
 import play from "@/public/icons/play.svg";
@@ -8,6 +8,9 @@ import { ListCourse } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import Link from "next/link";
 import slugifyText from "@/utils/slugifyText";
+import { useAppSelector } from "@/redux/hook";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 interface CoursePanelProps {
   status?: "watching" | "unwatching";
@@ -17,7 +20,14 @@ interface CoursePanelProps {
 }
 
 const CoursePanel: React.FC<CoursePanelProps> = ({ status = "unwatching" , course, campaign_id, title}) => {
-  console.log(course);
+  const router = useRouter()
+  const courseDetail = useAppSelector(
+    (state: RootState) => state.courses.details
+  );
+
+  // useEffect(() => {
+  //   router.push(`/courses/${campaign_id}/${course.id}/${slugifyText(courseDetail?.campaign_title || "")}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`)
+  // },[])
   
   return (
     <div className="flex gap-4 items-center">

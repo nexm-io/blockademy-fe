@@ -76,7 +76,7 @@ export default function ListClaimed() {
                     <div className="w-[220px] h-[220px] relative">
                       <Image
                         alt="card-img"
-                        src={reward.image.original}
+                        src={reward.image.original || reward.image.thumbnail}
                         width={352}
                         height={198}
                         className="w-full h-full object-fit rounded-md relative"

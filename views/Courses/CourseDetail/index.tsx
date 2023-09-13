@@ -6,7 +6,7 @@ import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/CourseModule";
 import CoursePanel from "@/views/Courses/CoursePanel";
 import NoSignal from "@/components/NoSignal";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -28,7 +28,7 @@ import { toast } from "react-toastify";
 import { CourseTypes } from "@/redux/features/courses/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 
-const CourseDetail = () => {
+const CourseDetail = memo(() => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
@@ -51,46 +51,20 @@ const CourseDetail = () => {
         campaign_id: path,
         course_id: courseId,
       };
-      dispatch(getDetailCourse({ detail })).unwrap();
+      dispatch(getDetailCourse({ detail })).then((response) => {
+        buildNewUrl(courseDetail)
+      });
     };
     getValues();
   }, [dispatch, courseId, path]);
-
-  useEffect(() => {
-    if (
-      pathname ===
-      `/courses/${path}/${courseId}/${slugify(
-        courseDetail?.campaign_title || "",
-        { lower: true }
-      )}`
-    ) {
-      if(courseDetail?.lesson_data.length === 0) {
-        redirect(
-          `/courses/${path}/${courseId}/${slugify(
-            courseDetail?.campaign_title || "",
-            {
-              lower: true,
-            }
-          )}/${slugifyText( "/not-have-lesson")}`
-        );
-      } else  {
-        redirect(
-          `/courses/${path}/${courseId}/${slugify(
-            courseDetail?.campaign_title || "",
-            {
-              lower: true,
-            }
-          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
-        );
-      }
+  
+  const buildNewUrl = (value: any) => {
+    if (value?.lesson_data.length === 0 ) {
+      redirect(`/courses/${path}/${courseId}/${slugifyText(value?.campaign_title)}/${slugifyText("/not-have-lesson")}`);
+    } else {
+      router.push(`/courses/${path}/${courseId}/${slugifyText(value?.campaign_title || "")}/${slugifyText(value?.lesson_data[0].lesson_title)}`);
     }
-  }, [
-    courseDetail?.campaign_title,
-    courseDetail?.lesson_data,
-    pathname,
-    courseId,
-    path,
-  ]);
+  };
 
   const handleClaim = async (id : number) => {
       const res = await dispatch(claimInWallet(id)).unwrap();
@@ -285,6 +259,6 @@ const CourseDetail = () => {
       )}
     </>
   );
-};
+})
 
 export default CourseDetail;
