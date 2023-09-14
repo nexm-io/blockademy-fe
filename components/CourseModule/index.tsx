@@ -10,18 +10,21 @@ import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
 import { usePathname } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import slugify from "slugify";
+import bar from "@/public/icons/bar.svg";
 import slugifyText from "@/utils/slugifyText";
 import { STATUS } from "@/utils/status";
 interface CourseModuleProps {
   status?: string;
   lesson: Lesson;
   is_complete?: number;
+  is_watching?: boolean;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
   lesson,
   is_complete,
   status = "pending",
+  is_watching,
 }) => {
   const [active, setActive] = useState(status);
   const pathname = usePathname();
@@ -57,7 +60,11 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       (getLastPathName(pathname) === slugifyText(lesson.lesson_title) ||
         active === "already") ? (
         <div className="w-[18px] h-full flex items-center">
-          <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+          {is_watching ? (
+            <Image alt="bar-chart" src={bar}></Image>
+          ) : (
+            <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+          )}
         </div>
       ) : (
         active === "pending" && (
@@ -69,7 +76,11 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       {/* {status === "watching" && <Image alt="bar-chart" src={bar}></Image>} */}
       {active === STATUS.COMPLETED && (
         <div className="w-[18px] h-full flex items-center">
-          <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+          {is_watching ? (
+            <Image alt="bar-chart" src={bar}></Image>
+          ) : (
+            <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+          )}
         </div>
       )}
     </div>
