@@ -25,23 +25,20 @@ import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
+import React from "react";
 
 const CourseDetail = () => {
-  // const [isWatching, setIsWatching] = useState<number>(0);
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
   const path = pathname.split("/")[2];
   const courseId = pathname.split("/")[3];
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
-
+  const [isRedirected, setIsRedirected] = useState<boolean>(false);
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
-  const [isWatching, setIsWatching] = useState<number[]>(
-    Array(courseDetail?.lesson_data.length).fill(0)
-  );
-  console.log("CourseDetail ~ isWatching:", isWatching);
+  const [isWatching, setIsWatching] = useState<boolean>(false);
 
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
@@ -55,21 +52,37 @@ const CourseDetail = () => {
         campaign_id: path,
         course_id: courseId,
       };
-      dispatch(getDetailCourse({ detail })).then((response) => {
-        buildNewUrl(courseDetail);
-      });
+      try {
+        const response = await dispatch(getDetailCourse({ detail }));
+        const updatedCourseDetail = response.payload;
+
+        if (
+          pathname ===
+          `/courses/${path}/${courseId}/${slugifyText(
+            courseDetail?.campaign_title
+          )}`
+        ) {
+          router.push(
+            `/courses/${path}/${courseId}/${slugifyText(
+              courseDetail?.campaign_title || ""
+            )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
+          );
+          setIsRedirected(true);
+        }
+      } catch (error) {
+        // Handle errors here
+      }
     };
     getValues();
-  }, [dispatch, courseId, path]);
+  }, [dispatch, courseId, path, courseDetail?.lesson_data[0].lesson_title]);
 
   const buildNewUrl = (value: any) => {
-    if (value?.lesson_data.length === 0) {
-      redirect(
-        `/courses/${path}/${courseId}/${slugifyText(
-          value?.campaign_title
-        )}/${slugifyText("/not-have-lesson")}`
-      );
-    } else {
+    if (
+      pathname ===
+      `/courses/${path}/${courseId}/${slugifyText(
+        courseDetail?.campaign_title
+      )}`
+    ) {
       router.push(
         `/courses/${path}/${courseId}/${slugifyText(
           value?.campaign_title || ""
@@ -91,14 +104,12 @@ const CourseDetail = () => {
   };
 
   const handleOnchange = (index: number, status: number) => {
-    let updatedIsWatching = [...isWatching];
-    updatedIsWatching[index] = status;
-    setIsWatching(updatedIsWatching);
+    setIsWatching(true);
   };
 
   return (
     <>
-      {isLoading && courseDetail ? (
+      {!courseDetail && isLoading ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -172,8 +183,9 @@ const CourseDetail = () => {
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
-              {courseDetail &&
-                courseDetail.lesson_data.map((lesson, index) => (
+              {courseDetail?.lesson_data.length !== 0 &&
+                !isLoading &&
+                courseDetail?.lesson_data.map((lesson, index) => (
                   <div
                     key={index}
                     className="cursor-pointer"
@@ -195,7 +207,6 @@ const CourseDetail = () => {
                       is_watching={isWatching}
                       is_complete={lesson.is_complete}
                       key={index}
-                      index={index}
                       lesson={lesson}
                     />
                   </div>

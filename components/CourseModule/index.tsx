@@ -18,20 +18,23 @@ import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
 
 interface CourseModuleProps {
   status?: string;
+
   lesson: Lesson;
+
   is_complete?: number;
-  is_watching?: number[] | null;
-  index: number;
+
+  is_watching?: boolean;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
   lesson,
-  index,
+
   is_complete,
+
   status = "pending",
+
   is_watching,
 }) => {
-  const [isChoose, setIsChoose] = useState(false);
   const [active, setActive] = useState(status);
   const pathname = usePathname();
   useEffect(() => {
@@ -39,10 +42,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       setActive("completed");
     }
   }, [is_complete]);
-
-  console.log("index:", index);
   console.log("iswatching nè", is_watching);
-
   return (
     <div className="md:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
       <div className="flex flex-col">
@@ -72,9 +72,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       (getLastPathName(pathname) === slugifyText(lesson.lesson_title) ||
         active === "already") ? (
         <div className="w-[18px] h-full flex items-center">
-          {is_watching !== null &&
-          is_watching !== undefined &&
-          is_watching.includes(index) ? (
+          {getLastPathName(pathname) === slugifyText(lesson.lesson_title) ? (
             <BarChartAlt2 className="text-green-100" />
           ) : (
             <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
@@ -89,9 +87,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       )}
       {active === STATUS.COMPLETED && (
         <div className="w-[18px] h-full flex items-center">
-          {is_watching !== null &&
-          is_watching !== undefined &&
-          is_watching.includes(index) ? (
+          {getLastPathName(pathname) === slugifyText(lesson.lesson_title) ? (
             <Image alt="bar-chart" src={bar}></Image>
           ) : (
             <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
