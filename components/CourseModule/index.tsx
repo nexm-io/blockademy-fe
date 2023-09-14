@@ -12,6 +12,8 @@ import { getLastPathName } from "@/utils/getPathName";
 import slugify from "slugify";
 import slugifyText from "@/utils/slugifyText";
 import { STATUS } from "@/utils/status";
+import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
+
 interface CourseModuleProps {
   status?: string;
   lesson: Lesson;
@@ -57,7 +59,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       (getLastPathName(pathname) === slugifyText(lesson.lesson_title) ||
         active === "already") ? (
         <div className="w-[18px] h-full flex items-center">
-          <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+          <BarChartAlt2 className={`${"text-green-100 w-[18px] h-[18px]"}`} />
         </div>
       ) : (
         active === "pending" && (

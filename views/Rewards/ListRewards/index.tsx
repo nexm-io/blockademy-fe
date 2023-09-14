@@ -30,17 +30,16 @@ export default function ListRewards() {
     getRewards();
   }, [dispatch, pathname, listRewards.length, listRewards.length]);
 
-
   const handleClaimReward = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
     res && toast.success("Claim reward successfully!");
-    router.push("/my-rewards/claimed-rewards")
+    router.push("/my-rewards/claimed-rewards");
   };
 
   return (
     <>
       <CourseBanner />
-      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[480px] pt-[200px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
+      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[350px] pt-[135px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
         <Link
           href="/my-rewards"
           className={`course-status ${
