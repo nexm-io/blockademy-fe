@@ -16,7 +16,7 @@ const BreadCrumb = () => {
                 <>
                   {index !== 2 && index !== 3 && (
                     <>
-                      <li className="leading-[23px]">
+                      <li key={path} className="leading-[23px]">
                         <Link
                           href="/courses"
                           className="text-gray-300 md:text-sm font-normal capitalize text-[12px]"

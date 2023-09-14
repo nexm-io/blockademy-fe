@@ -27,15 +27,17 @@ import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { CourseTypes } from "@/redux/features/courses/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
+import React from "react";
 
-const CourseDetail = memo(() => {
+const CourseDetail = React.memo(() => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
   const path = pathname.split("/")[2];
   const courseId = pathname.split("/")[3];
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
-
+const [isWatching, setIsWatching] = useState<boolean>(false);
+const [isRedirected, setIsRedirected] = useState<boolean>(false);
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -51,25 +53,51 @@ const CourseDetail = memo(() => {
         campaign_id: path,
         course_id: courseId,
       };
-      dispatch(getDetailCourse({ detail })).then((response) => {
-        buildNewUrl(courseDetail)
-      });
+      try {
+        const response = await dispatch(getDetailCourse({ detail }));
+        const updatedCourseDetail = response.payload;
+
+        if (
+          pathname ===
+          `/courses/${path}/${courseId}/${slugifyText(
+            courseDetail?.campaign_title
+          )}`
+        ) {
+          router.push(
+            `/courses/${path}/${courseId}/${slugifyText(
+              courseDetail?.campaign_title || ""
+            )}/${slugifyText(
+              courseDetail?.lesson_data[0].lesson_title
+            )}`
+          );
+          setIsRedirected(true);
+        }
+      } catch (error) {
+        // Handle errors here
+      }
     };
     getValues();
-  }, [dispatch, courseId, path]);
-  
+  }, [dispatch, courseId, path, courseDetail?.lesson_data[0].lesson_title]);
+
   const buildNewUrl = (value: any) => {
-    if (value?.lesson_data.length === 0 ) {
-      redirect(`/courses/${path}/${courseId}/${slugifyText(value?.campaign_title)}/${slugifyText("/not-have-lesson")}`);
-    } else {
-      router.push(`/courses/${path}/${courseId}/${slugifyText(value?.campaign_title || "")}/${slugifyText(value?.lesson_data[0].lesson_title)}`);
+    if (
+      pathname ===
+      `/courses/${path}/${courseId}/${slugifyText(
+        courseDetail?.campaign_title
+      )}`
+    ) {
+      router.push(
+        `/courses/${path}/${courseId}/${slugifyText(
+          value?.campaign_title || ""
+        )}/${slugifyText(value?.lesson_data[0].lesson_title)}`
+      );
     }
   };
 
-  const handleClaim = async (id : number) => {
-      const res = await dispatch(claimInWallet(id)).unwrap();
-      res.success && toast.success("Claim reward successfully");
-      setIsClaimed(true);
+  const handleClaim = async (id: number) => {
+    const res = await dispatch(claimInWallet(id)).unwrap();
+    res.success && toast.success("Claim reward successfully");
+    setIsClaimed(true);
   };
 
   const handleChangeForm = (status: boolean) => {
@@ -78,9 +106,13 @@ const CourseDetail = memo(() => {
     }
   };
 
+  const handleOnchange = (status: boolean) => {
+    setIsWatching(status)
+  }
+
   return (
     <>
-      {isLoading && courseDetail ? (
+      {(!courseDetail && isLoading) ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -116,17 +148,17 @@ const CourseDetail = memo(() => {
             <div className="md:w-[753px] w-full px-4 md:px-0">
               {/* Form State */}
               <div>
-                {formState === "video" && (
-                  <>
-                    <VideoPlayer onChangeForm={handleChangeForm} />
-                  </>
-                )}
                 {courseDetail ? (
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===
                         slugifyText(lesson.lesson_title) && (
-                        <>
+                          <>
+                          {formState === "video" && (
+                            <>
+                              <VideoPlayer url={lesson.lesson_link} onChangeForm={handleChangeForm} onChangeStatus={handleOnchange}/>
+                            </>
+                          )}
                           {formState === "quiz" && (
                             <Quiz lesson={lesson} index={index} />
                           )}
@@ -146,8 +178,8 @@ const CourseDetail = memo(() => {
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
-              {courseDetail &&
-                courseDetail.lesson_data.map((lesson, index) => (
+              {(courseDetail?.lesson_data.length !== 0 && !isLoading) &&
+                courseDetail?.lesson_data.map((lesson, index) => (
                   <div
                     key={index}
                     className="cursor-pointer"
@@ -166,6 +198,7 @@ const CourseDetail = memo(() => {
                     }}
                   >
                     <CourseModule
+                    is_watching={isWatching}
                       is_complete={lesson.is_complete}
                       key={index}
                       lesson={lesson}
@@ -179,79 +212,84 @@ const CourseDetail = memo(() => {
             <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
               Other Courses
             </h2>
-            {courseDetail && courseDetail.other_courses.data.map((other, index) => (
-                <CoursePanel title={courseDetail.campaign_title} campaign_id={path} course={other}/>
-            ))}
-             <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
-                  <div className="w-[30px] h-[30px] flex flex-col md:flex-row items-center justify-center ">
-                    <Image
-                      alt="check-icon"
-                      src={certificate}
-                      className={`w-full h-full object-cover flex-shrink-0 rounded-full p-1 bg-blue-100`}
-                    ></Image>
-                  </div>
-                  <div
-                    className={`bg-gray-200 flex md:items-center md:flex-row flex-col items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
+            {courseDetail &&
+              courseDetail.other_courses.data.map((other, index) => (
+                <CoursePanel
+                  title={courseDetail.campaign_title}
+                  campaign_id={path}
+                  course={other}
+                />
+              ))}
+            <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
+              <div className="w-[30px] h-[30px] flex flex-col md:flex-row items-center justify-center ">
+                <Image
+                  alt="check-icon"
+                  src={certificate}
+                  className={`w-full h-full object-cover flex-shrink-0 rounded-full p-1 bg-blue-100`}
+                ></Image>
+              </div>
+              <div
+                className={`bg-gray-200 flex md:items-center md:flex-row flex-col items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
+              >
+                <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
+                  <span
+                    className={`basis-[70%] line-clamp-1 text-[20px] leading-7 text-[#094298]`}
                   >
-                    <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
-                      <span
-                        className={`basis-[70%] line-clamp-1 text-[20px] leading-7 text-[#094298]`}
-                      >
-                        Certificate
-                      </span>
-                    </div>
-                    <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
-                      {courseDetail?.reward_is_claimed === 0 ? (
-                        <Button
-                          type="button"
-                          onClick={() => handleClaim(courseDetail.reward_id)}
-                          disabled={
-                            isBefore(
-                              new Date(),
-                              new Date(courseDetail.reward_released_date * 1000)
-                            ) ||
-                            courseDetail.is_finished === 0 ||
-                            isClaimed
-                          }
-                          className={`line-clamp-1 md:block   ${
-                            courseDetail.is_finished === 0
-                              ? "opacity-30"
-                              : "btn__contain-shadow "
-                          }`}
-                        >
-                          Claim reward
-                        </Button>
-                      ) : (
-                        <Button
-                          type="button"
-                          disabled={true}
-                          className={`line-clamp-1 md:block   ${
-                            courseDetail?.is_finished === 0
-                              ? "opacity-30"
-                              : "btn__contain-shadow "
-                          }`}
-                        >
-                          Claimed
-                        </Button>
-                      )}
-                      {courseDetail?.is_finished === 1 &&
-                      isBefore(
-                        new Date(),
-                        new Date(courseDetail.reward_released_date * 1000)
-                      ) ? (
-                        <span className="text-blue-100 text-xs truncate">
-                          Reward will be released on{" "}
-                          {format(
-                            courseDetail.reward_released_date * 1000,
-                            "EEE MMM dd yyyy HH:mm:ss"
-                          )}
-                        </span>
-                      ) : (
-                        " "
-                      )}
-                    </div>
-                  </div>
+                    Certificate
+                  </span>
                 </div>
+                <div className="prose flex-col flex items-start md:items-center  gap-1 pr-4 text-blue-100 basis-[30%] justify-start md:justify-end">
+                  {courseDetail?.reward_is_claimed === 0 ? (
+                    <Button
+                      type="button"
+                      onClick={() => handleClaim(courseDetail.reward_id)}
+                      disabled={
+                        isBefore(
+                          new Date(),
+                          new Date(courseDetail.reward_released_date * 1000)
+                        ) ||
+                        courseDetail.is_finished === 0 ||
+                        isClaimed
+                      }
+                      className={`line-clamp-1 md:block   ${
+                        courseDetail.is_finished === 0
+                          ? "opacity-30"
+                          : "btn__contain-shadow "
+                      }`}
+                    >
+                      Claim reward
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      disabled={true}
+                      className={`line-clamp-1 md:block   ${
+                        courseDetail?.is_finished === 0
+                          ? "opacity-30"
+                          : "btn__contain-shadow "
+                      }`}
+                    >
+                      Claimed
+                    </Button>
+                  )}
+                  {courseDetail?.is_finished === 1 &&
+                  isBefore(
+                    new Date(),
+                    new Date(courseDetail.reward_released_date * 1000)
+                  ) ? (
+                    <span className="text-blue-100 text-xs truncate">
+                      Reward will be released on{" "}
+                      {format(
+                        courseDetail.reward_released_date * 1000,
+                        "EEE MMM dd yyyy HH:mm:ss"
+                      )}
+                    </span>
+                  ) : (
+                    " "
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           <NoSignal />
@@ -259,6 +297,6 @@ const CourseDetail = memo(() => {
       )}
     </>
   );
-})
+});
 
 export default CourseDetail;

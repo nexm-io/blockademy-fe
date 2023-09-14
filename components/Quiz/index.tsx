@@ -22,6 +22,10 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
+
+
+  console.log(lesson);
+  
   const handleOptionClick = (id: number) => {
     if (isCorrect === true) {
       return;
@@ -69,7 +73,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
         <h2 className="text-black-100 font-bold text-[22px] leading-6">
-          How does a block connect to another?
+          {lesson.question_detail.question}
         </h2>
         <div className="mt-4 flex flex-col gap-4">
           {lesson.question_detail.answers.map((item, index) => (
