@@ -19,16 +19,15 @@ import { redirect, usePathname, useRouter } from "next/navigation";
 import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
-import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import certificate from "@/public/icons/certificate.svg";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
-import { CourseTypes } from "@/redux/features/courses/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 
 const CourseDetail = () => {
+  // const [isWatching, setIsWatching] = useState<number>(0);
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
@@ -39,6 +38,11 @@ const CourseDetail = () => {
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
+  const [isWatching, setIsWatching] = useState<number[]>(
+    Array(courseDetail?.lesson_data.length).fill(0)
+  );
+  console.log("CourseDetail ~ isWatching:", isWatching);
+
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
   );
@@ -86,6 +90,12 @@ const CourseDetail = () => {
     }
   };
 
+  const handleOnchange = (index: number, status: number) => {
+    let updatedIsWatching = [...isWatching];
+    updatedIsWatching[index] = status;
+    setIsWatching(updatedIsWatching);
+  };
+
   return (
     <>
       {isLoading && courseDetail ? (
@@ -115,7 +125,6 @@ const CourseDetail = () => {
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
                 Log into your Blockademy account to track progress and claim
                 your certificate. You may lose your learning progress without
-                logging in.
               </span>
             </div>
           </div>
@@ -124,23 +133,32 @@ const CourseDetail = () => {
             <div className="md:w-[753px] w-full px-4 md:px-0">
               {/* Form State */}
               <div>
-                {formState === "video" && (
-                  <>
-                    <VideoPlayer onChangeForm={handleChangeForm} />
-                  </>
-                )}
                 {courseDetail ? (
                   courseDetail.lesson_data.map((lesson, index) => (
                     <>
                       {getLastPathName(pathname) ===
                         slugifyText(lesson.lesson_title) && (
                         <>
+                          {formState === "video" && (
+                            <>
+                              <VideoPlayer
+                                url={lesson.lesson_link}
+                                onChangeForm={handleChangeForm}
+                                onChangeStatus={(status: any) =>
+                                  handleOnchange(index, status)
+                                }
+                              />
+                            </>
+                          )}
+
                           {formState === "quiz" && (
                             <Quiz lesson={lesson} index={index} />
                           )}
+
                           <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                             {lesson.lesson_title}
                           </h2>
+
                           <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
                             {lesson.lesson_description}
                           </p>
@@ -174,8 +192,10 @@ const CourseDetail = () => {
                     }}
                   >
                     <CourseModule
+                      is_watching={isWatching}
                       is_complete={lesson.is_complete}
                       key={index}
+                      index={index}
                       lesson={lesson}
                     />
                   </div>

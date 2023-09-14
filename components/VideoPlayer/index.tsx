@@ -1,32 +1,38 @@
 "use client";
-import { CourseDetail } from "@/redux/features/courses/type";
 import React, { useEffect, useRef, useState } from "react";
 
-interface VideoPlayerProps {
-  onChangeForm?: (status: boolean) => void | undefined;
-  courseDetail?: CourseDetail | null;
-}
-
-const VideoPlayer: React.FC<VideoPlayerProps> = ({
+const VideoPlayer = ({
   onChangeForm,
-  courseDetail,
+  url,
+  onChangeStatus,
+}: {
+  onChangeForm: Function;
+  url: string;
+  onChangeStatus: Function;
 }) => {
   const handleEnd = () => {
-    if (onChangeForm) {
-      onChangeForm(true);
-    }
+    onChangeForm(true);
+    onChangeStatus(false);
+  };
+
+  const handleStart = () => {
+    onChangeStatus(true);
   };
 
   return (
-    <video width="753" height="437" controls onEnded={handleEnd}>
-      <source
-        src={
-          "https://cdn-beta.blockademy.ai/courses/videos/2023/09/1694624966.video-test-reward-course.6.mp4"
-        }
-        type="video/mp4"
-      />
-      Your browser does not support the video tag.
-    </video>
+    <div onClick={handleStart}>
+      <video width="753" height="437" controls onEnded={handleEnd}>
+        <source
+          src={
+            url ||
+            "https://cdn-beta.blockademy.ai/videos/2023/09/1694422478meet-vzr-pxqc-vsq-and-3-more-pages-personal-microsoft-edge-2023-09-08-15-37-01mp425mp4"
+          }
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
     // <iframe width="753" height="437" src=""></iframe>
   );
 };
