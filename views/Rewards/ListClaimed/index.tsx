@@ -29,11 +29,10 @@ export default function ListClaimed() {
     getRewards();
   }, [dispatch, pathname, listsClaimed.length]);
 
-
   return (
     <>
       <CourseBanner />
-      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[480px] pt-[200px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
+      <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[350px] pt-[135px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
         <Link
           href="/my-rewards"
           className={`course-status ${
@@ -70,7 +69,6 @@ export default function ListClaimed() {
                 <>
                   <div
                     key={index}
-                    
                     className="w-[220px] lg:h-[320px] h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-md cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
                   >
                     <div className="w-[220px] h-[220px] relative">
@@ -89,7 +87,6 @@ export default function ListClaimed() {
                         </h2>
                         <span className="truncate text-sm">{reward.name}</span>
                       </div>
-                     
                     </div>
                   </div>
                 </>

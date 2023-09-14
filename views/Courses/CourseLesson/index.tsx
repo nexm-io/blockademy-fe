@@ -8,16 +8,22 @@ import { CircleCheck } from "@styled-icons/fa-solid";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import slugify from "slugify";
-const CourseLesson = ({ details, campaign_id, title }: { details: Array<ListCourse>, campaign_id: string, title: string}) => {
-  const router = useRouter()
-  console.log(details);
-  
+const CourseLesson = ({
+  details,
+  campaign_id,
+  title,
+}: {
+  details: Array<ListCourse>;
+  campaign_id: string;
+  title: string;
+}) => {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col gap-4 px-4 md:px-0">
-
       {details.map((course) => (
         <div key={course.id}>
-          <div  className={`flex gap-4 items-center `}>
+          <div className={`flex gap-4 items-center `}>
             <div className="w-[25px] h-[25px]">
               <CircleCheck
                 className={`${
@@ -26,7 +32,11 @@ const CourseLesson = ({ details, campaign_id, title }: { details: Array<ListCour
               />
             </div>
             <div
-              onClick={() => router.push(`/courses/${campaign_id}/${course.id}/${slugifyText(title)}`)}
+              onClick={() =>
+                router.push(
+                  `/courses/${campaign_id}/${course.id}/${slugifyText(title)}`
+                )
+              }
               className={`bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
             >
               <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">

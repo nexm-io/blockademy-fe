@@ -42,7 +42,6 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   choose,
   setChoose,
 }) => {
-  console.log("choose:", choose);
   const dispatch = useAppDispatch();
 
   const handleSortListClick = () => {

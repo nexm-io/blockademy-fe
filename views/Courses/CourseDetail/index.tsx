@@ -19,28 +19,27 @@ import { redirect, usePathname, useRouter } from "next/navigation";
 import slugify from "slugify";
 import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
-import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
 import certificate from "@/public/icons/certificate.svg";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
-import { CourseTypes } from "@/redux/features/courses/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 import React from "react";
 
-const CourseDetail = React.memo(() => {
+const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const [course, setCourse] = useState<number>();
   const pathname = usePathname();
   const path = pathname.split("/")[2];
   const courseId = pathname.split("/")[3];
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
-const [isWatching, setIsWatching] = useState<boolean>(false);
-const [isRedirected, setIsRedirected] = useState<boolean>(false);
+  const [isRedirected, setIsRedirected] = useState<boolean>(false);
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
+  const [isWatching, setIsWatching] = useState<boolean>(false);
+
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
   );
@@ -66,9 +65,7 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
           router.push(
             `/courses/${path}/${courseId}/${slugifyText(
               courseDetail?.campaign_title || ""
-            )}/${slugifyText(
-              courseDetail?.lesson_data[0].lesson_title
-            )}`
+            )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
           );
           setIsRedirected(true);
         }
@@ -106,13 +103,13 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
     }
   };
 
-  const handleOnchange = (status: boolean) => {
-    setIsWatching(status)
-  }
+  const handleOnchange = (index: number, status: number) => {
+    setIsWatching(true);
+  };
 
   return (
     <>
-      {(!courseDetail && isLoading) ? (
+      {!courseDetail && isLoading ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -139,7 +136,6 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
               <span className="md:text-base text-[13px] font-normal text-black-100 ">
                 Log into your Blockademy account to track progress and claim
                 your certificate. You may lose your learning progress without
-                logging in.
               </span>
             </div>
           </div>
@@ -153,18 +149,27 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
                     <>
                       {getLastPathName(pathname) ===
                         slugifyText(lesson.lesson_title) && (
-                          <>
+                        <>
                           {formState === "video" && (
                             <>
-                              <VideoPlayer url={lesson.lesson_link} onChangeForm={handleChangeForm} onChangeStatus={handleOnchange}/>
+                              <VideoPlayer
+                                url={lesson.lesson_link}
+                                onChangeForm={handleChangeForm}
+                                onChangeStatus={(status: any) =>
+                                  handleOnchange(index, status)
+                                }
+                              />
                             </>
                           )}
+
                           {formState === "quiz" && (
                             <Quiz lesson={lesson} index={index} />
                           )}
+
                           <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                             {lesson.lesson_title}
                           </h2>
+
                           <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
                             {lesson.lesson_description}
                           </p>
@@ -178,7 +183,8 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
               </div>
             </div>
             <div className="flex flex-col gap-4 px-4 md:px-0">
-              {(courseDetail?.lesson_data.length !== 0 && !isLoading) &&
+              {courseDetail?.lesson_data.length !== 0 &&
+                !isLoading &&
                 courseDetail?.lesson_data.map((lesson, index) => (
                   <div
                     key={index}
@@ -198,7 +204,7 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
                     }}
                   >
                     <CourseModule
-                    is_watching={isWatching}
+                      is_watching={isWatching}
                       is_complete={lesson.is_complete}
                       key={index}
                       lesson={lesson}
@@ -215,6 +221,7 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
             {courseDetail &&
               courseDetail.other_courses.data.map((other, index) => (
                 <CoursePanel
+                  key={index}
                   title={courseDetail.campaign_title}
                   campaign_id={path}
                   course={other}
@@ -297,6 +304,6 @@ const [isRedirected, setIsRedirected] = useState<boolean>(false);
       )}
     </>
   );
-});
+};
 
 export default CourseDetail;
