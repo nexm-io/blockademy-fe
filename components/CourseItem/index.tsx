@@ -39,7 +39,8 @@ const CourseItem = () => {
 
   const LessonCourse = ({ detail }: { detail: Array<ListCourse> }) => {
     return (
-      (detail && !isLoading)  && (
+      detail &&
+      !isLoading && (
         <>
           {detail.map((item, index) => (
             <div
@@ -111,7 +112,11 @@ const CourseItem = () => {
                 <div className="flex md:flex-row flex-col w-full mt-[38px] gap-10">
                   <Image
                     alt="img-course"
-                    src={detail.image?.original_image || "/"}
+                    src={
+                      detail.image?.original_image ||
+                      detail.image?.thumbnail ||
+                      "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                    }
                     width={332}
                     height={186}
                     className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
@@ -132,7 +137,11 @@ const CourseItem = () => {
                         {detail.reward_is_claimed === 1 ? (
                           <Button disabled>Claimed</Button>
                         ) : (
-                          <Button onClick={() => handleClaimReward(detail.reward_id)}>Claim reward</Button>
+                          <Button
+                            onClick={() => handleClaimReward(detail.reward_id)}
+                          >
+                            Claim reward
+                          </Button>
                         )}
                       </div>
                     </>

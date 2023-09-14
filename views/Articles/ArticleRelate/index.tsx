@@ -29,7 +29,11 @@ const ArticleRelate = ({ id }: { id: number }) => {
                 alt="img-post"
                 width={250}
                 height={150}
-                src={post.image.original_image}
+                src={
+                  post.image.original_image ||
+                  post.image.thumbnail ||
+                  "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                }
                 className="rounded-2xl w-full mb-2"
               />
               <span className="text-black-100 leading-6 font-semibold">

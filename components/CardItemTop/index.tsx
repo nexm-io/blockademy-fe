@@ -16,7 +16,11 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
       <Link href={`/articles/${data.slug}`}>
         <Image
           alt="banner"
-          src={data.image.original_image}
+          src={
+            data.image.original_image ||
+            data.image.thumbnail ||
+            "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+          }
           priority
           width={520}
           height={292}

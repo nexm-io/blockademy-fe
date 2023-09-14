@@ -59,7 +59,11 @@ const CourseLists = function () {
                 <div className="basis-1/2 md:mx-0 mx-4">
                   <img
                     alt="img-course1"
-                    src={section.image?.original_image}
+                    src={
+                      section.image?.original_image ||
+                      section.image?.thumbnail ||
+                      "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                    }
                     className="rounded-lg w-full h-full object-cover max-h-[330px] max-w-[580px]"
                   />
                 </div>

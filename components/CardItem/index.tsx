@@ -81,7 +81,11 @@ const CardItem: React.FC<CardItemProps> = ({
           {image && (
             <Image
               alt="card-img"
-              src={data.image.original_image}
+              src={
+                data.image.original_image ||
+                data.image.thumbnail ||
+                "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+              }
               className={`${
                 topicBalance ? "w-[352px]" : "w-full"
               } h-full object-cover rounded-2xl `}
