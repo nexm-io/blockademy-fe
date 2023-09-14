@@ -257,8 +257,17 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 /* Course */
+.banner-top::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  width: 88px;
+  height: 6px;
+  background: #4c94ff;
+}
+
 .course-status.active {
-  @apply text-black-100 border-b-[3px] border-b-blue-100 pb-[23px];
+  @apply text-black-100 border-b-[3px] border-b-blue-100 md:pb-[23px] pb-2;
 }
 
 /* Skeleton */
@@ -387,6 +396,11 @@ input[type="range"]::-webkit-slider-thumb:active {
   .label-20m,
   .label-25m {
     font-size: 12px;
+  }
+  .banner-top::before {
+    top: -12px;
+    width: 48px;
+    height: 4px;
   }
 }
 

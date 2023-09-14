@@ -40,7 +40,7 @@ const CourseLists = function () {
 
   return (
     <>
-      {(details && isLoading) ? (
+      {details && isLoading ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -50,9 +50,9 @@ const CourseLists = function () {
         </>
       ) : (
         details.map((section: CourseTypes) => (
-          <div className="mt-12 lg:mx-0 mx-6" key={section.title}>
+          <div className="md:mt-12 mt-8 lg:mx-0 mx-6" key={section.title}>
             <div>
-              <h2 className="text-black-100 md:text-[40px] ml-4 md:ml-0 text-[25px] font-bold w-max border-b-[6px] border-b-blue-100">
+              <h2 className="text-black-100 md:text-[40px] ml-4 md:ml-0 text-[25px] font-bold w-max md:border-b-[6px] border-b-4 border-b-blue-100">
                 {section.title}
               </h2>
               <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
@@ -90,7 +90,10 @@ const CourseLists = function () {
               </div>
               <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
-                  {section.list_courses.data ? section.list_courses.data.length : 0} Courses
+                  {section.list_courses.data
+                    ? section.list_courses.data.length
+                    : 0}{" "}
+                  Courses
                 </h3>
 
                 <CourseLesson
