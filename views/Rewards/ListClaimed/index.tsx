@@ -66,7 +66,7 @@ export default function ListClaimed() {
               </Button>
             </div>
           )}
-          <div className="grid md:grid-cols-3 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
+          <div className="grid md:grid-cols-3 m-0 lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
             {!(listsClaimed?.length === 0) &&
               listsClaimed?.map((reward, index) => (
                 <>

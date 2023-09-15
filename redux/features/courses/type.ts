@@ -1,4 +1,5 @@
 export interface CourseTypes {
+  slug: string;
   reward_id: number;
   reward_is_claimed: number;
   reward_released_date: number ;
@@ -26,6 +27,10 @@ export interface CourseResponse {
 }
 
 export interface ListCourse {
+  lesson_first?: {
+    lesson_slug: string;
+  };
+  is_opened: number | null;
   type?: string;
   id: string;
   slug?: string;
@@ -77,8 +82,10 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  campaign_id: string;
+  campaign_slug: string;
   reward_id: number;
-  id: number;
+  id: string;
   title: string;
   campaign_title: string;
   slug: string;
@@ -109,4 +116,5 @@ export interface QuizResponse {
 
 export interface QuizDataResponse {
   is_correct: boolean;
+  is_finished?: number;
 }
