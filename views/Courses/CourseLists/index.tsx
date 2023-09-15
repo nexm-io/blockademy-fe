@@ -59,7 +59,7 @@ const CourseLists = function () {
               </h2>
               <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
                 <div className="basis-1/2 md:mx-0 mx-4">
-                  <img
+                  <Image
                     alt="img-course1"
                     src={
                       section.image?.original_image ||
