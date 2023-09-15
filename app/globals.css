@@ -351,6 +351,11 @@ input[type="range"]::-webkit-slider-thumb:active {
   font-size: 24px;
 }
 
+.article_content a {
+  color: #1f37b3;
+  text-decoration: underline;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .crypto__list {
