@@ -99,11 +99,9 @@ const CourseDetail = () => {
     };
   }, []);
 
- 
-
   return (
     <>
-      {(!courseDetail && isLoading) ? (
+      {!courseDetail && isLoading ? (
         <div className="my-[60px] flex flex-col gap-4">
           <SkeletionCard height="48px" width="600px" radius="16px" />
           <SkeletionCard height="48px" width="1152px" radius="16px" />
@@ -160,7 +158,12 @@ const CourseDetail = () => {
                               </>
                             )}
                             {formState === "quiz" && (
-                              <Quiz lesson={lesson} index={index} campaign_id={courseDetail.campaign_id} course_id={courseDetail.id} />
+                              <Quiz
+                                lesson={lesson}
+                                index={index}
+                                campaign_id={courseDetail.campaign_id}
+                                course_id={courseDetail.id}
+                              />
                             )}
                             <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                               {lesson.lesson_title}
@@ -211,6 +214,7 @@ const CourseDetail = () => {
               {courseDetail &&
                 courseDetail.other_courses.data.map((other, index) => (
                   <CoursePanel
+                    key={index}
                     title={courseDetail.campaign_title}
                     campaign_id={path}
                     course={other}
