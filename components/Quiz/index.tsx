@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   claimReward,
   getAnswerQuiz,
+  resetFinish,
   saveAnswerQuiz,
 } from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
@@ -102,6 +103,11 @@ const Quiz = ({
     }
   }, [quiz.is_finished]);
 
+  useEffect(() => {
+    console.log("asdadas");
+    dispatch(resetFinish(0));
+  }, [dispatch]);
+
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
@@ -182,14 +188,16 @@ const Quiz = ({
         </div>
       </div>
 
-      {quiz.is_finished === 1 && show && (
-        <Popup
-          title="Congratulation 🎉"
-          description="You completed the campaign and enjoy your rewards."
-          onClose={() => setShow(false)}
-          handleClaim={handleClaimReward}
-        />
-      )}
+      {quiz.is_finished === 1 &&
+        show &&
+        courseDetail?.reward_is_claimed === 0 && (
+          <Popup
+            title="Congratulation 🎉"
+            description="You completed the campaign and enjoy your rewards."
+            onClose={() => setShow(false)}
+            handleClaim={handleClaimReward}
+          />
+        )}
     </div>
   );
 };
