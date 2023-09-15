@@ -15,9 +15,21 @@ import slugifyText from "@/utils/slugifyText";
 import { toast } from "react-toastify";
 import { isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
+import Popup from "../Popup";
 
-const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: number, course_id: string, campaign_id:string }) => {
+const Quiz = ({
+  lesson,
+  index,
+  campaign_id,
+  course_id,
+}: {
+  lesson: Lesson;
+  index: number;
+  course_id: string;
+  campaign_id: string;
+}) => {
   const dispatch = useAppDispatch();
+  const [show, setShow] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [selected, setSelected] = useState<number[]>([]);
   const questionType = lesson.question_detail.question_type;
@@ -27,8 +39,9 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
     (state: RootState) => state.courses.details
   );
   const quiz = useAppSelector((state: RootState) => state.courses.quiz);
+  console.log("Quiz ~ quiz:", quiz);
   const isLastLesson =
-  courseDetail && index === courseDetail.lesson_data.length - 1;
+    courseDetail && index === courseDetail.lesson_data.length - 1;
 
   const handleOptionClick = (id: number) => {
     if (isCorrect === true) {
@@ -47,7 +60,7 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
       }
     }
   };
-  
+
   const handleSubmit = async () => {
     try {
       const lessonDetail = {
@@ -68,14 +81,22 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
     }
   };
 
-  const handleClaim = async () => {
+  const handleClaimReward = async () => {
     if (courseDetail) {
       const res = await dispatch(
         claimInWallet(courseDetail.reward_id)
       ).unwrap();
+      setShow(false);
       res.success && toast.success("Claim reward successfully");
     }
   };
+
+  useEffect(() => {
+    if (quiz.is_finished === 1) {
+      setShow(true);
+    }
+  }, [quiz.is_finished]);
+  console.log("asdasd", courseDetail?.reward_id);
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
@@ -122,7 +143,9 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
                 onClick={() =>
                   // saveAnswer()
                   router.push(
-                    `/courses/${courseDetail?.campaign_slug}/${courseDetail?.slug}/${slugifyText(
+                    `/courses/${courseDetail?.campaign_slug}/${
+                      courseDetail?.slug
+                    }/${slugifyText(
                       courseDetail?.lesson_data[index + 1].lesson_title || ""
                     )}`
                   )
@@ -132,22 +155,35 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
               </Button>
             )}
 
-
-          {isCorrect && isLastLesson && courseDetail.is_finished === 0 && quiz.is_finished === 0 && (
-              <Button
-              className="w-[180px] px-2"
-              onClick={() =>
-                router.push(
-                  `/courses/${courseDetail?.campaign_slug}/${courseDetail?.other_courses.data[0].slug}/${courseDetail.other_courses.data[0].lesson_first?.lesson_slug}`
-                )
-              }
-            >
-              Next Course
-            </Button>
-            )}
+            {isCorrect &&
+              isLastLesson &&
+              courseDetail.is_finished === 0 &&
+              quiz.is_finished === 0 && (
+                <Button
+                  className="w-[180px] px-2"
+                  onClick={() =>
+                    router.push(
+                      `/courses/${courseDetail?.campaign_slug}/${courseDetail?.other_courses.data[0].slug}/${courseDetail.other_courses.data[0].lesson_first?.lesson_slug}`
+                    )
+                  }
+                >
+                  Next Course
+                </Button>
+              )}
           </div>
         </div>
       </div>
+
+      {quiz.is_finished === 1 &&
+        show &&
+        courseDetail?.reward_is_claimed === 0 && (
+          <Popup
+            title="Congratulation 🎉"
+            description="You completed the campaign and enjoy your rewards."
+            onClose={() => setShow(false)}
+            handleClaim={handleClaimReward}
+          />
+        )}
     </div>
   );
 };
