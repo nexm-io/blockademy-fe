@@ -14,6 +14,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import CourseBanner from "@/views/Courses/CourseBanner";
 import { toast } from "react-toastify";
+import defaultImg from "@/public/images/home/home-default.png";
+
 export default function ListClaimed() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -74,7 +76,11 @@ export default function ListClaimed() {
                     <div className="w-[220px] h-[220px] relative">
                       <Image
                         alt="card-img"
-                        src={reward.image.original || reward.image.thumbnail}
+                        src={
+                          reward.image.original ||
+                          reward.image.thumbnail ||
+                          defaultImg
+                        }
                         width={352}
                         height={198}
                         className="w-full h-full object-fit rounded-md relative"
