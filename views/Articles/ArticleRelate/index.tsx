@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 const ArticleRelate = ({ id }: { id: number }) => {
   const relateList = useAppSelector((state) => state.articles.data);
@@ -36,6 +37,8 @@ const ArticleRelate = ({ id }: { id: number }) => {
                   defaultImg
                 }
                 className="rounded-2xl w-full mb-2"
+                placeholder="blur"
+                blurDataURL={PLACEHOLDER_BASE64}
               />
               <span className="text-black-100 leading-6 font-semibold">
                 {post.title}

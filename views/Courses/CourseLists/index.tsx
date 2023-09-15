@@ -8,13 +8,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import CourseLesson from "../CourseLesson";
 import certificate from "@/public/icons/certificate.svg";
 import SkeletonCourse from "@/components/Skeleton/SkeletonCourse";
-import { claimReward, getListCourse } from "@/redux/features/courses/action";
-import Link from "next/link";
+import { getListCourse } from "@/redux/features/courses/action";
 import slugify from "slugify";
 import { toast } from "react-toastify";
 import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
@@ -59,14 +59,18 @@ const CourseLists = function () {
               </h2>
               <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
                 <div className="basis-1/2 md:mx-0 mx-4">
-                  <img
+                  <Image
                     alt="img-course1"
+                    width={588}
+                    height={330}
                     src={
                       section.image?.original_image ||
                       section.image?.thumbnail ||
                       defaultImg
                     }
-                    className="rounded-lg w-full h-full object-cover max-h-[330px] max-w-[580px]"
+                    className="rounded-lg md:w-[560px] h-full object-cover md:max-h-[330px] md:max-w-[580px]"
+                    placeholder="blur"
+                    blurDataURL={PLACEHOLDER_BASE64}
                   />
                 </div>
                 <div className="flex flex-col justify-between basis-1/2 mx-4 md:mx-0">

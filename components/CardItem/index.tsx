@@ -7,6 +7,7 @@ import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import { Clock } from "@styled-icons/fa-regular";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 interface CardItemProps {
   onClick?: () => void;
@@ -87,9 +88,11 @@ const CardItem: React.FC<CardItemProps> = ({
               }
               className={`${
                 topicBalance ? "w-[352px]" : "w-full"
-              } h-full object-cover rounded-2xl `}
+              }  h-full object-cover rounded-2xl `}
               width={352}
               height={198}
+              placeholder="blur"
+              blurDataURL={PLACEHOLDER_BASE64}
             ></Image>
           )}
         </div>

@@ -16,6 +16,7 @@ import { usePathname, useRouter } from "next/navigation";
 import CourseBanner from "@/views/Courses/CourseBanner";
 import { toast } from "react-toastify";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 export default function ListRewards() {
   const pathname = usePathname();
@@ -91,6 +92,8 @@ export default function ListRewards() {
                         width={352}
                         height={198}
                         className="w-full h-full object-fit rounded-md relative"
+                        placeholder="blur"
+                        blurDataURL={PLACEHOLDER_BASE64}
                       ></Image>
                     </div>
                     <div className=" px-4 py-2 flex justify-between flex-col h-full flex-1">

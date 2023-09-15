@@ -18,6 +18,7 @@ import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
@@ -143,6 +144,8 @@ const CourseItem = () => {
                     width={332}
                     height={186}
                     className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
+                    placeholder="blur"
+                    blurDataURL={PLACEHOLDER_BASE64}
                   />
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>

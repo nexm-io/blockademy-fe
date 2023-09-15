@@ -113,12 +113,6 @@ const CourseDetail = () => {
     };
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("popstate", (e) => {
-      window.history.go(-1);
-      console.log("history back", history.back());
-    });
-  }, []);
   return (
     <>
       {!courseDetail && isLoading ? (

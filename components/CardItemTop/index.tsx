@@ -6,6 +6,7 @@ import { ArticleIntoData } from "@/redux/features/articles/type";
 import { formatDate } from "@/utils/formatDate";
 import Chip from "../Common/Chip";
 import defaultImg from "@/public/images/home/home-default.png";
+import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 interface CardItemTopProps {
   data: ArticleIntoData;
 }
@@ -21,6 +22,8 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
           width={520}
           height={292}
           className="cursor-pointer"
+          placeholder="blur"
+          blurDataURL={PLACEHOLDER_BASE64}
         ></Image>
       </Link>
       <Link
