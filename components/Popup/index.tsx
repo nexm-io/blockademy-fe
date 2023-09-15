@@ -19,11 +19,12 @@ const Popup: React.FC<PopupProps> = ({ title, description, onClose }) => {
           <Close className="text-blue-100 w-8 h-8 hover:text-blue-300" />
         </div>
         <div className="flex flex-col gap-5 items-center justify-center">
-          <h2 className="text-blue-100 text-2xl font-bold mt-7">Title</h2>
+          <h2 className="text-blue-100 text-2xl font-bold mt-7">
+            {title || "Title"}
+          </h2>
           <p className="text-gray-100 font-normal text-center text-base">
-            Your one-stop guide to all things crypto. Whether you&apos;re a
-            rookie trying to understand mining or a veteran looking to develop a
-            trading strategy, we&apos;ve got you covered.
+            {description ||
+              " Your one-stop guide to all things crypto. Whether you're a rookie trying to understand mining or a veteran looking to develop a trading strategy, we've got you covered."}
           </p>
           <div className="flex gap-6 mb-8">
             <Button outlined size="small" onClick={onClose}>
