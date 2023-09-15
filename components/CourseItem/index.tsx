@@ -45,10 +45,12 @@ const CourseItem = () => {
           {detail.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between md:min-w-[480px]"
+              className="flex flex-col justify-between md:min-w-[550px] md:max-w-[550px]"
             >
-              <div className="flex flex-col">
-                <h2 className="text-[28px] font-semibold">{item.title}</h2>
+              <div className="flex flex-col line-clamp-2">
+                <h2 className="text-[28px] font-semibold truncate ">
+                  {item.title}
+                </h2>
                 <div className="flex text-sm mt-2 gap-2">
                   <div className="flex gap-2 text-sm">
                     <Image src={clock} alt="" width={20} height={20} />
@@ -60,8 +62,14 @@ const CourseItem = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between">
-                <div className="flex items-center gap-2">
+              <div
+                className={`${
+                  getLastPathName(pathname) === "progress"
+                    ? "md:flex-row flex-col gap-4 md:gap-0"
+                    : ""
+                } flex justify-between`}
+              >
+                <div className="flex items-center gap-2 mt-3 md:mt-0">
                   {Array.from(
                     { length: item.total_lesson || 5 },
                     (_, index) => (
@@ -107,9 +115,23 @@ const CourseItem = () => {
         <div className="w-full flex flex-col">
           {!isLoading ? (
             details.map((detail, index) => (
-              <div key={index} className="">
-                <h1 className="md:text-[40px] font-semibold">{detail.title}</h1>
-                <div className="flex md:flex-row flex-col w-full mt-[38px] gap-10">
+              <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
+                <h1
+                  className={`${
+                    getLastPathName(pathname) === "progress"
+                      ? "md:mb-8 mb-3"
+                      : ""
+                  } md:text-[40px] text-2xl font-semibold`}
+                >
+                  {detail.title}
+                </h1>
+                <div
+                  className={`${
+                    getLastPathName(pathname) === "progress"
+                      ? "justify-start"
+                      : "justify-between"
+                  } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
+                >
                   <Image
                     alt="img-course"
                     src={
@@ -124,10 +146,10 @@ const CourseItem = () => {
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
                       <div
-                        className="flex flex-col gap-3 text-base min-w-[300px]"
+                        className="flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
-                      <div className="text-xs flex flex-col justify-between">
+                      <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
                         <span className="truncate leading-6">
                           {`Completed: ${format(
                             new Date(detail.completed_at || 1 * 1000),

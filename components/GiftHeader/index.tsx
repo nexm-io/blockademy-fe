@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import gift from "@/public/icons/gift.svg";
 import Button from "../Common/Button";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import Popup from "../Popup";
 
 const GiftHeader = () => {
   const { push } = useRouter();
+
   return (
     <>
       <div className="bg-blue-200 flex items-center justify-center h-[57px] mt-[74px] full-bleed__header ">

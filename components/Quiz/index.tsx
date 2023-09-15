@@ -3,7 +3,11 @@ import React, { useState } from "react";
 import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { claimReward, getAnswerQuiz, saveAnswerQuiz } from "@/redux/features/courses/action";
+import {
+  claimReward,
+  getAnswerQuiz,
+  saveAnswerQuiz,
+} from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import slugify from "slugify";
@@ -23,9 +27,6 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
     (state: RootState) => state.courses.details
   );
 
-
-  console.log(lesson);
-  
   const handleOptionClick = (id: number) => {
     if (isCorrect === true) {
       return;
@@ -58,7 +59,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
-        dispatch(saveAnswerQuiz({ lessonDetail }))
+        dispatch(saveAnswerQuiz({ lessonDetail }));
       }
     } catch (error) {
       console.log("Logout Failed");
@@ -129,7 +130,6 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
                 Next Module
               </Button>
             )}
-
           </div>
         </div>
       </div>
