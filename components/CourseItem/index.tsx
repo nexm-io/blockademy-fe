@@ -39,7 +39,8 @@ const CourseItem = () => {
     res && toast.success("Claim reward successfully!");
   };
 
-  const LessonCourse = ({ detail }: { detail: Array<ListCourse> }) => {
+  const LessonCourse = ({ detail, campaign }: { detail: Array<ListCourse>, campaign: string }) => {
+    
     return (
       detail &&
       !isLoading && (
@@ -88,7 +89,7 @@ const CourseItem = () => {
                   <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
                 </div>
                 <Button
-                  onClick={() => route.push("/courses/all")}
+                  onClick={() => route.push(`/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`)}
                   className="md:w-[180px] px-[6px]"
                 >
                   Continue Learning
@@ -154,9 +155,9 @@ const CourseItem = () => {
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
                       <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
-                        <span className="truncate leading-6">
+                        <span className="line-clamp-2 leading-6">
                           {`Completed: ${format(
-                            new Date(detail.completed_at || 1 * 1000),
+                            new Date((detail.completed_at || 1) * 1000),
                             "EEE MMM dd yyyy HH:mm:ss"
                           )}`}
                         </span>
@@ -174,7 +175,7 @@ const CourseItem = () => {
                   ) : (
                     ""
                   )}
-                  <LessonCourse detail={detail.list_courses?.data} />
+                  <LessonCourse campaign={detail.slug} detail={detail.list_courses?.data} />
                 </div>
               </div>
             ))

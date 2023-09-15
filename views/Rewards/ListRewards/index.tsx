@@ -73,7 +73,7 @@ export default function ListRewards() {
               </Button>
             </div>
           )}
-          <div className="grid md:grid-cols-3 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
+          <div className="grid md:grid-cols-3 md:mx-0 m-auto lg:grid-cols-4 md:gap-10 grid-cols-2 pl-4 gap-4">
             {!(listRewards?.length === 0) &&
               listRewards?.map((reward, index) => (
                 <>
