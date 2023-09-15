@@ -106,7 +106,19 @@ const CourseDetail = () => {
   const handleOnchange = (index: number, status: number) => {
     setIsWatching(true);
   };
+  useEffect(() => {
+    window.onbeforeunload = (event) => {
+      event.preventDefault();
+      return "";
+    };
+  }, []);
 
+  useEffect(() => {
+    window.addEventListener("popstate", (e) => {
+      window.history.go(-1);
+      console.log("history back", history.back());
+    });
+  }, []);
   return (
     <>
       {!courseDetail && isLoading ? (

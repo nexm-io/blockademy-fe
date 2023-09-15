@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
+import defaultImg from "@/public/images/home/home-default.png";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
@@ -137,7 +138,7 @@ const CourseItem = () => {
                     src={
                       detail.image?.original_image ||
                       detail.image?.thumbnail ||
-                      "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                      defaultImg
                     }
                     width={332}
                     height={186}

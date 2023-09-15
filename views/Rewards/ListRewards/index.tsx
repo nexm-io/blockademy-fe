@@ -15,6 +15,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import CourseBanner from "@/views/Courses/CourseBanner";
 import { toast } from "react-toastify";
+import defaultImg from "@/public/images/home/home-default.png";
+
 export default function ListRewards() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -84,7 +86,7 @@ export default function ListRewards() {
                         src={
                           reward.image.original ||
                           reward.image.thumbnail ||
-                          "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                          defaultImg
                         }
                         width={352}
                         height={198}

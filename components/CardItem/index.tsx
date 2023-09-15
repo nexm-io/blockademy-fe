@@ -6,6 +6,7 @@ import { ArticleIntoData } from "@/redux/features/articles/type";
 import { formatDate } from "@/utils/formatDate";
 import Link from "next/link";
 import { Clock } from "@styled-icons/fa-regular";
+import defaultImg from "@/public/images/home/home-default.png";
 
 interface CardItemProps {
   onClick?: () => void;
@@ -82,9 +83,7 @@ const CardItem: React.FC<CardItemProps> = ({
             <Image
               alt="card-img"
               src={
-                data.image.original_image ||
-                data.image.thumbnail ||
-                "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                data.image.original_image || data.image.thumbnail || defaultImg
               }
               className={`${
                 topicBalance ? "w-[352px]" : "w-full"

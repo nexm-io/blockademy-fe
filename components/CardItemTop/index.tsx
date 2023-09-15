@@ -5,7 +5,7 @@ import clockIcon from "@/public/icons/clock.svg";
 import { ArticleIntoData } from "@/redux/features/articles/type";
 import { formatDate } from "@/utils/formatDate";
 import Chip from "../Common/Chip";
-
+import defaultImg from "@/public/images/home/home-default.png";
 interface CardItemTopProps {
   data: ArticleIntoData;
 }
@@ -16,11 +16,7 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
       <Link href={`/articles/${data.slug}`}>
         <Image
           alt="banner"
-          src={
-            data.image.original_image ||
-            data.image.thumbnail ||
-            "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
-          }
+          src={data.image.original_image || data.image.thumbnail || defaultImg}
           priority
           width={520}
           height={292}

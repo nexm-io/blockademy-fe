@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import defaultImg from "@/public/images/home/home-default.png";
 
 const ArticleRelate = ({ id }: { id: number }) => {
   const relateList = useAppSelector((state) => state.articles.data);
@@ -32,7 +33,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
                 src={
                   post.image.original_image ||
                   post.image.thumbnail ||
-                  "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                  defaultImg
                 }
                 className="rounded-2xl w-full mb-2"
               />

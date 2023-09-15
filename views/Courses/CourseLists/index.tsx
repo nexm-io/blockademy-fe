@@ -14,6 +14,8 @@ import slugify from "slugify";
 import { toast } from "react-toastify";
 import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
+import defaultImg from "@/public/images/home/home-default.png";
+
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
@@ -62,7 +64,7 @@ const CourseLists = function () {
                     src={
                       section.image?.original_image ||
                       section.image?.thumbnail ||
-                      "https://admin-beta.blockademy.ai/images/20230909053331_original_39.webp"
+                      defaultImg
                     }
                     className="rounded-lg w-full h-full object-cover max-h-[330px] max-w-[580px]"
                   />
