@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   claimReward,
   getAnswerQuiz,
+  resetFinish,
   saveAnswerQuiz,
 } from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
@@ -39,7 +40,7 @@ const Quiz = ({
     (state: RootState) => state.courses.details
   );
   const quiz = useAppSelector((state: RootState) => state.courses.quiz);
- 
+
   const isLastLesson =
     courseDetail && index === courseDetail.lesson_data.length - 1;
 
@@ -61,8 +62,10 @@ const Quiz = ({
     }
   };
 
-  const incompleteCourses = courseDetail?.other_courses.data.filter(course => course.is_completed === 0);
-  
+  const incompleteCourses = courseDetail?.other_courses.data.filter(
+    (course) => course.is_completed === 0
+  );
+
   const handleSubmit = async () => {
     try {
       const lessonDetail = {
@@ -73,7 +76,7 @@ const Quiz = ({
         answer_id: selected,
       };
       const res = await dispatch(getAnswerQuiz({ lessonDetail })).unwrap();
-      
+
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
@@ -99,6 +102,11 @@ const Quiz = ({
       setShow(true);
     }
   }, [quiz.is_finished]);
+
+  useEffect(() => {
+    console.log("asdadas");
+    dispatch(resetFinish(0));
+  }, [dispatch]);
 
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
@@ -158,23 +166,24 @@ const Quiz = ({
               </Button>
             )}
 
-
-          {isCorrect && isLastLesson && courseDetail.is_finished === 0 && quiz.is_finished === 0 && (
-              <Button
-              className="w-[180px] px-2"
-              onClick={() => {
-                const nextCourse = incompleteCourses?.[0];
-                if (nextCourse) {
-                  router.push(
-                    `/courses/${courseDetail?.campaign_slug}/${nextCourse.slug}/${nextCourse.lesson_first?.lesson_slug}`
-                  );
-                }
-              }
-              }
-            >
-              Next Course
-            </Button>
-            )}
+            {isCorrect &&
+              isLastLesson &&
+              courseDetail.is_finished === 0 &&
+              quiz.is_finished === 0 && (
+                <Button
+                  className="w-[180px] px-2"
+                  onClick={() => {
+                    const nextCourse = incompleteCourses?.[0];
+                    if (nextCourse) {
+                      router.push(
+                        `/courses/${courseDetail?.campaign_slug}/${nextCourse.slug}/${nextCourse.lesson_first?.lesson_slug}`
+                      );
+                    }
+                  }}
+                >
+                  Next Course
+                </Button>
+              )}
           </div>
         </div>
       </div>

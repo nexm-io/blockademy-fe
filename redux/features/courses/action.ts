@@ -1,5 +1,5 @@
 import api from "@/services/axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CourseDetailResponse, CourseResponse, QuizResponse } from "./type";
 
 export const getListCourse = createAsyncThunk<
@@ -69,3 +69,5 @@ export const claimReward = createAsyncThunk<CourseResponse, string>(
     return response.data;
   }
 );
+
+export const resetFinish = createAction<any>("courses/reset-finish");

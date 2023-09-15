@@ -1,9 +1,16 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { claimReward, getAnswerQuiz, getDetailCourse, getListCourse, saveAnswerQuiz } from "./action";
+import {
+  claimReward,
+  getAnswerQuiz,
+  getDetailCourse,
+  getListCourse,
+  resetFinish,
+  saveAnswerQuiz,
+} from "./action";
 import { CourseResponse } from "./type";
 
 const initialState: CourseResponse = {
-  success:false,
+  success: false,
   isLoading: false,
   data: [],
   error: null,
@@ -57,20 +64,20 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = action.payload.data;
     });
 
-    builder
+  builder
     .addCase(saveAnswerQuiz.pending, (state) => {
       state.error = null;
     })
     .addCase(saveAnswerQuiz.fulfilled, (state, action) => {
       state.error = null;
       state.quiz = action.payload.data;
-
     })
+
     .addCase(saveAnswerQuiz.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.data;
     });
 
-    builder
+  builder
     .addCase(claimReward.pending, (state) => {
       state.error = null;
     })
@@ -81,6 +88,10 @@ const courseReducer = createReducer(initialState, (builder) => {
     .addCase(claimReward.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.data;
     });
+
+  builder.addCase(resetFinish, (state, action) => {
+    state.quiz = { ...state.quiz, is_finished: action.payload };
+  });
 });
 
 export { courseReducer };
