@@ -5,7 +5,9 @@ import { usePathname } from "next/navigation";
 
 const BreadCrumb = () => {
   const pathname = usePathname();
-
+  const parts = pathname.split("/");
+  const title = parts[1];
+  
   return (
     <>
       <nav className="w-full rounded-md">
@@ -17,7 +19,7 @@ const BreadCrumb = () => {
                     <>
                       <li key={path} className="leading-[23px]">
                         <Link
-                          href="/courses/all"
+                          href={`/${title}`}
                           className="text-gray-300 md:text-sm font-normal capitalize text-[12px]"
                         >
                           {getPathName(path)}

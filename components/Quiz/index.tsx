@@ -47,6 +47,8 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
       }
     }
   };
+
+  const incompleteCourses = courseDetail?.other_courses.data.filter(course => course.is_completed === 0);
   
   const handleSubmit = async () => {
     try {
@@ -58,6 +60,7 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
         answer_id: selected,
       };
       const res = await dispatch(getAnswerQuiz({ lessonDetail })).unwrap();
+      
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
@@ -136,10 +139,14 @@ const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: 
           {isCorrect && isLastLesson && courseDetail.is_finished === 0 && quiz.is_finished === 0 && (
               <Button
               className="w-[180px] px-2"
-              onClick={() =>
-                router.push(
-                  `/courses/${courseDetail?.campaign_slug}/${courseDetail?.other_courses.data[0].slug}/${courseDetail.other_courses.data[0].lesson_first?.lesson_slug}`
-                )
+              onClick={() => {
+                const nextCourse = incompleteCourses?.[0];
+                if (nextCourse) {
+                  router.push(
+                    `/courses/${courseDetail?.campaign_slug}/${nextCourse.slug}/${nextCourse.lesson_first?.lesson_slug}`
+                  );
+                }
+              }
               }
             >
               Next Course

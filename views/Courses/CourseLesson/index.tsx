@@ -65,7 +65,7 @@ const CourseLesson = ({
                 </div>
               ) : (
                 <div
-                  className={`bg-gray-200 cursor-pointer flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
+                  className={`bg-gray-200 flex md:items-center items-start justify-between rounded-lg flex-1 min-h-[64px] py-5 px-4 gap-5`}
                 >
                   <div className="flex md:flex-row flex-col gap-3 md:gap-0 flex-1">
                     <span className={`basis-[70%] line-clamp-1`}>
