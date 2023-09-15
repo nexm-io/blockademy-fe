@@ -42,7 +42,7 @@ const CourseLists = function () {
 
   return (
     <>
-      {details && isLoading ? (
+      {(details && details.length !== 0 && isLoading) ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -85,11 +85,9 @@ const CourseLists = function () {
                       className="capitalize text-base font-medium md:mt-0 mt-4"
                       onClick={() =>
                         push(
-                          `/courses/${section.id}/${
-                            section.list_courses.data[0].id
-                          }/${slugify(section.title, {
-                            lower: true,
-                          })}`
+                          `/courses/${section.slug}/${
+                            section.list_courses.data[0].slug
+                          }/${section.list_courses.data[0].lesson_first?.lesson_slug}`
                         )
                       }
                     >
@@ -100,16 +98,16 @@ const CourseLists = function () {
               </div>
               <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
-                  {section.list_courses.data
+                  {section.list_courses
                     ? section.list_courses.data.length
                     : 0}{" "}
                   Courses
                 </h3>
 
                 <CourseLesson
-                  campaign_id={section.id}
+                  campaign_id={section.slug}
                   title={section.title}
-                  details={section.list_courses.data}
+                  details={section.list_courses && section.list_courses.data}
                 />
 
                 <div className={`flex gap-4 items-center mt-4 px-4 md:px-0`}>
