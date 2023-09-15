@@ -92,6 +92,12 @@ const CourseDetail = () => {
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
   };
+  useEffect(() => {
+    window.onbeforeunload = (event) => {
+      event.preventDefault();
+      return "";
+    };
+  }, []);
 
  
 

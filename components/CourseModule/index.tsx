@@ -42,7 +42,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       setActive("completed");
     }
   }, [is_complete]);
-
   return (
     <div className="md:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
       <div className="flex flex-col">
