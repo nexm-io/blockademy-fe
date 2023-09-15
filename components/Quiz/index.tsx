@@ -1,31 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { claimReward, getAnswerQuiz, saveAnswerQuiz } from "@/redux/features/courses/action";
+import {
+  claimReward,
+  getAnswerQuiz,
+  saveAnswerQuiz,
+} from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 import slugify from "slugify";
 import slugifyText from "@/utils/slugifyText";
 import { toast } from "react-toastify";
+import { isBefore } from "date-fns";
+import { claimInWallet } from "@/redux/features/user/action";
 
-const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
+const Quiz = ({ lesson, index,campaign_id,course_id }: { lesson: Lesson; index: number, course_id: string, campaign_id:string }) => {
   const dispatch = useAppDispatch();
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [selected, setSelected] = useState<number[]>([]);
   const questionType = lesson.question_detail.question_type;
   const router = useRouter();
   const pathname = usePathname();
-  const path = pathname.split("/")[2];
-  const courseId = pathname.split("/")[3];
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
+  const quiz = useAppSelector((state: RootState) => state.courses.quiz);
+  const isLastLesson =
+  courseDetail && index === courseDetail.lesson_data.length - 1;
 
-
-  console.log(lesson);
-  
   const handleOptionClick = (id: number) => {
     if (isCorrect === true) {
       return;
@@ -43,13 +47,12 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       }
     }
   };
-  const isLastLesson =
-    courseDetail && index === courseDetail.lesson_data.length - 1;
+  
   const handleSubmit = async () => {
     try {
       const lessonDetail = {
-        campaign_id: path,
-        course_id: courseId,
+        campaign_id: campaign_id,
+        course_id: course_id,
         lesson_id: lesson.lesson_id,
         quiz_id: lesson.question_detail.question_id,
         answer_id: selected,
@@ -58,17 +61,21 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
       setIsCorrect(res.data.is_correct);
       if (res.data.is_correct === true) {
         setIsCorrect(res.data.is_correct);
-        dispatch(saveAnswerQuiz({ lessonDetail }))
+        dispatch(saveAnswerQuiz({ lessonDetail }));
       }
     } catch (error) {
       console.log("Logout Failed");
     }
   };
 
-  // const handleClaim = async () => {
-  //     const res = await dispatch(claimReward(path)).unwrap();
-  //     res.success && toast.success("Claim reward successfully");
-  // };
+  const handleClaim = async () => {
+    if (courseDetail) {
+      const res = await dispatch(
+        claimInWallet(courseDetail.reward_id)
+      ).unwrap();
+      res.success && toast.success("Claim reward successfully");
+    }
+  };
   return (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
@@ -115,12 +122,7 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
                 onClick={() =>
                   // saveAnswer()
                   router.push(
-                    `/courses/${path}/${courseId}/${slugify(
-                      courseDetail?.campaign_title || "",
-                      {
-                        lower: true,
-                      }
-                    )}/${slugifyText(
+                    `/courses/${courseDetail?.campaign_slug}/${courseDetail?.slug}/${slugifyText(
                       courseDetail?.lesson_data[index + 1].lesson_title || ""
                     )}`
                   )
@@ -130,6 +132,19 @@ const Quiz = ({ lesson, index }: { lesson: Lesson; index: number }) => {
               </Button>
             )}
 
+
+          {isCorrect && isLastLesson && courseDetail.is_finished === 0 && quiz.is_finished === 0 && (
+              <Button
+              className="w-[180px] px-2"
+              onClick={() =>
+                router.push(
+                  `/courses/${courseDetail?.campaign_slug}/${courseDetail?.other_courses.data[0].slug}/${courseDetail.other_courses.data[0].lesson_first?.lesson_slug}`
+                )
+              }
+            >
+              Next Course
+            </Button>
+            )}
           </div>
         </div>
       </div>

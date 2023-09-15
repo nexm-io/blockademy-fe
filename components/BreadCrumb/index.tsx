@@ -14,7 +14,6 @@ const BreadCrumb = () => {
             <>
               {index !== 0 && !/^\d+$/.test(path) && (
                 <>
-                  {index !== 2 && index !== 3 && (
                     <>
                       <li key={path} className="leading-[23px]">
                         <Link
@@ -32,7 +31,6 @@ const BreadCrumb = () => {
                         </li>
                       )}
                     </>
-                  )}
                 </>
               )}
             </>

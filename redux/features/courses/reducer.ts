@@ -10,6 +10,7 @@ const initialState: CourseResponse = {
   details: null,
   quiz: {
     is_correct: false,
+    is_finished: 0,
   },
 };
 
@@ -62,6 +63,8 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(saveAnswerQuiz.fulfilled, (state, action) => {
       state.error = null;
+      state.quiz = action.payload.data;
+
     })
     .addCase(saveAnswerQuiz.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.data;
