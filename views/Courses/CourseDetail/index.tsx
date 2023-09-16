@@ -44,6 +44,7 @@ const CourseDetail = () => {
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
   );
+  const [showButton, setShowButton] = useState(false);
 
   const quiz = useAppSelector((state: RootState) => state.courses.quiz);
 
@@ -76,6 +77,26 @@ const CourseDetail = () => {
   useEffect(() => {
     getCourseDetails();
   }, [courseId, dispatch, pathname]);
+
+  useEffect(() => {
+    // Add a scroll event listener to check whether to show the button
+    function handleScroll() {
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
 
   const handleClaim = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
@@ -148,15 +169,16 @@ const CourseDetail = () => {
                         {getLastPathName(pathname) ===
                           slugifyText(lesson.lesson_title) && (
                           <>
-                            {formState === "video" && (
-                              <>
-                                <VideoPlayer
-                                  url={lesson.lesson_link}
-                                  onChangeForm={handleChangeForm}
-                                  onChangeStatus={handleOnchange}
-                                />
-                              </>
-                            )}
+                            {lesson.lesson_type_format === 2 &&
+                              formState === "video" && (
+                                <>
+                                  <VideoPlayer
+                                    url={lesson.lesson_link}
+                                    onChangeForm={handleChangeForm}
+                                    onChangeStatus={handleOnchange}
+                                  />
+                                </>
+                              )}
                             {formState === "quiz" && (
                               <Quiz
                                 lesson={lesson}
@@ -168,11 +190,21 @@ const CourseDetail = () => {
                             <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                               {lesson.lesson_title}
                             </h2>
-                            <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
-                              {lesson.lesson_description}
-                            </p>
+                            <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                              <div
+                                className="flex flex-col gap-3 text-base"
+                                dangerouslySetInnerHTML={{
+                                  __html: lesson.lesson_description,
+                                }}
+                              />
+                            </div>
+                            {lesson.lesson_type_format !== 2 && <Button onClick={() => {
+                            setFormState('quiz') 
+                            scrollToTop()
+                          }}>Complete Quizz</Button>}
                           </>
-                        )}
+                        )
+                        }
                       </>
                     ))
                   ) : (
@@ -291,7 +323,6 @@ const CourseDetail = () => {
                 </div>
               </div>
             </div>
-
             <NoSignal />
           </section>
         </>
