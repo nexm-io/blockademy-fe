@@ -88,7 +88,7 @@ const CardItem: React.FC<CardItemProps> = ({
               }
               className={`${
                 topicBalance ? "w-[352px]" : "w-full"
-              }  h-full object-cover rounded-2xl `}
+              }  h-[210px] object-cover rounded-2xl `}
               width={352}
               height={198}
               placeholder="blur"

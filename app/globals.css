@@ -270,6 +270,78 @@ input[type="range"]::-webkit-slider-thumb:active {
   @apply text-black-100 border-b-[3px] border-b-blue-100 md:pb-[23px] pb-2;
 }
 
+.css-143tmma {
+  background-color: #222222;
+  padding: 8px;
+}
+
+pre {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  color: #fff;
+  border-left: 3px solid #f36d33;
+  page-break-inside: avoid;
+  font-family: monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 1.6em;
+  max-width: 100%;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+  word-wrap: break-word;
+  border-radius : 6px;
+}
+.hljs-keyword {
+  color: #ff7b72;
+}
+.hljs-title {
+  color: #d2a8ff;
+}
+.hljs-params {
+  color: #fff;
+}
+.hljs-built_in {
+  color: #ffa657;
+}
+.hljs-string {
+  color: #a5d6ff;
+}
+.hljs-attr {
+  color: #79c0ff;
+}
+.chakra-text  {
+  font-size: 16px;
+  margin-bottom: 12px
+}
+.chakra-heading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.chakra-code {
+  background-color: #222222;
+  border-radius: 8px;
+  padding: 2px 8px;
+  color: #f5f5f5;
+}
+.markdown-content ol {
+  list-style-type: decimal;
+}
+
+.chakra-table {
+  margin: 24px 0;
+  border-collapse: collapse;  
+}
+
+.chakra-table th {
+  text-align: start;
+}
+.chakra-table td {
+  padding: 8px 16px;
+  border-bottom: 1px solid #c8c5c5;
+}
+
 /* Skeleton */
 .skeleton {
   background-color: #eee;
