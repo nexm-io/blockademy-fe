@@ -423,7 +423,7 @@ pre {
   font-size: 24px;
 }
 
-.article_content a {
+.article_content a, .course-content a {
   color: #1f37b3;
   text-decoration: underline;
 }

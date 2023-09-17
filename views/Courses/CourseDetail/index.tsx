@@ -80,21 +80,20 @@ const CourseDetail = () => {
 
   useEffect(() => {
     // Add a scroll event listener to check whether to show the button
-    function handleScroll() {
-    }
+    function handleScroll() {}
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -192,19 +191,24 @@ const CourseDetail = () => {
                             </h2>
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
-                                className="flex flex-col gap-3 text-base"
+                                className="flex flex-col gap-3 text-base course-content"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
                                 }}
                               />
                             </div>
-                            {lesson.lesson_type_format !== 2 && <Button onClick={() => {
-                            setFormState('quiz') 
-                            scrollToTop()
-                          }}>Complete Quizz</Button>}
+                            {lesson.lesson_type_format !== 2 && (
+                              <Button
+                                onClick={() => {
+                                  setFormState("quiz");
+                                  scrollToTop();
+                                }}
+                              >
+                                Complete Quizz
+                              </Button>
+                            )}
                           </>
-                        )
-                        }
+                        )}
                       </>
                     ))
                   ) : (
