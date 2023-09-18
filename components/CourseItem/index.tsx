@@ -39,8 +39,13 @@ const CourseItem = () => {
     res && toast.success("Claim reward successfully!");
   };
 
-  const LessonCourse = ({ detail, campaign }: { detail: Array<ListCourse>, campaign: string }) => {
-    
+  const LessonCourse = ({
+    detail,
+    campaign,
+  }: {
+    detail: Array<ListCourse>;
+    campaign: string;
+  }) => {
     return (
       detail &&
       !isLoading && (
@@ -89,7 +94,11 @@ const CourseItem = () => {
                   <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
                 </div>
                 <Button
-                  onClick={() => route.push(`/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`)}
+                  onClick={() =>
+                    route.push(
+                      `/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`
+                    )
+                  }
                   className="md:w-[180px] px-[6px]"
                 >
                   Continue Learning
@@ -135,19 +144,22 @@ const CourseItem = () => {
                       : "justify-between"
                   } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
                 >
-                  <Image
-                    alt="img-course"
-                    src={
-                      detail.image?.original_image ||
-                      detail.image?.thumbnail ||
-                      defaultImg
-                    }
-                    width={332}
-                    height={186}
-                    className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
-                    placeholder="blur"
-                    blurDataURL={PLACEHOLDER_BASE64}
-                  />
+                  <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                    <Image
+                      alt="img-course"
+                      src={
+                        detail.image?.original_image ||
+                        detail.image?.thumbnail ||
+                        defaultImg
+                      }
+                      width={332}
+                      height={186}
+                      className="w-full h-full object-cover"
+                      placeholder="blur"
+                      blurDataURL={PLACEHOLDER_BASE64}
+                    />
+                  </div>
+
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
                       <div
@@ -175,7 +187,10 @@ const CourseItem = () => {
                   ) : (
                     ""
                   )}
-                  <LessonCourse campaign={detail.slug} detail={detail.list_courses?.data} />
+                  <LessonCourse
+                    campaign={detail.slug}
+                    detail={detail.list_courses?.data}
+                  />
                 </div>
               </div>
             ))
