@@ -54,24 +54,22 @@ const CourseItem = () => {
           {detail.map((item, index) => (
             <div
               key={index}
-              className="flex justify-between gap-6 md:min-w-[550px] w-full "
+              className="flex flex-col md:flex-row justify-between gap-6 md:min-w-[550px] w-full "
             >
-              <Image
-                alt="img-course"
-                src={
-                  item.image.thumbnail ||
-                  item.image.original_image ||
-                  defaultImg
-                }
-                width={332}
-                height={186}
-                className="md:min-w-[332px] md:w-[332px] md:h-[186px] object-fill shrink-0 md:shrink-0 md:basis-0 basis-2/4"
-                placeholder="blur"
-                blurDataURL={PLACEHOLDER_BASE64}
-              />
-              <div className="flex flex-col justify-between w-full shrink-0 basis-2/4">
-                <div className="flex flex-col line-clamp-2">
-                  <h2 className="text-[28px] font-semibold truncate line-clamp-1 md:max-w-[420px]">
+              <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                <Image
+                  alt="img-course"
+                  src={item.image?.original || defaultImg}
+                  width={332}
+                  height={186}
+                  className="w-full h-full object-cover"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BASE64}
+                />
+              </div>
+              <div className="flex flex-col justify-between w-full shrink-0 md:basis-[80%] basis-1/2">
+                <div className="flex flex-col">
+                  <h2 className="md:text-[28px] text-xl font-bold md:font-semibold line-clamp-2">
                     {item.title}
                   </h2>
                   <div className="flex text-sm mt-2 gap-2">
@@ -160,9 +158,23 @@ const CourseItem = () => {
                       : "justify-between"
                   } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
                 >
-                 
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
+                      <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                        <Image
+                          alt="img-course"
+                          src={
+                            detail.image?.original_image ||
+                            detail.image?.thumbnail ||
+                            defaultImg
+                          }
+                          width={332}
+                          height={186}
+                          className="w-full h-full object-cover"
+                          placeholder="blur"
+                          blurDataURL={PLACEHOLDER_BASE64}
+                        />
+                      </div>
                       <div
                         className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}

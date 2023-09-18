@@ -1,8 +1,10 @@
+import { PaginationArticle } from "../articles/type";
+
 export interface CourseTypes {
   slug: string;
   reward_id: number;
   reward_is_claimed: number;
-  reward_released_date: number ;
+  reward_released_date: number;
   completed_at?: number;
   id: string;
   title: string;
@@ -15,11 +17,11 @@ export interface CourseTypes {
   total_course: number;
   is_finished: number;
 }
-
 export interface CourseResponse {
   success: boolean;
   isLoading: boolean;
   data: Array<CourseTypes>;
+  pagination: PaginationArticle;
   error: any;
   details: CourseDetail | null;
   quiz: QuizDataResponse;
@@ -34,9 +36,9 @@ export interface ListCourse {
   type?: string;
   id: string;
   slug?: string;
-  image: ImageCourse
+  image: ImageCourse;
   title: string;
-  total_lesson? : number;
+  total_lesson?: number;
   total_lesson_completed: number;
   duration: number;
   is_completed: number;
@@ -56,7 +58,7 @@ export interface ImageCourse {
   big_image: string;
   thumbnail_two: string;
   small_image_two: string;
-
+  original: string;
 }
 
 export interface Course_question {
@@ -101,10 +103,9 @@ export interface CourseDetail {
   reward_released_date: number;
   is_finished: number;
   other_courses: {
-    data: Array<ListCourse>
-  }
+    data: Array<ListCourse>;
+  };
 }
-
 
 export interface CourseDetailResponse {
   isLoading: boolean;
