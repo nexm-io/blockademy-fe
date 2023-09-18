@@ -54,7 +54,7 @@ const CourseLists = function () {
         details.map((section: CourseTypes) => (
           <div className="md:mt-12 mt-8 lg:mx-0 mx-6" key={section.title}>
             <div>
-              <h2 className="text-black-100 md:text-[40px] ml-4 md:ml-0 text-[25px] font-bold w-max md:border-b-[6px] border-b-4 border-b-blue-100">
+              <h2 className="text-black-100 md:text-[40px] line-clamp-[9] ml-4 md:ml-0 text-[25px] font-bold w-max md:border-b-[6px] border-b-4 border-b-blue-100">
                 {section.title}
               </h2>
               <div className="mt-9 flex gap-[53px] md:flex-row flex-col">
@@ -76,7 +76,7 @@ const CourseLists = function () {
                 <div className="flex flex-col justify-between basis-1/2 mx-4 md:mx-0">
                   <div className="flex flex-col gap-4 font-normal pt-2">
                     <div
-                      className="section_description flex flex-col gap-3 text-base"
+                      className="section_description flex flex-col gap-3 text-base line-clamp-[9]"
                       dangerouslySetInnerHTML={{ __html: section.description }}
                     />
                   </div>

@@ -80,21 +80,20 @@ const CourseDetail = () => {
 
   useEffect(() => {
     // Add a scroll event listener to check whether to show the button
-    function handleScroll() {
-    }
+    function handleScroll() {}
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -161,11 +160,11 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="mt-10 flex gap-12 md:flex-row flex-col">
+            <div className="mt-10 flex gap-12 lg:flex-row flex-col w-full" >
               {/* Left */}
               <div className="md:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
-                <div>
+                <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map((lesson, index) => (
                       <>
@@ -195,19 +194,24 @@ const CourseDetail = () => {
                             </h2>
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
-                                className="lesson_description block gap-3 text-base"
+                                className="flex flex-col gap-3 text-base course-content"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
                                 }}
                               />
                             </div>
-                            {lesson.lesson_type_format !== 2 && <Button onClick={() => {
-                            setFormState('quiz') 
-                            scrollToTop()
-                          }}>Complete Quizz</Button>}
+                            {lesson.lesson_type_format !== 2 && (
+                              <Button
+                                onClick={() => {
+                                  setFormState("quiz");
+                                  scrollToTop();
+                                }}
+                              >
+                                Complete Quizz
+                              </Button>
+                            )}
                           </>
-                        )
-                        }
+                        )}
                       </>
                     ))
                   ) : (
@@ -226,7 +230,7 @@ const CourseDetail = () => {
                         setCourse(lesson.lesson_id);
                         router.push(
                           `/courses/${path}/${courseId}/${slugifyText(
-                            courseDetail?.lesson_data[index].lesson_title || ""
+                            courseDetail?.lesson_data[index].lesson_slug || ""
                           )}`
                         );
                       }}

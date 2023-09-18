@@ -83,7 +83,7 @@ const Quiz = ({
         dispatch(saveAnswerQuiz({ lessonDetail }));
       }
     } catch (error) {
-      console.log("Logout Failed");
+      console.error("Logout Failed");
     }
   };
 
@@ -104,12 +104,12 @@ const Quiz = ({
   }, [quiz.is_finished]);
 
   useEffect(() => {
-    console.log("asdadas");
+
     dispatch(resetFinish(0));
   }, [dispatch]);
 
   return (
-    lesson.question_detail ? <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
+    lesson.question_detail ? <div className="bg-gray-200 py-10 px-7 rounded-[8px] ">
     <div>
       <h2 className="text-black-100 font-bold text-[22px] leading-6">
         {lesson.question_detail.question}
@@ -157,7 +157,7 @@ const Quiz = ({
                   `/courses/${courseDetail?.campaign_slug}/${
                     courseDetail?.slug
                   }/${slugifyText(
-                    courseDetail?.lesson_data[index + 1].lesson_title || ""
+                    courseDetail?.lesson_data[index + 1].lesson_slug || ""
                   )}`
                 )
               }
