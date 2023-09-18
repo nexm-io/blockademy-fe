@@ -40,16 +40,16 @@ const CardItem: React.FC<CardItemProps> = ({
           status === "list"
             ? "flex-col w-[352px] shadow-lg hover:shadow-3xl lg:h-[370px] h-[340px]"
             : status === "menu"
-            ? "w-[352px] md:w-full md:flex-row flex-col"
+            ? "w-full md:flex-row flex-col gap-4 md:gap-0"
             : ""
-        } ${topicBalance ? "h-[100px]" : "h-auto"} ${
-          topicReverse ? "!flex-row-reverse" : "flex-row"
+        } ${topicBalance ? "h-[100px] !flex-row" : "h-auto"} ${
+          topicReverse ? "md:!flex-row-reverse !flex-col" : "flex-row"
         } flex flex-shrink-0 rounded-2xl cursor-pointer transition-all duration-300 ease-linear`}
       >
         <div
           className={`${
             status === "list" ? "w-full " : status === "menu" ? "w-auto" : ""
-          } ${topic ? "h-[330px]" : ""} relative`}
+          } ${topic ? "md:h-[330px] h-auto" : ""} relative`}
         >
           {topic || topicBalance ? (
             ""
@@ -87,8 +87,10 @@ const CardItem: React.FC<CardItemProps> = ({
                 data.image.original_image || data.image.thumbnail || defaultImg
               }
               className={`${
-                topicBalance ? "w-[352px]" : "w-full"
-              }  h-full object-cover rounded-2xl `}
+                topicBalance ? "w-[352px] md:h-full !h-[100px]" : "w-full"
+              } ${
+                topic ? "md:h-full h-[250px]" : ""
+              } h-[210px] object-cover rounded-2xl`}
               width={352}
               height={198}
               placeholder="blur"
@@ -103,7 +105,7 @@ const CardItem: React.FC<CardItemProps> = ({
               : status === "menu"
               ? "basis-full "
               : ""
-          } ${topicReverse ? "items-end pr-3" : "items-start"} ${
+          } ${topicReverse ? "pr-3 md:items-end items-start" : "items-start"} ${
             topicShort ? "h-[300px]" : ""
           } ${topicBalance ? "h-auto" : "h-[198px]"} ${
             topic ? "my-auto" : ""
@@ -120,9 +122,9 @@ const CardItem: React.FC<CardItemProps> = ({
               topic || topicShort
                 ? "ml-6"
                 : "md:m-6 mt-6 ml-2 md:ml-6 mb-4 md:mb-6"
-            } ${topicReverse ? "text-right" : ""} ${topic ? "mb-2" : ""} ${
-              topicBalance ? "text-white-100" : ""
-            } font-bold line-clamp-2
+            } ${topicReverse ? "md:text-right text-left" : ""} ${
+              topic ? "mb-2" : ""
+            } ${topicBalance ? "text-white-100" : ""} font-bold line-clamp-2
          `}
           >
             {data.title}
@@ -146,7 +148,11 @@ const CardItem: React.FC<CardItemProps> = ({
                 topicShort || topic
                   ? "flex-col-reverse"
                   : "mt-auto items-center"
-              } ${topicReverse ? "px-0 items-end" : "md:px-6 px-2"} flex 
+              } ${
+                topicReverse
+                  ? "px-0 ml-6 md:ml-0 items-start md:items-end"
+                  : "md:px-6 px-2 ml-4 md:ml-0 pb-4"
+              } flex 
          `}
             >
               {/* TODO: chip component */}

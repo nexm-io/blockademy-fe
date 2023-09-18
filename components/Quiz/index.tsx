@@ -83,7 +83,7 @@ const Quiz = ({
         dispatch(saveAnswerQuiz({ lessonDetail }));
       }
     } catch (error) {
-      console.log("Logout Failed");
+      console.error("Logout Failed");
     }
   };
 
@@ -104,40 +104,40 @@ const Quiz = ({
   }, [quiz.is_finished]);
 
   useEffect(() => {
-    console.log("asdadas");
     dispatch(resetFinish(0));
   }, [dispatch]);
 
-  return (
+  return lesson.question_detail ? (
     <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
       <div>
         <h2 className="text-black-100 font-bold text-[22px] leading-6">
           {lesson.question_detail.question}
         </h2>
         <div className="mt-4 flex flex-col gap-4">
-          {lesson.question_detail.answers.map((item, index) => (
-            <div
-              key={item.id}
-              onClick={() => handleOptionClick(item.id)}
-              className={`border  px-4 py-3 rounded-[8px]  cursor-pointer select-none ${
-                selected.includes(item.id)
-                  ? `bg-blue-200 border-blue-100 text-blue-100 ${
-                      isCorrect !== null &&
-                      !isCorrect &&
-                      "border-red-500 text-red-500 bg-red-50"
-                    } ${
-                      isCorrect !== null &&
-                      isCorrect &&
-                      "border-green-500 text-green-500 bg-green-50"
-                    }`
-                  : "border-gray-400 bg-transparent"
-              }`}
-            >
-              <p>
-                <span>{item.answer_text}</span>
-              </p>
-            </div>
-          ))}
+          {lesson.question_detail.answers &&
+            lesson.question_detail.answers.map((item, index) => (
+              <div
+                key={item.id}
+                onClick={() => handleOptionClick(item.id)}
+                className={`border  px-4 py-3 rounded-[8px]  cursor-pointer select-none ${
+                  selected.includes(item.id)
+                    ? `bg-blue-200 border-blue-100 text-blue-100 ${
+                        isCorrect !== null &&
+                        !isCorrect &&
+                        "border-red-500 text-red-500 bg-red-50"
+                      } ${
+                        isCorrect !== null &&
+                        isCorrect &&
+                        "border-green-500 text-green-500 bg-green-50"
+                      }`
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                <p>
+                  <span>{item.answer_text}</span>
+                </p>
+              </div>
+            ))}
           <div className="flex gap-3">
             <Button
               disabled={(isCorrect && selected.length > 0) || !selected.length}
@@ -157,7 +157,7 @@ const Quiz = ({
                     `/courses/${courseDetail?.campaign_slug}/${
                       courseDetail?.slug
                     }/${slugifyText(
-                      courseDetail?.lesson_data[index + 1].lesson_title || ""
+                      courseDetail?.lesson_data[index + 1].lesson_slug || ""
                     )}`
                   )
                 }
@@ -199,6 +199,8 @@ const Quiz = ({
           />
         )}
     </div>
+  ) : (
+    <div>No Quizz </div>
   );
 };
 

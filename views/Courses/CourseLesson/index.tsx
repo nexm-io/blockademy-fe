@@ -81,7 +81,7 @@ const CourseLesson = ({
                   <div className=" flex items-center gap-[10px] pr-4 text-blue-100 basis-[30%] justify-end">
                     <>
                       <span className="line-clamp-1 hidden md:block text-gray-300">
-                        Coming soon...
+                        Coming soon
                       </span>
                     </>
                   </div>

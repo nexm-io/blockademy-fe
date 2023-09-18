@@ -19,6 +19,7 @@ const initialState: CourseResponse = {
     is_correct: false,
     is_finished: 0,
   },
+  pagination: null,
 };
 
 const courseReducer = createReducer(initialState, (builder) => {

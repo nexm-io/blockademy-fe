@@ -52,8 +52,18 @@ const TopBody: React.FC<TopBodyProps> = ({ urlApi }) => {
               .map((item, index) => <CardItemTop data={item} key={index} />)
           ) : (
             <div className="flex flex-col gap-3">
-              <SkeletionCard width="521px" height="293px" radius="16px" />
-              <SkeletionCard width="521px" height="28px" radius="16px" />
+              <SkeletionCard
+                width="521px"
+                height="293px"
+                radius="16px"
+                mobileCardFull
+              />
+              <SkeletionCard
+                width="521px"
+                height="28px"
+                radius="16px"
+                mobileCardFull
+              />
               <div className="flex gap-2">
                 <SkeletionCard width="100px" height="28px" radius="16px" />
                 <SkeletionCard width="80px" height="28px" radius="16px" />

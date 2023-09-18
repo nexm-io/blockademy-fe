@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const LearnEarn = () => {
   return (
-    <div className="bg-black-500 flex justify-center items-center mt-[74px] full-bleed__learn">
+    <div className="bg-black-500 flex justify-center items-center mt-[74px] pb-[64px] full-bleed__learn">
       <div className="md:mt-[100px] mt-10">
         <InfoGraphic
           description="Build your blockchain knowledge, complete

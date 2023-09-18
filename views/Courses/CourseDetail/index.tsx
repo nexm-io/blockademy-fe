@@ -44,6 +44,7 @@ const CourseDetail = () => {
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
   );
+  const [showButton, setShowButton] = useState(false);
 
   const quiz = useAppSelector((state: RootState) => state.courses.quiz);
 
@@ -66,7 +67,7 @@ const CourseDetail = () => {
         router.push(
           `/courses/${path}/${courseId}/${slugifyText(
             courseDetail?.campaign_title || ""
-          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
+          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_slug)}`
         );
         setIsRedirected(true);
       }
@@ -76,6 +77,25 @@ const CourseDetail = () => {
   useEffect(() => {
     getCourseDetails();
   }, [courseId, dispatch, pathname]);
+
+  useEffect(() => {
+    // Add a scroll event listener to check whether to show the button
+    function handleScroll() {}
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleClaim = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
@@ -92,12 +112,9 @@ const CourseDetail = () => {
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
   };
-  useEffect(() => {
-    window.onbeforeunload = (event) => {
-      event.preventDefault();
-      return "";
-    };
-  }, []);
+
+
+  
 
   return (
     <>
@@ -137,26 +154,27 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="mt-10 flex gap-12 md:flex-row flex-col">
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full" >
               {/* Left */}
               <div className="md:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
-                <div>
+                <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map((lesson, index) => (
                       <>
                         {getLastPathName(pathname) ===
-                          slugifyText(lesson.lesson_title) && (
+                          slugifyText(lesson.lesson_slug) && (
                           <>
-                            {formState === "video" && (
-                              <>
-                                <VideoPlayer
-                                  url={lesson.lesson_link}
-                                  onChangeForm={handleChangeForm}
-                                  onChangeStatus={handleOnchange}
-                                />
-                              </>
-                            )}
+                            {lesson.lesson_type_format === 2 &&
+                              formState === "video" && (
+                                <>
+                                  <VideoPlayer
+                                    url={lesson.lesson_link}
+                                    onChangeForm={handleChangeForm}
+                                    onChangeStatus={handleOnchange}
+                                  />
+                                </>
+                              )}
                             {formState === "quiz" && (
                               <Quiz
                                 lesson={lesson}
@@ -168,9 +186,24 @@ const CourseDetail = () => {
                             <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                               {lesson.lesson_title}
                             </h2>
-                            <p className="text-black-100 md:text-lg text-base font-normal italic mb-9">
-                              {lesson.lesson_description}
-                            </p>
+                            <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                              <div
+                                className="flex flex-col gap-3 text-base course-content"
+                                dangerouslySetInnerHTML={{
+                                  __html: lesson.lesson_description,
+                                }}
+                              />
+                            </div>
+                            {lesson.lesson_type_format !== 2 && (
+                              <Button
+                                onClick={() => {
+                                  setFormState("quiz");
+                                  scrollToTop();
+                                }}
+                              >
+                                Complete Quizz
+                              </Button>
+                            )}
                           </>
                         )}
                       </>
@@ -180,30 +213,34 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col gap-4 px-4 md:px-0">
-                {courseDetail?.lesson_data.length !== 0 &&
-                  !isLoading &&
-                  courseDetail?.lesson_data.map((lesson, index) => (
-                    <div
-                      key={index}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setCourse(lesson.lesson_id);
-                        router.push(
-                          `/courses/${path}/${courseId}/${slugifyText(
-                            courseDetail?.lesson_data[index].lesson_title || ""
-                          )}`
-                        );
-                      }}
-                    >
-                      <CourseModule
-                        is_watching={isWatching}
-                        is_complete={lesson.is_complete}
+              
+              <div className="h-full sticky top-[100px]">
+                <div className="flex flex-col gap-4 px-4 md:px-0 ">
+                  {courseDetail?.lesson_data.length !== 0 &&
+                    !isLoading &&
+                    courseDetail?.lesson_data.map((lesson, index) => (
+                      <div
                         key={index}
-                        lesson={lesson}
-                      />
-                    </div>
-                  ))}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setCourse(lesson.lesson_id);
+                          router.push(
+                            `/courses/${path}/${courseId}/${slugifyText(
+                              courseDetail?.lesson_data[index].lesson_slug ||
+                                ""
+                            )}`
+                          );
+                        }}
+                      >
+                        <CourseModule
+                          is_watching={isWatching}
+                          is_complete={lesson.is_complete}
+                          key={index}
+                          lesson={lesson}
+                        />
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
             {/* Other */}
@@ -291,7 +328,6 @@ const CourseDetail = () => {
                 </div>
               </div>
             </div>
-
             <NoSignal />
           </section>
         </>
