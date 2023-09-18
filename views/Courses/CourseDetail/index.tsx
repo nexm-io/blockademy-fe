@@ -112,12 +112,6 @@ const CourseDetail = () => {
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
   };
-  useEffect(() => {
-    window.onbeforeunload = (event) => {
-      event.preventDefault();
-      return "";
-    };
-  }, []);
 
   return (
     <>
@@ -157,7 +151,7 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="mt-10 flex gap-12 md:flex-row flex-col">
+            <div className="mt-6 flex gap-12 md:flex-row flex-col">
               {/* Left */}
               <div className="md:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
@@ -216,30 +210,33 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col gap-4 px-4 md:px-0">
-                {courseDetail?.lesson_data.length !== 0 &&
-                  !isLoading &&
-                  courseDetail?.lesson_data.map((lesson, index) => (
-                    <div
-                      key={index}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setCourse(lesson.lesson_id);
-                        router.push(
-                          `/courses/${path}/${courseId}/${slugifyText(
-                            courseDetail?.lesson_data[index].lesson_title || ""
-                          )}`
-                        );
-                      }}
-                    >
-                      <CourseModule
-                        is_watching={isWatching}
-                        is_complete={lesson.is_complete}
+              <div className="h-full sticky top-[100px]">
+                <div className="flex flex-col gap-4 px-4 md:px-0 ">
+                  {courseDetail?.lesson_data.length !== 0 &&
+                    !isLoading &&
+                    courseDetail?.lesson_data.map((lesson, index) => (
+                      <div
                         key={index}
-                        lesson={lesson}
-                      />
-                    </div>
-                  ))}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setCourse(lesson.lesson_id);
+                          router.push(
+                            `/courses/${path}/${courseId}/${slugifyText(
+                              courseDetail?.lesson_data[index].lesson_title ||
+                                ""
+                            )}`
+                          );
+                        }}
+                      >
+                        <CourseModule
+                          is_watching={isWatching}
+                          is_complete={lesson.is_complete}
+                          key={index}
+                          lesson={lesson}
+                        />
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
             {/* Other */}

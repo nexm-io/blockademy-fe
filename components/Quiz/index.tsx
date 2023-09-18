@@ -104,101 +104,103 @@ const Quiz = ({
   }, [quiz.is_finished]);
 
   useEffect(() => {
-    console.log("asdadas");
     dispatch(resetFinish(0));
   }, [dispatch]);
 
-  return (
-    lesson.question_detail ? <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
-    <div>
-      <h2 className="text-black-100 font-bold text-[22px] leading-6">
-        {lesson.question_detail.question}
-      </h2>
-      <div className="mt-4 flex flex-col gap-4">
-        {lesson.question_detail.answers && lesson.question_detail.answers.map((item, index) => (
-          <div
-            key={item.id}
-            onClick={() => handleOptionClick(item.id)}
-            className={`border  px-4 py-3 rounded-[8px]  cursor-pointer select-none ${
-              selected.includes(item.id)
-                ? `bg-blue-200 border-blue-100 text-blue-100 ${
-                    isCorrect !== null &&
-                    !isCorrect &&
-                    "border-red-500 text-red-500 bg-red-50"
-                  } ${
-                    isCorrect !== null &&
-                    isCorrect &&
-                    "border-green-500 text-green-500 bg-green-50"
-                  }`
-                : "border-gray-400 bg-transparent"
-            }`}
-          >
-            <p>
-              <span>{item.answer_text}</span>
-            </p>
-          </div>
-        ))}
-        <div className="flex gap-3">
-          <Button
-            disabled={(isCorrect && selected.length > 0) || !selected.length}
-            className={`${
-              selected.length ? "bg-blue-100" : "bg-gray-500"
-            } w-[180px] px-2`}
-            onClick={handleSubmit}
-          >
-            Submit
-          </Button>
-          {isCorrect && !isLastLesson && (
+  return lesson.question_detail ? (
+    <div className="bg-gray-200 py-10 px-7 rounded-[8px]">
+      <div>
+        <h2 className="text-black-100 font-bold text-[22px] leading-6">
+          {lesson.question_detail.question}
+        </h2>
+        <div className="mt-4 flex flex-col gap-4">
+          {lesson.question_detail.answers &&
+            lesson.question_detail.answers.map((item, index) => (
+              <div
+                key={item.id}
+                onClick={() => handleOptionClick(item.id)}
+                className={`border  px-4 py-3 rounded-[8px]  cursor-pointer select-none ${
+                  selected.includes(item.id)
+                    ? `bg-blue-200 border-blue-100 text-blue-100 ${
+                        isCorrect !== null &&
+                        !isCorrect &&
+                        "border-red-500 text-red-500 bg-red-50"
+                      } ${
+                        isCorrect !== null &&
+                        isCorrect &&
+                        "border-green-500 text-green-500 bg-green-50"
+                      }`
+                    : "border-gray-400 bg-transparent"
+                }`}
+              >
+                <p>
+                  <span>{item.answer_text}</span>
+                </p>
+              </div>
+            ))}
+          <div className="flex gap-3">
             <Button
-              className="w-[180px] px-2"
-              onClick={() =>
-                // saveAnswer()
-                router.push(
-                  `/courses/${courseDetail?.campaign_slug}/${
-                    courseDetail?.slug
-                  }/${slugifyText(
-                    courseDetail?.lesson_data[index + 1].lesson_title || ""
-                  )}`
-                )
-              }
+              disabled={(isCorrect && selected.length > 0) || !selected.length}
+              className={`${
+                selected.length ? "bg-blue-100" : "bg-gray-500"
+              } w-[180px] px-2`}
+              onClick={handleSubmit}
             >
-              Next Module
+              Submit
             </Button>
-          )}
-
-          {isCorrect &&
-            isLastLesson &&
-            courseDetail.is_finished === 0 &&
-            quiz.is_finished === 0 && (
+            {isCorrect && !isLastLesson && (
               <Button
                 className="w-[180px] px-2"
-                onClick={() => {
-                  const nextCourse = incompleteCourses?.[0];
-                  if (nextCourse) {
-                    router.push(
-                      `/courses/${courseDetail?.campaign_slug}/${nextCourse.slug}/${nextCourse.lesson_first?.lesson_slug}`
-                    );
-                  }
-                }}
+                onClick={() =>
+                  // saveAnswer()
+                  router.push(
+                    `/courses/${courseDetail?.campaign_slug}/${
+                      courseDetail?.slug
+                    }/${slugifyText(
+                      courseDetail?.lesson_data[index + 1].lesson_title || ""
+                    )}`
+                  )
+                }
               >
-                Next Course
+                Next Module
               </Button>
             )}
+
+            {isCorrect &&
+              isLastLesson &&
+              courseDetail.is_finished === 0 &&
+              quiz.is_finished === 0 && (
+                <Button
+                  className="w-[180px] px-2"
+                  onClick={() => {
+                    const nextCourse = incompleteCourses?.[0];
+                    if (nextCourse) {
+                      router.push(
+                        `/courses/${courseDetail?.campaign_slug}/${nextCourse.slug}/${nextCourse.lesson_first?.lesson_slug}`
+                      );
+                    }
+                  }}
+                >
+                  Next Course
+                </Button>
+              )}
+          </div>
         </div>
       </div>
-    </div>
 
-    {quiz.is_finished === 1 &&
-      show &&
-      courseDetail?.reward_is_claimed === 0 && (
-        <Popup
-          title="Congratulation 🎉"
-          description="You completed the campaign and enjoy your rewards."
-          onClose={() => setShow(false)}
-          handleClaim={handleClaimReward}
-        />
-      )}
-  </div> : <div>No Quizz </div>
+      {quiz.is_finished === 1 &&
+        show &&
+        courseDetail?.reward_is_claimed === 0 && (
+          <Popup
+            title="Congratulation 🎉"
+            description="You completed the campaign and enjoy your rewards."
+            onClose={() => setShow(false)}
+            handleClaim={handleClaimReward}
+          />
+        )}
+    </div>
+  ) : (
+    <div>No Quizz </div>
   );
 };
 
