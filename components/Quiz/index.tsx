@@ -83,7 +83,7 @@ const Quiz = ({
         dispatch(saveAnswerQuiz({ lessonDetail }));
       }
     } catch (error) {
-      console.log("Logout Failed");
+      console.error("Logout Failed");
     }
   };
 
@@ -157,7 +157,7 @@ const Quiz = ({
                     `/courses/${courseDetail?.campaign_slug}/${
                       courseDetail?.slug
                     }/${slugifyText(
-                      courseDetail?.lesson_data[index + 1].lesson_title || ""
+                      courseDetail?.lesson_data[index + 1].lesson_slug || ""
                     )}`
                   )
                 }

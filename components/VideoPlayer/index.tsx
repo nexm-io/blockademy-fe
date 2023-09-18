@@ -20,8 +20,8 @@ const VideoPlayer = ({
   };
 
   return (
-    <div onClick={handleStart}>
-      <video width="753" height="437" controls onEnded={handleEnd}>
+    <div className="w-full" onClick={handleStart}>
+      <video className="w-full" height="437" controls onEnded={handleEnd}>
         <source
           src={
             url ||

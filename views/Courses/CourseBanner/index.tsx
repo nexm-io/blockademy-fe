@@ -8,7 +8,7 @@ const CourseBanner = () => {
       <Image
         alt="banner-course"
         src={banner}
-        className="absolute left-0 w-full lg:h-[450px] md:h-[30%] h-[150px] max-h-[450px] select-none"
+        className="absolute left-0 w-full lg:h-[450px] md:h-[70%] h-[150px] max-h-[450px] select-none"
       />
       <h2 className="pl-6 text-white-100 md:text-[46px] text-base font-bold md:leading-[56px] w-[235px] md:w-[485px] relative translate-y-2/3 md:translate-y-[85%] banner-top">
         Free education

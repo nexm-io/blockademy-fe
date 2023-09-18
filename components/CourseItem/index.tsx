@@ -26,6 +26,7 @@ const CourseItem = () => {
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
   const route = useRouter();
+
   useEffect(() => {
     if (getLastPathName(pathname) === STATUS.COMPLETED) {
       dispatch(getListCourse("3"));
@@ -39,71 +40,95 @@ const CourseItem = () => {
     res && toast.success("Claim reward successfully!");
   };
 
-  const LessonCourse = ({ detail, campaign }: { detail: Array<ListCourse>, campaign: string }) => {
-    
+  const LessonCourse = ({
+    detail,
+    campaign,
+  }: {
+    detail: Array<ListCourse>;
+    campaign: string;
+  }) => {
     return (
       detail &&
       !isLoading && (
-        <>
+        <div className="flex flex-col gap-6 lg:max-w-[80%]">
           {detail.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col justify-between md:min-w-[550px] md:max-w-[550px]"
+              className="flex justify-between gap-6 md:min-w-[550px] w-full "
             >
-              <div className="flex flex-col line-clamp-2">
-                <h2 className="text-[28px] font-semibold truncate ">
-                  {item.title}
-                </h2>
-                <div className="flex text-sm mt-2 gap-2">
-                  <div className="flex gap-2 text-sm">
-                    <Image src={clock} alt="" width={20} height={20} />
-                    <span>{secondsToMinutes(item.duration)} Mins</span>
-                  </div>
-                  <div className="flex gap-2 text-sm">
-                    <Image src={quiz} alt="" width={20} height={20} />
-                    <span>{item.type}</span>
+              <Image
+                alt="img-course"
+                src={
+                  item.image.thumbnail ||
+                  item.image.original_image ||
+                  defaultImg
+                }
+                width={332}
+                height={186}
+                className="md:min-w-[332px] md:w-[332px] md:h-[186px] object-fill shrink-0 md:shrink-0 md:basis-0 basis-2/4"
+                placeholder="blur"
+                blurDataURL={PLACEHOLDER_BASE64}
+              />
+              <div className="flex flex-col justify-between w-full shrink-0 basis-2/4">
+                <div className="flex flex-col line-clamp-2">
+                  <h2 className="text-[28px] font-semibold truncate line-clamp-1 md:max-w-[420px]">
+                    {item.title}
+                  </h2>
+                  <div className="flex text-sm mt-2 gap-2">
+                    <div className="flex gap-2 text-sm">
+                      <Image src={clock} alt="" width={20} height={20} />
+                      <span>{secondsToMinutes(item.duration)} Mins</span>
+                    </div>
+                    <div className="flex gap-2 text-sm">
+                      <Image src={quiz} alt="" width={20} height={20} />
+                      <span>{item.type}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                className={`${
-                  getLastPathName(pathname) === "progress"
-                    ? "md:flex-row flex-col gap-4 md:gap-0"
-                    : ""
-                } flex justify-between`}
-              >
-                <div className="flex items-center gap-2 mt-3 md:mt-0">
-                  {Array.from(
-                    { length: item.total_lesson || 5 },
-                    (_, index) => (
-                      <div
-                        key={index}
-                        className="h-1 w-6 rounded-lg bg-neutral-200"
-                      >
-                        {index + 1 <= item.total_lesson_completed && (
-                          <div className={`h-1 bg-blue-100 rounded-lg`}></div>
-                        )}
-                      </div>
-                    )
-                  )}
-                  <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
-                </div>
-                <Button
-                  onClick={() => route.push(`/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`)}
-                  className="md:w-[180px] px-[6px]"
+                <div
+                  className={`${
+                    getLastPathName(pathname) === "progress"
+                      ? "md:flex-row flex-col gap-4 md:gap-0"
+                      : ""
+                  } flex justify-between`}
                 >
-                  Continue Learning
-                </Button>
+                  <div className="flex items-center gap-2 mt-3 md:mt-0">
+                    {Array.from(
+                      { length: item.total_lesson || 5 },
+                      (_, index) => (
+                        <div
+                          key={index}
+                          className="h-1 w-6 rounded-lg bg-neutral-200"
+                        >
+                          {index + 1 <= item.total_lesson_completed && (
+                            <div className={`h-1 bg-blue-100 rounded-lg`}></div>
+                          )}
+                        </div>
+                      )
+                    )}
+                    <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
+                  </div>
+                  <Button
+                    onClick={() =>
+                      route.push(
+                        `/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`
+                      )
+                    }
+                    className="md:w-[180px] px-[6px]"
+                  >
+                    Continue Learning
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
-        </>
+        </div>
       )
     );
   };
 
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="w-full flex items-center justify-center md:px-3">
       {details.length == 0 ? (
         <div className="flex items-center justify-center flex-col gap-9">
           <Image alt="empty-box" src={empty} />
@@ -135,23 +160,11 @@ const CourseItem = () => {
                       : "justify-between"
                   } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
                 >
-                  <Image
-                    alt="img-course"
-                    src={
-                      detail.image?.original_image ||
-                      detail.image?.thumbnail ||
-                      defaultImg
-                    }
-                    width={332}
-                    height={186}
-                    className="md:min-w-[332px] md:w-[332px] md:h-[186px]"
-                    placeholder="blur"
-                    blurDataURL={PLACEHOLDER_BASE64}
-                  />
+                 
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
                       <div
-                        className="flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
+                        className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
                       <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
@@ -175,7 +188,10 @@ const CourseItem = () => {
                   ) : (
                     ""
                   )}
-                  <LessonCourse campaign={detail.slug} detail={detail.list_courses?.data} />
+                  <LessonCourse
+                    campaign={detail.slug}
+                    detail={detail.list_courses?.data}
+                  />
                 </div>
               </div>
             ))

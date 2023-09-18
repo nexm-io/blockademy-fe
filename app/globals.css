@@ -272,12 +272,12 @@ input[type="range"]::-webkit-slider-thumb:active {
   @apply text-black-100 border-b-[3px] border-b-blue-100 md:pb-[23px] pb-2;
 }
 
-.css-143tmma {
+.course-content .css-143tmma {
   background-color: #222222;
   padding: 8px;
 }
 
-pre {
+.course-content pre {
   background: #f4f4f4;
   border: 1px solid #ddd;
   color: #fff;
@@ -294,35 +294,35 @@ pre {
   word-wrap: break-word;
   border-radius: 6px;
 }
-.hljs-keyword {
+.course-content .hljs-keyword {
   color: #ff7b72;
 }
-.hljs-title {
+.course-content .hljs-title {
   color: #d2a8ff;
 }
-.hljs-params {
+.course-content .hljs-params {
   color: #fff;
 }
-.hljs-built_in {
+.course-content .hljs-built_in {
   color: #ffa657;
 }
-.hljs-string {
+.course-content .hljs-string {
   color: #a5d6ff;
 }
-.hljs-attr {
+.course-content .hljs-attr {
   color: #79c0ff;
 }
-.chakra-text {
+.course-content .chakra-text  {
   font-size: 16px;
   margin-bottom: 12px;
   text-align: justify;
 }
-.chakra-heading {
+.course-content .chakra-heading {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 16px;
 }
-.chakra-code {
+.course-content .chakra-code {
   background-color: #222222;
   border-radius: 8px;
   padding: 2px 8px;

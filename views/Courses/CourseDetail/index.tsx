@@ -67,7 +67,7 @@ const CourseDetail = () => {
         router.push(
           `/courses/${path}/${courseId}/${slugifyText(
             courseDetail?.campaign_title || ""
-          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_title)}`
+          )}/${slugifyText(courseDetail?.lesson_data[0].lesson_slug)}`
         );
         setIsRedirected(true);
       }
@@ -113,6 +113,9 @@ const CourseDetail = () => {
     setIsWatching(status);
   };
 
+
+  
+
   return (
     <>
       {!courseDetail && isLoading ? (
@@ -151,16 +154,16 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="mt-6 flex gap-12 md:flex-row flex-col">
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full" >
               {/* Left */}
               <div className="md:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
-                <div>
+                <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map((lesson, index) => (
                       <>
                         {getLastPathName(pathname) ===
-                          slugifyText(lesson.lesson_title) && (
+                          slugifyText(lesson.lesson_slug) && (
                           <>
                             {lesson.lesson_type_format === 2 &&
                               formState === "video" && (
@@ -210,6 +213,7 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
+              
               <div className="h-full sticky top-[100px]">
                 <div className="flex flex-col gap-4 px-4 md:px-0 ">
                   {courseDetail?.lesson_data.length !== 0 &&
@@ -222,7 +226,7 @@ const CourseDetail = () => {
                           setCourse(lesson.lesson_id);
                           router.push(
                             `/courses/${path}/${courseId}/${slugifyText(
-                              courseDetail?.lesson_data[index].lesson_title ||
+                              courseDetail?.lesson_data[index].lesson_slug ||
                                 ""
                             )}`
                           );

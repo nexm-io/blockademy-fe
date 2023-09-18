@@ -68,10 +68,10 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       </div>
 
       {active !== STATUS.COMPLETED &&
-      (getLastPathName(pathname) === slugifyText(lesson.lesson_title) ||
+      (getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ||
         active === "already") ? (
         <div className="w-[18px] h-full flex items-center">
-          {getLastPathName(pathname) === slugifyText(lesson.lesson_title) ? (
+          {getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
@@ -86,7 +86,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       )}
       {active === STATUS.COMPLETED && (
         <div className="w-[18px] h-full flex items-center">
-          {getLastPathName(pathname) === slugifyText(lesson.lesson_title) ? (
+          {getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />

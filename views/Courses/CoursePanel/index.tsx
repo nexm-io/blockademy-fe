@@ -98,7 +98,7 @@ const CoursePanel: React.FC<CoursePanelProps> = ({
               <div className=" flex items-center gap-[10px] pr-4 text-gray-300 basis-[30%] justify-end">
                 <>
                   <span className="line-clamp-1 hidden md:block">
-                    Coming soon...
+                    Coming soon
                   </span>
                 </>
 
