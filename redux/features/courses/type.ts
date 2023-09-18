@@ -66,6 +66,7 @@ export interface Course_question {
 }
 
 export interface Lesson {
+  lesson_slug: string;
   lesson_type_format: number;
   lesson_id: number;
   lesson_title: string;

@@ -76,7 +76,7 @@ const CourseLists = function () {
                 <div className="flex flex-col justify-between basis-1/2 mx-4 md:mx-0">
                   <div className="flex flex-col gap-4 font-normal pt-2">
                     <div
-                      className="flex flex-col gap-3 text-base"
+                      className="section_description flex flex-col gap-3 text-base"
                       dangerouslySetInnerHTML={{ __html: section.description }}
                     />
                   </div>

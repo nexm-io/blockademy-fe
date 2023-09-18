@@ -120,6 +120,9 @@ const CourseDetail = () => {
     };
   }, []);
 
+
+  
+
   return (
     <>
       {!courseDetail && isLoading ? (
@@ -167,7 +170,7 @@ const CourseDetail = () => {
                     courseDetail.lesson_data.map((lesson, index) => (
                       <>
                         {getLastPathName(pathname) ===
-                          slugifyText(lesson.lesson_title) && (
+                          slugifyText(lesson.lesson_slug) && (
                           <>
                             {lesson.lesson_type_format === 2 &&
                               formState === "video" && (
@@ -192,7 +195,7 @@ const CourseDetail = () => {
                             </h2>
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
-                                className="flex flex-col gap-3 text-base"
+                                className="lesson_description block gap-3 text-base"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
                                 }}

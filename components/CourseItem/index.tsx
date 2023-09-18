@@ -26,6 +26,9 @@ const CourseItem = () => {
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
   const route = useRouter();
+
+  console.log(details);
+  
   useEffect(() => {
     if (getLastPathName(pathname) === STATUS.COMPLETED) {
       dispatch(getListCourse("3"));
@@ -44,7 +47,7 @@ const CourseItem = () => {
     return (
       detail &&
       !isLoading && (
-        <>
+        <div className="flex flex-col">
           {detail.map((item, index) => (
             <div
               key={index}
@@ -97,7 +100,7 @@ const CourseItem = () => {
               </div>
             </div>
           ))}
-        </>
+        </div>
       )
     );
   };
@@ -151,7 +154,7 @@ const CourseItem = () => {
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
                       <div
-                        className="flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
+                        className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
                       <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
