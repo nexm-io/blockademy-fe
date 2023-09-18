@@ -21,7 +21,7 @@ export interface CourseResponse {
   success: boolean;
   isLoading: boolean;
   data: Array<CourseTypes>;
-  pagination: PaginationArticle;
+  pagination: PaginationArticle | null;
   error: any;
   details: CourseDetail | null;
   quiz: QuizDataResponse;
