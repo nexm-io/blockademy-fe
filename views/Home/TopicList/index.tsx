@@ -156,9 +156,9 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <div className="w-[860px] h-[332px] rounded-2xl flex gap-4 items-center">
+                  <div className="md:w-[860px] h-[332px] rounded-2xl flex gap-4 items-center">
                     <SkeletionCard width="370px" height="332px" radius="16px" />
-                    <div>
+                    <div className="md:block hidden">
                       <SkeletionCard
                         width="380px"
                         height="120px"
@@ -203,8 +203,8 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <div className="w-[276px] h-[332px] rounded-2xl flex flex-col justify-between mt-4 mx-4">
-                    <SkeletionCard width="246px" height="40px" radius="16px" />
+                  <div className="md:w-[276px] md:h-[332px] gap-4 md:gap-0 rounded-2xl flex flex-col justify-between mt-4 mx-4">
+                    <SkeletionCard width="316px" height="40px" radius="16px" />
                     <div className="flex flex-col gap-2 mb-4">
                       <div className="flex gap-6">
                         <SkeletionCard
@@ -241,8 +241,8 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <div className="w-[276px] h-[332px] rounded-2xl flex flex-col justify-between mt-4 mx-4">
-                    <SkeletionCard width="246px" height="40px" radius="16px" />
+                  <div className="md:w-[276px] md:h-[332px] gap-4 md:gap-0 rounded-2xl flex flex-col justify-between mt-4 mx-4">
+                    <SkeletionCard width="316px" height="40px" radius="16px" />
                     <div className="flex flex-col gap-2 mb-4">
                       <div className="flex gap-6">
                         <SkeletionCard
@@ -278,9 +278,9 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <div className="w-[860px] h-[332px] rounded-2xl flex flex-row-reverse gap-4 items-center">
+                  <div className="md:w-[860px] h-[332px] rounded-2xl flex md:flex-row-reverse gap-4 items-center">
                     <SkeletionCard width="370px" height="332px" radius="16px" />
-                    <div>
+                    <div className="md:block hidden">
                       <SkeletionCard
                         width="380px"
                         height="120px"
@@ -325,8 +325,8 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               ) : (
                 <>
                   <div className="flex gap-4 items-center w-[552px] h-[99px]">
-                    <SkeletionCard width="200px" height="99px" radius="16px" />
-                    <SkeletionCard width="300px" height="56px" radius="16px" />
+                    <SkeletionCard width="175px" height="99px" radius="16px" />
+                    <SkeletionCard width="150px" height="56px" radius="16px" />
                   </div>
                 </>
               )}
@@ -346,9 +346,9 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
                   ))
               ) : (
                 <>
-                  <div className="flex gap-4 items-center">
-                    <SkeletionCard width="200px" height="99px" radius="16px" />
-                    <SkeletionCard width="300px" height="56px" radius="16px" />
+                  <div className="flex gap-4 items-center w-[552px] h-[99px]">
+                    <SkeletionCard width="175px" height="99px" radius="16px" />
+                    <SkeletionCard width="150px" height="56px" radius="16px" />
                   </div>
                 </>
               )}

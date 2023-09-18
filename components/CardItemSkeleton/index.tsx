@@ -4,7 +4,12 @@ import { SkeletionCard } from "../Skeleton/SkeletionCard";
 const CardItemSkeleton = () => {
   return (
     <div className="w-[352px] h-[370px] bg-gray-200 flex flex-col rounded-2xl">
-      <SkeletionCard width="352px" height="198px" radius="16px" />
+      <SkeletionCard
+        width="352px"
+        height="198px"
+        radius="16px"
+        mobileCardFull
+      />
       <SkeletionCard
         width="320px"
         height="48px"

@@ -36,6 +36,7 @@ export interface ListCourse {
   type?: string;
   id: string;
   slug?: string;
+  image: ImageCourse;
   title: string;
   total_lesson?: number;
   total_lesson_completed: number;
@@ -57,6 +58,7 @@ export interface ImageCourse {
   big_image: string;
   thumbnail_two: string;
   small_image_two: string;
+  original: string;
 }
 
 export interface Course_question {
@@ -68,6 +70,7 @@ export interface Course_question {
 }
 
 export interface Lesson {
+  lesson_slug: string;
   lesson_type_format: number;
   lesson_id: number;
   lesson_title: string;
