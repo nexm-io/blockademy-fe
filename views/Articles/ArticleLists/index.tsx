@@ -95,11 +95,11 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
       <div
         className={`${
           status === "list"
-            ? "md:grid-cols-3 grid-cols-1 gap-4"
+            ? "lg:grid-cols-3 grid-cols-1 gap-4 md:grid-cols-2"
             : status === "menu"
-            ? "grid-cols-1 md:gap-4 gap-8"
+            ? "grid-cols-1 md:gap-6 lg:gap-8"
             : ""
-        } grid md:gap-10 pl-4 `}
+        } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto pl-4 `}
       >
         {currentData ? (
           currentData.map((item, index) => (

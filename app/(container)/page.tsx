@@ -22,7 +22,7 @@ export default function Home() {
       <ListCard
         cardTitle="Latest Releases"
         cardLabel="Latest releases"
-        mTop="lg:mt-[160px] md:mt-[100px] mt-[60px]"
+        mTop="lg:mt-[160px] md:mt-[80px] mt-[60px]"
         urlApi="created_at"
       />
       <JourneyAcademy />

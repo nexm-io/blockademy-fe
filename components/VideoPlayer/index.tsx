@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-
+import YouTube, { YouTubeProps } from "react-youtube";
 const VideoPlayer = ({
   onChangeForm,
   url,
@@ -17,6 +17,18 @@ const VideoPlayer = ({
 
   const handleStart = () => {
     onChangeStatus(true);
+  };
+
+  const onPlayerReady: YouTubeProps["onReady"] = (event) => {
+    event.target.playVideo();
+  };
+
+  const opts: YouTubeProps["opts"] = {
+    height: "390",
+    width: "640",
+    playerVars: {
+      autoplay: 1,
+    },
   };
 
   return (
@@ -38,9 +50,13 @@ const VideoPlayer = ({
         />
         Your browser does not support the video tag.
       </video>
+      {/* <YouTube
+        videoId="GTw4fNvorZs"
+        opts={opts}
+        onReady={onPlayerReady}
+        onEnd={handleEnd}
+      /> */}
     </div>
-
-    // <iframe width="753" height="437" src=""></iframe>
   );
 };
 

@@ -12,7 +12,7 @@ const CardItemSkeleton = () => {
       />
       <SkeletionCard
         width="320px"
-        height="48px"
+        height="28px"
         radius="16px"
         className="mx-4 mt-6"
       />
