@@ -52,14 +52,15 @@ const Header = () => {
       toast.success("Logout Successfully");
     } catch (error) {
       toast.error("Logout Failed");
+      localStorage.clear();
     }
   };
   return (
     <header className="bg-white-100 text-black w-full top-0 fixed z-[997] min-h-[74px]">
       {/* Top Header */}
-      <div className="relative md:mx-[75px] mx-1 flex items-center justify-between py-4 md:px-0 px-4">
+      <div className="relative lg:mx-[75px] md:mx-6 mx-1 flex items-center justify-between py-4 md:px-0 px-4">
         <div className="md:w-full w-[40%] flex items-center">
-          <div className="mr-[82px]">
+          <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
             <Link href="/">
               <Image alt="logo" src={logo} className=""></Image>
             </Link>

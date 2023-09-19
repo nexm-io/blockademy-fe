@@ -113,9 +113,6 @@ const CourseDetail = () => {
     setIsWatching(status);
   };
 
-
-  
-
   return (
     <>
       {!courseDetail && isLoading ? (
@@ -154,7 +151,7 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full" >
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full">
               {/* Left */}
               <div className="md:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
@@ -169,6 +166,7 @@ const CourseDetail = () => {
                               formState === "video" && (
                                 <>
                                   <VideoPlayer
+                                    typeUpload={lesson.lesson_type_upload}
                                     url={lesson.lesson_link}
                                     onChangeForm={handleChangeForm}
                                     onChangeStatus={handleOnchange}
@@ -213,7 +211,7 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="h-full sticky top-[100px]">
                 <div className="flex flex-col gap-4 px-4 md:px-0 ">
                   {courseDetail?.lesson_data.length !== 0 &&
@@ -226,8 +224,7 @@ const CourseDetail = () => {
                           setCourse(lesson.lesson_id);
                           router.push(
                             `/courses/${path}/${courseId}/${slugifyText(
-                              courseDetail?.lesson_data[index].lesson_slug ||
-                                ""
+                              courseDetail?.lesson_data[index].lesson_slug || ""
                             )}`
                           );
                         }}
