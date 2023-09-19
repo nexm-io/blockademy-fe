@@ -17,10 +17,10 @@ const BreadCrumb = () => {
               {index !== 0 && !/^\d+$/.test(path) && (
                 <>
                   <>
-                    <li key={path} className="leading-[23px]">
+                    <li key={path} className="leading-[23px] hover:underline">
                       <Link
                         href={`/${title}`}
-                        className="text-gray-300 md:text-sm font-normal capitalize text-[12px]"
+                        className="text-gray-300 md:text-sm font-normal capitalize text-[12px] "
                       >
                         {getPathName(path)}
                       </Link>

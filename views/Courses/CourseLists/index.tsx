@@ -27,7 +27,10 @@ const CourseLists = function () {
   useEffect(() => {
     const dateObject = new Date();
     setCurrentDay(dateObject);
-    dispatch(getListCourse());
+    const getData = async () => {
+      await dispatch(getListCourse());
+    }
+    getData()
   }, [dispatch, isClaimed]);
 
   const handleClaim = async (section: CourseTypes) => {
@@ -42,7 +45,7 @@ const CourseLists = function () {
 
   return (
     <>
-      {(details && details.length !== 0 && isLoading) ? (
+      {(isLoading && details && details.length !== 0 ) ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>

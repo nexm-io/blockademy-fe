@@ -49,6 +49,7 @@ const CourseItem = () => {
   }) => {
     return (
       detail &&
+      detail.length > 0 &&
       !isLoading && (
         <div className="flex flex-col gap-6 lg:max-w-[80%]">
           {detail.map((item, index) => (
@@ -70,8 +71,8 @@ const CourseItem = () => {
                 blurDataURL={PLACEHOLDER_BASE64}
               />
               <div className="flex flex-col justify-between w-full shrink-0 basis-2/4">
-                <div className="flex flex-col line-clamp-2">
-                  <h2 className="text-[28px] font-semibold truncate line-clamp-1 md:max-w-[420px]">
+                <div className="flex flex-col ">
+                  <h2 className="text-[28px] font-semibold truncate line-clamp-2 md:max-w-[420px]">
                     {item.title}
                   </h2>
                   <div className="flex text-sm mt-2 gap-2">
@@ -129,19 +130,26 @@ const CourseItem = () => {
 
   return (
     <div className="w-full flex items-center justify-center md:px-3">
-      {details.length == 0 ? (
-        <div className="flex items-center justify-center flex-col gap-9">
-          <Image alt="empty-box" src={empty} />
-          <p className="text-gray-100 text-base font-normal ">
-            You will find your finished courses here.
-          </p>
-          <Button onClick={() => route.push("/courses/all")}>
-            Start Learning
-          </Button>
+      {(!isLoading && details && details.length > 0) ? (
+        <div className="flex gap-4">
+          <SkeletionCard width="332px" height="186px" radius="16px" />
+          <div className="flex justify-between w-[650px] mt-2">
+            <div className="flex flex-col gap-2">
+              <SkeletionCard width="222px" height="30px" radius="16px" />
+              <SkeletionCard width="142px" height="30px" radius="16px" />
+              <SkeletionCard width="212px" height="30px" radius="16px" />
+              <SkeletionCard width="272px" height="30px" radius="16px" />
+              <SkeletionCard width="142px" height="30px" radius="16px" />
+            </div>
+            <div className="flex flex-col justify-between">
+              <SkeletionCard width="282px" height="30px" radius="16px" />
+              <SkeletionCard width="282px" height="30px" radius="8px" />
+            </div>
+          </div>
         </div>
       ) : (
         <div className="w-full flex flex-col">
-          {!isLoading ? (
+          {(details.length > 0) ? (
             details.map((detail, index) => (
               <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
                 <h1
@@ -160,9 +168,21 @@ const CourseItem = () => {
                       : "justify-between"
                   } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
                 >
-                 
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
+                      <Image
+                        alt="img-course"
+                        src={
+                          detail.image?.thumbnail ||
+                          detail.image?.original_image ||
+                          defaultImg
+                        }
+                        width={332}
+                        height={186}
+                        className="md:min-w-[332px] md:w-[332px] md:h-[186px] object-fill shrink-0 md:shrink-0 md:basis-0 basis-2/4"
+                        placeholder="blur"
+                        blurDataURL={PLACEHOLDER_BASE64}
+                      />
                       <div
                         className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
@@ -197,21 +217,14 @@ const CourseItem = () => {
             ))
           ) : (
             <>
-              <div className="flex gap-4">
-                <SkeletionCard width="332px" height="186px" radius="16px" />
-                <div className="flex justify-between w-[650px] mt-2">
-                  <div className="flex flex-col gap-2">
-                    <SkeletionCard width="222px" height="30px" radius="16px" />
-                    <SkeletionCard width="142px" height="30px" radius="16px" />
-                    <SkeletionCard width="212px" height="30px" radius="16px" />
-                    <SkeletionCard width="272px" height="30px" radius="16px" />
-                    <SkeletionCard width="142px" height="30px" radius="16px" />
-                  </div>
-                  <div className="flex flex-col justify-between">
-                    <SkeletionCard width="282px" height="30px" radius="16px" />
-                    <SkeletionCard width="282px" height="30px" radius="8px" />
-                  </div>
-                </div>
+              <div className="flex items-center justify-center flex-col gap-9">
+                <Image alt="empty-box" src={empty} />
+                <p className="text-gray-100 text-base font-normal ">
+                  You will find your finished courses here.
+                </p>
+                <Button onClick={() => route.push("/courses/all")}>
+                  Start Learning
+                </Button>
               </div>
             </>
           )}

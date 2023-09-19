@@ -32,8 +32,6 @@ const VideoPlayer = ({
         Your browser does not support the video tag.
       </video>
     </div>
-
-    // <iframe width="753" height="437" src=""></iframe>
   );
 };
 

@@ -120,26 +120,36 @@ const CourseDetail = () => {
     <>
       {!courseDetail && isLoading ? (
         <div className="my-[60px] flex flex-col gap-4">
-          <SkeletionCard height="48px" width="600px" radius="16px" />
-          <SkeletionCard height="48px" width="1152px" radius="16px" />
-          <div className="mt-10 flex gap-[48px]">
+          <SkeletionCard height="23px" width="600px" radius="16px" />
+          <div className="mt-6 flex flex-col gap-4">
+            <SkeletionCard height="44px" width="352px" radius="16px" />
+            <SkeletionCard height="36px" width="1152px" radius="16px" mobileCardFull />
+          </div>
+          <div className="mt-7 flex gap-[48px]">
             <SkeletionCard height="500px" width="753px" radius="16px" />
             <div className="flex flex-col gap-4">
               {Array.from({ length: 5 }, (_, index) => (
-                <CardItemSkeleton key={index} />
+
+                  <div className="flex flex-col gap-2 px-[23px] rounded-lg py-4 bg-gray-200" >
+                    <SkeletionCard key={index} height="20px"  width="306px" />
+                    <SkeletionCard key={index} height="20px"  width="306px" />
+                  </div>
+
               ))}
             </div>
           </div>
           <SkeletionCard height="36px" width="340px" radius="16px" />
-          <SkeletionCard height="87px" width="753px" radius="16px" />
+          <SkeletionCard height="18px" width="753px" radius="16px" />
+          <SkeletionCard height="18px" width="753px" radius="16px" />
+          <SkeletionCard height="18px" width="753px" radius="16px" />
+          <SkeletionCard height="18px" width="753px" radius="16px" />
         </div>
       ) : (
         <>
-          <GiftHeader />
           <div className="md:mt-[42px] mt-5 flex gap-3">
             <BreadCrumb />
           </div>
-          <section className="md:mt-[56px] mt-8">
+          <section className="md:mt-[56px] mt-8 lg:px-0 px-3">
             <div>
               <h1 className="text-black-100 font-bold md:text-[37px] text-3xl mb-4 px-4 md:px-0">
                 {courseDetail?.title}
@@ -154,9 +164,9 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full" >
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-[18px] md:p-2 lg:p-4 xl:p-0" >
               {/* Left */}
-              <div className="md:w-[753px] w-full px-4 md:px-0">
+              <div className="lg:w-[753px] w-full px-4 md:px-0">
                 {/* Form State */}
                 <div className="w-full">
                   {courseDetail ? (
@@ -188,7 +198,7 @@ const CourseDetail = () => {
                             </h2>
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
-                                className="flex flex-col gap-3 text-base course-content"
+                                className="flex flex-col gap-3 text-xs course-content md:text-base"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
                                 }}
@@ -244,7 +254,7 @@ const CourseDetail = () => {
               </div>
             </div>
             {/* Other */}
-            <div className="flex flex-col gap-4 md:mt-[100px] mt-10 max-w-[753px] w-full px-4 md:px-0">
+            <div className="flex flex-col gap-4 md:mt-[100px] mt-10 lg:max-w-[753px] w-full px-4 px-3 lg:px-0">
               <h2 className="text-black-100 md:text-[22px] text-xl font-bold">
                 Other Courses
               </h2>
