@@ -63,13 +63,13 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
 
   return (
     <div className="bg-white-100 h-auto pl-4 md:pl-0 pb-2 md:pb-10">
-      <h1 className="text-black-100 font-bold leading-[40px] text-3xl pt-[49px]">
+      <h1 className="text-black-100 font-bold leading-[40px] text-3xl pt-[49px] md:ml-3">
         Topics at Academy
       </h1>
       {show && (
-        <div className="flex md:gap-[90px] md:flex-row flex-col gap-8">
+        <div className="flex md:flex-row flex-col gap-8 md:gap-2">
           <div className="mt-5 md:basis-[550px] basis-[100px]">
-            <p className="text-black-100 text-base font-normal leading-6 mb-[11px]">
+            <p className="text-black-100 text-base font-normal leading-6 mb-[11px] md:ml-3">
               Topic
             </p>
             <div className="flex md:flex-row flex-col md:gap-[15px] gap-4 md:flex-wrap">
