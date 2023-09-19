@@ -80,6 +80,7 @@ export interface Lesson {
   question_detail: Course_question;
   lesson_type: string;
   is_complete: number;
+  lesson_type_upload: string;
 }
 
 export interface Course_answer {
