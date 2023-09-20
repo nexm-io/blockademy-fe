@@ -11,7 +11,7 @@ const AuthorList = () => {
   const dispatch = useAppDispatch();
   const listAuthor = useAppSelector((state) => state.author.data);
   const is_loading = useAppSelector((state) => state.author.isLoading);
-  const pagination = useAppSelector((state) => state.courses.pagination);
+  const pagination = useAppSelector((state) => state.author.pagination);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const [limit] = useState<number>(5);

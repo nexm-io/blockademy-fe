@@ -7,6 +7,7 @@ const initialState: AuthorResponse = {
   data: [],
   message: "",
   error: null,
+  pagination: null,
 };
 
 const authorReducer = createReducer(initialState, (builder) => {

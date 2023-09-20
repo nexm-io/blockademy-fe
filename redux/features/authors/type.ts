@@ -1,4 +1,5 @@
 export interface AuthorResponse {
+    pagination: any;
     isLoading: boolean;
     success?: boolean;
     message: string;
