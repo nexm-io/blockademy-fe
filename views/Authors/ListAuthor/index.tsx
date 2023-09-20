@@ -6,6 +6,7 @@ import img from "@/public/icons/usersuccess.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getListAuthor } from "@/redux/features/authors/action";
 import ReactPaginate from "react-paginate";
+import Link from "next/link";
 
 const AuthorList = () => {
   const dispatch = useAppDispatch();
@@ -28,20 +29,17 @@ const AuthorList = () => {
   };
 
   useEffect(() => {
-    dispatch(getListAuthor({page, limit}));
-  }, [dispatch]);
-
-  console.log(listAuthor);
+    dispatch(getListAuthor({ page, limit }));
+  }, [dispatch, limit, page]);
 
   return (
-    <div className="md:mt-[56px] mt-8 min-h-screen flex flex-col justify-between">
+    <div className="md:mt-[104px] mt-8 min-h-screen flex flex-col justify-between">
       {is_loading ? (
         <div>Loading...</div>
       ) : (
         <div>
           <div className="w-full flex justify-between text-black-100 font-bold md:text-[37px] text-3xl mb-10 px-4 md:px-0 relative before:bg-blue-100 before:w-8 before:h-1 rounded-full before:content-[] before:absolute before:block">
             <span className="font-semibold">Author</span>
-            
           </div>
 
           <div className="grid grid-cols-4 gap-5">
@@ -56,7 +54,7 @@ const AuthorList = () => {
                       <div className="w-[120px] h-[120px] rounded-full border border-[#D9D9D9]">
                         <Image
                           alt="author"
-                          src={author.image || img}
+                          src={author.image.original_image || img}
                           width={120}
                           height={120}
                           className="flex rounded-full w-full h-full object-contain"
@@ -68,7 +66,7 @@ const AuthorList = () => {
                         </p>
                         <div className="flex gap-4">
                           <span className="text-xs text-[#727A88] leading-[18px]">
-                           Total posts:{" "}
+                            Total posts:{" "}
                             <span className="text-black-300">
                               {author.total_post}
                             </span>
@@ -76,9 +74,11 @@ const AuthorList = () => {
                         </div>
                       </div>
                     </div>
-                    <span className="text-blue-100 text-sm font-light cursor-pointer">
-                      View detail
-                    </span>
+                    <Link href={`/authors/${author.slug}`}>
+                      <span className="text-blue-100 text-sm font-light cursor-pointer">
+                        View detail
+                      </span>
+                    </Link>
                   </div>
                 </>
               ))
@@ -88,18 +88,18 @@ const AuthorList = () => {
           </div>
         </div>
       )}
-          <div className="">
-              <ReactPaginate
-                breakLabel="..."
-                nextLabel=">"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={1}
-                pageCount={pagination?.total_pages || 1}
-                previousLabel="<"
-                renderOnZeroPageCount={null}
-                className="pagination flex items-center justify-center md:gap-6 gap-4"
-              />
-            </div>
+      <div className="">
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={1}
+          pageCount={pagination?.total_pages || 1}
+          previousLabel="<"
+          renderOnZeroPageCount={null}
+          className="pagination flex items-center justify-center md:gap-6 gap-4"
+        />
+      </div>
     </div>
   );
 };

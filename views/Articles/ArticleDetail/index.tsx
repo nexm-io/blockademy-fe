@@ -15,7 +15,6 @@ import TagItemSkeleton from "@/components/TagItemSkeleton";
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
-
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getDetail = async () => {
@@ -71,7 +70,11 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                 duration={detailArticle.read_time}
               />
               {/* <ArticleSummary /> */}
-              <ArticlesSection sections={detailArticle.content} />
+              <ArticlesSection
+                sections={detailArticle.content}
+                author={detailArticle.user}
+                date={detailArticle.created_at}
+              />
             </div>
             <div className="w-full md:w-[25%] ">
               <div className="sticky top-[30px] flex flex-col lg:gap-[75px] md:gap-10 gap-4">

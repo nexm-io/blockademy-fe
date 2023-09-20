@@ -35,6 +35,7 @@ module.exports = {
           600: "#2B2F36",
           700: "#71738B",
           800: "#5c5c5c",
+          900: "#FAFAFA",
         },
         blue: {
           100: "#1F37B3",
@@ -57,6 +58,7 @@ module.exports = {
       boxShadow: {
         "3xl":
           "rgba(20, 21, 26, 0.1) 0px 0px 1px, rgba(71, 77, 87, 0.16) 0px 16px 32px, rgba(20, 21, 26, 0.16) 0px 8px 16px",
+        "4xl": "0px 4px 10px 0px rgba(67, 67, 67, 0.15)",
       },
       typography: () => ({
         DEFAULT: {

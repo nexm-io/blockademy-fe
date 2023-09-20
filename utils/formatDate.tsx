@@ -29,8 +29,7 @@ export const formatISODateToMonthDayYear = (isoDate: string): string => {
   return date.toLocaleDateString(undefined, options);
 };
 
-
-export function getDate(inputDateStr: string | Date ) {
+export function getDate(inputDateStr: string | Date) {
   const originalDate = new Date(inputDateStr);
   const months = [
     "Jan",
@@ -50,4 +49,15 @@ export function getDate(inputDateStr: string | Date ) {
   const day = originalDate.getDate();
   const year = originalDate.getFullYear();
   return new Date(`${month} ${day.toString().padStart(2, "0")}, ${year}`);
+}
+
+export function formatDateSlash(inputDate: string | Date) {
+  const date = new Date(inputDate);
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
 }
