@@ -1,6 +1,7 @@
 import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  ArticleDetail,
   ArticleDetailResponse,
   ArticleListResponse,
   TagsResponse,

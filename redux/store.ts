@@ -11,6 +11,8 @@ import authReducer from "./features/auth/reducer";
 import { courseReducer } from "./features/courses/reducer";
 import { articleReducer } from "./features/articles/reducer";
 import { userReducer } from "./features/user/reducer";
+import { authorReducer } from "./features/authors/reducer";
+
 const persistConfig = {
   key: "blockademy-website",
   storage,
@@ -22,7 +24,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
   courses: courseReducer,
   articles: articleReducer,
-  user: userReducer
+  user: userReducer,
+  author: authorReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

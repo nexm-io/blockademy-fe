@@ -35,7 +35,7 @@ const CourseItem = () => {
   const pagination = useAppSelector((state) => state.courses.pagination);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
-  const [limit] = useState<number>(1);
+  const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const router = useRouter();
   const handlePageClick = (event: any) => {
