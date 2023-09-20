@@ -68,7 +68,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
 
   return (
     <section className="my-[82px] full-bleed">
-      <div className="bg-black-100 md:h-[1100px] h-full">
+      <div className="bg-black-100 lg:h-[1100px] md:h-auto h-full">
         <div className="max-w-[1152px] mx-auto">
           {/* Topics */}
           <div className="flex gap-8 md:pt-[62px] pt-4 items-center pl-2">
@@ -147,7 +147,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
           {/* Topic Item */}
           <div className="mt-[50px] crypto__list">
             {/* h1 */}
-            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1 md:mx-0 mx-3">
+            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1  lg:mx-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(0, 1)
@@ -187,7 +187,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h2 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 md:mx-0 mx-3">
+            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 lg:ml-0 md:ml-3 mx-3 md:mr-0">
               {!isLoading && data ? (
                 data
                   .slice(1, 2)
@@ -204,7 +204,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               ) : (
                 <>
                   <div className="md:w-[276px] md:h-[332px] gap-4 md:gap-0 rounded-2xl flex flex-col justify-between mt-4 mx-4">
-                    <SkeletionCard width="316px" height="40px" radius="16px" />
+                    <SkeletionCard width="246px" height="40px" radius="16px" />
                     <div className="flex flex-col gap-2 mb-4">
                       <div className="flex gap-6">
                         <SkeletionCard
@@ -225,7 +225,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h3 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 md:mx-0 mx-3">
+            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 lg:mr-0 md:mr-3 mx-3 md:ml-0">
               {!isLoading && data ? (
                 data
                   .slice(2, 3)
@@ -242,7 +242,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               ) : (
                 <>
                   <div className="md:w-[276px] md:h-[332px] gap-4 md:gap-0 rounded-2xl flex flex-col justify-between mt-4 mx-4">
-                    <SkeletionCard width="316px" height="40px" radius="16px" />
+                    <SkeletionCard width="246px" height="40px" radius="16px" />
                     <div className="flex flex-col gap-2 mb-4">
                       <div className="flex gap-6">
                         <SkeletionCard
@@ -263,7 +263,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h4 */}
-            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end md:mx-0 mx-3">
+            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end lg:mx-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(3, 4)
@@ -279,7 +279,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               ) : (
                 <>
                   <div className="md:w-[860px] h-[332px] rounded-2xl flex md:flex-row-reverse gap-4 items-center">
-                    <SkeletionCard width="370px" height="332px" radius="16px" />
+                    <SkeletionCard width="340px" height="332px" radius="16px" />
                     <div className="md:block hidden">
                       <SkeletionCard
                         width="380px"
@@ -310,7 +310,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h5 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 md:mx-0 mx-3">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 lg:ml-0 md:ml-3 md:mr-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(4, 5)
@@ -332,7 +332,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h6 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 md:mx-0 mx-3">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 lg:mr-0 md:mr-3 mx-3 md:ml-0">
               {!isLoading && data ? (
                 data
                   .slice(5, 6)
@@ -354,7 +354,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
           </div>
-          <div className="text-gray-500 flex items-center justify-center gap-4 w-full mt-[40px] pb-5 md:pb-0 hover:underline cursor-pointer">
+          <div className="text-gray-500 flex items-center justify-center gap-4 w-full mt-[40px] pb-5 md:pb-6 hover:underline cursor-pointer">
             <Link href="/articles" className="flex gap-4">
               <span>See more content on this topic</span>
               <HiOutlineArrowRight className="text-blue-400 text-[20px]" />

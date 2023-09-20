@@ -13,7 +13,7 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
-import { format } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
@@ -25,7 +25,7 @@ const CourseItem = () => {
   const details = useAppSelector((state) => state.courses.data);
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
-  const route = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     if (getLastPathName(pathname) === STATUS.COMPLETED) {
@@ -55,24 +55,22 @@ const CourseItem = () => {
           {detail.map((item, index) => (
             <div
               key={index}
-              className="flex justify-between gap-6 md:min-w-[550px] w-full "
+              className="flex flex-col md:flex-row justify-between gap-6 md:min-w-[550px] w-full "
             >
-              <Image
-                alt="img-course"
-                src={
-                  item.image.thumbnail ||
-                  item.image.original_image ||
-                  defaultImg
-                }
-                width={332}
-                height={186}
-                className="md:min-w-[332px] md:w-[332px] md:h-[186px] object-fill shrink-0 md:shrink-0 md:basis-0 basis-2/4"
-                placeholder="blur"
-                blurDataURL={PLACEHOLDER_BASE64}
-              />
-              <div className="flex flex-col justify-between w-full shrink-0 basis-2/4">
-                <div className="flex flex-col ">
-                  <h2 className="text-[28px] font-semibold truncate line-clamp-2 md:max-w-[420px]">
+              <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                <Image
+                  alt="img-course"
+                  src={item.image?.original || defaultImg}
+                  width={332}
+                  height={186}
+                  className="w-full h-full object-cover"
+                  placeholder="blur"
+                  blurDataURL={PLACEHOLDER_BASE64}
+                />
+              </div>
+              <div className="flex flex-col justify-between w-full shrink-0 md:basis-[80%] basis-1/2">
+                <div className="flex flex-col">
+                  <h2 className="md:text-[28px] text-xl font-bold md:font-semibold line-clamp-2">
                     {item.title}
                   </h2>
                   <div className="flex text-sm mt-2 gap-2">
@@ -111,7 +109,7 @@ const CourseItem = () => {
                   </div>
                   <Button
                     onClick={() =>
-                      route.push(
+                      router.push(
                         `/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`
                       )
                     }
@@ -130,7 +128,7 @@ const CourseItem = () => {
 
   return (
     <div className="w-full flex items-center justify-center md:px-3">
-      {(!isLoading && details && details.length > 0) ? (
+      {!isLoading && !details ? (
         <div className="flex gap-4">
           <SkeletionCard width="332px" height="186px" radius="16px" />
           <div className="flex justify-between w-[650px] mt-2">
@@ -149,7 +147,7 @@ const CourseItem = () => {
         </div>
       ) : (
         <div className="w-full flex flex-col">
-          {(details.length > 0) ? (
+          {details.length > 0 ? (
             details.map((detail, index) => (
               <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
                 <h1
@@ -170,32 +168,50 @@ const CourseItem = () => {
                 >
                   {getLastPathName(pathname) === STATUS.COMPLETED ? (
                     <>
-                      <Image
-                        alt="img-course"
-                        src={
-                          detail.image?.thumbnail ||
-                          detail.image?.original_image ||
-                          defaultImg
-                        }
-                        width={332}
-                        height={186}
-                        className="md:min-w-[332px] md:w-[332px] md:h-[186px] object-fill shrink-0 md:shrink-0 md:basis-0 basis-2/4"
-                        placeholder="blur"
-                        blurDataURL={PLACEHOLDER_BASE64}
-                      />
+                      <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                        <Image
+                          alt="img-course"
+                          src={
+                            detail.image?.original_image ||
+                            detail.image?.thumbnail ||
+                            defaultImg
+                          }
+                          width={332}
+                          height={186}
+                          className="w-full h-full object-cover"
+                          placeholder="blur"
+                          blurDataURL={PLACEHOLDER_BASE64}
+                        />
+                      </div>
                       <div
                         className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                         dangerouslySetInnerHTML={{ __html: detail.description }}
                       />
                       <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
-                        <span className="line-clamp-2 leading-6">
-                          {`Completed: ${format(
-                            new Date((detail.completed_at || 1) * 1000),
-                            "EEE MMM dd yyyy HH:mm:ss"
-                          )}`}
-                        </span>
+                        <div className="flex flex-col gap-2">
+                          <span className="line-clamp-2 leading-6">
+                            {`Completed: ${format(
+                              new Date((detail.completed_at || 1) * 1000),
+
+                              "EEE MMM dd yyyy HH:mm:ss"
+                            )}`}
+                          </span>
+
+                          {detail.reward_is_claimed === 1 && (
+                            <span className="line-clamp-2 leading-6">
+                              Claimed
+                            </span>
+                          )}
+                        </div>
+
                         {detail.reward_is_claimed === 1 ? (
-                          <Button disabled>Claimed</Button>
+                          <Button
+                            onClick={() =>
+                              router.push("/my-rewards/claimed-rewards")
+                            }
+                          >
+                            View reward
+                          </Button>
                         ) : (
                           <Button
                             onClick={() => handleClaimReward(detail.reward_id)}
@@ -222,7 +238,7 @@ const CourseItem = () => {
                 <p className="text-gray-100 text-base font-normal ">
                   You will find your finished courses here.
                 </p>
-                <Button onClick={() => route.push("/courses/all")}>
+                <Button onClick={() => router.push("/courses/all")}>
                   Start Learning
                 </Button>
               </div>

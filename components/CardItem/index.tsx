@@ -38,7 +38,7 @@ const CardItem: React.FC<CardItemProps> = ({
       <div
         className={`${
           status === "list"
-            ? "flex-col w-[352px] shadow-lg hover:shadow-3xl lg:h-[370px] h-[340px]"
+            ? "flex-col w-[352px] shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
             : status === "menu"
             ? "w-full md:flex-row flex-col gap-4 md:gap-0"
             : ""

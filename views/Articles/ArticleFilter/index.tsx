@@ -2,11 +2,12 @@
 import Button from "@/components/Common/Button";
 import React, { useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
+import { ListUl } from "@styled-icons/fa-solid";
+import { AppsList } from "@styled-icons/fluentui-system-regular";
 import { SortList, SortMenu } from "@/components/Icon";
 import { ArrowUpS } from "@styled-icons/remix-line";
 import { useAppDispatch } from "@/redux/hook";
 import { getArticleCourse } from "@/redux/features/articles/action";
-
 type ArticleFilterProps = {
   show?: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,18 +33,14 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   status,
   setStatus,
   time,
-  setTime,
   levelParam,
   setLevelParam,
-  tagParam,
-  setTagParam,
   page = 1,
   limit = 20,
   choose,
   setChoose,
 }) => {
   const dispatch = useAppDispatch();
-
   const handleSortListClick = () => {
     setStatus?.("list");
   };
@@ -67,7 +64,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
       <div className="bg-gray-200 flex gap-7 items-center w-full md:h-[64px] justify-between full-bleed__articleFilter flex-wrap h-auto py-4 md:pt-4 px-4 md:px-0">
-        <div className="flex items-center md:gap-[55px] gap-0 ">
+        <div className="flex items-center md:gap-[55px] gap-0 md:ml-6">
           <span className="text-gray-100 text-base mr-7">Layout</span>
 
           <div className="flex md:gap-5 gap-3 items-center">
@@ -82,13 +79,17 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
                 }`}
               />
             </div>
-            <div className="cursor-pointer" onClick={handleSortMenuClick}>
-              <SortMenu
-                fill={`${
+            <div
+              className="cursor-pointer flex items-center"
+              onClick={handleSortMenuClick}
+            >
+              <ListUl
+                size={18}
+                className={`${
                   status === "menu"
-                    ? "#14151A"
+                    ? "text-[#14151A]"
                     : status === "list"
-                    ? "#AEB4BC"
+                    ? "text-[#AEB4BC]"
                     : ""
                 }`}
               />

@@ -50,9 +50,9 @@ const ArticleRelate = ({ id }: { id: number }) => {
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
-              <div className="w-[250px] h-[210px] bg-gray-200 flex flex-col gap-2 rounded-2xl">
+              <div className="flex flex-col gap-2">
                 <SkeletionCard width="250px" height="140px" radius="16px" />
-                <SkeletionCard width="250px" height="70px" radius="16px" />
+                <SkeletionCard width="250px" height="30px" radius="16px" />
               </div>
             </>
           ))}

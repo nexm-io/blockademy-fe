@@ -99,6 +99,8 @@ const CourseDetail = () => {
 
   const handleClaim = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
+    console.log(id);
+    
     res.success && toast.success("Claim reward successfully");
     setIsClaimed(true);
   };
@@ -112,9 +114,6 @@ const CourseDetail = () => {
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
   };
-
-
-  
 
   return (
     <>
@@ -179,6 +178,7 @@ const CourseDetail = () => {
                               formState === "video" && (
                                 <>
                                   <VideoPlayer
+                                    typeUpload={lesson.lesson_type_upload}
                                     url={lesson.lesson_link}
                                     onChangeForm={handleChangeForm}
                                     onChangeStatus={handleOnchange}
@@ -223,7 +223,7 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="h-full sticky top-[100px]">
                 <div className="flex flex-col gap-4 px-4 md:px-0 ">
                   {courseDetail?.lesson_data.length !== 0 &&
@@ -236,8 +236,7 @@ const CourseDetail = () => {
                           setCourse(lesson.lesson_id);
                           router.push(
                             `/courses/${path}/${courseId}/${slugifyText(
-                              courseDetail?.lesson_data[index].lesson_slug ||
-                                ""
+                              courseDetail?.lesson_data[index].lesson_slug || ""
                             )}`
                           );
                         }}

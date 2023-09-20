@@ -48,12 +48,12 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
             ))}
           </div>
           <div className="flex flex-col gap-4">
-            <SkeletionCard height="25px" width="600px" radius="16px" />
-            <SkeletionCard height="168px" width="600px" radius="16px" />
+            <SkeletionCard height="30px" width="400px" radius="16px" />
+            <SkeletionCard height="70px" width="600px" radius="16px" />
             <div className="flex gap-3">
-              <TagItemSkeleton className="w-[100px] h-[22px]" />
-              <TagItemSkeleton className="w-[170px] h-[22px]" />
-              <TagItemSkeleton className="w-[90px] h-[22px]" />
+              <TagItemSkeleton className="w-[100px] h-[28px]" />
+              <TagItemSkeleton className="w-[170px] h-[28px]" />
+              <TagItemSkeleton className="w-[90px] h-[28px]" />
             </div>
             <SkeletionCard height="425px" width="760px" radius="16px" />
             <SkeletionCard height="600px" width="760px" radius="16px" />
@@ -61,7 +61,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
         </div>
       ) : (
         <>
-          <div className=" flex flex-col md:gap-[85px] xl:gap-[170px] mb-14 md:flex-row">
+          <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[170px] mb-14 md:flex-row">
             <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
               <ArticleTag tags={detailArticle.tags} />
               <ArticleHeading
@@ -74,7 +74,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
               <ArticlesSection sections={detailArticle.content} />
             </div>
             <div className="w-full md:w-[25%] ">
-              <div className="sticky top-[30px] flex flex-col md:gap-[75px] gap-4">
+              <div className="sticky top-[30px] flex flex-col lg:gap-[75px] md:gap-10 gap-4">
                 <ArticleShare
                   copyCurrentURL={copyCurrentURL}
                   title={detailArticle.title}

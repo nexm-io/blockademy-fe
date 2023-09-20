@@ -39,7 +39,10 @@ const TopBody: React.FC<TopBodyProps> = ({ urlApi }) => {
           strategy, we&apos;ve got you covered.
         </p>
 
-        <div className="mt-[47px]" onClick={() => push("/courses")}>
+        <div
+          className="lg:mt-[47px] md:mt-[30px]"
+          onClick={() => push("/courses")}
+        >
           <Button rounded>Join here</Button>
         </div>
       </div>
