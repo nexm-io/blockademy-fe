@@ -12,7 +12,6 @@ import { courseReducer } from "./features/courses/reducer";
 import { articleReducer } from "./features/articles/reducer";
 import { userReducer } from "./features/user/reducer";
 import { authorReducer } from "./features/authors/reducer";
-
 const persistConfig = {
   key: "blockademy-website",
   storage,

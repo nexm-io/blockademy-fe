@@ -1,4 +1,6 @@
 export interface Reward {
+    released_date: number;
+    reward_released_date: number;
     is_claimed: number;
     id: number;
     title: string;

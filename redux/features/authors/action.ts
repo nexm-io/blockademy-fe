@@ -1,6 +1,10 @@
 import api from "@/services/axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthorResponse, ProfileResponse } from "./type";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  AuthorResponse,
+  ListAuthorPostResponse,
+  ProfileResponse,
+} from "./type";
 
 export const getAuthorProfile = createAsyncThunk<ProfileResponse, string>(
   "article/author-profile",
@@ -10,10 +14,20 @@ export const getAuthorProfile = createAsyncThunk<ProfileResponse, string>(
   }
 );
 
-export const getAuthorPost = createAsyncThunk<AuthorResponse, string>(
+export const getAuthorPost = createAsyncThunk<ListAuthorPostResponse, string>(
   "article/author-post",
   async (slug) => {
     const response = await api.get(`/api/v10/author-post?author_id=${slug}`);
     return response.data;
   }
 );
+
+export const getListAuthor = createAsyncThunk<
+  AuthorResponse,
+  { limit?: number; page?: number }
+>("article/list-author", async ({ page = 1, limit = "" }) => {
+  const response = await api.get(
+    `/api/v10/list-author?page=${page}&limit=${limit}`
+  );
+  return response.data;
+});

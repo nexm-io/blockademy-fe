@@ -43,7 +43,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
     }
   }, [is_complete]);
   return (
-    <div className="md:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
+    <div className="xl:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
       <div className="flex flex-col">
         <p className="font-medium text-base">{lesson.lesson_title}</p>
 

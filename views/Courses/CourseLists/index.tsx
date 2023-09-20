@@ -59,7 +59,7 @@ const CourseLists = function () {
   };
   return (
     <>
-      {details && details.length !== 0 && isLoading ? (
+      {(isLoading && details && details.length !== 0 ) ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -100,6 +100,7 @@ const CourseLists = function () {
                   <div>
                     <Button
                       className="capitalize text-base font-medium md:mt-0 mt-4"
+                      disabled={section.list_courses.data.length === 0}
                       onClick={() =>
                         push(
                           `/courses/${section.slug}/${section.list_courses.data[0].slug}/${section.list_courses.data[0].lesson_first?.lesson_slug}`

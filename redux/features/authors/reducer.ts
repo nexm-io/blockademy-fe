@@ -1,5 +1,5 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getAuthorPost, getAuthorProfile } from "./action";
+import { getAuthorPost, getAuthorProfile, getListAuthor } from "./action";
 import { AuthorResponse } from "./type";
 
 const initialState: AuthorResponse = {
@@ -16,6 +16,7 @@ const initialState: AuthorResponse = {
   },
   error: null,
   dataProfile: null,
+  dataPost: null,
 };
 
 const authorReducer = createReducer(initialState, (builder) => {
@@ -41,12 +42,22 @@ const authorReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAuthorPost.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.dataPost = action.payload.data;
+      state.error = null;
+    })
+
+    .addCase(getListAuthor.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(getListAuthor.fulfilled, (state, action) => {
+      state.isLoading = false;
       state.data = action.payload.data;
       state.error = null;
     })
-    .addCase(getAuthorPost.rejected, (state, action: PayloadAction<any>) => {
+    .addCase(getListAuthor.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
-      // state.error = action.payload.data;
+      state.error = action.payload.data;
     });
 });
 

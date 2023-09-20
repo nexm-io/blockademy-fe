@@ -13,7 +13,7 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
-import { format } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
@@ -26,7 +26,7 @@ const CourseItem = () => {
   const details = useAppSelector((state) => state.courses.data);
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
-  const route = useRouter();
+  const router = useRouter();
 
   const handleClaimReward = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
@@ -37,7 +37,6 @@ const CourseItem = () => {
   const [itemOffset, setItemOffset] = useState(0);
   const [limit] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
-  const router = useRouter();
   const handlePageClick = (event: any) => {
     const selectedPage = event.selected + 1;
     if (selectedPage < 1) {
@@ -63,6 +62,7 @@ const CourseItem = () => {
   }) => {
     return (
       detail &&
+      detail.length > 0 &&
       !isLoading && (
         <div className="flex flex-col gap-6 lg:max-w-[80%]">
           {detail.map((item, index) => (
@@ -122,7 +122,7 @@ const CourseItem = () => {
                   </div>
                   <Button
                     onClick={() =>
-                      route.push(
+                      router.push(
                         `/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`
                       )
                     }
@@ -148,7 +148,7 @@ const CourseItem = () => {
             <p className="text-gray-100 text-base font-normal ">
               You will find your finished courses here.
             </p>
-            <Button onClick={() => route.push("/courses/all")}>
+            <Button onClick={() => router.push("/courses/all")}>
               Start Learning
             </Button>
           </div>

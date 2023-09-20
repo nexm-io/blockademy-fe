@@ -23,6 +23,7 @@ export default function Home() {
         cardTitle="Latest Releases"
         cardLabel="Latest releases"
         mTop="lg:mt-[160px] md:mt-[80px] mt-[60px]"
+        urlApi="created_at"
       />
       <JourneyAcademy />
       <SpecialContent />

@@ -1,7 +1,10 @@
-import React from "react";
+import BreadCrumb from "@/components/BreadCrumb";
+import AuthorList from "@/views/Authors/ListAuthor";
 
-const Authors = () => {
-  return <div>Authors</div>;
-};
-
-export default Authors;
+export default function AuthorListPage() {
+  return (
+    <section className="">
+      <AuthorList />
+    </section>
+  );
+}
