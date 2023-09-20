@@ -15,20 +15,29 @@ import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import defaultImg from "@/public/images/home/home-default.png";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
+import ReactPaginate from "react-paginate";
 
 const CourseLists = function () {
   const details = useAppSelector((state) => state.courses.data);
   const [currentDay, setCurrentDay] = useState<Date | string>("");
   const [isClaimed, setIsClaimed] = useState<boolean>(false);
+
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
+  const pagination = useAppSelector((state) => state.courses.pagination);
+  const itemsPerPage = Number(pagination?.per_page) || 1;
+  const [itemOffset, setItemOffset] = useState(0);
+  const [limit] = useState<number>(5);
+  const [page, setPage] = useState<number>(1);
+
   useEffect(() => {
     const dateObject = new Date();
+
     setCurrentDay(dateObject);
-    dispatch(getListCourse());
-  }, [dispatch, isClaimed]);
+    dispatch(getListCourse({ limit, page }));
+  }, [dispatch, isClaimed, limit, page]);
 
   const handleClaim = async (section: CourseTypes) => {
     if (section.reward_is_claimed === 1) {
@@ -39,10 +48,18 @@ const CourseLists = function () {
       setIsClaimed(true);
     }
   };
-
+  const handlePageClick = (event: any) => {
+    const selectedPage = event.selected + 1;
+    if (selectedPage < 1) {
+      return;
+    }
+    const newOffset = (selectedPage - 1) * itemsPerPage;
+    setItemOffset(newOffset);
+    setPage(selectedPage);
+  };
   return (
     <>
-      {(details && details.length !== 0 && isLoading) ? (
+      {details && details.length !== 0 && isLoading ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -85,9 +102,7 @@ const CourseLists = function () {
                       className="capitalize text-base font-medium md:mt-0 mt-4"
                       onClick={() =>
                         push(
-                          `/courses/${section.slug}/${
-                            section.list_courses.data[0].slug
-                          }/${section.list_courses.data[0].lesson_first?.lesson_slug}`
+                          `/courses/${section.slug}/${section.list_courses.data[0].slug}/${section.list_courses.data[0].lesson_first?.lesson_slug}`
                         )
                       }
                     >
@@ -98,9 +113,7 @@ const CourseLists = function () {
               </div>
               <div className="md:mt-[80px] md:mb-[100px] mb-16 mt-10">
                 <h3 className="text-black-100 text-[22px] font-bold mb-4 mx-4 md:mx-0">
-                  {section.list_courses
-                    ? section.list_courses.data.length
-                    : 0}{" "}
+                  {section.list_courses ? section.list_courses.data.length : 0}{" "}
                   Courses
                 </h3>
 
@@ -185,6 +198,17 @@ const CourseLists = function () {
           </div>
         ))
       )}
+      {/* Pagination */}
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={1}
+        pageCount={pagination?.total_pages || 1}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+        className="pagination flex items-center justify-center md:gap-6 gap-4"
+      />
     </>
   );
 };

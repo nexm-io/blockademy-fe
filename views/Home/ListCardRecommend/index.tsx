@@ -27,6 +27,7 @@ const ListCardRecommend: React.FC<ListCardProps> = ({
   const data = useAppSelector(
     (state: RootState) => state.articles.dataRecommend
   );
+  console.log("data:", data);
 
   useEffect(() => {
     dispatch(getRecommendArticle({}));
@@ -50,7 +51,7 @@ const ListCardRecommend: React.FC<ListCardProps> = ({
       <div className="flex lg:gap-[47px] gap-8 ml-4 lg:ml-0 md:flex-row flex-col md:flex-wrap">
         {data ? (
           data
-            .slice(2, 5)
+            .slice(0, 3)
             .map((item, index) => <CardItem data={item} key={index} />)
         ) : (
           <>
