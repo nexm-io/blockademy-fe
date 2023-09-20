@@ -16,23 +16,21 @@ const BreadCrumb = () => {
             <>
               {index !== 0 && !/^\d+$/.test(path) && (
                 <>
-                  <>
-                    <li key={path} className="leading-[23px] hover:underline">
-                      <Link
-                        href={`/${title}`}
-                        className="text-gray-300 md:text-sm font-normal capitalize text-[12px] "
-                      >
-                        {getPathName(path)}
-                      </Link>
+                  <li key={index} className="leading-[23px] hover:underline">
+                    <Link
+                      href={`/${title}`}
+                      className="text-gray-300 md:text-sm font-normal capitalize text-[12px] "
+                    >
+                      {getPathName(path)}
+                    </Link>
+                  </li>
+                  {index !== array.length - 1 && (
+                    <li className="leading-[23px]">
+                      <span className="mx-3 md:text-[12px] text-[10px]">
+                        &gt;
+                      </span>
                     </li>
-                    {index !== array.length - 1 && (
-                      <li className="leading-[23px]">
-                        <span className="mx-3 md:text-[12px] text-[10px]">
-                          &gt;
-                        </span>
-                      </li>
-                    )}
-                  </>
+                  )}
                 </>
               )}
             </>
