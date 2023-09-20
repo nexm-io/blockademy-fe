@@ -38,18 +38,37 @@ export const getLatestArticle = createAsyncThunk<
   return response.data;
 });
 
+export const getFeaturedArticle = createAsyncThunk<
+  ArticleListResponse,
+  {
+    params?: string;
+    page?: number;
+    limit?: number;
+    featured?: number;
+  }
+>(
+  "articles/featured",
+  async ({ limit = 1, page = 1, params = "created_at", featured = 1 }) => {
+    const response = await api.get(
+      `/api/v10/list-post?limit=${limit}&page=${page}&featured=${featured}&sort_field=${params}`
+    );
+    return response.data;
+  }
+);
+
 export const getTrendingArticle = createAsyncThunk<
   ArticleListResponse,
   {
     params?: string;
     page?: number;
     limit?: number;
+    trending?: number;
   }
 >(
   "articles/trending",
-  async ({ limit = 3, page = 1, params = "total_hit" }) => {
+  async ({ limit = 3, page = 1, params = "created_at", trending = 1 }) => {
     const response = await api.get(
-      `/api/v10/list-post?limit=${limit}&page=${page}&sort_field=${params}`
+      `/api/v10/list-post?limit=${limit}&page=${page}&trending=${trending}&sort_field=${params}`
     );
     return response.data;
   }
@@ -60,10 +79,11 @@ export const getRecommendArticle = createAsyncThunk<
   {
     page?: number;
     limit?: number;
+    recommend?: number;
   }
->("articles/recommended", async ({ limit = 6, page = 1 }) => {
+>("articles/recommended", async ({ limit = 6, page = 1, recommend = 1 }) => {
   const response = await api.get(
-    `/api/v10/list-post?limit=${limit}&page=${page}&recommended=1`
+    `/api/v10/list-post?limit=${limit}&page=${page}&recommended=${recommend}`
   );
   return response.data;
 });

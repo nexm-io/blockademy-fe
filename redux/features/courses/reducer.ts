@@ -19,7 +19,13 @@ const initialState: CourseResponse = {
     is_correct: false,
     is_finished: 0,
   },
-  pagination: null,
+  pagination: {
+    total: 0,
+    count: 0,
+    per_page: 0,
+    current_page: 0,
+    total_pages: 0,
+  },
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -31,6 +37,7 @@ const courseReducer = createReducer(initialState, (builder) => {
     .addCase(getListCourse.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
+      state.pagination = action.payload.pagination;
       state.error = null;
     })
     .addCase(getListCourse.rejected, (state, action: PayloadAction<any>) => {

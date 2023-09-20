@@ -31,7 +31,6 @@ export default function Home() {
         cardTitle="Trending"
         cardLabel="Trending"
         mTop="mt-[60px]"
-        urlApi="total_hit"
       />
       <TopicList urlApi="created_at" />
       <NotToKnow />
