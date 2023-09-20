@@ -4,7 +4,7 @@ import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getTrendingArticle } from "@/redux/features/articles/action";
+import { getFeaturedArticle } from "@/redux/features/articles/action";
 import CardItemTop from "@/components/CardItemTop";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
@@ -12,17 +12,15 @@ interface TopBodyProps {
   urlApi?: string;
 }
 
-const TopBody: React.FC<TopBodyProps> = ({ urlApi }) => {
+const TopBody: React.FC<TopBodyProps> = () => {
   const { push } = useRouter();
   const dispatch = useAppDispatch();
 
-  const data = useAppSelector(
-    (state: RootState) => state.articles.dataTrending
-  );
+  const data = useAppSelector((state: RootState) => state.articles.featured);
 
   useEffect(() => {
-    dispatch(getTrendingArticle({ params: urlApi }));
-  }, [dispatch, urlApi]);
+    dispatch(getFeaturedArticle({}));
+  }, [dispatch]);
   return (
     <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
       <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px] ">

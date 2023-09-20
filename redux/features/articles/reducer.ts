@@ -2,6 +2,7 @@ import { PayloadAction, createReducer } from "@reduxjs/toolkit";
 import {
   getArticleCourse,
   getArticleDetail,
+  getFeaturedArticle,
   getLatestArticle,
   getListTags,
   getRecommendArticle,
@@ -26,6 +27,7 @@ const initialState: ArticleListResponse = {
   detail: null,
   error: null,
   tags: null,
+  featured: null,
 };
 
 const articleReducer = createReducer(initialState, (builder) => {
@@ -53,6 +55,21 @@ const articleReducer = createReducer(initialState, (builder) => {
     .addCase(getLatestArticle.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
     });
+
+  builder
+    .addCase(getFeaturedArticle.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getFeaturedArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.featured = action.payload.data;
+    })
+    .addCase(
+      getFeaturedArticle.rejected,
+      (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+      }
+    );
 
   builder
     .addCase(getTrendingArticle.pending, (state) => {

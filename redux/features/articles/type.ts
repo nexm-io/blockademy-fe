@@ -9,6 +9,7 @@ export interface ArticleListResponse {
   error: any;
   detail: ArticleDetail | null;
   tags: ListTagsIntoData | null;
+  featured: Array<ArticleIntoData> | null;
 }
 export interface TagsResponse {
   success?: boolean;
