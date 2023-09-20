@@ -32,7 +32,7 @@ const CoursePanel: React.FC<CoursePanelProps> = ({
 
 
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-4 items-center w-full">
       {course.is_opened === 1 ? (
         <>
           <div className="w-[30px] h-[30px]">

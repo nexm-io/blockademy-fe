@@ -41,7 +41,7 @@ const Popup: React.FC<PopupProps> = ({
               Later
             </Button>
             <Button size="small" type="button" onClick={handleClaim}>
-              Claim
+              View Reward
             </Button>
           </div>
         </div>

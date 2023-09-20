@@ -14,6 +14,7 @@ export const SkeletionCard: React.FC<SkeletonCardProps> = ({
   radius,
   skeleton = true,
   mobileCardFull = false,
+  
 }) => {
   return (
     <div

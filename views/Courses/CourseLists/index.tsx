@@ -59,7 +59,7 @@ const CourseLists = function () {
   };
   return (
     <>
-      {details && details.length !== 0 && isLoading ? (
+      {(isLoading && details && details.length !== 0 ) ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>

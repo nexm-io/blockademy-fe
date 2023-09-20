@@ -17,6 +17,7 @@ import CourseBanner from "@/views/Courses/CourseBanner";
 import { toast } from "react-toastify";
 import defaultImg from "@/public/images/home/home-default.png";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
+import { format, isBefore } from "date-fns";
 
 export default function ListRewards() {
   const pathname = usePathname();
@@ -31,13 +32,19 @@ export default function ListRewards() {
       const res = await dispatch(fetchRewardAvailable());
     };
     getRewards();
-  }, [dispatch, pathname, listRewards.length, listRewards.length]);
+  }, [dispatch, pathname, listRewards.length]);
 
-  const handleClaimReward = async (id: number) => {
-    const res = await dispatch(claimInWallet(id)).unwrap();
-    res && toast.success("Claim reward successfully!");
-    router.push("/my-rewards/claimed-rewards");
+  const handleClaimReward = async (id: any) => {
+    // const res = await dispatch(claimInWallet(id)).unwrap();
+    // res && toast.success("Claim reward successfully!");
+    // router.push("/my-rewards/claimed-rewards");
+    console.log( isBefore(
+      new Date(),
+      new Date(id.released_date * 1000)
+    ),new Date(), new Date(id.released_date * 1000) );
   };
+
+  
 
   return (
     <>
@@ -79,7 +86,7 @@ export default function ListRewards() {
                 <>
                   <div
                     key={index}
-                    className="w-[220px] lg:h-[320px] h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-md cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
+                    className="w-[220px] md:min-h-[348px] lg:h-fit h-[280px] flex flex-col flex-shrink-0 shadow-lg rounded-md cursor-pointer hover:shadow-3xl transition-all duration-300 ease-linear"
                   >
                     <div className="w-[220px] h-[220px] relative">
                       <Image
@@ -96,22 +103,48 @@ export default function ListRewards() {
                         blurDataURL={PLACEHOLDER_BASE64}
                       ></Image>
                     </div>
-                    <div className=" px-4 py-2 flex justify-between flex-col h-full flex-1">
+                    <div className=" px-4 pt-2 pb-3 flex justify-between flex-col h-full flex-1 gap-2">
                       <div className="flex flex-col">
                         <h2 className="  text-blue-100 text-sm font-bold line-clamp-2">
                           {reward.title}
                         </h2>
-                        <span className="truncate text-sm">{reward.name}</span>
+                        <span className="line-clamp-2 text-xs leading-[16px]">{reward.name}</span>
                       </div>
-                      <div className="flex justify-center items-center">
-                        {pathname !== "/my-rewards/listRewards-rewards" && (
+                      <div className="flex flex-col justify-center items-center">
+                        {(pathname !== "/my-rewards/listRewards-rewards" && !isBefore(
+                            new Date(),
+                            new Date(reward.released_date * 1000)))  && (
                           <Button
-                            onClick={() => handleClaimReward(reward.id)}
+                            onClick={() => handleClaimReward(reward)}
+                            disabled={
+                              isBefore(
+                                new Date(),
+                                new Date(reward.released_date * 1000)
+                              ) 
+                            }
                             className="h-5 text-xs w-15"
                           >
                             Claim
                           </Button>
-                        )}
+                        )
+                        
+                        }
+                        {
+                          isBefore(
+                            new Date(),
+                            new Date(reward.released_date * 1000)
+                          ) ? (
+                            <span className="text-blue-100 text-xs line-clamp-2">
+                              Reward will be released on{" "}
+                              {format(
+                                reward.released_date * 1000,
+                                "EEE MMM dd yyyy HH:mm:ss"
+                              )}
+                            </span>
+                          ) : (
+                            " "
+                          )
+                        }
                       </div>
                     </div>
                   </div>

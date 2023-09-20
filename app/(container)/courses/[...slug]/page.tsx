@@ -8,7 +8,7 @@ export default function CoursesSlug() {
 
   return (
     <div className="mt-[74px]">
-      
+      <GiftHeader />
       <CourseDetail />
     </div>
   );
