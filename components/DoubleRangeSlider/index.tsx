@@ -5,9 +5,20 @@ const labels = ["1m", "3m", "5m", "10m", "15m", "20m", "25m", "∞"];
 interface DoubleRangeSlider {
   time?: number[];
   setTime?: React.Dispatch<React.SetStateAction<number[]>>;
+  sliderOneValue: number;
+  setSliderOneValue?: React.Dispatch<React.SetStateAction<number>>;
+  sliderTwoValue: number;
+  setSliderTwoValue?: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
+const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
+  setTime,
+  time,
+  sliderOneValue,
+  setSliderOneValue = () => {},
+  sliderTwoValue,
+  setSliderTwoValue = () => {},
+}) => {
   const [sliderValues, setSliderValues] = useState([3, 15]);
 
   const handleSliderChange = (event: any) => {
@@ -20,11 +31,10 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
   const sliderOneRef = useRef<HTMLInputElement | null>(null);
   const sliderTwoRef = useRef<HTMLInputElement | null>(null);
   const sliderTrackRef = useRef<HTMLDivElement | null>(null);
-  const [sliderOneValue, setSliderOneValue] = useState(0);
-  const [sliderTwoValue, setSliderTwoValue] = useState(30);
+  // const [sliderOneValue, setSliderOneValue] = useState(0);
+  // const [sliderTwoValue, setSliderTwoValue] = useState(30);
   const sliderMaxValue = 100;
   const minGap = 0;
-
   const fillColor = useCallback(() => {
     const percent1 = (sliderOneValue / sliderMaxValue) * 100;
     const percent2 = (sliderTwoValue / sliderMaxValue) * 100;
@@ -37,14 +47,14 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
       setSliderOneValue(sliderTwoValue - minGap);
     }
     fillColor();
-  }, [fillColor, sliderOneValue, sliderTwoValue]);
+  }, [fillColor, sliderOneValue, sliderTwoValue, setSliderOneValue]);
 
   const slideTwo = useCallback(() => {
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderTwoValue(sliderOneValue + minGap);
     }
     fillColor();
-  }, [fillColor, sliderOneValue, sliderTwoValue]);
+  }, [fillColor, sliderOneValue, sliderTwoValue, setSliderTwoValue]);
 
   const updateParentTime = useCallback(() => {
     if (setTime) {
@@ -62,28 +72,45 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({ setTime, time }) => {
     <>
       <div className="container">
         <div ref={sliderTrackRef} className="slider-track"></div>
-        <input
-          type="range"
-          min="0"
-          step="1"
-          max={sliderMaxValue}
-          value={sliderOneValue}
-          id="slider-1"
-          ref={sliderOneRef}
-          onChange={(e) => setSliderOneValue(Number(e.target.value))}
-          onInput={slideOne}
-        />
-        <input
-          type="range"
-          min="0"
-          step="1"
-          max={sliderMaxValue}
-          value={sliderTwoValue}
-          id="slider-2"
-          ref={sliderTwoRef}
-          onChange={(e) => setSliderTwoValue(Number(e.target.value))}
-          onInput={slideTwo}
-        />
+        <div>
+          <input
+            type="range"
+            min="0"
+            step="1"
+            max={sliderMaxValue}
+            value={sliderOneValue}
+            id="slider-1"
+            ref={sliderOneRef}
+            onChange={(e) => setSliderOneValue(Number(e.target.value))}
+            onInput={slideOne}
+          />
+          <span
+            className="range-slider"
+            style={{ left: `${(sliderOneValue / sliderMaxValue) * 100}%` }}
+          >
+            {sliderOneValue}
+          </span>
+        </div>
+
+        <div>
+          <input
+            type="range"
+            min="0"
+            step="1"
+            max={sliderMaxValue}
+            value={sliderTwoValue}
+            id="slider-2"
+            ref={sliderTwoRef}
+            onChange={(e) => setSliderTwoValue(Number(e.target.value))}
+            onInput={slideTwo}
+          />
+          <span
+            className="range-slider"
+            style={{ left: `${(sliderTwoValue / sliderMaxValue) * 100}%` }}
+          >
+            {sliderTwoValue}
+          </span>
+        </div>
       </div>
       <div className="labels">
         {labels.map((label, index) => (

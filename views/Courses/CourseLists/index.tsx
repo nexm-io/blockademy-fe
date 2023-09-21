@@ -59,7 +59,7 @@ const CourseLists = function () {
   };
   return (
     <>
-      {(isLoading && details && details.length !== 0 ) ? (
+      {isLoading && details && details.length !== 0 ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -81,9 +81,12 @@ const CourseLists = function () {
                     width={588}
                     height={330}
                     src={
-                      section.image?.original_image ||
-                      section.image?.thumbnail ||
-                      defaultImg
+                      section.image
+                        ? section.image?.original_image ||
+                          section.image?.thumbnail
+                        : section.image === ""
+                        ? defaultImg
+                        : defaultImg
                     }
                     className="rounded-lg md:w-[560px] h-full object-cover md:max-h-[330px] md:max-w-[580px]"
                     placeholder="blur"

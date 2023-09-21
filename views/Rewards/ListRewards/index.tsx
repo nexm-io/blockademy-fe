@@ -38,13 +38,12 @@ export default function ListRewards() {
     // const res = await dispatch(claimInWallet(id)).unwrap();
     // res && toast.success("Claim reward successfully!");
     // router.push("/my-rewards/claimed-rewards");
-    console.log( isBefore(
+    console.log(
+      isBefore(new Date(), new Date(id.released_date * 1000)),
       new Date(),
       new Date(id.released_date * 1000)
-    ),new Date(), new Date(id.released_date * 1000) );
+    );
   };
-
-  
 
   return (
     <>
@@ -108,43 +107,41 @@ export default function ListRewards() {
                         <h2 className="  text-blue-100 text-sm font-bold line-clamp-2">
                           {reward.title}
                         </h2>
-                        <span className="line-clamp-2 text-xs leading-[16px]">{reward.name}</span>
+                        <span className="line-clamp-2 text-xs leading-[16px]">
+                          {reward.name}
+                        </span>
                       </div>
                       <div className="flex flex-col justify-center items-center">
-                        {(pathname !== "/my-rewards/listRewards-rewards" && !isBefore(
-                            new Date(),
-                            new Date(reward.released_date * 1000)))  && (
-                          <Button
-                            onClick={() => handleClaimReward(reward)}
-                            disabled={
-                              isBefore(
-                                new Date(),
-                                new Date(reward.released_date * 1000)
-                              ) 
-                            }
-                            className="h-5 text-xs w-15"
-                          >
-                            Claim
-                          </Button>
-                        )
-                        
-                        }
-                        {
-                          isBefore(
+                        {pathname !== "/my-rewards/listRewards-rewards" &&
+                          !isBefore(
                             new Date(),
                             new Date(reward.released_date * 1000)
-                          ) ? (
-                            <span className="text-blue-100 text-xs line-clamp-2">
-                              Reward will be released on{" "}
-                              {format(
-                                reward.released_date * 1000,
-                                "EEE MMM dd yyyy HH:mm:ss"
+                          ) && (
+                            <Button
+                              onClick={() => handleClaimReward(reward)}
+                              disabled={isBefore(
+                                new Date(),
+                                new Date(reward.released_date * 1000)
                               )}
-                            </span>
-                          ) : (
-                            " "
-                          )
-                        }
+                              className="h-5 text-xs w-15"
+                            >
+                              Claim
+                            </Button>
+                          )}
+                        {isBefore(
+                          new Date(),
+                          new Date(reward.released_date * 1000)
+                        ) ? (
+                          <span className="text-blue-100 text-xs line-clamp-2">
+                            Reward will be released on{" "}
+                            {format(
+                              reward.released_date * 1000,
+                              "EEE MMM dd yyyy HH:mm:ss"
+                            )}
+                          </span>
+                        ) : (
+                          " "
+                        )}
                       </div>
                     </div>
                   </div>

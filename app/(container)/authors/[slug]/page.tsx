@@ -55,7 +55,13 @@ const AuthorDetail = () => {
                       alt="article-img"
                       width={280}
                       height={200}
-                      src={item.image.original_image || article}
+                      src={
+                        item.image
+                          ? item.image.original_image
+                          : item.image === ""
+                          ? article
+                          : article
+                      }
                       className="rounded-md w-full h-full object-fill"
                     ></Image>
                   </div>

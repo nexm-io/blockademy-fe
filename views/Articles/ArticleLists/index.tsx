@@ -8,12 +8,14 @@ import Dropdown from "@/components/Common/Dropdown";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   getLatestArticle,
+  getRecommendArticle,
   getTrendingArticle,
 } from "@/redux/features/articles/action";
 import { RootState } from "@/redux/store";
-import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { ArticleIntoData } from "@/redux/features/articles/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -41,10 +43,16 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   setStatus,
   data,
 }) => {
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const tags = searchParams.get("tags");
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const dispatch = useAppDispatch();
   const dataTrending = useAppSelector(
     (state: RootState) => state.articles.dataTrending
+  );
+  const dataRecommend = useAppSelector(
+    (state: RootState) => state.articles.dataRecommend
   );
   const pagination = useAppSelector(
     (state: RootState) => state.articles.pagination
@@ -66,16 +74,28 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const dataStatus = useAppSelector((state: RootState) => state.articles.data);
 
   const currentData =
-    selectedOption === "Recently published" ? dataStatus || data : dataTrending;
+    selectedOption === "Recently published" ? dataStatus || data : dataStatus;
 
   useEffect(() => {
-    if (selectedOption === "Recently published") {
-      dispatch(getLatestArticle({ limit, page }));
-    } else if (selectedOption === "Mostly viewed") {
-      dispatch(getTrendingArticle({ limit, page }));
+    let fetchAction, params;
+    switch (tags) {
+      case "Trending":
+        fetchAction = getTrendingArticle;
+        params =
+          selectedOption === "Recently published" ? "created_at" : "total_hit";
+        break;
+      case "Recommend":
+        fetchAction = getRecommendArticle;
+        params =
+          selectedOption === "Recently published" ? "created_at" : "total_hit";
+        break;
+      default:
+        fetchAction = getLatestArticle;
+        params = selectedOption === "Mostly viewed" ? "total_hit" : undefined;
     }
-  }, [dispatch, page, selectedOption, limit]);
 
+    dispatch(fetchAction({ limit, page, params }));
+  }, [dispatch, page, selectedOption, limit, tags]);
   return (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
@@ -101,7 +121,27 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
             : ""
         } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto pl-4 `}
       >
-        {currentData ? (
+        {tags === "Trending" && dataTrending ? (
+          dataTrending.map((item, index) => (
+            <CardItem
+              key={index}
+              data={item}
+              status={status}
+              setStatus={setStatus}
+              topic={false}
+            />
+          ))
+        ) : tags === "Recommend" && dataRecommend ? (
+          dataRecommend.map((item, index) => (
+            <CardItem
+              key={index}
+              data={item}
+              status={status}
+              setStatus={setStatus}
+              topic={false}
+            />
+          ))
+        ) : currentData ? (
           currentData.map((item, index) => (
             <CardItem
               key={index}
