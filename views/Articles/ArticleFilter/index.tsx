@@ -58,8 +58,13 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     dispatch(getArticleCourse(dispatchParams));
   };
   const handleClearFilters = () => {
+    const dispatchParams = {
+      page,
+      time: time || [],
+    };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
+    dispatch(getArticleCourse(dispatchParams));
   };
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
@@ -126,11 +131,15 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               onClick={() => setShow(!show)}
             >
               {show ? (
+                <>
                 <CheveronDown size={15} className="rotate-180" />
+                <span>Hide filters</span>
+                </>
               ) : (
-                <ArrowUpS size={15} className="rotate-180" />
-              )}
-              <span>Hide filters</span>
+                <><ArrowUpS size={15} className="rotate-180" />
+                <span>Show filters</span></>
+                )}
+           
             </div>
           </Button>
         </div>

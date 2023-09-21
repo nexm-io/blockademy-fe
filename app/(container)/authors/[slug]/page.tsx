@@ -55,7 +55,7 @@ const AuthorDetail = () => {
                       alt="article-img"
                       width={280}
                       height={200}
-                      src={item.image.original_image || article}
+                      src={item.image ? item.image.original_image || article : article}
                       className="rounded-md w-full h-full object-fill"
                     ></Image>
                   </div>
@@ -122,7 +122,7 @@ const AuthorDetail = () => {
                     <div className="w-[60px] h-[60px]">
                       <Image
                         alt="avatar"
-                        src={item.image.original_image || user}
+                        src={ item.image ? item.image.original_image || user : user}
                         width={60}
                         height={60}
                         className="w-full h-full object-cover rounded-full"
