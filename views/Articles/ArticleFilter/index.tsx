@@ -62,7 +62,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setStatus?.("menu");
   };
   const searchParams = useSearchParams();
-  const tags = searchParams.get("tags");
+  const type = searchParams.get("type");
 
   const handleClickTotal = () => {
     const dispatchParams = {
@@ -72,16 +72,20 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       tagParam: choose || [],
       time: time || [],
     };
-    if (tags === "Trending") {
+    if (type === "Trending") {
       // replace("/articles", { scroll: false });
       dispatch(getTrendingArticle(dispatchParams));
-    } else if (tags === "Recommend") {
+    } else if (type === "Recommend") {
       dispatch(getRecommendArticle(dispatchParams));
     } else {
       dispatch(getArticleCourse(dispatchParams));
     }
   };
   const handleClearFilters = () => {
+    const dispatchParams = {
+      page,
+      time: time || [],
+    };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 30]);
@@ -157,11 +161,16 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               onClick={() => setShow(!show)}
             >
               {show ? (
-                <CheveronDown size={15} className="rotate-180" />
+                <>
+                  <CheveronDown size={15} className="rotate-180" />
+                  <span>Hide filters</span>
+                </>
               ) : (
-                <ArrowUpS size={15} className="rotate-180" />
+                <>
+                  <ArrowUpS size={15} className="rotate-180" />
+                  <span>Show filters</span>
+                </>
               )}
-              <span>Hide filters</span>
             </div>
           </Button>
         </div>

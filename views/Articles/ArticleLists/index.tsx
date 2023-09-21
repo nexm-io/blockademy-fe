@@ -45,7 +45,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 }) => {
   const { replace } = useRouter();
   const searchParams = useSearchParams();
-  const tags = searchParams.get("tags");
+  const type = searchParams.get("type");
   const [selectedOption, setSelectedOption] = useState(options[0]);
   const dispatch = useAppDispatch();
   const dataTrending = useAppSelector(
@@ -78,7 +78,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
   useEffect(() => {
     let fetchAction, params;
-    switch (tags) {
+    switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
         params =
@@ -95,7 +95,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     }
 
     dispatch(fetchAction({ limit, page, params }));
-  }, [dispatch, page, selectedOption, limit, tags]);
+  }, [dispatch, page, selectedOption, limit, type]);
   return (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
@@ -121,7 +121,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
             : ""
         } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto pl-4 `}
       >
-        {tags === "Trending" && dataTrending ? (
+        {type === "Trending" && dataTrending ? (
           dataTrending.map((item, index) => (
             <CardItem
               key={index}
@@ -131,7 +131,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
               topic={false}
             />
           ))
-        ) : tags === "Recommend" && dataRecommend ? (
+        ) : type === "Recommend" && dataRecommend ? (
           dataRecommend.map((item, index) => (
             <CardItem
               key={index}

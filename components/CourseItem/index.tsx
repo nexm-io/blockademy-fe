@@ -181,8 +181,8 @@ const CourseItem = () => {
                               alt="img-course"
                               src={
                                 detail.image
-                                  ? detail.image?.original_image ||
-                                    detail.image?.thumbnail
+                                  ? detail.image.original_image ||
+                                    detail.image.thumbnail
                                   : detail.image === ""
                                   ? defaultImg
                                   : defaultImg

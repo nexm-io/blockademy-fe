@@ -94,7 +94,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 topicBalance ? "w-[352px] md:h-full !h-[100px]" : "w-full"
               } ${
                 topic ? "md:h-full h-[250px]" : ""
-              } h-[210px] object-cover rounded-2xl`}
+              } h-[210px] object-cover md:min-w-[352px] rounded-2xl`}
               width={352}
               height={198}
               placeholder="blur"
@@ -194,7 +194,7 @@ const CardItem: React.FC<CardItemProps> = ({
                         : "text-gray-300 text-xs"
                     } font-normal `}
                   >
-                    {data.read_time || "9"}m
+                    {data.read_time ?? "9"}m
                   </span>
                 </div>
               </div>

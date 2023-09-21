@@ -39,7 +39,7 @@ const ListCardTrending: React.FC<ListCardProps> = ({
           {cardTitle}
         </h4>
         <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
-          <Link href={`/articles?tags=${cardLabel}`}>
+          <Link href={`/articles?type=${cardLabel}`}>
             <span className="text-black-100 text-xs font-normal uppercase">
               see all {cardLabel}
             </span>

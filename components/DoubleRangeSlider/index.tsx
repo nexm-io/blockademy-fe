@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-const labels = ["1m", "3m", "5m", "10m", "15m", "20m", "25m", "∞"];
+const labels = ["1m", "10m", "20m", "30m", "40m", "50m", "60m", " ", "" ,"", "∞"];
 
 interface DoubleRangeSlider {
   time?: number[];
