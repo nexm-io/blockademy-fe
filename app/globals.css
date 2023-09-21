@@ -446,7 +446,25 @@ input[type="range"]::-webkit-slider-thumb:active {
   height: 2px;
   background-color: #eaecef;
 }
-
+.range-slider {
+  position: absolute;
+  transform: translateX(-45%);
+  top: -44px;
+  padding: 4px 8px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+}
+.range-slider::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .crypto__list {
@@ -501,6 +519,9 @@ input[type="range"]::-webkit-slider-thumb:active {
   /* Skeleton */
   .mobileCardFullSkeleton {
     width: 350px !important;
+  }
+  .range-slider {
+    display: none;
   }
 }
 

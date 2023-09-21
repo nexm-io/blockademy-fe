@@ -127,8 +127,10 @@ const CardItem: React.FC<CardItemProps> = ({
                 ? "ml-6"
                 : "md:m-6 mt-6 ml-2 md:ml-6 mb-4 md:mb-6"
             } ${topicReverse ? "md:text-right text-left" : ""} ${
-              topic ? "mb-2" : ""
-            } ${topicBalance ? "text-white-100" : ""} font-bold line-clamp-2
+              !image ? "line-clamp-none" : "line-clamp-2"
+            } ${topic ? "mb-2" : ""} ${
+              topicBalance ? "text-white-100" : ""
+            } font-bold 
          `}
           >
             {data.title}
@@ -160,8 +162,12 @@ const CardItem: React.FC<CardItemProps> = ({
          `}
             >
               {/* TODO: chip component */}
-              <Chip label="beginner" data={data} size="small" topic={topic} />
-              <div className="flex gap-4">
+              {data.level ? (
+                <Chip label="beginner" data={data} size="small" topic={topic} />
+              ) : (
+                ""
+              )}
+              <div className="flex gap-4 items-center">
                 <span
                   className={`${
                     topicShort

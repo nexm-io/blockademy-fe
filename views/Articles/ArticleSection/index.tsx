@@ -15,7 +15,6 @@ export default function ArticlesSection({
   date: string;
   author?: UserArticle;
 }) {
-  console.log("author:", author);
   return (
     <div className="mt-6 md:px-0 ">
       <div

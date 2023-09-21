@@ -27,7 +27,11 @@ const ArticleHeading = ({
         </h1>
       </div>
       <div className="flex lg:mt-7 w-full justify-start gap-[24px] mr-6 items-center mb-4 mx-4 md:mx-0">
-        <Chip size="small" labelDetails={level} levelDetail={level} />
+        {level ? (
+          <Chip size="small" labelDetails={level} levelDetail={level} />
+        ) : (
+          ""
+        )}
 
         <span className="text-xs font-normal text-gray-300 leading-[23px]">
           Published {formatDate(date)}
