@@ -437,6 +437,15 @@ input[type="range"]::-webkit-slider-thumb:active {
   color: #1f37b3;
   text-decoration: underline;
 }
+/* Author */
+.other__authors--underline::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  width: 100%;
+  height: 2px;
+  background-color: #eaecef;
+}
 
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
