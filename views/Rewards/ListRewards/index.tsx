@@ -35,13 +35,9 @@ export default function ListRewards() {
   }, [dispatch, pathname, listRewards.length]);
 
   const handleClaimReward = async (id: any) => {
-    // const res = await dispatch(claimInWallet(id)).unwrap();
-    // res && toast.success("Claim reward successfully!");
-    // router.push("/my-rewards/claimed-rewards");
-    console.log( isBefore(
-      new Date(),
-      new Date(id.released_date * 1000)
-    ),new Date(), new Date(id.released_date * 1000) );
+    const res = await dispatch(claimInWallet(id)).unwrap();
+    res && toast.success("Claim reward successfully!");
+    router.push("/my-rewards/claimed-rewards");
   };
 
   

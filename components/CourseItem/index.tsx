@@ -180,9 +180,12 @@ const CourseItem = () => {
                             <Image
                               alt="img-course"
                               src={
-                                detail.image?.original_image ||
-                                detail.image?.thumbnail ||
-                                defaultImg
+                                detail.image
+                                  ? detail.image.original_image ||
+                                    detail.image.thumbnail
+                                  : detail.image === ""
+                                  ? defaultImg
+                                  : defaultImg
                               }
                               width={332}
                               height={186}

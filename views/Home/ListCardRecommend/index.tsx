@@ -27,7 +27,6 @@ const ListCardRecommend: React.FC<ListCardProps> = ({
   const data = useAppSelector(
     (state: RootState) => state.articles.dataRecommend
   );
-  console.log("data:", data);
 
   useEffect(() => {
     dispatch(getRecommendArticle({}));

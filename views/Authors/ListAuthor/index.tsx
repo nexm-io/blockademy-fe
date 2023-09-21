@@ -31,8 +31,6 @@ const AuthorList = () => {
     dispatch(getListAuthor({page, limit}));
   }, [dispatch]);
 
-  console.log(listAuthor);
-
   return (
     <div className="md:mt-[56px] mt-8 min-h-screen flex flex-col justify-between">
       {is_loading ? (

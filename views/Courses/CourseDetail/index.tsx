@@ -99,7 +99,6 @@ const CourseDetail = () => {
 
   const handleClaim = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
-    console.log(id);
     
     res.success && toast.success("Claim reward successfully");
     setIsClaimed(true);

@@ -183,12 +183,12 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .label-1m,
-.label-3m,
-.label-5m,
 .label-10m,
-.label-15m,
 .label-20m,
-.label-25m {
+.label-30m,
+.label-40m,
+.label-50m,
+.label-60m {
   position: relative;
   font-size: 14px;
   color: #333;
@@ -198,9 +198,11 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .label-10m::before,
-.label-15m::before,
 .label-20m::before,
-.label-25m::before {
+.label-30m::before,
+.label-40m::before,
+.label-50m::before,
+.label-60m::before {
   content: "";
   position: absolute;
   bottom: 37px;
@@ -312,7 +314,7 @@ input[type="range"]::-webkit-slider-thumb:active {
 .course-content .hljs-attr {
   color: #79c0ff;
 }
-.course-content .chakra-text  {
+.course-content .chakra-text {
   font-size: 16px;
   margin-bottom: 12px;
   text-align: justify;
@@ -426,6 +428,9 @@ input[type="range"]::-webkit-slider-thumb:active {
 .article_content strong {
   font-size: 24px;
 }
+.article_content p img {
+  width: 100%;
+}
 
 .article_content a,
 .course-content a {
@@ -471,12 +476,12 @@ input[type="range"]::-webkit-slider-thumb:active {
     margin-inline: auto;
   }
   .label-1m,
-  .label-3m,
-  .label-5m,
   .label-10m,
-  .label-15m,
   .label-20m,
-  .label-25m {
+  .label-30m,
+  .label-40m,
+  .label-50m,
+  .label-60m {
     font-size: 12px;
   }
   .banner-top::before {

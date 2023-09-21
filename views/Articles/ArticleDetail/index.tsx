@@ -61,7 +61,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
         </div>
       ) : (
         <>
-          <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[170px] mb-14 md:flex-row">
+          <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[120px] mb-14 md:flex-row">
             <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
               <ArticleTag tags={detailArticle.tags} />
               <ArticleHeading

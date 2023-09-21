@@ -17,7 +17,13 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
       <Link href={`/articles/${data.slug}`}>
         <Image
           alt="banner"
-          src={data.image.original_image || data.image.thumbnail || defaultImg}
+          src={
+            data.image
+              ? data.image.original_image || data.image.thumbnail
+              : data.image === ""
+              ? defaultImg
+              : defaultImg
+          }
           priority
           width={520}
           height={292}
