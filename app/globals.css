@@ -180,8 +180,17 @@ input[type="range"]::-webkit-slider-thumb:active {
   justify-content: space-between;
   align-items: center;
   margin-top: 1rem;
+  transform: translateX(-6px);
 }
-
+.label-40m {
+  transform: translateX(-8px);
+}
+.label-50m {
+  transform: translateX(-10px);
+}
+.label-60m {
+  transform: translateX(-10px);
+}
 .label-1m,
 .label-10m,
 .label-20m,
@@ -510,6 +519,7 @@ input[type="range"]::-webkit-slider-thumb:active {
   .label-60m {
     font-size: 12px;
   }
+
   .banner-top::before {
     top: -12px;
     width: 48px;

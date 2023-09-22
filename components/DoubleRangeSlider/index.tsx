@@ -1,6 +1,19 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-const labels = ["1m", "10m", "20m", "30m", "40m", "50m", "60m", " ", "" ,"", "∞"];
+const labels = [
+  "1m",
+  "10m",
+  "20m",
+  "30m",
+  "40m",
+  "50m",
+  "60m",
+  "",
+  "",
+  "",
+  "",
+  "∞",
+];
 
 interface DoubleRangeSlider {
   time?: number[];
@@ -42,6 +55,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
       sliderTrackRef.current.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #000000 ${percent1}% , #000000 ${percent2}%, #dadae5 ${percent2}%)`;
     }
   }, [sliderOneValue, sliderTwoValue]);
+
   const slideOne = useCallback(() => {
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderOneValue(sliderTwoValue - minGap);

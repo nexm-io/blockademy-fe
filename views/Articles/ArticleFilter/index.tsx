@@ -64,8 +64,6 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
 
-
-
   const handleClickTotal = () => {
     const dispatchParams = {
       limit: 15,
@@ -83,18 +81,31 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       dispatch(getArticleCourse(dispatchParams));
     }
   };
-  
+
   const handleClearFilters = () => {
     const dispatchParams = {
       page,
       time: time || [],
+      limit: 15,
     };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 30]);
     setSliderOneValue(0);
     setSliderTwoValue(30);
+    dispatch(getArticleCourse(dispatchParams));
   };
+
+  const pathname = useSearchParams();
+  const getTag = pathname.get("tag");
+  useEffect(() => {
+    if (getTag) {
+      const newChoose = choose ? [...choose, getTag] : [getTag];
+      if (setChoose) {
+        setChoose(newChoose);
+      }
+    }
+  }, []);
 
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">

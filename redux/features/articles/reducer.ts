@@ -78,6 +78,7 @@ const articleReducer = createReducer(initialState, (builder) => {
     .addCase(getTrendingArticle.fulfilled, (state, action) => {
       state.isLoading = false;
       state.dataTrending = action.payload.data;
+      state.pagination = action.payload.pagination;
     })
     .addCase(getTrendingArticle.rejected, (state) => {
       state.isLoading = false;
@@ -90,6 +91,7 @@ const articleReducer = createReducer(initialState, (builder) => {
     .addCase(getRecommendArticle.fulfilled, (state, action) => {
       state.isLoading = false;
       state.dataRecommend = action.payload.data;
+      state.pagination = action.payload.pagination;
     })
     .addCase(getRecommendArticle.rejected, (state) => {
       state.isLoading = false;

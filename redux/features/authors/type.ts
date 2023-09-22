@@ -23,6 +23,7 @@ export interface ListAuthorPostResponse {
   message: string;
   error: any;
   data: Array<AuthorIntoData>;
+  pagination?: PaginationArticle;
 }
 
 export interface ImageOriginal {
