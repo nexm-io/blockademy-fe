@@ -14,6 +14,7 @@ import { RootState } from "@/redux/store";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { ArticleIntoData } from "@/redux/features/articles/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
+import { useSearchParams } from "next/navigation";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -68,9 +69,19 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const currentData =
     selectedOption === "Recently published" ? dataStatus || data : dataTrending;
 
+    const pathname = useSearchParams()
+  const getTag = pathname.get("tag");
+  // if(getTag) {
+  //   const tag = getTag
+  //   dispatch(getArticleCourse({ page, tagParam : [tag.toUpperCase()] }));
+  // } else {
+  //   dispatch(getArticleCourse({ page }));
+  // }
+
   useEffect(() => {
-    if (selectedOption === "Recently published") {
-      dispatch(getLatestArticle({ limit, page }));
+    if (selectedOption === "Recently published" && getTag) {
+      const tag = getTag
+      dispatch(getLatestArticle({ limit, page,  tags : tag.toUpperCase()  }));
     } else if (selectedOption === "Mostly viewed") {
       dispatch(getTrendingArticle({ limit, page }));
     }

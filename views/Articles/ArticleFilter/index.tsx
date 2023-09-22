@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Common/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { ListUl } from "@styled-icons/fa-solid";
 import { AppsList } from "@styled-icons/fluentui-system-regular";
@@ -8,6 +8,7 @@ import { SortList, SortMenu } from "@/components/Icon";
 import { ArrowUpS } from "@styled-icons/remix-line";
 import { useAppDispatch } from "@/redux/hook";
 import { getArticleCourse } from "@/redux/features/articles/action";
+import { useSearchParams } from "next/navigation";
 type ArticleFilterProps = {
   show?: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +49,8 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setStatus?.("menu");
   };
 
+
+
   const handleClickTotal = () => {
     const dispatchParams = {
       page,
@@ -57,6 +60,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     };
     dispatch(getArticleCourse(dispatchParams));
   };
+  
   const handleClearFilters = () => {
     const dispatchParams = {
       page,

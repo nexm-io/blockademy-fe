@@ -1,7 +1,8 @@
+'use client'
 import { ListTagsIntoData } from "@/redux/features/articles/type";
 import { getLastPathName } from "@/utils/getPathName";
 import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { useSearchParams } from 'next/navigation'
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;
@@ -9,6 +10,7 @@ interface TagItemProps {
   setChoose?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   academy?: boolean;
   handleTagClick?: (tag: string) => void | undefined;
+
 }
 const TagItem: React.FC<TagItemProps> = ({
   dataTags,
@@ -17,17 +19,13 @@ const TagItem: React.FC<TagItemProps> = ({
   handleTagClick,
   setChoose,
 }) => {
-  // const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
-
+  
   const toggleTagSelection = (tagTitle: string) => {
     let updatedSelectedTags: string[] = [];
-    
     if (choose.includes(tagTitle)) {
       updatedSelectedTags = choose.filter((item) => item !== tagTitle);
-      
     } else {
-      updatedSelectedTags = [...choose, tagTitle];
+      updatedSelectedTags = [...choose ,tagTitle];
     }
     if (setChoose) {
       setChoose(updatedSelectedTags);
@@ -35,6 +33,7 @@ const TagItem: React.FC<TagItemProps> = ({
     if (handleTagClick) {
       handleTagClick(tagTitle);
     }
+    
   };
 
 
