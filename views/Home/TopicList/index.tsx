@@ -41,18 +41,29 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
   }, [dispatch, page, limit]);
 
   const handleChipClick = (level: "beginner" | "intermediate" | "advance") => {
-    const dispatchParams = {
-      limit: 7,
-      page,
-      levelParam: level,
-      tagParam: tag,
-    };
-    setLevelParam(level);
-    dispatch(getArticleCourse(dispatchParams));
+    if (level === levelParam) {
+      const dispatchParams = {
+        limit: 7,
+        page,
+        tagParam: tag,
+      };
+      setLevelParam(undefined);
+      dispatch(getArticleCourse(dispatchParams));
+    } else {
+      const dispatchParams = {
+        limit: 7,
+        page,
+        levelParam: level,
+        tagParam: tag,
+      };
+      setLevelParam(level);
+      dispatch(getArticleCourse(dispatchParams));
+    }
   };
 
   useEffect(() => {
     const dispatchParams = {
+      limit: 7,
       page,
       tagParam: tag,
       levelParam: levelParam,
