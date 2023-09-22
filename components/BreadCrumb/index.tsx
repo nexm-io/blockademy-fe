@@ -2,6 +2,7 @@
 import { getPathName } from "@/utils/getPathName";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 const BreadCrumb = () => {
   const pathname = usePathname();
@@ -24,12 +25,15 @@ const BreadCrumb = () => {
             <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
           </li>
           {pathname.split("/").map((path, index, array) => (
-            <>
+            <React.Fragment key={index}>
               {index !== 0 && !/^\d+$/.test(path) && (
                 <>
                   <li
-                    key={index}
-                    onClick={() => router.push(`/${title}`)}
+                    onClick={() => {
+                      if (index === 1) {
+                        router.push(`/${title}`);
+                      }
+                    }}
                     className={`leading-[23px] ${
                       index === 1 ? "hover:underline cursor-pointer" : ""
                     } cursor-default`}
@@ -48,7 +52,7 @@ const BreadCrumb = () => {
                   )}
                 </>
               )}
-            </>
+            </React.Fragment>
           ))}
         </ol>
       </nav>

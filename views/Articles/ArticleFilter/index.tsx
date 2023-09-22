@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Common/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { ListUl } from "@styled-icons/fa-solid";
 import { AppsList } from "@styled-icons/fluentui-system-regular";
@@ -64,6 +64,8 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
 
+
+
   const handleClickTotal = () => {
     const dispatchParams = {
       limit: 15,
@@ -81,6 +83,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       dispatch(getArticleCourse(dispatchParams));
     }
   };
+  
   const handleClearFilters = () => {
     const dispatchParams = {
       page,

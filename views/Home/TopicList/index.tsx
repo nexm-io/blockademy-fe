@@ -13,6 +13,7 @@ import Chip from "../../../components/Common/Chip";
 import TagItem from "@/components/TagItem";
 import Link from "next/link";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
+import { useSearchParams } from "next/navigation";
 
 interface TopicListProps {
   urlApi?: string;
@@ -24,6 +25,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
     "beginner" | "intermediate" | "advance" | undefined
   >(undefined);
   const [tagParam, setTagParam] = useState<string[] | undefined>(undefined);
+  const [tag, setTag] = useState<any>([]);
   const [page] = useState<number>(1);
   const [limit] = useState<number>(7);
   const dispatch = useAppDispatch();
@@ -32,39 +34,62 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
     (state: RootState) => state.articles.isLoading
   );
   const dataTags = useAppSelector((state: RootState) => state.articles.tags);
+
   useEffect(() => {
     dispatch(getArticleCourse({ limit, page }));
     dispatch(getListTags({ limit }));
   }, [dispatch, page, limit]);
 
   const handleChipClick = (level: "beginner" | "intermediate" | "advance") => {
+    if (level === levelParam) {
+      const dispatchParams = {
+        limit: 7,
+        page,
+        tagParam: tag,
+      };
+      setLevelParam(undefined);
+      dispatch(getArticleCourse(dispatchParams));
+    } else {
+      const dispatchParams = {
+        limit: 7,
+        page,
+        levelParam: level,
+        tagParam: tag,
+      };
+      setLevelParam(level);
+      dispatch(getArticleCourse(dispatchParams));
+    }
+  };
+
+  useEffect(() => {
     const dispatchParams = {
       limit: 7,
       page,
-      levelParam: level,
-      tagParam: tagParam || [],
-    };
-    setLevelParam(level);
-    dispatch(getArticleCourse(dispatchParams));
-  };
-
-  const handleTagClick = (tagTitle: string) => {
-    const newTagParam = tagParam ? [...tagParam] : [];
-    if (newTagParam.includes(tagTitle)) {
-      const index = newTagParam.indexOf(tagTitle);
-      if (index > -1) {
-        newTagParam.splice(index, 1);
-      }
-    } else {
-      newTagParam.push(tagTitle);
-    }
-    setTagParam(newTagParam);
-    const dispatchParams = {
-      page,
-      tagParam: tagParam ? [...tagParam] : [],
+      tagParam: tag,
       levelParam: levelParam,
     };
     dispatch(getArticleCourse(dispatchParams));
+  }, [tagParam, tag]);
+
+  const handleTagClick = (tagTitle: string) => {
+    if (tag.includes(tagTitle)) {
+      // If it exists, remove it
+      setTag((prev: Array<string>) => prev.filter((tag) => tag !== tagTitle));
+    } else {
+      // If it doesn't exist, add it
+      setTag((prev: Array<string>) => [...prev, tagTitle]);
+    }
+
+    // const newTagParam = tagParam ? [...tagParam] : [];
+    // if (newTagParam.includes(tagTitle)) {
+    //   const index = newTagParam.indexOf(tagTitle);
+    //   if (index > -1) {
+    //     newTagParam.splice(index, 1);
+    //   }
+    // } else {
+    //   newTagParam.push(tag);
+    //   setTagParam(newTagParam);
+    // }
   };
 
   return (

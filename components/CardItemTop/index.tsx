@@ -46,7 +46,7 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
           <div className="flex gap-1">
             <Image alt="" src={clockIcon}></Image>
             <span className="text-xs font-normal leading-4">
-              {data.read_time || "9"}m
+              {data.read_time ?? "9"}m
             </span>
           </div>
         </div>
