@@ -25,7 +25,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
     "beginner" | "intermediate" | "advance" | undefined
   >(undefined);
   const [tagParam, setTagParam] = useState<string[] | undefined>(undefined);
-  const [tag, setTag] = useState<any>([])
+  const [tag, setTag] = useState<any>([]);
   const [page] = useState<number>(1);
   const [limit] = useState<number>(7);
   const dispatch = useAppDispatch();
@@ -36,12 +36,13 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
   const dataTags = useAppSelector((state: RootState) => state.articles.tags);
 
   useEffect(() => {
-  
+    dispatch(getArticleCourse({ limit, page }));
     dispatch(getListTags({ limit }));
   }, [dispatch, page, limit]);
 
   const handleChipClick = (level: "beginner" | "intermediate" | "advance") => {
     const dispatchParams = {
+      limit: 7,
       page,
       levelParam: level,
       tagParam: tag,
@@ -53,23 +54,21 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
   useEffect(() => {
     const dispatchParams = {
       page,
-      tagParam:tag,
+      tagParam: tag,
       levelParam: levelParam,
     };
     dispatch(getArticleCourse(dispatchParams));
   }, [tagParam, tag]);
 
   const handleTagClick = (tagTitle: string) => {
-    console.log(tag);
-
     if (tag.includes(tagTitle)) {
       // If it exists, remove it
-      setTag((prev) => prev.filter((tag) => tag !== tagTitle));
+      setTag((prev: Array<string>) => prev.filter((tag) => tag !== tagTitle));
     } else {
       // If it doesn't exist, add it
-      setTag((prev) => [...prev, tagTitle])
+      setTag((prev: Array<string>) => [...prev, tagTitle]);
     }
-    
+
     // const newTagParam = tagParam ? [...tagParam] : [];
     // if (newTagParam.includes(tagTitle)) {
     //   const index = newTagParam.indexOf(tagTitle);
@@ -80,12 +79,15 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
     //   newTagParam.push(tag);
     //   setTagParam(newTagParam);
     // }
-    
   };
-  
+
   return (
     <section className="my-[82px] full-bleed">
-      <div className="bg-black-100 lg:h-[1100px] md:h-auto h-full">
+      <div
+        className={`bg-black-100 lg:h-[1100px] md:h-auto ${
+          data ? "h-auto" : "h-full"
+        }`}
+      >
         <div className="max-w-[1152px] mx-auto">
           {/* Topics */}
           <div className="flex gap-8 md:pt-[62px] pt-4 items-center pl-2">
@@ -204,7 +206,9 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h2 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 lg:ml-0 md:ml-3 mx-3 md:mr-0">
+            <div
+              className={`bg-black-200 rounded-2xl flex flex-col justify-between crypto__h2 h-max lg:ml-0 md:ml-3 mx-3 md:mr-0`}
+            >
               {!isLoading && data ? (
                 data
                   .slice(1, 2)
@@ -242,7 +246,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h3 */}
-            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 lg:mr-0 md:mr-3 mx-3 md:ml-0">
+            <div className="bg-black-200 rounded-2xl flex flex-col justify-between crypto__h3 h-max lg:mr-0 md:mr-3 mx-3 md:ml-0">
               {!isLoading && data ? (
                 data
                   .slice(2, 3)
@@ -280,7 +284,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h4 */}
-            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl crypto__h4 justify-end lg:mx-0 mx-3">
+            <div className="flex flex-col-reverse md:flex-row gap-4 bg-black-200 rounded-2xl h-max crypto__h4 justify-end lg:mx-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(3, 4)
@@ -327,7 +331,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h5 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 lg:ml-0 md:ml-3 md:mr-0 mx-3">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h5 h-max lg:ml-0 md:ml-3 md:mr-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(4, 5)
@@ -349,7 +353,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               )}
             </div>
             {/* h6 */}
-            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 lg:mr-0 md:mr-3 mx-3 md:ml-0">
+            <div className="bg-black-200 rounded-2xl flex justify-between crypto__h6 h-max lg:mr-0 md:mr-3 mx-3 md:ml-0">
               {!isLoading && data ? (
                 data
                   .slice(5, 6)

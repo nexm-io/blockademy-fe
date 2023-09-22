@@ -2,8 +2,8 @@
 import { ListTagsIntoData } from "@/redux/features/articles/type";
 import { getLastPathName } from "@/utils/getPathName";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useLayoutEffect } from "react";
-import { useSearchParams } from 'next/navigation'
+import React, { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;
   choose?: string[] | undefined;
@@ -22,6 +22,8 @@ const TagItem: React.FC<TagItemProps> = ({
   
   const toggleTagSelection = (tagTitle: string) => {
     let updatedSelectedTags: string[] = [];
+
+
     if (choose.includes(tagTitle)) {
       updatedSelectedTags = choose.filter((item) => item !== tagTitle);
     } else {
@@ -35,7 +37,6 @@ const TagItem: React.FC<TagItemProps> = ({
     }
     
   };
-
 
   return (
     <>

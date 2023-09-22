@@ -8,6 +8,7 @@ interface GraphicProps {
   coming_soon?: boolean;
   color_text?: string;
   error?: boolean;
+  errorPage?: boolean;
 }
 
 export default function InfoGraphic(props: GraphicProps) {
@@ -16,6 +17,7 @@ export default function InfoGraphic(props: GraphicProps) {
     coming_soon = false,
     color_text,
     error = false,
+    errorPage = false,
   } = props;
   return (
     <div className="w-full lg:w-[424px] flex flex-col items-center justify-center">
@@ -35,7 +37,7 @@ export default function InfoGraphic(props: GraphicProps) {
       )}
       {error && (
         <h2 className="md:text-[106px] text-3xl font-bold text-white-300 md:mt-[70px] mb-6">
-          404
+          {errorPage ? "500" : "404"}
         </h2>
       )}
       <p

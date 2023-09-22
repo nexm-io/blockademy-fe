@@ -82,8 +82,8 @@ const CourseLists = function () {
                     height={330}
                     src={
                       section.image
-                        ? section.image.original_image ||
-                          section.image.thumbnail
+                        ? section.image?.original_image ||
+                          section.image?.thumbnail
                         : section.image === ""
                         ? defaultImg
                         : defaultImg
