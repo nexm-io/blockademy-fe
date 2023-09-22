@@ -77,6 +77,15 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const currentData =
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
 
+    const pathname = useSearchParams()
+  const getTag = pathname.get("tag");
+  // if(getTag) {
+  //   const tag = getTag
+  //   dispatch(getArticleCourse({ page, tagParam : [tag.toUpperCase()] }));
+  // } else {
+  //   dispatch(getArticleCourse({ page }));
+  // }
+
   useEffect(() => {
     let fetchAction, params;
     switch (type) {

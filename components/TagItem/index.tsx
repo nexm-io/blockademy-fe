@@ -1,3 +1,4 @@
+"use client";
 import { ListTagsIntoData } from "@/redux/features/articles/type";
 import { getLastPathName } from "@/utils/getPathName";
 import { usePathname } from "next/navigation";

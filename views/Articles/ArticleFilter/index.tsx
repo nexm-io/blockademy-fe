@@ -81,19 +81,21 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       dispatch(getArticleCourse(dispatchParams));
     }
   };
+
   const handleClearFilters = () => {
     const dispatchParams = {
       page,
       time: time || [],
+      limit: 15,
     };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 30]);
     setSliderOneValue(0);
     setSliderTwoValue(30);
+    dispatch(getArticleCourse(dispatchParams));
   };
 
-  //
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
   useEffect(() => {
