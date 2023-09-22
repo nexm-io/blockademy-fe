@@ -1,6 +1,6 @@
 "use client";
 import Button from "@/components/Common/Button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheveronDown } from "@styled-icons/zondicons";
 import { ListUl } from "@styled-icons/fa-solid";
 import { AppsList } from "@styled-icons/fluentui-system-regular";
@@ -92,6 +92,18 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setSliderOneValue(0);
     setSliderTwoValue(30);
   };
+
+  //
+  const pathname = useSearchParams();
+  const getTag = pathname.get("tag");
+  useEffect(() => {
+    if (getTag) {
+      const newChoose = choose ? [...choose, getTag] : [getTag];
+      if (setChoose) {
+        setChoose(newChoose);
+      }
+    }
+  }, []);
 
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">

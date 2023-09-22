@@ -43,6 +43,7 @@ const authorReducer = createReducer(initialState, (builder) => {
     .addCase(getAuthorPost.fulfilled, (state, action) => {
       state.isLoading = false;
       state.dataPost = action.payload.data;
+      state.pagination = action.payload.pagination;
       state.error = null;
     })
 
@@ -53,6 +54,7 @@ const authorReducer = createReducer(initialState, (builder) => {
     .addCase(getListAuthor.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
+      state.pagination = action.payload.pagination;
       state.error = null;
     })
     .addCase(getListAuthor.rejected, (state, action: PayloadAction<any>) => {

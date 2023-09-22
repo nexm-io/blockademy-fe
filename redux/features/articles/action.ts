@@ -71,7 +71,7 @@ export const getTrendingArticle = createAsyncThunk<
 >(
   "articles/trending",
   async ({
-    limit = 3,
+    limit,
     page = 1,
     params = "created_at",
     trending = 1,

@@ -54,6 +54,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const dataRecommend = useAppSelector(
     (state: RootState) => state.articles.dataRecommend
   );
+
   const pagination = useAppSelector(
     (state: RootState) => state.articles.pagination
   );
@@ -83,6 +84,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         fetchAction = getTrendingArticle;
         params =
           selectedOption === "Recently published" ? "created_at" : "total_hit";
+
         break;
       case "Recommend":
         fetchAction = getRecommendArticle;
@@ -96,6 +98,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
     dispatch(fetchAction({ limit, page, params }));
   }, [dispatch, page, selectedOption, limit, type]);
+
   return (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">

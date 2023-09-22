@@ -48,3 +48,40 @@ export const Twitter: React.FC<IconProps> = ({ fill, className }) => (
     />
   </svg>
 );
+
+export const Exclamation: React.FC<IconProps> = ({ fill, className }) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill={fill}
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <g clip-path="url(#clip0_66_488)">
+      <path
+        d="M7.99999 14.6666C11.6819 14.6666 14.6667 11.6818 14.6667 7.99992C14.6667 4.31802 11.6819 1.33325 7.99999 1.33325C4.3181 1.33325 1.33333 4.31802 1.33333 7.99992C1.33333 11.6818 4.3181 14.6666 7.99999 14.6666Z"
+        stroke="#1F37B3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 5.33325V7.99992"
+        stroke="#1F37B3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8 10.6667H8.00667"
+        stroke="#1F37B3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_66_488">
+        <rect width="16" height="16" fill="white" />
+      </clipPath>
+    </defs>
+  </svg>
+);

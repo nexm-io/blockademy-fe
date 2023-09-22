@@ -1,6 +1,5 @@
 "use client";
 import { getPathName } from "@/utils/getPathName";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 const BreadCrumb = () => {
