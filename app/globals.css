@@ -468,7 +468,6 @@ input[type="range"]::-webkit-slider-thumb:active {
   color: #474d57;
 }
 
-
 .article_content strong {
   font-size: 18px;
 }
@@ -490,7 +489,7 @@ input[type="range"]::-webkit-slider-thumb:active {
   height: 2px;
   background-color: #eaecef;
 }
-.range-slider {
+.range-slider-1 {
   position: absolute;
   transform: translateX(-45%);
   top: -44px;
@@ -499,7 +498,26 @@ input[type="range"]::-webkit-slider-thumb:active {
   color: #fff;
   border-radius: 4px;
 }
-.range-slider::after {
+.range-slider-2 {
+  position: absolute;
+  transform: translateX(-45%);
+  top: -44px;
+  padding: 4px 8px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+}
+.range-slider-1::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+.range-slider-2::after {
   position: absolute;
   content: "";
   bottom: -6px;
@@ -566,10 +584,10 @@ input[type="range"]::-webkit-slider-thumb:active {
   .mobileCardFullSkeleton {
     width: 350px !important;
   }
-  div span.range-slider.range-1 {
+  div span.range-slider-1 {
     left: 15% !important;
   }
-  div span.range-slider.range-2 {
+  div span.range-slider-2 {
     left: 85% !important;
   }
 }
