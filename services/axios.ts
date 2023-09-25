@@ -16,7 +16,7 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  config.headers.apiKey = ``;
+  config.headers.apiKey = process.env.NEXT_PUBLIC_API_KEY;
   return config;
 });
 
