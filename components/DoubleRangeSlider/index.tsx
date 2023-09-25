@@ -67,11 +67,17 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderTwoValue(sliderOneValue + minGap);
     }
+    if (sliderTwoValue > 60) {
+      setSliderTwoValue(minGap + 1000);
+    }
     fillColor();
   }, [fillColor, sliderOneValue, sliderTwoValue, setSliderTwoValue]);
 
   const updateParentTime = useCallback(() => {
     if (setTime) {
+      if (sliderTwoValue > 60) {
+        setTime([sliderOneValue, sliderTwoValue + 1000]);
+      }
       setTime([sliderOneValue, sliderTwoValue]);
     }
   }, [setTime, sliderOneValue, sliderTwoValue]);
@@ -99,7 +105,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
             onInput={slideOne}
           />
           <span
-            className="range-slider range-1"
+            className={`${sliderOneValue === 0 ? "hidden" : "range-slider-1"} `}
             style={{ left: `${(sliderOneValue / sliderMaxValue) * 100}%` }}
           >
             {sliderOneValue}
@@ -119,7 +125,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
             onInput={slideTwo}
           />
           <span
-            className="range-slider range-2"
+            className={`${sliderTwoValue > 60 ? "hidden" : "range-slider-2"}`}
             style={{ left: `${(sliderTwoValue / sliderMaxValue) * 100}%` }}
           >
             {sliderTwoValue}

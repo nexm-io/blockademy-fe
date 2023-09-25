@@ -79,7 +79,6 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
-  console.log("getTag:", getTag);
 
   useEffect(() => {
     let fetchAction, params;
