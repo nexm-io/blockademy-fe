@@ -27,7 +27,7 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
           priority
           width={520}
           height={292}
-          className="cursor-pointer"
+          className="cursor-pointer w-[520px] h-[290px]"
           placeholder="blur"
           blurDataURL={PLACEHOLDER_BASE64}
         ></Image>

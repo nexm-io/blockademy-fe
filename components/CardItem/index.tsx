@@ -40,7 +40,7 @@ const CardItem: React.FC<CardItemProps> = ({
           status === "list"
             ? "flex-col w-[352px] shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
             : status === "menu"
-            ? "w-full md:flex-row flex-col gap-4 md:gap-0"
+            ? "w-[352px] md:w-full md:flex-row flex-col gap-4 md:gap-0"
             : ""
         } ${topicBalance ? "h-[100px] !flex-row" : "h-auto"} ${
           topicReverse ? "md:!flex-row-reverse !flex-col" : "flex-row"
@@ -123,9 +123,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 ? "text-[30px] text-white-100"
                 : "text-lg text-black-100 leading-7"
             } ${
-              topic || topicShort
-                ? "ml-6"
-                : "md:m-6 mt-6 ml-2 md:ml-6 mb-4 md:mb-6"
+              topic || topicShort ? "ml-6" : " mt-2 ml-2 md:ml-6 mb-4 md:mb-6"
             } ${topicReverse ? "md:text-right text-left" : ""} ${
               !image ? "line-clamp-none" : "line-clamp-2"
             } ${topic ? "mb-2" : ""} ${
@@ -136,7 +134,7 @@ const CardItem: React.FC<CardItemProps> = ({
             {data.title}
           </h2>
           {status === "menu" && !topic && !topicBalance && (
-            <p className="hidden md:block ml-6 text-black-100 font-normal leading-7 line-clamp-3">
+            <p className="opacity-0 md:w-auto md:h-auto w-0 h-0 md:opacity-100 ml-6 text-black-100 font-normal leading-7 line-clamp-2">
               {data.meta_description}
             </p>
           )}
@@ -146,18 +144,18 @@ const CardItem: React.FC<CardItemProps> = ({
             <div
               className={` ${topicShort ? "gap-0" : "gap-4"} ${
                 status === "list"
-                  ? "justify-between pb-6"
+                  ? "justify-between pb-6 mb-0"
                   : status === "menu"
                   ? ""
                   : ""
               } ${
                 topicShort || topic
                   ? "flex-col-reverse"
-                  : "mt-auto items-center"
+                  : "mt-auto items-center mb-6"
               } ${
                 topicReverse
                   ? "px-0 ml-6 md:ml-0 items-start md:items-end"
-                  : "md:px-6 px-2 ml-4 md:ml-0 pb-4"
+                  : "md:px-6 px-2 md:ml-0 "
               } flex 
          `}
             >
