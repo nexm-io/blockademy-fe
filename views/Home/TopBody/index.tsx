@@ -22,7 +22,7 @@ const TopBody: React.FC<TopBodyProps> = () => {
     dispatch(getFeaturedArticle({}));
   }, [dispatch]);
   return (
-    <section className="flex gap-[46px] justify-between w-full md:flex-row flex-col">
+    <section className="flex md:gap-[46px] gap-6 justify-between w-full md:flex-row flex-col">
       <div className="lg:basis-[50%] basis-[40%] flex flex-col mt-[40px] text-black-100 mx-4 lg:mx-0 md:mt-[62px] lg:mt-[112px] ">
         <h3 className="lg:text-[15px] text-[12px] font-bold uppercase mb-2">
           LEARN ALL ABOUT
@@ -38,7 +38,7 @@ const TopBody: React.FC<TopBodyProps> = () => {
         </p>
 
         <div
-          className="lg:mt-[47px] md:mt-[30px]"
+          className="lg:mt-[47px] md:mt-[30px] mt-4"
           onClick={() => push("/courses")}
         >
           <Button rounded>Join here</Button>

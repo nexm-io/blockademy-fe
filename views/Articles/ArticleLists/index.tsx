@@ -77,14 +77,9 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const currentData =
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
 
-    const pathname = useSearchParams()
+  const pathname = useSearchParams();
   const getTag = pathname.get("tag");
-  // if(getTag) {
-  //   const tag = getTag
-  //   dispatch(getArticleCourse({ page, tagParam : [tag.toUpperCase()] }));
-  // } else {
-  //   dispatch(getArticleCourse({ page }));
-  // }
+  console.log("getTag:", getTag);
 
   useEffect(() => {
     let fetchAction, params;
@@ -105,8 +100,12 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         params = selectedOption === "Mostly viewed" ? "total_hit" : undefined;
     }
 
-    dispatch(fetchAction({ limit, page, params }));
-  }, [dispatch, page, selectedOption, limit, type]);
+    if (getTag) {
+      dispatch(fetchAction({ limit, page, params, tags: getTag }));
+    } else {
+      dispatch(fetchAction({ limit, page, params }));
+    }
+  }, [dispatch, page, selectedOption, limit, type, getTag]);
 
   return (
     <section>

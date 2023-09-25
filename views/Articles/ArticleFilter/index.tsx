@@ -9,6 +9,7 @@ import { ArrowUpS } from "@styled-icons/remix-line";
 import { useAppDispatch } from "@/redux/hook";
 import {
   getArticleCourse,
+  getLatestArticle,
   getRecommendArticle,
   getTrendingArticle,
 } from "@/redux/features/articles/action";
@@ -93,7 +94,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setTime && setTime([0, 30]);
     setSliderOneValue(0);
     setSliderTwoValue(30);
-    dispatch(getArticleCourse(dispatchParams));
+    dispatch(getLatestArticle(dispatchParams));
   };
 
   const pathname = useSearchParams();

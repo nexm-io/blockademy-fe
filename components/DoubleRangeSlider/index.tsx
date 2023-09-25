@@ -84,7 +84,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
 
   return (
     <>
-      <div className="container">
+      <div className="relative w-full h-[10px] mt-12">
         <div ref={sliderTrackRef} className="slider-track"></div>
         <div>
           <input
@@ -99,7 +99,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
             onInput={slideOne}
           />
           <span
-            className="range-slider"
+            className="range-slider range-1"
             style={{ left: `${(sliderOneValue / sliderMaxValue) * 100}%` }}
           >
             {sliderOneValue}
@@ -119,14 +119,14 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
             onInput={slideTwo}
           />
           <span
-            className="range-slider"
+            className="range-slider range-2"
             style={{ left: `${(sliderTwoValue / sliderMaxValue) * 100}%` }}
           >
             {sliderTwoValue}
           </span>
         </div>
       </div>
-      <div className="labels">
+      <div className="labels md:flex ">
         {labels.map((label, index) => (
           <label key={index} className={`label-${label}`}>
             {label}
