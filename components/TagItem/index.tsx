@@ -22,7 +22,7 @@ const TagItem: React.FC<TagItemProps> = ({
 }) => {
   
   const toggleTagSelection = (tagTitle: string) => {
-    console.log(tagTitle);
+ 
     
     let updatedSelectedTags: string[] = [];
 
