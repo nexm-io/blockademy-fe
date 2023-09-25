@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getListAuthor } from "@/redux/features/authors/action";
 import ReactPaginate from "react-paginate";
 import Link from "next/link";
+import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 
 const AuthorList = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const AuthorList = () => {
   const pagination = useAppSelector((state) => state.author.pagination);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
-  const [limit] = useState<number>(5);
+  const [limit] = useState<number>(12);
   const [page, setPage] = useState<number>(1);
 
   const handlePageClick = (event: any) => {
@@ -33,13 +34,46 @@ const AuthorList = () => {
   }, [dispatch, limit, page]);
 
   return (
-    <div className="md:mt-[104px] mt-8 min-h-screen flex flex-col justify-between">
+    <div className="md:mt-10 mt-4 min-h-screen flex flex-col justify-between">
       {is_loading ? (
-        <div>Loading...</div>
+        <div className="mt-2 ">
+          <SkeletionCard
+            height="40px"
+            width="180px"
+            radius="999px"
+            className="mb-10"
+          />
+          <div className="grid grid-cols-4 gap-5">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div
+                key={index}
+                className="w-[275px] h-[300px] shadow-lg flex justify-center border border-gray-200 rounded-lg"
+              >
+                <div
+                  key={index}
+                  className="flex flex-col items-center justify-between pt-8"
+                >
+                  <SkeletionCard height="100px" width="100px" radius="999px" />
+                  <div className="flex flex-col items-center gap-2">
+                    <SkeletionCard height="30px" width="150px" radius="999px" />
+                    <SkeletionCard height="30px" width="120px" radius="999px" />
+                  </div>
+                  <SkeletionCard
+                    height="30px"
+                    width="110px"
+                    radius="999px"
+                    className="mb-4"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       ) : (
-        <div>
-          <div className="w-full flex justify-between text-black-100 font-bold md:text-[37px] text-3xl mb-10 px-4 md:px-0 relative before:bg-blue-100 before:w-8 before:h-1 rounded-full before:content-[] before:absolute before:block">
-            <span className="font-semibold">Author</span>
+        <div className="flex gap-6 flex-col justify-between">
+          <div className="flex gap-2 items-center">
+            <div className="w-6 h-2 rounded-lg bg-blue-100"></div>
+            <h2 className="text-[32px] font-bold ">Authors</h2>
           </div>
 
           <div className="grid grid-cols-4 gap-5">

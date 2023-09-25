@@ -14,13 +14,19 @@ export const getAuthorProfile = createAsyncThunk<ProfileResponse, string>(
   }
 );
 
-export const getAuthorPost = createAsyncThunk<ListAuthorPostResponse, string>(
-  "article/author-post",
-  async (slug) => {
-    const response = await api.get(`/api/v10/author-post?author_id=${slug}`);
-    return response.data;
+export const getAuthorPost = createAsyncThunk<
+  ListAuthorPostResponse,
+  {
+    slug: string;
+    page: number;
+    limit: number;
   }
-);
+>("article/author-post", async ({ slug, page, limit }) => {
+  const response = await api.get(
+    `/api/v10/author-post?author_id=${slug}&page=${page}&limit=${limit}`
+  );
+  return response.data;
+});
 
 export const getListAuthor = createAsyncThunk<
   AuthorResponse,
