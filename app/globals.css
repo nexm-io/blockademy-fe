@@ -419,6 +419,7 @@ input[type="range"]::-webkit-slider-thumb:active {
   padding-top: 12px;
   padding-bottom: 12px;
   font-weight: 700;
+  line-height: 34px;
 }
 
 .article_content h3 {
