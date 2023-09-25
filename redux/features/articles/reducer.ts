@@ -2,6 +2,7 @@ import { PayloadAction, createReducer } from "@reduxjs/toolkit";
 import {
   getArticleCourse,
   getArticleDetail,
+  getFeaturedArticle,
   getLatestArticle,
   getListTags,
   getRecommendArticle,
@@ -26,6 +27,7 @@ const initialState: ArticleListResponse = {
   detail: null,
   error: null,
   tags: null,
+  featured: null,
 };
 
 const articleReducer = createReducer(initialState, (builder) => {
@@ -55,12 +57,28 @@ const articleReducer = createReducer(initialState, (builder) => {
     });
 
   builder
+    .addCase(getFeaturedArticle.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(getFeaturedArticle.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.featured = action.payload.data;
+    })
+    .addCase(
+      getFeaturedArticle.rejected,
+      (state, action: PayloadAction<any>) => {
+        state.isLoading = false;
+      }
+    );
+
+  builder
     .addCase(getTrendingArticle.pending, (state) => {
       state.isLoading = true;
     })
     .addCase(getTrendingArticle.fulfilled, (state, action) => {
       state.isLoading = false;
       state.dataTrending = action.payload.data;
+      state.pagination = action.payload.pagination;
     })
     .addCase(getTrendingArticle.rejected, (state) => {
       state.isLoading = false;
@@ -73,6 +91,7 @@ const articleReducer = createReducer(initialState, (builder) => {
     .addCase(getRecommendArticle.fulfilled, (state, action) => {
       state.isLoading = false;
       state.dataRecommend = action.payload.data;
+      state.pagination = action.payload.pagination;
     })
     .addCase(getRecommendArticle.rejected, (state) => {
       state.isLoading = false;

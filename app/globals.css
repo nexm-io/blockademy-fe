@@ -180,15 +180,24 @@ input[type="range"]::-webkit-slider-thumb:active {
   justify-content: space-between;
   align-items: center;
   margin-top: 1rem;
+  transform: translateX(-6px);
 }
-
+.label-40m {
+  transform: translateX(-8px);
+}
+.label-50m {
+  transform: translateX(-10px);
+}
+.label-60m {
+  transform: translateX(-10px);
+}
 .label-1m,
-.label-3m,
-.label-5m,
 .label-10m,
-.label-15m,
 .label-20m,
-.label-25m {
+.label-30m,
+.label-40m,
+.label-50m,
+.label-60m {
   position: relative;
   font-size: 14px;
   color: #333;
@@ -198,9 +207,11 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .label-10m::before,
-.label-15m::before,
 .label-20m::before,
-.label-25m::before {
+.label-30m::before,
+.label-40m::before,
+.label-50m::before,
+.label-60m::before {
   content: "";
   position: absolute;
   bottom: 37px;
@@ -210,6 +221,19 @@ input[type="range"]::-webkit-slider-thumb:active {
   z-index: 1;
   height: 14px;
   background-color: #333;
+}
+
+.label-30m::before {
+  left: 35%;
+}
+.label-10m::before,
+.label-40m::before,
+.label-50m::before {
+  left: 60%;
+}
+.label-60m::before,
+.label-20m::before {
+  left: 45%;
 }
 
 /* Pagination */
@@ -312,10 +336,9 @@ input[type="range"]::-webkit-slider-thumb:active {
 .course-content .hljs-attr {
   color: #79c0ff;
 }
-.course-content .chakra-text  {
+.course-content .chakra-text {
   font-size: 16px;
   margin-bottom: 12px;
-  text-align: justify;
 }
 .course-content .chakra-heading {
   font-size: 20px;
@@ -392,9 +415,11 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .article_content h2 {
-  font-size: 32px;
-  padding-top: 16px;
-  padding-bottom: 4px;
+  font-size: 28px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-weight: 700;
+  line-height: 34px;
 }
 
 .article_content h3 {
@@ -404,17 +429,28 @@ input[type="range"]::-webkit-slider-thumb:active {
 
 .article_content h4 {
   font-size: 22px;
+  font-weight: 600;
+  padding: 14px 0;
 }
 .article_content p {
   font-size: 16px;
   padding: 12px 0;
   line-height: 23px;
   color: #474d57;
-  text-align: justify;
 }
 
 .article_content ul {
   color: #474d57;
+  padding: 0 0 0 40px;
+}
+
+.article_content ul {
+  list-style: disc;
+}
+
+.article_content ol {
+  list-style-type: decimal;
+  padding: 0 0 0 36px;
 }
 
 .article_content ul li {
@@ -423,8 +459,21 @@ input[type="range"]::-webkit-slider-thumb:active {
   color: #474d57;
 }
 
+.article_content ul li strong {
+  font-size: 16px;
+  color: #474d57;
+}
+
+.article_content ol li strong {
+  font-size: 16px;
+  color: #474d57;
+}
+
 .article_content strong {
-  font-size: 24px;
+  font-size: 18px;
+}
+.article_content p img {
+  width: 100%;
 }
 
 .article_content a,
@@ -432,7 +481,53 @@ input[type="range"]::-webkit-slider-thumb:active {
   color: #1f37b3;
   text-decoration: underline;
 }
-
+/* Author */
+.other__authors--underline::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  width: 100%;
+  height: 2px;
+  background-color: #eaecef;
+}
+.range-slider-1 {
+  position: absolute;
+  transform: translateX(-45%);
+  top: -44px;
+  padding: 4px 8px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+}
+.range-slider-2 {
+  position: absolute;
+  transform: translateX(-45%);
+  top: -44px;
+  padding: 4px 8px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 4px;
+}
+.range-slider-1::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+.range-slider-2::after {
+  position: absolute;
+  content: "";
+  bottom: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .crypto__list {
@@ -469,16 +564,18 @@ input[type="range"]::-webkit-slider-thumb:active {
   .labels {
     width: 70%;
     margin-inline: auto;
+    display: none;
   }
   .label-1m,
-  .label-3m,
-  .label-5m,
   .label-10m,
-  .label-15m,
   .label-20m,
-  .label-25m {
+  .label-30m,
+  .label-40m,
+  .label-50m,
+  .label-60m {
     font-size: 12px;
   }
+
   .banner-top::before {
     top: -12px;
     width: 48px;
@@ -487,6 +584,12 @@ input[type="range"]::-webkit-slider-thumb:active {
   /* Skeleton */
   .mobileCardFullSkeleton {
     width: 350px !important;
+  }
+  div span.range-slider-1 {
+    left: 15% !important;
+  }
+  div span.range-slider-2 {
+    left: 85% !important;
   }
 }
 

@@ -18,7 +18,8 @@ const ArticlePage = () => {
   const [page] = useState<number>(1);
   const [limit] = useState<number>(20);
   const data = useAppSelector((state: RootState) => state.articles.data);
-
+  const [sliderOneValue, setSliderOneValue] = useState<number>(0);
+  const [sliderTwoValue, setSliderTwoValue] = useState<number>(100);
   return (
     <section>
       <TopicAcademy
@@ -36,6 +37,10 @@ const ArticlePage = () => {
         setChoose={setChoose}
         time={time}
         setTime={setTime}
+        sliderOneValue={sliderOneValue}
+        setSliderOneValue={setSliderOneValue}
+        sliderTwoValue={sliderTwoValue}
+        setSliderTwoValue={setSliderTwoValue}
       />
       <ArticleFilter
         show={show}
@@ -50,6 +55,10 @@ const ArticlePage = () => {
         setChoose={setChoose}
         time={time}
         setTime={setTime}
+        sliderOneValue={sliderOneValue}
+        setSliderOneValue={setSliderOneValue}
+        sliderTwoValue={sliderTwoValue}
+        setSliderTwoValue={setSliderTwoValue}
       />
       <ArticleLists
         data={data}

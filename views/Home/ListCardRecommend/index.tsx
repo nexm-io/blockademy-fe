@@ -39,7 +39,7 @@ const ListCardRecommend: React.FC<ListCardProps> = ({
           {cardTitle}
         </h4>
         <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
-          <Link href="/articles">
+          <Link href={`/articles?type=${cardLabel}`}>
             <span className="text-black-100 text-xs font-normal uppercase">
               see all {cardLabel}
             </span>
@@ -50,7 +50,7 @@ const ListCardRecommend: React.FC<ListCardProps> = ({
       <div className="flex lg:gap-[47px] gap-8 ml-4 lg:ml-0 md:flex-row flex-col md:flex-wrap">
         {data ? (
           data
-            .slice(2, 5)
+            .slice(0, 3)
             .map((item, index) => <CardItem data={item} key={index} />)
         ) : (
           <>

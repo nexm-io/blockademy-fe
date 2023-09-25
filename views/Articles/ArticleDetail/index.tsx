@@ -15,7 +15,6 @@ import TagItemSkeleton from "@/components/TagItemSkeleton";
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
-
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getDetail = async () => {
@@ -61,7 +60,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
         </div>
       ) : (
         <>
-          <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[170px] mb-14 md:flex-row">
+          <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[120px] mb-14 md:flex-row">
             <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
               <ArticleTag tags={detailArticle.tags} />
               <ArticleHeading
@@ -71,7 +70,11 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                 duration={detailArticle.read_time}
               />
               {/* <ArticleSummary /> */}
-              <ArticlesSection sections={detailArticle.content} />
+              <ArticlesSection
+                sections={detailArticle.content}
+                author={detailArticle.user}
+                date={detailArticle.created_at}
+              />
             </div>
             <div className="w-full md:w-[25%] ">
               <div className="sticky top-[30px] flex flex-col lg:gap-[75px] md:gap-10 gap-4">

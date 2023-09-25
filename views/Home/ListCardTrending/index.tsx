@@ -6,7 +6,6 @@ import CardItem from "@/components/CardItem";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getTrendingArticle } from "@/redux/features/articles/action";
-import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 
@@ -30,7 +29,7 @@ const ListCardTrending: React.FC<ListCardProps> = ({
   );
 
   useEffect(() => {
-    dispatch(getTrendingArticle({ params: urlApi }));
+    dispatch(getTrendingArticle({ limit: 3, params: urlApi }));
   }, [dispatch, urlApi]);
 
   return (
@@ -40,7 +39,7 @@ const ListCardTrending: React.FC<ListCardProps> = ({
           {cardTitle}
         </h4>
         <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
-          <Link href="/articles">
+          <Link href={`/articles?type=${cardLabel}`}>
             <span className="text-black-100 text-xs font-normal uppercase">
               see all {cardLabel}
             </span>

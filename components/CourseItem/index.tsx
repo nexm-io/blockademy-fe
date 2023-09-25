@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import empty from "@/public/icons/emptybox.svg";
 import Image from "next/image";
 import Button from "../Common/Button";
@@ -13,33 +13,46 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
-import { format } from "date-fns";
+import { format, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
 import defaultImg from "@/public/images/home/home-default.png";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
+import ReactPaginate from "react-paginate";
 
 const CourseItem = () => {
   const dispatch = useAppDispatch();
   const details = useAppSelector((state) => state.courses.data);
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
-  const route = useRouter();
-
-  useEffect(() => {
-    if (getLastPathName(pathname) === STATUS.COMPLETED) {
-      dispatch(getListCourse("3"));
-    } else {
-      dispatch(getListCourse("2"));
-    }
-  }, [dispatch, pathname]);
+  const router = useRouter();
 
   const handleClaimReward = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
     res && toast.success("Claim reward successfully!");
   };
-
+  const pagination = useAppSelector((state) => state.courses.pagination);
+  const itemsPerPage = Number(pagination?.per_page) || 1;
+  const [itemOffset, setItemOffset] = useState(0);
+  const [limit] = useState<number>(5);
+  const [page, setPage] = useState<number>(1);
+  const handlePageClick = (event: any) => {
+    const selectedPage = event.selected + 1;
+    if (selectedPage < 1) {
+      return;
+    }
+    const newOffset = (selectedPage - 1) * itemsPerPage;
+    setItemOffset(newOffset);
+    setPage(selectedPage);
+  };
+  useEffect(() => {
+    if (getLastPathName(pathname) === STATUS.COMPLETED) {
+      dispatch(getListCourse({ params: "3", limit, page }));
+    } else {
+      dispatch(getListCourse({ params: "2", limit, page }));
+    }
+  }, [dispatch, pathname, limit, page]);
   const LessonCourse = ({
     detail,
     campaign,
@@ -49,6 +62,7 @@ const CourseItem = () => {
   }) => {
     return (
       detail &&
+      detail.length > 0 &&
       !isLoading && (
         <div className="flex flex-col gap-6 lg:max-w-[80%]">
           {detail.map((item, index) => (
@@ -108,7 +122,7 @@ const CourseItem = () => {
                   </div>
                   <Button
                     onClick={() =>
-                      route.push(
+                      router.push(
                         `/courses/${campaign}/${item.slug}/${item.lesson_first?.lesson_slug}/`
                       )
                     }
@@ -126,110 +140,175 @@ const CourseItem = () => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center md:px-3">
-      {details.length == 0 ? (
-        <div className="flex items-center justify-center flex-col gap-9">
-          <Image alt="empty-box" src={empty} />
-          <p className="text-gray-100 text-base font-normal ">
-            You will find your finished courses here.
-          </p>
-          <Button onClick={() => route.push("/courses/all")}>
-            Start Learning
-          </Button>
-        </div>
-      ) : (
-        <div className="w-full flex flex-col">
-          {!isLoading ? (
-            details.map((detail, index) => (
-              <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
-                <h1
-                  className={`${
-                    getLastPathName(pathname) === "progress"
-                      ? "md:mb-8 mb-3"
-                      : ""
-                  } md:text-[40px] text-2xl font-semibold`}
-                >
-                  {detail.title}
-                </h1>
-                <div
-                  className={`${
-                    getLastPathName(pathname) === "progress"
-                      ? "justify-start"
-                      : "justify-between"
-                  } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
-                >
-                  {getLastPathName(pathname) === STATUS.COMPLETED ? (
-                    <>
-                      <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
-                        <Image
-                          alt="img-course"
-                          src={
-                            detail.image?.original_image ||
-                            detail.image?.thumbnail ||
-                            defaultImg
-                          }
-                          width={332}
-                          height={186}
-                          className="w-full h-full object-cover"
-                          placeholder="blur"
-                          blurDataURL={PLACEHOLDER_BASE64}
+    <>
+      <div className="w-full flex items-center justify-center md:px-3">
+        {details.length == 0 ? (
+          <div className="flex items-center justify-center flex-col gap-9">
+            <Image alt="empty-box" src={empty} />
+            <p className="text-gray-100 text-base font-normal ">
+              You will find your finished courses here.
+            </p>
+            <Button onClick={() => router.push("/courses/all")}>
+              Start Learning
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            <div className="w-full flex flex-col">
+              {!isLoading && details && details.length > 0 ? (
+                details.map((detail, index) => (
+                  <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
+                    <h1
+                      className={`${
+                        getLastPathName(pathname) === "progress"
+                          ? "md:mb-8 mb-3"
+                          : ""
+                      } md:text-[40px] text-2xl font-semibold`}
+                    >
+                      {detail.title}
+                    </h1>
+                    <div
+                      className={`${
+                        getLastPathName(pathname) === "progress"
+                          ? "justify-start"
+                          : "justify-between"
+                      } flex md:flex-row flex-col w-full mt-4 md:gap-10 gap-4 `}
+                    >
+                      {getLastPathName(pathname) === STATUS.COMPLETED ? (
+                        <>
+                          <div className="md:min-w-[332px] md:w-[332px] md:h-[186px]">
+                            <Image
+                              alt="img-course"
+                              src={
+                                detail.image
+                                  ? detail.image.original_image ||
+                                    detail.image.thumbnail
+                                  : detail.image === ""
+                                  ? defaultImg
+                                  : defaultImg
+                              }
+                              width={332}
+                              height={186}
+                              className="w-full h-full object-cover"
+                              placeholder="blur"
+                              blurDataURL={PLACEHOLDER_BASE64}
+                            />
+                          </div>
+                          <div
+                            className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
+                            dangerouslySetInnerHTML={{
+                              __html: detail.description,
+                            }}
+                          />
+                          <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
+                            <div className="flex flex-col gap-2">
+                              <span className="line-clamp-2 leading-6">
+                                {`Completed: ${format(
+                                  new Date((detail.completed_at || 1) * 1000),
+                                  "EEE MMM dd yyyy HH:mm:ss"
+                                )}`}
+                              </span>
+                              {detail.reward_is_claimed === 1 && (
+                                <span className="line-clamp-2 leading-6">
+                                  Claimed
+                                </span>
+                              )}
+                            </div>
+                            {detail.reward_is_claimed === 1 ? (
+                              <Button
+                                onClick={() =>
+                                  router.push("/my-rewards/claimed-rewards")
+                                }
+                              >
+                                View reward
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={() =>
+                                  handleClaimReward(detail.reward_id)
+                                }
+                              >
+                                Claim reward
+                              </Button>
+                            )}
+                          </div>
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <LessonCourse
+                        campaign={detail.slug}
+                        detail={detail.list_courses?.data}
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <div className="flex gap-4">
+                    <SkeletionCard width="332px" height="186px" radius="16px" />
+                    <div className="flex justify-between w-[650px] mt-2">
+                      <div className="flex flex-col gap-2">
+                        <SkeletionCard
+                          width="222px"
+                          height="30px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="142px"
+                          height="30px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="212px"
+                          height="30px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="272px"
+                          height="30px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="142px"
+                          height="30px"
+                          radius="16px"
                         />
                       </div>
-                      <div
-                        className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
-                        dangerouslySetInnerHTML={{ __html: detail.description }}
-                      />
-                      <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
-                        <span className="line-clamp-2 leading-6">
-                          {`Completed: ${format(
-                            new Date((detail.completed_at || 1) * 1000),
-                            "EEE MMM dd yyyy HH:mm:ss"
-                          )}`}
-                        </span>
-                        {detail.reward_is_claimed === 1 ? (
-                          <Button disabled>Claimed</Button>
-                        ) : (
-                          <Button
-                            onClick={() => handleClaimReward(detail.reward_id)}
-                          >
-                            Claim reward
-                          </Button>
-                        )}
+                      <div className="flex flex-col justify-between">
+                        <SkeletionCard
+                          width="282px"
+                          height="30px"
+                          radius="16px"
+                        />
+                        <SkeletionCard
+                          width="282px"
+                          height="30px"
+                          radius="8px"
+                        />
                       </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                  <LessonCourse
-                    campaign={detail.slug}
-                    detail={detail.list_courses?.data}
-                  />
-                </div>
-              </div>
-            ))
-          ) : (
-            <>
-              <div className="flex gap-4">
-                <SkeletionCard width="332px" height="186px" radius="16px" />
-                <div className="flex justify-between w-[650px] mt-2">
-                  <div className="flex flex-col gap-2">
-                    <SkeletionCard width="222px" height="30px" radius="16px" />
-                    <SkeletionCard width="142px" height="30px" radius="16px" />
-                    <SkeletionCard width="212px" height="30px" radius="16px" />
-                    <SkeletionCard width="272px" height="30px" radius="16px" />
-                    <SkeletionCard width="142px" height="30px" radius="16px" />
+                    </div>
                   </div>
-                  <div className="flex flex-col justify-between">
-                    <SkeletionCard width="282px" height="30px" radius="16px" />
-                    <SkeletionCard width="282px" height="30px" radius="8px" />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      )}
-    </div>
+                </>
+              )}
+            </div>
+            {/* Pagination */}
+            <div className="mt-[60px]">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel=">"
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={1}
+                pageCount={pagination?.total_pages || 1}
+                previousLabel="<"
+                renderOnZeroPageCount={null}
+                className="pagination flex items-center justify-center md:gap-6 gap-4"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

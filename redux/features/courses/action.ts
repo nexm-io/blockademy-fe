@@ -4,12 +4,14 @@ import { CourseDetailResponse, CourseResponse, QuizResponse } from "./type";
 
 export const getListCourse = createAsyncThunk<
   CourseResponse,
-  string | undefined
->("courses/all-courses", async (params) => {
-  let url = `/api/v10/campaign?process_status=`;
-  if (params) {
-    url = `${url}${params}`;
+  {
+    limit?: number | undefined;
+    page?: number | undefined;
+    params?: string | undefined;
   }
+>("courses/all-courses", async ({ limit, params = "", page = 1 }) => {
+  let url = `/api/v10/campaign?process_status=${params}&limit=${limit}&page=${page}`;
+
   const response = await api.get(url);
   return response.data;
 });

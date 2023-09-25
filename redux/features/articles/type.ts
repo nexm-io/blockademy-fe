@@ -9,6 +9,7 @@ export interface ArticleListResponse {
   error: any;
   detail: ArticleDetail | null;
   tags: ListTagsIntoData | null;
+  featured: Array<ArticleIntoData> | null;
 }
 export interface TagsResponse {
   success?: boolean;
@@ -71,8 +72,14 @@ export interface ArticleIntoData {
 }
 
 export interface TagArticle {
+  id: number;
   title: string;
   slug: string;
+  pivot: PivotTags;
+}
+export interface PivotTags {
+  post_id: number;
+  tag_id: number;
 }
 
 export interface ImageArticle {
@@ -102,6 +109,7 @@ export interface UserArticle {
   profile_image: null;
   bio: null;
   created_at: null;
+  slug: string;
 }
 
 export interface ListTagsIntoData {

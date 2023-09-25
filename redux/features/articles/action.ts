@@ -12,14 +12,15 @@ export const getArticleCourse = createAsyncThunk<
     page: number;
     time?: number[];
     levelParam?: "beginner" | "intermediate" | "advance";
+    limit?: number;
     tagParam?: string[];
   }
->("articles/all", async ({ page, time, levelParam, tagParam }) => {
+>("articles/all", async ({ page, time, levelParam, tagParam, limit }) => {
   const readTimeParam = time ? `&read_time=${time}` : "";
   const readLevelParam = levelParam ? `&level=${levelParam}` : "";
   const readTagParam = tagParam ? `&tags=${tagParam}` : "";
   const response = await api.get(
-    `/api/v10/list-post?limit=15&page=${page}${readTagParam}${readLevelParam}${readTimeParam}`
+    `/api/v10/list-post?limit=${limit}&page=${page}${readTagParam}${readLevelParam}${readTimeParam}`
   );
   return response.data;
 });
@@ -30,13 +31,32 @@ export const getLatestArticle = createAsyncThunk<
     params?: string;
     page?: number;
     limit?: number;
+    tags?: string;
   }
->("articles/latest", async ({ limit = 3, page = 1, params = "created_at" }) => {
+>("articles/latest", async ({ limit = 3, page = 1, params = "created_at", tags = ' ' }) => {
   const response = await api.get(
-    `/api/v10/list-post?limit=${limit}&page=${page}&sort_field=${params}`
+    `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}&sort_field=${params}`
   );
   return response.data;
 });
+
+export const getFeaturedArticle = createAsyncThunk<
+  ArticleListResponse,
+  {
+    params?: string;
+    page?: number;
+    limit?: number;
+    featured?: number;
+  }
+>(
+  "articles/featured",
+  async ({ limit = 1, page = 1, params = "created_at", featured = 1 }) => {
+    const response = await api.get(
+      `/api/v10/list-post?limit=${limit}&page=${page}&featured=${featured}&sort_field=${params}`
+    );
+    return response.data;
+  }
+);
 
 export const getTrendingArticle = createAsyncThunk<
   ArticleListResponse,
@@ -44,12 +64,27 @@ export const getTrendingArticle = createAsyncThunk<
     params?: string;
     page?: number;
     limit?: number;
+    trending?: number;
+    levelParam?: "beginner" | "intermediate" | "advance";
+    tagParam?: string[];
+    time?: number[];
   }
 >(
   "articles/trending",
-  async ({ limit = 3, page = 1, params = "total_hit" }) => {
+  async ({
+    limit,
+    page = 1,
+    params = "created_at",
+    trending = 1,
+    time,
+    levelParam,
+    tagParam,
+  }) => {
+    const readTimeParam = time ? `&read_time=${time}` : "";
+    const readLevelParam = levelParam ? `&level=${levelParam}` : "";
+    const readTagParam = tagParam ? `&tags=${tagParam}` : "";
     const response = await api.get(
-      `/api/v10/list-post?limit=${limit}&page=${page}&sort_field=${params}`
+      `/api/v10/list-post?limit=${limit}&page=${page}&trending=${trending}&sort_field=${params}${readTagParam}${readLevelParam}${readTimeParam}`
     );
     return response.data;
   }
@@ -58,15 +93,34 @@ export const getTrendingArticle = createAsyncThunk<
 export const getRecommendArticle = createAsyncThunk<
   ArticleListResponse,
   {
+    params?: string;
     page?: number;
     limit?: number;
+    recommend?: number;
+    levelParam?: "beginner" | "intermediate" | "advance";
+    tagParam?: string[];
+    time?: number[];
   }
->("articles/recommended", async ({ limit = 6, page = 1 }) => {
-  const response = await api.get(
-    `/api/v10/list-post?limit=${limit}&page=${page}&recommended=1`
-  );
-  return response.data;
-});
+>(
+  "articles/recommended",
+  async ({
+    limit = 6,
+    page = 1,
+    params = "created_at",
+    recommend = 1,
+    time,
+    levelParam,
+    tagParam,
+  }) => {
+    const readTimeParam = time ? `&read_time=${time}` : "";
+    const readLevelParam = levelParam ? `&level=${levelParam}` : "";
+    const readTagParam = tagParam ? `&tags=${tagParam}` : "";
+    const response = await api.get(
+      `/api/v10/list-post?limit=${limit}&page=${page}&recommended=${recommend}&sort_field=${params}${readTagParam}${readLevelParam}${readTimeParam}`
+    );
+    return response.data;
+  }
+);
 
 export const getArticleDetail = createAsyncThunk<ArticleDetailResponse, string>(
   "article/detail-article",

@@ -36,7 +36,7 @@ const ListCard: React.FC<ListCardProps> = ({
         <h4 className="text-black-100 font-normal leading-[28px] md:text-xl text-base">
           {cardTitle}
         </h4>
-        <div className="bg-gray-200 h-6 px-5 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
+        <div className="bg-gray-200 h-6 md:px-5 px-2 gap-[6px] inline-flex justify-center items-center flex-shrink-0 rounded-[30px] cursor-pointer">
           <Link href="/articles">
             <span className="text-black-100 text-xs font-normal uppercase">
               see all {cardLabel}

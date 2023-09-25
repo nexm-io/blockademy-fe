@@ -32,9 +32,11 @@ const ArticleRelate = ({ id }: { id: number }) => {
                 width={250}
                 height={150}
                 src={
-                  post.image.original_image ||
-                  post.image.thumbnail ||
-                  defaultImg
+                  post.image
+                    ? post.image.original_image || post.image.thumbnail
+                    : post.image === ""
+                    ? defaultImg
+                    : defaultImg
                 }
                 className="rounded-2xl w-full mb-2"
                 placeholder="blur"

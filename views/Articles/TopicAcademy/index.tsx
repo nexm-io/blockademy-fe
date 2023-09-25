@@ -28,6 +28,10 @@ type TopicAcademyProps = {
   setTagParam?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   page?: number;
   limit?: number;
+  sliderOneValue: number;
+  setSliderOneValue?: React.Dispatch<React.SetStateAction<number>>;
+  sliderTwoValue: number;
+  setSliderTwoValue?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const TopicAcademy: React.FC<TopicAcademyProps> = ({
@@ -43,6 +47,10 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
   limit = 20,
   choose,
   setChoose,
+  sliderOneValue,
+  setSliderOneValue,
+  sliderTwoValue,
+  setSliderTwoValue,
 }) => {
   const dispatch = useAppDispatch();
   const dataTags = useAppSelector((state: RootState) => state.articles.tags);
@@ -147,7 +155,14 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
             </div>
             <div>
               <p>Reading time</p>
-              <DoubleRangeSlider time={time} setTime={setTime} />
+              <DoubleRangeSlider
+                time={time}
+                setTime={setTime}
+                sliderOneValue={sliderOneValue}
+                setSliderOneValue={setSliderOneValue}
+                sliderTwoValue={sliderTwoValue}
+                setSliderTwoValue={setSliderTwoValue}
+              />
             </div>
           </div>
         </div>

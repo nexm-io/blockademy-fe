@@ -88,13 +88,14 @@ const Quiz = ({
   };
 
   const handleClaimReward = async () => {
-    if (courseDetail) {
-      const res = await dispatch(
-        claimInWallet(courseDetail.reward_id)
-      ).unwrap();
-      setShow(false);
-      res.success && toast.success("Claim reward successfully");
-    }
+    // if (courseDetail) {
+    //   const res = await dispatch(
+    //     claimInWallet(courseDetail.reward_id)
+    //   ).unwrap();
+    //   setShow(false);
+    //   res.success && toast.success("Claim reward successfully");
+    // }
+    router.push('/my-rewards')
   };
 
   useEffect(() => {

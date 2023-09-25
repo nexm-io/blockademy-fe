@@ -84,13 +84,17 @@ const CardItem: React.FC<CardItemProps> = ({
             <Image
               alt="card-img"
               src={
-                data.image.original_image || data.image.thumbnail || defaultImg
+                data.image
+                  ? data.image.original_image || data.image.thumbnail
+                  : data.image === ""
+                  ? defaultImg
+                  : defaultImg
               }
               className={`${
                 topicBalance ? "w-[352px] md:h-full !h-[100px]" : "w-full"
               } ${
                 topic ? "md:h-full h-[250px]" : ""
-              } h-[210px] object-cover rounded-2xl`}
+              } h-[210px] object-cover md:min-w-[352px] rounded-2xl`}
               width={352}
               height={198}
               placeholder="blur"
@@ -123,8 +127,10 @@ const CardItem: React.FC<CardItemProps> = ({
                 ? "ml-6"
                 : "md:m-6 mt-6 ml-2 md:ml-6 mb-4 md:mb-6"
             } ${topicReverse ? "md:text-right text-left" : ""} ${
-              topic ? "mb-2" : ""
-            } ${topicBalance ? "text-white-100" : ""} font-bold line-clamp-2
+              !image ? "line-clamp-none" : "line-clamp-2"
+            } ${topic ? "mb-2" : ""} ${
+              topicBalance ? "text-white-100" : ""
+            } font-bold 
          `}
           >
             {data.title}
@@ -156,8 +162,12 @@ const CardItem: React.FC<CardItemProps> = ({
          `}
             >
               {/* TODO: chip component */}
-              <Chip label="beginner" data={data} size="small" topic={topic} />
-              <div className="flex gap-4">
+              {data.level ? (
+                <Chip label="beginner" data={data} size="small" topic={topic} />
+              ) : (
+                ""
+              )}
+              <div className="flex gap-4 items-center">
                 <span
                   className={`${
                     topicShort
@@ -184,7 +194,7 @@ const CardItem: React.FC<CardItemProps> = ({
                         : "text-gray-300 text-xs"
                     } font-normal `}
                   >
-                    {data.read_time || "9"}m
+                    {data.read_time ?? "9"}m
                   </span>
                 </div>
               </div>

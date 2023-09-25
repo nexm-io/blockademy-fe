@@ -17,7 +17,13 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
       <Link href={`/articles/${data.slug}`}>
         <Image
           alt="banner"
-          src={data.image.original_image || data.image.thumbnail || defaultImg}
+          src={
+            data.image
+              ? data.image.original_image || data.image.thumbnail
+              : data.image === ""
+              ? defaultImg
+              : defaultImg
+          }
           priority
           width={520}
           height={292}
@@ -40,7 +46,7 @@ const CardItemTop: React.FC<CardItemTopProps> = ({ data }) => {
           <div className="flex gap-1">
             <Image alt="" src={clockIcon}></Image>
             <span className="text-xs font-normal leading-4">
-              {data.read_time || "9"}m
+              {data.read_time ?? "9"}m
             </span>
           </div>
         </div>
