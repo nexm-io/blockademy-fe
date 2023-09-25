@@ -18,7 +18,7 @@ export default function ArticlesSection({
   return (
     <div className="mt-6 md:px-0 ">
       <div
-        className="article_content flex flex-col gap-3 text-base"
+        className="article_content block gap-3 text-base"
         dangerouslySetInnerHTML={{ __html: sections }}
       />
       <div className="flex gap-2 text-base mt-6">

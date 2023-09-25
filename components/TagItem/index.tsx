@@ -20,6 +20,8 @@ const TagItem: React.FC<TagItemProps> = ({
   setChoose,
 }) => {
   const toggleTagSelection = (tagTitle: string) => {
+ 
+    
     let updatedSelectedTags: string[] = [];
     if (choose.includes(slugifyText(tagTitle))) {
       updatedSelectedTags = choose.filter(
