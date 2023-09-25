@@ -4,6 +4,7 @@ import { getLastPathName } from "@/utils/getPathName";
 import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import slugifyText from "@/utils/slugifyText";
 interface TagItemProps {
   dataTags?: ListTagsIntoData | null;
   choose?: string[] | undefined;
@@ -21,8 +22,9 @@ const TagItem: React.FC<TagItemProps> = ({
 }) => {
   
   const toggleTagSelection = (tagTitle: string) => {
+    console.log(tagTitle);
+    
     let updatedSelectedTags: string[] = [];
-
 
     if (choose.includes(tagTitle)) {
       updatedSelectedTags = choose.filter((item) => item !== tagTitle);

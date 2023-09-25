@@ -74,6 +74,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       tagParam: choose || [],
       time: time || [],
     };
+    
     if (type === "Trending") {
       // replace("/articles", { scroll: false });
       dispatch(getTrendingArticle(dispatchParams));
@@ -88,12 +89,14 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     const dispatchParams = {
       page,
       time: time || [],
+      limit: 15,
     };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 30]);
     setSliderOneValue(0);
     setSliderTwoValue(30);
+    dispatch(getArticleCourse(dispatchParams));
   };
 
   return (
