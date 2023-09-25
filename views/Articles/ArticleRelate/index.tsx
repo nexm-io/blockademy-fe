@@ -38,7 +38,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
                     ? defaultImg
                     : defaultImg
                 }
-                className="rounded-2xl w-full mb-2"
+                className="rounded-2xl mb-2 w-[250px] h-[130px]"
                 placeholder="blur"
                 blurDataURL={PLACEHOLDER_BASE64}
               />
