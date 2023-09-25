@@ -67,7 +67,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderTwoValue(sliderOneValue + minGap);
     }
-    if (sliderTwoValue > 60) {
+    if (sliderTwoValue > 99) {
       setSliderTwoValue(minGap + 1000);
     }
     fillColor();
@@ -75,7 +75,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
 
   const updateParentTime = useCallback(() => {
     if (setTime) {
-      if (sliderTwoValue > 60) {
+      if (sliderTwoValue > 99) {
         setTime([sliderOneValue, sliderTwoValue + 1000]);
       }
       setTime([sliderOneValue, sliderTwoValue]);
