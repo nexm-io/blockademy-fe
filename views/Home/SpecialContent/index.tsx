@@ -5,7 +5,7 @@ import Image from "next/image";
 const SpecialContent = () => {
   return (
     <section className="md:mt-[74px] mt-[40px]">
-      <div className="w-full lg:h-[621px] h-auto bg-black-200 rounded-2xl">
+      <div className="w-full lg:h-[621px] h-auto bg-black-200 md:rounded-2xl">
         <h2 className="text-blue-400 md:text-[38px] text-[30px] font-bold leading-[40px] text-center pt-[48px] pb-[55px]">
           Special value from Blockademy
         </h2>

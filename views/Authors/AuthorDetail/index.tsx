@@ -16,6 +16,9 @@ import { getLastPathName } from "@/utils/getPathName";
 import ReactPaginate from "react-paginate";
 import { Exclamation } from "@/components/Icon";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import { Clock } from "@styled-icons/fa-regular";
+import { format, isBefore, parseISO } from "date-fns";
+import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
@@ -171,12 +174,27 @@ const AuthorDetail = () => {
                     ></Image>
                   </div>
                   <div className="flex flex-col gap-4 basis-[58%] justify-around">
-                    <h3 className="font-semibold text-lg leading-6 line-clamp-2 cursor-pointer">
-                      {item.title}
-                    </h3>
-                    <p className="font-normal text-sm leading-6 line-clamp-3 text__spacing">
-                      {item.title}
-                    </p>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="font-semibold text-lg leading-6 line-clamp-2 cursor-pointer">
+                        {item.title}
+                      </h3>
+                      <div className="flex items-center gap-1">
+                        <Clock className={`w-4 h-4 text-gray-300`} />
+                        <span className="text-gray-300 text-base">
+                          {format(
+                            new Date(item.created_at * 1000),
+                            "dd/MM/yyyy",
+                            {
+                              locale: enUS,
+                            }
+                          )}
+                        </span>
+                      </div>
+                      <p className="font-normal text-sm leading-6 line-clamp-3 text__spacing">
+                        {item.title}
+                      </p>
+                    </div>
+
                     <div className="self-end">
                       <div className="flex gap-2">
                         <Exclamation fill="#fff" className="w-5 h-5" />
@@ -258,7 +276,7 @@ const AuthorDetail = () => {
                   href="/authors"
                   className="hover:underline text-blue-100 font-bold"
                 >
-                  View more &#62;
+                  More &#62;
                 </Link>
               </div>
             </div>

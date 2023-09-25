@@ -59,6 +59,7 @@ export interface AuthorIntoData {
   user_id: number;
   title: string;
   slug: string;
+  created_at: number;
   post_type: string;
   created: string;
   commentsCount: number;
