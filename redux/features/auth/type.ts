@@ -68,3 +68,9 @@ export interface ResetDetail {
   email: string | null,
   code: string | null,
 }
+
+export interface ChangePasswordDetail {
+  old_password: string,
+  password: string,
+  password_confirmation: string,
+}
