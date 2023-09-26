@@ -148,21 +148,21 @@ const AuthorDetail = () => {
           </div>
         </>
       ) : (
-        <div className="flex gap-6 justify-between">
+        <div className="flex flex-col-reverse md:flex-row gap-6 justify-between">
           {/* Left */}
-          <div className="flex flex-col gap-6 basis-[755px]">
-            <div className="flex gap-2 items-center">
+          <div className="flex flex-col gap-6 basis-[765px]">
+            <div className="flex gap-2 items-center ml-2 md:ml-0">
               <div className="w-6 h-2 rounded-lg bg-blue-100"></div>
-              <h2 className="text-[32px] font-bold ">All post of author</h2>
+              <h2 className="text-[32px] font-bold ">All posts by author</h2>
             </div>
             {authorPost?.map((item) => (
-              <Link href={`/articles/${authorProfile?.slug}`} key={item.id}>
-                <div className="flex gap-4 rounded-lg shadow-4xl cursor-pointer hover:shadow-3xl transition duration-200 ease-linear">
-                  <div className="h-[200px] basis-[280px]">
+              <Link href={`/articles/${item?.slug}`} key={item.id}>
+                <div className="flex flex-col md:flex-row gap-4 rounded-lg shadow-4xl cursor-pointer hover:shadow-3xl transition duration-200 ease-linear md:mx-0 mx-4">
+                  <div className="h-[170px] md:basis-[300px] basis-[200px]">
                     <Image
                       alt="article-img"
-                      width={280}
-                      height={200}
+                      width={300}
+                      height={170}
                       src={
                         item.image
                           ? item.image.original_image
@@ -170,17 +170,17 @@ const AuthorDetail = () => {
                           ? article
                           : article
                       }
-                      className="rounded-md w-full h-full object-fill"
+                      className="rounded-md md:w-[300px] md:h-[170px] w-full h-[200px] object-fill"
                     ></Image>
                   </div>
-                  <div className="flex flex-col gap-4 basis-[58%] justify-around">
+                  <div className="flex flex-col gap-4 basis-[58%] p-3 justify-around">
                     <div className="flex flex-col gap-2">
-                      <h3 className="font-semibold text-lg leading-6 line-clamp-2 cursor-pointer">
+                      <h3 className="font-semibold text-lg leading-6 line-clamp-1 cursor-pointer">
                         {item.title}
                       </h3>
                       <div className="flex items-center gap-1">
-                        <Clock className={`w-4 h-4 text-gray-300`} />
-                        <span className="text-gray-300 text-base">
+                        <Clock className={`w-3 h-3 text-gray-300`} />
+                        <span className="text-gray-300 text-sm">
                           {format(
                             new Date(item.created_at * 1000),
                             "dd/MM/yyyy",
@@ -190,7 +190,7 @@ const AuthorDetail = () => {
                           )}
                         </span>
                       </div>
-                      <p className="font-normal text-sm leading-6 line-clamp-3 text__spacing">
+                      <p className="font-normal text-sm leading-6 line-clamp-2 text__spacing">
                         {item.title}
                       </p>
                     </div>
@@ -210,7 +210,7 @@ const AuthorDetail = () => {
           </div>
 
           {/* Right */}
-          <div className="w-[325px] h-full rounded-lg mt-12 basis-[325px]">
+          <div className="w-[325px] h-full rounded-lg md:mt-12 mt-0 basis-[325px] mx-auto md:mx-0">
             {/* Author  */}
             <div className="flex gap-4 rounded-lg items-center">
               <div className="w-[98px] h-[98px] ">
