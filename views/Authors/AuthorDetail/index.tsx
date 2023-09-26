@@ -153,7 +153,7 @@ const AuthorDetail = () => {
           <div className="flex flex-col gap-6 basis-[765px]">
             <div className="flex gap-2 items-center ml-2 md:ml-0">
               <div className="w-6 h-2 rounded-lg bg-blue-100"></div>
-              <h2 className="text-[32px] font-bold ">All post of author</h2>
+              <h2 className="text-[32px] font-bold ">All posts by author</h2>
             </div>
             {authorPost?.map((item) => (
               <Link href={`/articles/${item?.slug}`} key={item.id}>
