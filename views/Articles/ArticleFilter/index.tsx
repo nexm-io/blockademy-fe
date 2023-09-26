@@ -73,7 +73,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       tagParam: choose || [],
       time: time || [],
     };
-
+    
     if (type === "Trending") {
       // replace("/articles", { scroll: false });
       dispatch(getTrendingArticle(dispatchParams));
@@ -90,7 +90,6 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       time: time || [],
       limit: 15,
     };
-
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 100]);
@@ -149,7 +148,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
                 levelParam ||
                 (choose && choose.length > 0) ||
                 (time && time[0] !== 0) ||
-                (time && time[1] !== 1000)
+                (time && time[1] !== 30)
                   ? "!bg-black-100 !text-white-100"
                   : "!bg-transparent !text-black-100"
               } !px-3`}
