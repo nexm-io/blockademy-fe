@@ -528,6 +528,16 @@ input[type="range"]::-webkit-slider-thumb:active {
   border-style: solid;
   border-color: #333 transparent transparent transparent;
 }
+
+/* input file */
+.custom-file-upload {
+  color: #1f37b3;
+  cursor: pointer;
+}
+
+input[type="file"].hidden {
+  display: none;
+}
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .crypto__list {

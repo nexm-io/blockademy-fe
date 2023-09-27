@@ -82,6 +82,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
   useEffect(() => {
     let fetchAction, params;
+    
     switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
@@ -110,7 +111,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
-          Articles
+          Articles {`(${dataStatus && dataStatus.length})`}
         </h2>
         <div>
           <Dropdown

@@ -1,29 +1,25 @@
 "use client";
 import Button from "@/components/Common/Button";
-import { User } from "@styled-icons/fa-solid";
 import Image from "next/image";
-import avatarIcon from "@/public/icons/human.svg";
-import menu from "@/public/icons/menu2.svg";
 import Input from "@/components/Common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Envelope } from "@styled-icons/boxicons-solid";
-import { TelephoneFill } from "@styled-icons/bootstrap";
-import { Key } from "@styled-icons/bootstrap";
-import { Wallet } from "@styled-icons/fa-solid";
-import avatar from "@/public/icons/avatar.svg";
+import keyIcon from "@/public/icons/keypassword.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useEffect } from "react";
-import { getAccountDetail, updateAccountDetail } from "@/redux/features/account/action";
+import {
+  getAccountDetail,
+  updateAccountDetail,
+} from "@/redux/features/account/action";
 import { changePassword } from "@/redux/features/auth/action";
-import { ChangePasswordDetail, ResetDetail } from "@/redux/features/auth/type";
+import { ChangePasswordDetail } from "@/redux/features/auth/type";
 import { toast } from "react-toastify";
-import FormChangeGeneral from "../FormChangeGeneral";
-type Inputs = {
-  name: string;
-  exampleRequired: string;
-};
 
-const FormSettingAccount = () => {
+const FormSettingAccount = ({
+  onToggle,
+}: {
+  onToggle: (status: boolean) => void;
+}) => {
+  
   const dispatch = useAppDispatch();
   const user_id = useAppSelector((state) => state.auth.user);
   const accountDetail = useAppSelector((state) => state.account.data);
@@ -32,7 +28,7 @@ const FormSettingAccount = () => {
     handleSubmit,
     watch,
     setValue,
-    getValues ,
+    getValues,
     reset,
     formState: { errors },
   } = useForm<any>();
@@ -43,172 +39,101 @@ const FormSettingAccount = () => {
     }
   }, [dispatch]);
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    const allFieldValues = getValues();
-
-  // Now you can access all field values in the `allFieldValues` object
-  console.log(allFieldValues);
-    // const detail = {
-    //   first_name: getValues("first_name"),
-    //   last_name: getValues("last_name"),
-    //   phone: getValues("phone")
-    // }
-    // const res = await dispatch(updateAccountDetail(detail)).unwrap()
-    // res.success && toast.success('Change Infomation success')
-  };
-
-  const onChangePassword: SubmitHandler<ChangePasswordDetail>  = async (data) => {
+  const onChangePassword: SubmitHandler<ChangePasswordDetail> = async (
+    data
+  ) => {
     const detailChange = {
       old_password: data.old_password,
       password: data.password,
       password_confirmation: data.password_confirmation,
-    }
-    const res = await dispatch(changePassword(detailChange)).unwrap()
-    res.success && toast.success('Change password success')
-    reset()
-  }
+    };
+    const res = await dispatch(changePassword(detailChange)).unwrap();
+    res.success && toast.success("Change password success");
+    res.success && onToggle(false);
+    reset();
+  };
 
   return (
-    <div className="mt-[74px] flex flex-col gap-[60px]">
-      <h1 className="font-semibold text-4xl">Account Settings</h1>
-      <div>
-        <h2 className="font-semibold text-2xl mb-[45px]">Avatar</h2>
-
-        <div className="flex justify-between items-center">
-          <div className="flex gap-6">
-            <Image alt="" src={menu} className="w-6 h-6 "></Image>
-            <div className="flex flex-col ">
-              <h3 className="font-semibold text-base">Avatar</h3>
-
-              <p className="text-base font-normal text-gray-300">
-                Select an avatar to personalize your account.
-              </p>
+    <div className="flex justify-between items-center ">
+      <form
+        onSubmit={handleSubmit(onChangePassword)}
+        className="flex flex-col gap-6 w-full"
+      >
+        <div className="flex flex-col w-full">
+          <div className="flex gap-2">
+            {" "}
+            <Image
+              alt=""
+              src={keyIcon}
+              className="md:w-6 md:h-6 w-8 h-8"
+            ></Image>
+            <h3 className="font-semibold text-base mb-[35px]">
+              Change password
+            </h3>
+          </div>
+          <div className="flex flex-col w-full">
+            <div className="flex gap-5 w-full mb-6">
+              <div className="w-[50%]">
+                <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
+                  {" "}
+                  Current Password
+                </label>
+                <Input
+                  id="old_password"
+                  register={register}
+                  type="password"
+                  name="old_password"
+                  placeholder="user@emai.com..."
+                  className="bg-white-600"
+                />
+              </div>
             </div>
           </div>
-
-          <div>
-            <Image alt="" src={avatar} className="w-8 h-8 rounded-full"></Image>
-          </div>
-
-          <Button
-            size="small"
-            className="h-10 w-[97px] bg-white-300 !text-black-100 hover:text-white-100 "
-          >
-            Change
-          </Button>
-        </div>
-      </div>
-
-     <FormChangeGeneral />
-
-      <div>
-        <h2 className="font-semibold text-2xl mb-[45px]">Change Password</h2>
-
-        {/* Line 1 */}
-
-        <div className="flex justify-between items-center ">
-          <form
-            onSubmit={handleSubmit(onChangePassword)}
-            className="flex flex-col gap-6 w-full"
-          >
-            <div className="flex flex-col w-full">
-              <div className="flex gap-2">
+          <div className="flex gap-5 w-full">
+            <div className="w-full">
+              <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
                 {" "}
-                <Key className="w-6 h-6" />
-                <h3 className="font-semibold text-base mb-[35px]">
-                  Change password
-                </h3>
-              </div>
-              <div className="flex flex-col w-full">
-                <div className="flex gap-5 w-full mb-6">
-                  <div className="w-[50%]">
-                    <label htmlFor="pl-1 first-name text-[#727A88] opacity-30 mb-[5px]">
-                      {" "}
-                      Current Password
-                    </label>
-                    <Input
-                      id="old_password"
-                      register={register}
-                      name="old_password"
-                      placeholder="user@emai.com..."
-                      className="bg-white-600"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-5 w-full">
-                <div className="w-full">
-                  <label htmlFor="pl-1 first-name text-[#727A88] opacity-30 mb-[5px]">
-                    {" "}
-                    New Password
-                  </label>
-                  <Input
-                    id="password"
-                    register={register}
-                    name="password"
-                    placeholder="user@emai.com..."
-                    className="bg-white-600"
-                  />
-                </div>
-                <div className="w-full">
-                  <label htmlFor="pl-1 last-name text-[##727A88 opacity-30 mb-[5px]">
-                    {" "}
-                    Confirm Password
-                  </label>
-                  <Input
-                    id="password_confirmation"
-                    register={register}
-                    name="password_confirmation"
-                    placeholder="user@emai.com..."
-                    className="bg-white-600"
-                  />
-                </div>
-              </div>
+                New Password
+              </label>
+              <Input
+                id="password"
+                register={register}
+                name="password"
+                type="password"
+                placeholder="user@emai.com..."
+                className="bg-white-600"
+              />
             </div>
-            <div className="flex gap-5 mt-12">
-              <Button type="submit" className="w-[214px]" size="normal">
-                Save
-              </Button>
-              <Button className="w-[214px]" size="normal" outlined>
-                Cancle
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <div>
-        <div className="flex gap-2 ">
-          <h2 className="font-semibold text-2xl mb-[45px]">Change Password</h2>
-        </div>
-
-        {/* Line 1 */}
-
-        <div className="flex justify-between items-center ">
-          <div className="flex gap-4">
-            <Wallet className="w-6 h-6" />
-
-            <div className="flex flex-col ">
-              <h3 className="font-semibold text-base">Wallet</h3>
-
-              <p className="text-base font-normal text-gray-300">
-                Connect your account to Wallet
-              </p>
+            <div className="w-full">
+              <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
+                {" "}
+                Confirm Password
+              </label>
+              <Input
+                id="password_confirmation"
+                register={register}
+                type="password"
+                name="password_confirmation"
+                placeholder="user@emai.com..."
+                className="bg-white-600"
+              />
             </div>
           </div>
-
-          <div>
-            <span>Off</span>
-          </div>
-
+        </div>
+        <div className="flex gap-5 mt-12">
+          <Button type="submit" className="w-[214px]" size="normal">
+            Save
+          </Button>
           <Button
-            size="small"
-            className="h-10 w-[97px] bg-white-300 !text-black-100 hover:text-white-100 "
+            onClick={() => onToggle(false)}
+            className="w-[214px]"
+            size="normal"
+            outlined
           >
-            Connect
+            Cancel
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

@@ -156,7 +156,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 topicReverse
                   ? "px-0 ml-6 md:ml-0 items-start md:items-end"
                   : "md:px-6 px-2 md:ml-0 "
-              } flex 
+              } flex w-full
          `}
             >
               {/* TODO: chip component */}
@@ -165,7 +165,7 @@ const CardItem: React.FC<CardItemProps> = ({
               ) : (
                 ""
               )}
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-4 items-center w-full justify-around">
                 <span
                   className={`${
                     topicShort

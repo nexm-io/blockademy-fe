@@ -219,7 +219,7 @@ const AuthorDetail = () => {
                   width={98}
                   height={98}
                   src={authorProfile?.profile_image || user}
-                  className="rounded-full w-full h-full object-contain"
+                  className="rounded-full w-[98px] h-[98px] object-fill"
                 ></Image>
               </div>
               <div className="flex gap-2 flex-col ">

@@ -9,40 +9,29 @@ export const initialState: AccountSettingResponse = {
   data: null,
 };
 
- 
-
 const accountReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(getAccountDetail.pending, (state) => {
       state.isLoading = false;
     })
-
     .addCase(getAccountDetail.fulfilled, (state, action) => {
       state.isLoading = true;
       state.data = action.payload.data;
     })
-
     .addCase(getAccountDetail.rejected, (state) => {
       state.isLoading = false;
     });
 
-    builder
+  builder
     .addCase(updateAccountDetail.pending, (state) => {
       state.isLoading = false;
     })
-
     .addCase(updateAccountDetail.fulfilled, (state, action) => {
-      state.isLoading = true
+      state.isLoading = true;
     })
-
     .addCase(updateAccountDetail.rejected, (state) => {
       state.isLoading = false;
     });
-
 });
 
- 
-
 export default accountReducer;
-
- 
