@@ -17,6 +17,7 @@ import { getAccountDetail, updateAccountDetail } from "@/redux/features/account/
 import { changePassword } from "@/redux/features/auth/action";
 import { ChangePasswordDetail, ResetDetail } from "@/redux/features/auth/type";
 import { toast } from "react-toastify";
+import FormChangeGeneral from "../FormChangeGeneral";
 type Inputs = {
   name: string;
   exampleRequired: string;
@@ -43,13 +44,17 @@ const FormSettingAccount = () => {
   }, [dispatch]);
 
   const onSubmit: SubmitHandler<any> = async (data) => {
-    const detail = {
-      first_name: getValues("first_name"),
-      last_name: getValues("last_name"),
-      phone: getValues("phone")
-    }
-    const res = await dispatch(updateAccountDetail(detail)).unwrap()
-    res.success && toast.success('Change Infomation success')
+    const allFieldValues = getValues();
+
+  // Now you can access all field values in the `allFieldValues` object
+  console.log(allFieldValues);
+    // const detail = {
+    //   first_name: getValues("first_name"),
+    //   last_name: getValues("last_name"),
+    //   phone: getValues("phone")
+    // }
+    // const res = await dispatch(updateAccountDetail(detail)).unwrap()
+    // res.success && toast.success('Change Infomation success')
   };
 
   const onChangePassword: SubmitHandler<ChangePasswordDetail>  = async (data) => {
@@ -94,114 +99,7 @@ const FormSettingAccount = () => {
         </div>
       </div>
 
-      <div>
-        <h2 className="font-semibold text-2xl mb-[45px]">General Account</h2>
-
-        {/* Line 1 */}
-
-        <div className="flex justify-between items-center">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-6 w-full"
-          >
-            <div className="flex flex-col w-full">
-              <div className="flex gap-2">
-                {" "}
-                <User className="w-6 h-6" />
-                <h3 className="font-semibold text-base mb-[30px]">Your name</h3>
-              </div>
-
-              <div className="flex gap-5 w-full">
-                <div className="w-full">
-                  <label htmlFor="pl-1 first-name text-[#727A88] opacity-30 mb-[5px]">
-                    {" "}
-                    First Name
-                  </label>
-                  <Input
-                    id="first_name"
-                    register={register}
-                    name="first_name"
-                    defaultValue={accountDetail?.first_name}
-                    placeholder="First name..."
-                    className="bg-white-600"
-                  />
-                </div>
-                <div className="w-full">
-                  <label htmlFor="pl-1 last-name text-[##727A88 opacity-30 mb-[5px]">
-                    {" "}
-                    Last Name
-                  </label>
-                  <Input
-                    id="last_name"
-                    register={register}
-                    name="last_name"
-                    defaultValue={accountDetail?.last_name}
-                    placeholder="Last name..."
-                    className="bg-white-600"
-                  />
-                </div>
-              </div>
-            </div>
-            <hr className="w-full  border border-b-none border-black-300/20"></hr>
-            <div className="flex flex-col w-full">
-              <div className="flex gap-2">
-                {" "}
-                <Envelope className="w-6 h-6" />
-                <h3 className="font-semibold text-base mb-[30px]">Email</h3>
-              </div>
-              <div className="flex gap-5 w-full">
-                <div className="w-full">
-                  <label htmlFor="pl-1 first-name text-[#727A88] opacity-30 mb-[5px]">
-                    {" "}
-                    Email address
-                  </label>
-                  <Input
-                    id="email"
-                    register={register}
-                    name="email"
-                    value={accountDetail?.email}
-                    placeholder="Email..."
-                    className="bg-white-600"
-                  />
-                </div>
-              </div>
-            </div>
-            <hr className="w-full  border border-b-none border-black-300/20"></hr>
-
-            <div className="flex flex-col w-full">
-              <div className="flex gap-2">
-                {" "}
-                <TelephoneFill className="w-6 h-6" />
-                <h3 className="font-semibold text-base mb-[30px]">Phone</h3>
-              </div>
-              <div className="flex gap-5 w-full">
-                <div className="w-full">
-                  <label htmlFor="pl-1 first-name text-[#727A88] opacity-30 mb-[5px]">
-                    {" "}
-                    Phone number
-                  </label>
-                  <Input
-                    id="phone"
-                    register={register}
-                    defaultValue={accountDetail?.phone}
-                    name="phone"
-                    placeholder="Phone number..."
-                    className="bg-white-600"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-5 mt-12">
-              <Button type="submit" className="w-[214px]" size="normal">
-                Save
-              </Button>
-              <Button className="w-[214px]" size="normal" outlined>
-                Cancle
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+     <FormChangeGeneral />
 
       <div>
         <h2 className="font-semibold text-2xl mb-[45px]">Change Password</h2>
