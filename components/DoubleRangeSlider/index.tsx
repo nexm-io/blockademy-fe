@@ -44,8 +44,6 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
   const sliderOneRef = useRef<HTMLInputElement | null>(null);
   const sliderTwoRef = useRef<HTMLInputElement | null>(null);
   const sliderTrackRef = useRef<HTMLDivElement | null>(null);
-  // const [sliderOneValue, setSliderOneValue] = useState(0);
-  // const [sliderTwoValue, setSliderTwoValue] = useState(30);
   const sliderMaxValue = 100;
   const minGap = 0;
   const fillColor = useCallback(() => {
@@ -60,6 +58,9 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderOneValue(sliderTwoValue - minGap);
     }
+    if (sliderOneValue > 60) {
+      setSliderOneValue(60);
+    }
     fillColor();
   }, [fillColor, sliderOneValue, sliderTwoValue, setSliderOneValue]);
 
@@ -69,6 +70,8 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
     }
     if (sliderTwoValue > 99) {
       setSliderTwoValue(minGap + 1000);
+    } else if (sliderTwoValue < 10) {
+      setSliderTwoValue(10);
     }
     fillColor();
   }, [fillColor, sliderOneValue, sliderTwoValue, setSliderTwoValue]);
@@ -96,40 +99,54 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
           <input
             type="range"
             min="0"
-            step="1"
+            step="10"
             max={sliderMaxValue}
             value={sliderOneValue}
             id="slider-1"
             ref={sliderOneRef}
-            onChange={(e) => setSliderOneValue(Number(e.target.value))}
+            onChange={(e) => {
+              const newValue = Number(e.target.value);
+              if (newValue > 60) {
+                setSliderOneValue(60);
+              } else {
+                setSliderOneValue(newValue);
+              }
+            }}
             onInput={slideOne}
           />
-          <span
+          {/* <span
             className={`${sliderOneValue === 0 ? "hidden" : "range-slider-1"} `}
             style={{ left: `${(sliderOneValue / sliderMaxValue) * 100}%` }}
           >
             {sliderOneValue}
-          </span>
+          </span> */}
         </div>
 
         <div>
           <input
             type="range"
             min="0"
-            step="1"
+            step="10"
             max={sliderMaxValue}
             value={sliderTwoValue}
             id="slider-2"
             ref={sliderTwoRef}
-            onChange={(e) => setSliderTwoValue(Number(e.target.value))}
+            onChange={(e) => {
+              const newValue = Number(e.target.value);
+              if (newValue < 10) {
+                setSliderTwoValue(10);
+              } else {
+                setSliderTwoValue(newValue);
+              }
+            }}
             onInput={slideTwo}
           />
-          <span
+          {/* <span
             className={`${sliderTwoValue > 60 ? "hidden" : "range-slider-2"}`}
             style={{ left: `${(sliderTwoValue / sliderMaxValue) * 100}%` }}
           >
             {sliderTwoValue}
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="labels md:flex ">

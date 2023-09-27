@@ -15,7 +15,10 @@ import {
 } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { toast } from "react-toastify";
-import { updateAccountDetail } from "@/redux/features/account/action";
+import {
+  getAccountDetail,
+  updateAccountDetail,
+} from "@/redux/features/account/action";
 interface PopupProps {
   title?: string;
   description?: string;
@@ -40,6 +43,7 @@ const Popup: React.FC<PopupProps> = ({
   const [getImage, setGetImage] = useState("");
   const { handleSubmit, register } = useForm();
   const userAccount = useAppSelector((state) => state.account.data);
+  const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const dispatch = useAppDispatch();
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -57,7 +61,7 @@ const Popup: React.FC<PopupProps> = ({
   }
   const onSubmit = async () => {
     const res = await dispatch(updateAccountDetail(details)).unwrap();
-    res.success && window.location.reload();
+    res.success && dispatch(getAccountDetail({ userId: userId }));
     toast.success("Update image successfully");
     onClose();
   };
