@@ -222,7 +222,7 @@ const AuthorDetail = () => {
                   className="rounded-full w-[98px] h-[98px] object-fill"
                 ></Image>
               </div>
-              <div className="flex gap-2 flex-col basis-[176px]">
+              <div className="flex gap-2 flex-col basis-[214px]">
                 <h2 className="text-[28px] font-bold leading-9 text-black-100 line-clamp-2">
                   {authorProfile?.name}
                 </h2>
