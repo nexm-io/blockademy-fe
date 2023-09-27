@@ -19,6 +19,7 @@ const FormSettingAccount = ({
 }: {
   onToggle: (status: boolean) => void;
 }) => {
+  
   const dispatch = useAppDispatch();
   const user_id = useAppSelector((state) => state.auth.user);
   const accountDetail = useAppSelector((state) => state.account.data);
@@ -38,16 +39,6 @@ const FormSettingAccount = ({
     }
   }, [dispatch]);
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    const detail = {
-      first_name: getValues("first_name"),
-      last_name: getValues("last_name"),
-      phone: getValues("phone"),
-    };
-    const res = await dispatch(updateAccountDetail(detail)).unwrap();
-    res.success && toast.success("Change Infomation success");
-  };
-
   const onChangePassword: SubmitHandler<ChangePasswordDetail> = async (
     data
   ) => {
@@ -58,6 +49,7 @@ const FormSettingAccount = ({
     };
     const res = await dispatch(changePassword(detailChange)).unwrap();
     res.success && toast.success("Change password success");
+    res.success && onToggle(false);
     reset();
   };
 

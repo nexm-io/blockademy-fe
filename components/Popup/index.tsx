@@ -44,6 +44,7 @@ const Popup: React.FC<PopupProps> = ({
   const { handleSubmit, register } = useForm();
   const userAccount = useAppSelector((state) => state.account.data);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
+
   const dispatch = useAppDispatch();
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -61,7 +62,7 @@ const Popup: React.FC<PopupProps> = ({
   }
   const onSubmit = async () => {
     const res = await dispatch(updateAccountDetail(details)).unwrap();
-    res.success && dispatch(getAccountDetail({ userId: userId }));
+    res.success && dispatch(getAccountDetail({ userId: userId }))
     toast.success("Update image successfully");
     onClose();
   };

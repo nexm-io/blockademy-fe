@@ -22,7 +22,7 @@ import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
-  const [limitPost] = useState<number>(5);
+  const [limitPost] = useState<number>(6);
   const [page, setPage] = useState<number>(1);
   const [itemOffset, setItemOffset] = useState(0);
   const dispatch = useAppDispatch();
@@ -37,7 +37,7 @@ const AuthorDetail = () => {
 
   useEffect(() => {
     dispatch(getAuthorProfile(getLastPathName(pathname)));
-    dispatch(getListAuthor({ page, limit: limitUser }));
+    dispatch(getListAuthor({ page, limit: 6 }));
   }, [dispatch, pathname, limitUser, page]);
   useEffect(() => {
     dispatch(

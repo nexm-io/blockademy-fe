@@ -14,12 +14,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import emailIcon from "@/public/icons/email.svg";
 
-export default function FormChangeGeneral({ onToggle }: any) {
+export default function FormChangeGeneral({ onToggle }: {
+  onToggle: (status: boolean) => void;
+}) {
   const dispatch = useAppDispatch();
-  const user_id = useAppSelector((state) => state.auth.user);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
   const accountDetail = useAppSelector((state) => state.account.data);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
@@ -28,7 +26,7 @@ export default function FormChangeGeneral({ onToggle }: any) {
     handleSubmit,
     watch,
     setValue,
-    getValues,
+    getValues ,
     reset,
     formState: { errors },
   } = useForm<any>();
@@ -49,6 +47,7 @@ export default function FormChangeGeneral({ onToggle }: any) {
     const res = await dispatch(updateAccountDetail(detail)).unwrap();
     res.success && toast.success("Change Infomation success");
     dispatch(getAccountDetail({ userId: userId }));
+    res.success && onToggle(false)
   };
   return (
     <div>
@@ -173,7 +172,7 @@ export default function FormChangeGeneral({ onToggle }: any) {
           </div>
 
           <div className="flex gap-5 mt-12">
-            <Button type="submit" className="w-[214px]" size="normal">
+            <Button  type="submit" className="w-[214px]" size="normal">
               Save
             </Button>
 
