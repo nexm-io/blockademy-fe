@@ -29,7 +29,7 @@ const ListCardTrending: React.FC<ListCardProps> = ({
   );
 
   useEffect(() => {
-    dispatch(getTrendingArticle({ limit: 3, params: urlApi }));
+    dispatch(getTrendingArticle({ limit: 6, params: urlApi }));
   }, [dispatch, urlApi]);
 
   return (

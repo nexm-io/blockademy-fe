@@ -33,12 +33,15 @@ export const getLatestArticle = createAsyncThunk<
     limit?: number;
     tags?: string;
   }
->("articles/latest", async ({ limit = 3, page = 1, params = "created_at", tags = ' ' }) => {
-  const response = await api.get(
-    `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}&sort_field=${params}`
-  );
-  return response.data;
-});
+>(
+  "articles/latest",
+  async ({ limit = 6, page = 1, params = "created_at", tags = " " }) => {
+    const response = await api.get(
+      `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}&sort_field=${params}`
+    );
+    return response.data;
+  }
+);
 
 export const getFeaturedArticle = createAsyncThunk<
   ArticleListResponse,
