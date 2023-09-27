@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthResponse, ResetDetail, User, VerifyDetail } from "./type";
+import { AuthResponse, ChangePasswordDetail, ResetDetail, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
 export const loginAuth = createAsyncThunk<
@@ -55,6 +55,17 @@ export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
     const response = await api.post(
       `/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`,
       detail.data
+    );
+    return response.data;
+  }
+);
+
+export const changePassword = createAsyncThunk<AuthResponse, ChangePasswordDetail>(
+  "auth/change-password",
+  async (detail) => {
+    const response = await api.post(
+      `/api/v10/user/change-password`,
+      detail
     );
     return response.data;
   }

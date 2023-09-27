@@ -6,6 +6,7 @@ import {
   verifyEmail,
   sendOtp,
   logoutAuth,
+  changePassword,
 } from "./action";
 import { initialState } from "./type";
 
@@ -94,6 +95,18 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(logoutAuth.rejected, (state) => {
       state.isAuthenticated = true;
+    });
+
+    builder
+    .addCase(changePassword.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(changePassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+    })
+    .addCase(changePassword.rejected, (state, action: PayloadAction<any>) => {
+      state.isLoading = true;
+      state.error = action.payload.error;
     });
 });
 

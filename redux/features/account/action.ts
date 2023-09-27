@@ -11,6 +11,7 @@ export const getAccountDetail = createAsyncThunk<
   const response = await api.get(
     `/api/v10/user/user-details-by-id?id=${userId}`
   );
+
   return response.data;
 });
 

@@ -4,21 +4,23 @@ import React, { useEffect, useRef, useState } from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
 import Button from "../Common/Button";
-
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { logoutAuth } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
-import user from "@/public/images/home/home-iconuser.png";
 import { hideEmail } from "@/utils/hideEmail";
-import { UserCircle } from "@styled-icons/boxicons-solid";
+import { getAccountDetail } from "@/redux/features/account/action";
+import userDefault from "@/public/images/home/home-iconuser.png";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.auth.user);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const userIconRef = useRef<HTMLDivElement | null>(null);
+  const userId = useAppSelector((state) => state.auth.user?.id || 0);
+
+  const userAccount = useAppSelector((state) => state.account.data);
   let email = "";
   if (data !== null) {
     email = hideEmail(data.email);
@@ -42,6 +44,9 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+  useEffect(() => {
+    dispatch(getAccountDetail({ userId: userId }));
+  }, [dispatch, userId]);
   const handleUserIconClick = (event: React.MouseEvent) => {
     event.stopPropagation(); // Ngăn sự kiện lan truyền ra bên ngoài
     setIsOpen(!isOpen); // Mở hoặc đóng dropdown
@@ -81,13 +86,21 @@ const Header = () => {
           {isAuthenticated ? (
             <div className="flex gap-2 items-center">
               <div
-                className="md:w-[40px] w-6 h-6 md:h-[40px] relative not-prose cursor-pointer select-none"
+                className="w-[40px] h-[40px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
-                <UserCircle
+                <Image
+                  alt="avatar-user"
+                  src={userAccount?.image || userDefault}
+                  width={40}
+                  height={40}
+                  className="w-[40px] h-[40px] rounded-full select-none"
+                  onClick={handleUserIconClick}
+                ></Image>
+                {/* <UserCircle
                   onClick={handleUserIconClick}
                   className={`${isOpen ? "fill-blue-100 " : ""}`}
-                />
+                /> */}
                 {isOpen && (
                   <ul
                     className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"
