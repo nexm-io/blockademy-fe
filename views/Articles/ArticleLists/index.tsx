@@ -107,7 +107,13 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
-  return (
+  return dataStatus?.length === 0 ||
+    dataTrending?.length === 0 ||
+    dataRecommend?.length === 0 ? (
+    <div className="flex items-center justify-center my-[60px]">
+      <p className="text-gray-300 text-xl font-medium">No articles found</p>
+    </div>
+  ) : (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">

@@ -122,13 +122,11 @@ const CardItem: React.FC<CardItemProps> = ({
                 : topic
                 ? "text-[30px] text-white-100"
                 : "text-lg text-black-100 leading-7"
-            } ${
-              topic || topicShort ? "ml-6" : " mt-2 ml-2 md:ml-6 mb-4 md:mb-6"
-            } ${topicReverse ? "md:text-right text-left" : ""} ${
-              !image ? "line-clamp-none" : "line-clamp-2"
-            } ${topic ? "mb-2" : ""} ${
-              topicBalance ? "text-white-100" : ""
-            } font-bold 
+            } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 md:m-6"} ${
+              topicReverse ? "md:text-right text-left" : ""
+            } ${!image ? "line-clamp-none" : "line-clamp-2"} ${
+              topic ? "mb-2" : ""
+            } ${topicBalance ? "text-white-100" : ""} font-bold 
          `}
           >
             {data.title}

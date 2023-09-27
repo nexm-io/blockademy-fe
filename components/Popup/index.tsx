@@ -15,7 +15,10 @@ import {
 } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { toast } from "react-toastify";
-import { getAccountDetail, updateAccountDetail } from "@/redux/features/account/action";
+import {
+  getAccountDetail,
+  updateAccountDetail,
+} from "@/redux/features/account/action";
 interface PopupProps {
   title?: string;
   description?: string;
