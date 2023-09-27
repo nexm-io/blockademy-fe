@@ -93,7 +93,9 @@ const Header = () => {
                     className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"
                     ref={dropdownRef}
                   >
-                    <li className="font-bold mx-4">{email}</li>
+                    <Link href="/my-account" className="font-bold mx-4">
+                      {email}
+                    </Link>
                     <ul className="capitalize flex flex-col gap-2 mt-3 ">
                       <li className=" px-4 ">
                         <Link
