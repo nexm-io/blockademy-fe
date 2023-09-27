@@ -213,7 +213,7 @@ const AuthorDetail = () => {
           <div className="w-[325px] h-full rounded-lg md:mt-12 mt-0 basis-[325px] mx-auto md:mx-0">
             {/* Author  */}
             <div className="flex gap-4 rounded-lg items-center">
-              <div className="w-[98px] h-[98px] ">
+              <div className="w-[98px] h-[98px] basis-[98px]">
                 <Image
                   alt="avatar-author"
                   width={98}
@@ -222,8 +222,8 @@ const AuthorDetail = () => {
                   className="rounded-full w-[98px] h-[98px] object-fill"
                 ></Image>
               </div>
-              <div className="flex gap-2 flex-col ">
-                <h2 className="text-[28px] font-bold leading-9 text-black-100">
+              <div className="flex gap-2 flex-col basis-[176px]">
+                <h2 className="text-[28px] font-bold leading-9 text-black-100 line-clamp-2">
                   {authorProfile?.name}
                 </h2>
                 <div className="flex gap-4">
