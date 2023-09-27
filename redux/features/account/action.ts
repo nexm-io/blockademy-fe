@@ -16,13 +16,13 @@ export const getAccountDetail = createAsyncThunk<
 });
 
 export const updateAccountDetail = createAsyncThunk<
-AccountSettingResponse,
-any
->("account/update-account", async (detail) => {
-const response = await api.post(
-  `/api/v10/user/update-profile`,
-  detail
-);
-
-return response.data;
+  AccountSettingResponse,
+  any
+>("account/updateAccountDetail", async (details) => {
+  const response = await api.post(`/api/v10/user/update-profile`, details, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
 });
