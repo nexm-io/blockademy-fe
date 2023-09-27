@@ -7,6 +7,9 @@ interface DropdownProps {
   setSelectedOption: React.Dispatch<
     React.SetStateAction<"Recently published" | "Mostly viewed">
   >;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  dropdownRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -14,8 +17,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   children,
   selectedOption,
   setSelectedOption,
+  isOpen,
+  setIsOpen,
+  dropdownRef,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -31,6 +37,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div
       className={`dropdown relative cursor-pointer rounded-lg inline-flex items-center justify-between py-[6px] px-3 flex-shrink-0 border border-white-300 w-[200px]`}
+      ref={dropdownRef}
     >
       <div
         className={`selectedOption flex items-center justify-between gap-5 rounded-lg`}

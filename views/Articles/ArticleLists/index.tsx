@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import arrow from "@/public/icons/arrowbottom.svg";
 import CardItem from "@/components/CardItem";
 import ReactPaginate from "react-paginate";
@@ -15,7 +15,6 @@ import { RootState } from "@/redux/store";
 import { ArticleIntoData } from "@/redux/features/articles/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -43,7 +42,8 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   setStatus,
   data,
 }) => {
-  const { replace } = useRouter();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -79,7 +79,6 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
   const currentData =
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
-
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
 
@@ -111,6 +110,21 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return dataStatus?.length === 0 ||
     dataTrending?.length === 0 ||
     dataRecommend?.length === 0 ? (
@@ -125,9 +139,12 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         </h2>
         <div>
           <Dropdown
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
             options={options}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            dropdownRef={dropdownRef}
           >
             <Image alt="arrow-bottom" src={arrow}></Image>
           </Dropdown>
