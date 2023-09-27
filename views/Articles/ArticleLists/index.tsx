@@ -58,6 +58,9 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const pagination = useAppSelector(
     (state: RootState) => state.articles.pagination
   );
+
+
+
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
@@ -104,6 +107,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
       dispatch(fetchAction({ limit, page, params, tags: getTag }));
     } else {
       dispatch(fetchAction({ limit, page, params }));
+      
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
@@ -117,7 +121,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
-          Articles {`(${dataStatus && dataStatus.length})`}
+          Articles {`(${pagination ? pagination?.total : " "})`}
         </h2>
         <div>
           <Dropdown

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import img from "@/public/icons/usersuccess.svg";
-
+import detail from '@/public/icons/detail.svg'
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getListAuthor } from "@/redux/features/authors/action";
 import ReactPaginate from "react-paginate";
@@ -108,9 +108,10 @@ const AuthorList = () => {
                         </div>
                       </div>
                     </div>
-                    <Link href={`/authors/${author.slug}`}>
+                    <Link className="flex gap-2" href={`/authors/${author.slug}`}>
+                      <Image alt="detail" src={detail} width={16} height={16}/>
                       <span className="text-blue-100 text-sm font-light cursor-pointer">
-                        View detail
+                        View details
                       </span>
                     </Link>
                   </div>

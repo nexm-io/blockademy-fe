@@ -51,6 +51,7 @@ const articleReducer = createReducer(initialState, (builder) => {
     .addCase(getLatestArticle.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
+      state.pagination = action.payload.pagination;
     })
     .addCase(getLatestArticle.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
