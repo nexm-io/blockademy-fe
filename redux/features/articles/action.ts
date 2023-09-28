@@ -71,7 +71,7 @@ export const getTrendingArticle = createAsyncThunk<
     page?: number;
     limit?: number;
     trending?: number;
-    levelParam?: "beginner" | "intermediate" | "advance";
+    levelParam?: string;
     tagParam?: string[];
     time?: number[];
   }
