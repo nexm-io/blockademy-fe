@@ -19,7 +19,7 @@ const ArticlePage = () => {
   const [limit] = useState<number>(20);
   const data = useAppSelector((state: RootState) => state.articles.data);
   const [sliderOneValue, setSliderOneValue] = useState<number>(0);
-  const [sliderTwoValue, setSliderTwoValue] = useState<number>(100);
+  const [sliderTwoValue, setSliderTwoValue] = useState<number>(70);
   return (
     <section>
       <TopicAcademy
@@ -65,6 +65,8 @@ const ArticlePage = () => {
         show={show}
         setShow={setShow}
         status={status}
+        time={time}
+        setTime={setTime}
         setStatus={setStatus}
         levelParam={levelParam}
         setLevelParam={setLevelParam}

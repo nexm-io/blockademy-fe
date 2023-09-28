@@ -1,13 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthResponse, ResetDetail, User, VerifyDetail } from "./type";
+import { AuthResponse, ChangePasswordDetail, ResetDetail, User, VerifyDetail } from "./type";
 import api from "@/services/axios";
 
 export const loginAuth = createAsyncThunk<
   AuthResponse,
   Pick<User, "email" | "password">
 >("auth/login", async (userLogin: Pick<User, "email" | "password">) => {
-  const response = await api.post("/api/v10/login", userLogin);
-  return response.data;
+  try {
+    const response = await api.post("/api/v10/login", userLogin);
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 });
 export const logoutAuth = createAsyncThunk<AuthResponse>(
   "auth/logout",
@@ -57,5 +61,26 @@ export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
       detail.data
     );
     return response.data;
+  }
+);
+
+export const changePassword = createAsyncThunk<AuthResponse, ChangePasswordDetail>(
+  "auth/change-password",
+  async (detail) => {
+    
+    try {
+      const response = await api.post(
+        `/api/v10/user/change-password`,
+        detail
+      );
+      if (response.status === 400) {
+        console.error('API returned a 400 error:', response.data);
+        return response.data;
+      } else {
+        return response.data;
+      }
+    } catch (error : any) {
+      return error.response.data
+    }
   }
 );

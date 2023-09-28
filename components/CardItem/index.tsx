@@ -107,7 +107,7 @@ const CardItem: React.FC<CardItemProps> = ({
             status === "list"
               ? "h-full"
               : status === "menu"
-              ? "basis-full "
+              ? "basis-full h-full"
               : ""
           } ${topicReverse ? "pr-3 md:items-end items-start" : "items-start"} ${
             topicShort ? "h-[300px]" : ""
@@ -122,11 +122,17 @@ const CardItem: React.FC<CardItemProps> = ({
                 : topic
                 ? "text-[30px] text-white-100"
                 : "text-lg text-black-100 leading-7"
-            } ${
-              topic || topicShort ? "ml-6" : " mt-2 ml-2 md:ml-6 mb-4 md:mb-6"
-            } ${topicReverse ? "md:text-right text-left" : ""} ${
-              !image ? "line-clamp-none" : "line-clamp-2"
-            } ${topic ? "mb-2" : ""} ${
+            } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 "} ${
+              topicReverse ? "md:text-right text-left" : ""
+            } ${!image ? "line-clamp-none" : "line-clamp-2 "}
+            ${
+              status === "list"
+                ? "h-[56px] md:m-6"
+                : status === "menu"
+                ? "h-full basis-[56px] ml-6"
+                : ""
+            }
+            ${topic ? "mb-2" : ""} ${
               topicBalance ? "text-white-100" : ""
             } font-bold 
          `}
@@ -134,7 +140,11 @@ const CardItem: React.FC<CardItemProps> = ({
             {data.title}
           </h2>
           {status === "menu" && !topic && !topicBalance && (
-            <p className="opacity-0 md:w-auto md:h-auto w-0 h-0 md:opacity-100 ml-6 text-black-100 font-normal leading-7 line-clamp-2">
+            <p
+              className={`opacity-0 md:w-auto md:h-auto w-0 h-0 md:opacity-100 ml-6 text-black-100 font-normal leading-7 line-clamp-2 ${
+                status === "menu" ? "basis-[56px]" : ""
+              }`}
+            >
               {data.meta_description}
             </p>
           )}
@@ -144,14 +154,12 @@ const CardItem: React.FC<CardItemProps> = ({
             <div
               className={` ${topicShort ? "gap-0" : "gap-4"} ${
                 status === "list"
-                  ? "justify-between pb-6 mb-0"
+                  ? "justify-between pb-6 mb-0 w-full"
                   : status === "menu"
-                  ? ""
+                  ? "mt-8 basis-[35px]"
                   : ""
               } ${
-                topicShort || topic
-                  ? "flex-col-reverse"
-                  : "mt-auto items-center mb-6"
+                topicShort || topic ? "flex-col-reverse" : "items-center mb-6"
               } ${
                 topicReverse
                   ? "px-0 ml-6 md:ml-0 items-start md:items-end"
@@ -165,7 +173,7 @@ const CardItem: React.FC<CardItemProps> = ({
               ) : (
                 ""
               )}
-              <div className="flex gap-4 items-center">
+              <div className="flex gap-4 items-center w-full justify-around">
                 <span
                   className={`${
                     topicShort

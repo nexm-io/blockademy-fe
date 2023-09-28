@@ -73,23 +73,10 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
 
   const handleTagClick = (tagTitle: string) => {
     if (tag.includes(tagTitle)) {
-      // If it exists, remove it
       setTag((prev: Array<string>) => prev.filter((tag) => tag !== tagTitle));
     } else {
-      // If it doesn't exist, add it
       setTag((prev: Array<string>) => [...prev, tagTitle]);
     }
-
-    // const newTagParam = tagParam ? [...tagParam] : [];
-    // if (newTagParam.includes(tagTitle)) {
-    //   const index = newTagParam.indexOf(tagTitle);
-    //   if (index > -1) {
-    //     newTagParam.splice(index, 1);
-    //   }
-    // } else {
-    //   newTagParam.push(tag);
-    //   setTagParam(newTagParam);
-    // }
   };
 
   return (

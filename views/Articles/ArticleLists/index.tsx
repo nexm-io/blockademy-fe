@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import arrow from "@/public/icons/arrowbottom.svg";
 import CardItem from "@/components/CardItem";
 import ReactPaginate from "react-paginate";
@@ -15,7 +15,6 @@ import { RootState } from "@/redux/store";
 import { ArticleIntoData } from "@/redux/features/articles/type";
 import CardItemSkeleton from "@/components/CardItemSkeleton";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 const options: ("Recently published" | "Mostly viewed")[] = [
   "Recently published",
@@ -36,14 +35,20 @@ interface ArticleListsProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   data?: ArticleIntoData[] | null;
+  time?: number[];
+  page?: number;
+  setPage?: React.Dispatch<React.SetStateAction<number>>
+  setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const ArticleLists: React.FC<ArticleListsProps> = ({
   status,
   setStatus,
   data,
+  time,
 }) => {
-  const { replace } = useRouter();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -58,11 +63,15 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const pagination = useAppSelector(
     (state: RootState) => state.articles.pagination
   );
+
+
+
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
+  
   const handlePageClick = (event: any) => {
     const selectedPage = event.selected + 1;
     if (selectedPage < 1) {
@@ -72,16 +81,17 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     setItemOffset(newOffset);
     setPage(selectedPage);
   };
+
   const dataStatus = useAppSelector((state: RootState) => state.articles.data);
 
   const currentData =
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
-
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
 
   useEffect(() => {
     let fetchAction, params;
+    
     switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
@@ -100,23 +110,47 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     }
 
     if (getTag) {
-      dispatch(fetchAction({ limit, page, params, tags: getTag }));
+      dispatch(fetchAction({ limit, page,time, params, tags: getTag }));
     } else {
-      dispatch(fetchAction({ limit, page, params }));
+      dispatch(fetchAction({ limit, page,time ,params }));
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
-  return (
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
+  return dataStatus?.length === 0 ||
+    dataTrending?.length === 0 ||
+    dataRecommend?.length === 0 ? (
+    <div className="flex items-center justify-center my-[60px]">
+      <p className="text-gray-300 text-xl font-medium">No articles found</p>
+    </div>
+  ) : (
     <section>
       <div className="flex justify-between mt-[39px] mb-6 px-4">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
-          Articles
+          Articles {`(${pagination ? pagination?.total : " "})`}
         </h2>
         <div>
           <Dropdown
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
             options={options}
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
+            dropdownRef={dropdownRef}
           >
             <Image alt="arrow-bottom" src={arrow}></Image>
           </Dropdown>

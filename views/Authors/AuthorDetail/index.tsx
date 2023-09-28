@@ -22,7 +22,7 @@ import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
-  const [limitPost] = useState<number>(5);
+  const [limitPost] = useState<number>(2);
   const [page, setPage] = useState<number>(1);
   const [itemOffset, setItemOffset] = useState(0);
   const dispatch = useAppDispatch();
@@ -37,7 +37,7 @@ const AuthorDetail = () => {
 
   useEffect(() => {
     dispatch(getAuthorProfile(getLastPathName(pathname)));
-    dispatch(getListAuthor({ page, limit: limitUser }));
+    dispatch(getListAuthor({ limit: 10 }));
   }, [dispatch, pathname, limitUser, page]);
   useEffect(() => {
     dispatch(
@@ -213,17 +213,17 @@ const AuthorDetail = () => {
           <div className="w-[325px] h-full rounded-lg md:mt-12 mt-0 basis-[325px] mx-auto md:mx-0">
             {/* Author  */}
             <div className="flex gap-4 rounded-lg items-center">
-              <div className="w-[98px] h-[98px] ">
+              <div className="w-[98px] h-[98px] basis-[98px]">
                 <Image
                   alt="avatar-author"
                   width={98}
                   height={98}
                   src={authorProfile?.profile_image || user}
-                  className="rounded-full w-full h-full object-contain"
+                  className="rounded-full w-[98px] h-[98px] object-fill"
                 ></Image>
               </div>
-              <div className="flex gap-2 flex-col ">
-                <h2 className="text-[28px] font-bold leading-9 text-black-100">
+              <div className="flex gap-2 flex-col basis-[214px]">
+                <h2 className="text-[28px] font-bold leading-9 text-black-100 line-clamp-2">
                   {authorProfile?.name}
                 </h2>
                 <div className="flex gap-4">
@@ -251,7 +251,7 @@ const AuthorDetail = () => {
                     href={`/authors/${item.slug}`}
                     className="flex gap-4 items-center relative other__authors--underline"
                   >
-                    <div className="w-[60px] h-[60px]">
+                    <div className="w-[60px] h-[60px] basis-[60px]">
                       <Image
                         alt="avatar"
                         src={
@@ -262,11 +262,16 @@ const AuthorDetail = () => {
                         className="w-full h-full object-cover rounded-full"
                       ></Image>
                     </div>
-                    <Link href={`/authors/${item.slug}`}>
-                      <span className="text-black-100 text-sm leading-6 font-medium">
-                        {item.first_name} {item.last_name}
+                    <div className="basis-[200px] flex justify-between">
+                      <Link href={`/authors/${item.slug}`}>
+                        <span className="text-black-100 text-sm leading-6 font-medium">
+                          {item.first_name} {item.last_name}
+                        </span>
+                      </Link>
+                      <span className="text-gray-300 text-sm leading-6 font-normal">
+                        {item.total_post} posts
                       </span>
-                    </Link>
+                    </div>
                   </Link>
                 </>
               ))}
@@ -283,18 +288,20 @@ const AuthorDetail = () => {
           </div>
         </div>
       )}
-      <div className="mt-[60px]">
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={1}
-          pageCount={pagination?.total_pages || 1}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          className="pagination flex items-center justify-center md:gap-6 gap-4"
-        />
-      </div>
+      {!isLoading && (
+        <div className="mt-[60px]">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={1}
+            pageCount={pagination?.total_pages || 1}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            className="pagination flex items-center justify-center md:gap-6 gap-4"
+          />
+        </div>
+      )}
     </div>
   );
 };

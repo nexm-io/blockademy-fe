@@ -87,10 +87,9 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   const handleClearFilters = () => {
     const dispatchParams = {
       page,
-      time: time || [],
+      // time: time || [],
       limit: 15,
     };
-
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 100]);
