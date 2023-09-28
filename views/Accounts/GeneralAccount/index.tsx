@@ -50,7 +50,7 @@ const GeneralAccount = () => {
               <div className="flex flex-col ">
                 <h3 className="font-semibold text-base">Your name</h3>
                 <p className="text-base font-normal text-gray-300">
-                  Set a customized name for your profile.
+                  Set a customized name for your profile
                 </p>
               </div>
             </div>
@@ -72,7 +72,7 @@ const GeneralAccount = () => {
               <div className="flex flex-col">
                 <h3 className="font-semibold text-base">Email</h3>
                 <p className="text-base font-normal text-gray-300">
-                  Edit your email here.
+                  Edit your email here
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ const GeneralAccount = () => {
               <div className="flex flex-col">
                 <h3 className="font-semibold text-base">Phone</h3>
                 <p className="text-base font-normal text-gray-300">
-                  Edit your phone number here.
+                  Edit your phone number here
                 </p>
               </div>
             </div>

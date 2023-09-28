@@ -43,7 +43,7 @@ const ChangePassword = () => {
             <div className="flex flex-col ">
               <h3 className="font-semibold text-base">Password</h3>
               <p className="text-base font-normal text-gray-300">
-                Change the password for your account.
+                Change the password for your account
               </p>
             </div>
           </div>

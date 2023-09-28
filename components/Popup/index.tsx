@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import {
   getAccountDetail,
   updateAccountDetail,
+  updateImageAccount,
 } from "@/redux/features/account/action";
 interface PopupProps {
   title?: string;
@@ -51,18 +52,13 @@ const Popup: React.FC<PopupProps> = ({
     setImageState(file);
     setGetImage(URL.createObjectURL(file));
   };
-  const details = new FormData();
-  if (userAccount) {
-    details.append("first_name", userAccount.first_name);
-    details.append("last_name", userAccount.last_name);
-    details.append("phone", userAccount.phone);
-    if (imageState) {
-      details.append("image", imageState);
-    }
+  const imageSlug = new FormData();
+  if (userAccount && imageState) {
+    imageSlug.append("image", imageState);
   }
   const onSubmit = async () => {
-    const res = await dispatch(updateAccountDetail(details)).unwrap();
-    res.success && dispatch(getAccountDetail({ userId: userId }))
+    const res = await dispatch(updateImageAccount(imageSlug)).unwrap();
+    res.success && dispatch(getAccountDetail({ userId: userId }));
     toast.success("Update image successfully");
     onClose();
   };

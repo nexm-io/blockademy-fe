@@ -52,7 +52,7 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
           <div className="flex flex-col ">
             <h3 className="font-semibold text-base">Avatar</h3>
             <p className="text-base font-normal text-gray-300">
-              Select an avatar to personalize your account.
+              Select an avatar to personalize your account
             </p>
           </div>
         </div>
