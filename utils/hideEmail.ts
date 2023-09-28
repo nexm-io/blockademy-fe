@@ -1,5 +1,6 @@
 export function hideEmail(email: string): string {
-  const atIndex = email.indexOf("@");
+  if(email) {
+    const atIndex = email.indexOf("@");
   if (atIndex !== -1) {
     const username = email.substring(0, atIndex);
     const maskedUsername =
@@ -7,4 +8,7 @@ export function hideEmail(email: string): string {
     return maskedUsername + email.substring(atIndex);
   }
   return email;
+  } else {
+    return " "
+  }
 }

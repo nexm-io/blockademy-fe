@@ -65,7 +65,7 @@ export default function FormChangeGeneral({
       last_name: lastName,
     };
 
-    if (phone === "") {
+    if (phone !== "") {
       detail.phone = phone;
     }
 

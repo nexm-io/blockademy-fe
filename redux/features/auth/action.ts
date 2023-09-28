@@ -6,8 +6,12 @@ export const loginAuth = createAsyncThunk<
   AuthResponse,
   Pick<User, "email" | "password">
 >("auth/login", async (userLogin: Pick<User, "email" | "password">) => {
-  const response = await api.post("/api/v10/login", userLogin);
-  return response.data;
+  try {
+    const response = await api.post("/api/v10/login", userLogin);
+    return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
 });
 export const logoutAuth = createAsyncThunk<AuthResponse>(
   "auth/logout",
