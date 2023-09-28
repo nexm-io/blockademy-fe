@@ -1,5 +1,9 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
-import { getAccountDetail, updateAccountDetail } from "./action";
+import {
+  getAccountDetail,
+  updateAccountDetail,
+  updateImageAccount,
+} from "./action";
 import { AccountSettingResponse } from "./type";
 
 export const initialState: AccountSettingResponse = {
@@ -30,6 +34,17 @@ const accountReducer = createReducer(initialState, (builder) => {
       state.isLoading = true;
     })
     .addCase(updateAccountDetail.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+  builder
+    .addCase(updateImageAccount.pending, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(updateImageAccount.fulfilled, (state, action) => {
+      state.isLoading = true;
+    })
+    .addCase(updateImageAccount.rejected, (state) => {
       state.isLoading = false;
     });
 });

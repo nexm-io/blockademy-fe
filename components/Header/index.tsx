@@ -48,8 +48,8 @@ const Header = () => {
     dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
   const handleUserIconClick = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Ngăn sự kiện lan truyền ra bên ngoài
-    setIsOpen(!isOpen); // Mở hoặc đóng dropdown
+    event.stopPropagation();
+    setIsOpen(!isOpen);
   };
   const handleLogout = async () => {
     try {
@@ -97,10 +97,7 @@ const Header = () => {
                   className="w-[40px] h-[40px] rounded-full select-none"
                   onClick={handleUserIconClick}
                 ></Image>
-                {/* <UserCircle
-                  onClick={handleUserIconClick}
-                  className={`${isOpen ? "fill-blue-100 " : ""}`}
-                /> */}
+
                 {isOpen && (
                   <ul
                     className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"

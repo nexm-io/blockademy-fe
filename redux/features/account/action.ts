@@ -26,3 +26,15 @@ export const updateAccountDetail = createAsyncThunk<
   });
   return response.data;
 });
+
+export const updateImageAccount = createAsyncThunk<AccountSettingResponse, any>(
+  "account/updateImageAccount",
+  async (image) => {
+    const response = await api.post(`/api/v10/user/update-image`, image, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response.data;
+  }
+);
