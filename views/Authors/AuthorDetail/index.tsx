@@ -22,7 +22,7 @@ import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
-  const [limitPost] = useState<number>(6);
+  const [limitPost] = useState<number>(2);
   const [page, setPage] = useState<number>(1);
   const [itemOffset, setItemOffset] = useState(0);
   const dispatch = useAppDispatch();
@@ -251,7 +251,7 @@ const AuthorDetail = () => {
                     href={`/authors/${item.slug}`}
                     className="flex gap-4 items-center relative other__authors--underline"
                   >
-                    <div className="w-[60px] h-[60px]">
+                    <div className="w-[60px] h-[60px] basis-[60px]">
                       <Image
                         alt="avatar"
                         src={
@@ -262,11 +262,16 @@ const AuthorDetail = () => {
                         className="w-full h-full object-cover rounded-full"
                       ></Image>
                     </div>
-                    <Link href={`/authors/${item.slug}`}>
-                      <span className="text-black-100 text-sm leading-6 font-medium">
-                        {item.first_name} {item.last_name}
+                    <div className="basis-[200px] flex justify-between">
+                      <Link href={`/authors/${item.slug}`}>
+                        <span className="text-black-100 text-sm leading-6 font-medium">
+                          {item.first_name} {item.last_name}
+                        </span>
+                      </Link>
+                      <span className="text-gray-300 text-sm leading-6 font-normal">
+                        {item.total_post} posts
                       </span>
-                    </Link>
+                    </div>
                   </Link>
                 </>
               ))}
@@ -283,18 +288,20 @@ const AuthorDetail = () => {
           </div>
         </div>
       )}
-      <div className="mt-[60px]">
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={1}
-          pageCount={pagination?.total_pages || 1}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          className="pagination flex items-center justify-center md:gap-6 gap-4"
-        />
-      </div>
+      {!isLoading && (
+        <div className="mt-[60px]">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={1}
+            pageCount={pagination?.total_pages || 1}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            className="pagination flex items-center justify-center md:gap-6 gap-4"
+          />
+        </div>
+      )}
     </div>
   );
 };
