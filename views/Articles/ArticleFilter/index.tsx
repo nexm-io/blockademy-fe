@@ -55,7 +55,10 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   sliderTwoValue,
   setSliderTwoValue = () => {},
 }) => {
+  const pathname = useSearchParams();
+  const getTag = pathname.get("tag");
   const dispatch = useAppDispatch();
+  const router = useRouter()
   const handleSortListClick = () => {
     setStatus?.("list");
   };
@@ -84,6 +87,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     }
   };
 
+
   const handleClearFilters = () => {
     const dispatchParams = {
       page,
@@ -96,10 +100,11 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setSliderOneValue(0);
     setSliderTwoValue(100);
     dispatch(getLatestArticle(dispatchParams));
+    if(getTag) {
+      router.replace('/articles')
+    }
   };
 
-  const pathname = useSearchParams();
-  const getTag = pathname.get("tag");
   useEffect(() => {
     if (getTag) {
       const newChoose = choose ? [...choose, getTag] : [getTag];

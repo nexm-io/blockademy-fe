@@ -21,19 +21,19 @@ const FormSettingAccount = ({
 }: {
   onToggle: (status: boolean) => void;
 }) => {
-  
   const dispatch = useAppDispatch();
   const user_id = useAppSelector((state) => state.auth.user);
   const accountDetail = useAppSelector((state) => state.account.data);
 
   const schema = Yup.object({
-    old_password: Yup.string().required("Please enter your password")
-    .trim(),
-    password: Yup.string().required("Please enter your password")
-    .trim()
-    .min(8, "Length from 8 - 160 characters")
-    .max(160, "Length from 8 - 160 characters"),
-    password_confirmation: Yup.string().required("Please enter your password")
+    old_password: Yup.string().required("Please enter your password").trim(),
+    password: Yup.string()
+      .required("Please enter your password")
+      .trim()
+      .min(8, "Length from 8 - 160 characters")
+      .max(160, "Length from 8 - 160 characters"),
+    password_confirmation: Yup.string()
+      .required("Please enter your password")
       .trim()
       .oneOf([Yup.ref("password")], "The password confirmation does not match"),
   });
@@ -58,24 +58,22 @@ const FormSettingAccount = ({
     }
   }, [dispatch]);
 
-  const message = useAppSelector(state => state.auth.message)
+  const message = useAppSelector((state) => state.auth.message);
 
-  const onChangePassword: SubmitHandler<FormData> = async (
-    data
-  ) => {
+  const onChangePassword: SubmitHandler<FormData> = async (data) => {
     const detailChange = {
       old_password: data.old_password,
       password: data.password,
       password_confirmation: data.password_confirmation,
     };
-      const res = await dispatch(changePassword(detailChange)).unwrap();
-      if(res.success) {
-        toast.success(res.message)
-        onToggle(false);
-        reset();
-        dispatch(logoutAuth())
-      }
-      res.error && toast.error(res.message)
+    const res = await dispatch(changePassword(detailChange)).unwrap();
+    if (res.success) {
+      toast.success(res.message);
+      onToggle(false);
+      reset();
+      dispatch(logoutAuth());
+    }
+    res.error && toast.error(res.message);
   };
 
   return (
@@ -103,19 +101,25 @@ const FormSettingAccount = ({
                   {" "}
                   Current Password
                 </label>
-                <Input
-                  id="old_password"
-                  register={register}
-                  type="password"
-                  name="old_password"
-                  placeholder="user@emai.com..."
-                  className="bg-white-600"
-                />
-                  {errors?.old_password && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.old_password.message}
-              </div>
-            )}
+                <div
+                  className={`${
+                    errors?.old_password ? "border border-red-500" : " "
+                  } rounded-md`}
+                >
+                  <Input
+                    id="old_password"
+                    register={register}
+                    type="password"
+                    name="old_password"
+                    placeholder="Current Password"
+                    className="bg-white-600"
+                  />
+                </div>
+                {errors?.old_password && (
+                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                    {errors.old_password.message}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -125,38 +129,50 @@ const FormSettingAccount = ({
                 {" "}
                 New Password
               </label>
-              <Input
-                id="password"
-                register={register}
-                name="password"
-                type="password"
-                placeholder="user@emai.com..."
-                className="bg-white-600"
-              />
-                 {errors?.password && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.password.message}
+              <div
+                className={`${
+                  errors?.password ? "border border-red-500" : " "
+                } rounded-md`}
+              >
+                <Input
+                  id="password"
+                  register={register}
+                  name="password"
+                  type="password"
+                  placeholder="New Password"
+                  className="bg-white-600"
+                />
               </div>
-            )}
+              {errors?.password && (
+                <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                  {errors.password.message}
+                </div>
+              )}
             </div>
             <div className="w-full">
               <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
                 {" "}
                 Confirm Password
               </label>
+              <div
+                className={`${
+                  errors?.password_confirmation ? "border border-red-500" : " "
+                } rounded-md`}
+              >
               <Input
                 id="password_confirmation"
                 register={register}
                 type="password"
                 name="password_confirmation"
-                placeholder="user@emai.com..."
+                placeholder="Confirm Password"
                 className="bg-white-600"
               />
-                 {errors?.password_confirmation && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.password_confirmation.message}
               </div>
-            )}
+              {errors?.password_confirmation && (
+                <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                  {errors.password_confirmation.message}
+                </div>
+              )}
             </div>
           </div>
         </div>

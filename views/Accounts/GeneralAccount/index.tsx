@@ -72,7 +72,7 @@ const GeneralAccount = () => {
               <div className="flex flex-col">
                 <h3 className="font-semibold text-base">Email</h3>
                 <p className="text-base font-normal text-gray-300">
-                  Edit your email here
+                  Edit your email 
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ const GeneralAccount = () => {
               <div className="flex flex-col">
                 <h3 className="font-semibold text-base">Phone</h3>
                 <p className="text-base font-normal text-gray-300">
-                  Edit your phone number here
+                  Edit your phone number 
                 </p>
               </div>
             </div>
