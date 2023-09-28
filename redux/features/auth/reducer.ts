@@ -22,6 +22,7 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loginAuth.rejected, (state) => {
       state.isAuthenticated = false;
+      
     });
 
   builder

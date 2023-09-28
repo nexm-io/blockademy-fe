@@ -58,8 +58,6 @@ const Login = () => {
           ...data,
         })
       ).unwrap();
-      console.log(response);
-      
       if (response.success) {
         toast.success("Login Successfully");
         push("/");
