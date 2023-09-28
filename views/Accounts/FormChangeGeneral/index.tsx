@@ -13,41 +13,70 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import emailIcon from "@/public/icons/email.svg";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function FormChangeGeneral({ onToggle }: {
+export default function FormChangeGeneral({
+  onToggle,
+}: {
   onToggle: (status: boolean) => void;
 }) {
   const dispatch = useAppDispatch();
   const accountDetail = useAppSelector((state) => state.account.data);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
+  const schema = Yup.object({
+    first_name: Yup.string().required("This field is require!"),
+    last_name: Yup.string().required("This field is require!"),
+    phone: Yup.string()
+      .test("is-numeric", "Phone must contain only numbers", (value) => {
+        return /^\d+$/.test(value || " ");
+      })
+      .min(10, "Length should be at least 10 characters"),
+  });
+
+  type FormData = Yup.InferType<typeof schema>;
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    getValues ,
+    getValues,
     reset,
     formState: { errors },
-  } = useForm<any>();
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+  });
 
   useEffect(() => {
-    setValue("first_name", accountDetail?.first_name);
-    setValue("last_name", accountDetail?.last_name);
-    setValue("phone", accountDetail?.phone);
+    if (accountDetail) {
+      setValue("first_name", accountDetail?.first_name);
+      setValue("last_name", accountDetail?.last_name);
+      setValue("phone", accountDetail?.phone);
+    }
   }, []);
   const onSubmit: SubmitHandler<any> = async (data) => {
-    const detail = {
-      first_name: getValues("first_name"),
-
-      last_name: getValues("last_name"),
-
-      phone: getValues("phone"),
+    const firstName = getValues("first_name");
+    const lastName = getValues("last_name");
+    const phone = getValues("phone");
+    const detail: { first_name: string; last_name: string; phone?: string } = {
+      first_name: firstName,
+      last_name: lastName,
     };
+
+    if (phone !== "") {
+      detail.phone = phone;
+    }
+
     const res = await dispatch(updateAccountDetail(detail)).unwrap();
-    res.success && toast.success("Change Infomation success");
+    if(res.success) {
+    toast.success("Change Infomation success");
     dispatch(getAccountDetail({ userId: userId }));
-    res.success && onToggle(false)
+    res.success && onToggle(false);
+    } else {
+      toast.error("Change information error");
+    }
   };
   return (
     <div>
@@ -82,6 +111,11 @@ export default function FormChangeGeneral({ onToggle }: {
                   placeholder="First name..."
                   className="bg-white-600"
                 />
+                {errors?.first_name && (
+                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                    {errors.first_name.message}
+                  </div>
+                )}
               </div>
 
               <div className="w-full">
@@ -101,6 +135,11 @@ export default function FormChangeGeneral({ onToggle }: {
                   placeholder="Last name..."
                   className="bg-white-600"
                 />
+                {errors?.last_name && (
+                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                    {errors.last_name.message}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -167,12 +206,17 @@ export default function FormChangeGeneral({ onToggle }: {
                   placeholder="Phone number..."
                   className="bg-white-600"
                 />
+                {errors?.phone && (
+                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                    {errors.phone.message}
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           <div className="flex gap-5 mt-12">
-            <Button  type="submit" className="w-[214px]" size="normal">
+            <Button type="submit" className="w-[214px]" size="normal">
               Save
             </Button>
 
