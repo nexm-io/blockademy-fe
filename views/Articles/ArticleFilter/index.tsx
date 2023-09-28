@@ -87,7 +87,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   const handleClearFilters = () => {
     const dispatchParams = {
       page,
-      time: time || [],
+      // time: time || [],
       limit: 15,
     };
     setChoose && setChoose([]);

@@ -35,12 +35,17 @@ interface ArticleListsProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   data?: ArticleIntoData[] | null;
+  time?: number[];
+  page?: number;
+  setPage?: React.Dispatch<React.SetStateAction<number>>
+  setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const ArticleLists: React.FC<ArticleListsProps> = ({
   status,
   setStatus,
   data,
+  time,
 }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -66,6 +71,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
+  
   const handlePageClick = (event: any) => {
     const selectedPage = event.selected + 1;
     if (selectedPage < 1) {
@@ -75,6 +81,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     setItemOffset(newOffset);
     setPage(selectedPage);
   };
+
   const dataStatus = useAppSelector((state: RootState) => state.articles.data);
 
   const currentData =
@@ -103,10 +110,9 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     }
 
     if (getTag) {
-      dispatch(fetchAction({ limit, page, params, tags: getTag }));
+      dispatch(fetchAction({ limit, page,time, params, tags: getTag }));
     } else {
-      dispatch(fetchAction({ limit, page, params }));
-      
+      dispatch(fetchAction({ limit, page,time ,params }));
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
