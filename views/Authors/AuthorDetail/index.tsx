@@ -37,7 +37,7 @@ const AuthorDetail = () => {
 
   useEffect(() => {
     dispatch(getAuthorProfile(getLastPathName(pathname)));
-    dispatch(getListAuthor({ page, limit: 6 }));
+    dispatch(getListAuthor({ limit: 10 }));
   }, [dispatch, pathname, limitUser, page]);
   useEffect(() => {
     dispatch(
