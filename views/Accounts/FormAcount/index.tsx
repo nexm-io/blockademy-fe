@@ -10,6 +10,9 @@ import Avatar from "../Avatar";
 import ChangePassword from "../ChangePassword";
 import WalletComponent from "../Wallet";
 import InfoGraphic from "@/views/Register/InfoGraphic";
+import { logoutAuth } from "@/redux/features/auth/action";
+import { toast } from "react-toastify";
+
 export default function FormAccount() {
   const [show, setShow] = useState(false);
   const { register, handleSubmit, setValue } = useForm();
@@ -17,10 +20,19 @@ export default function FormAccount() {
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+
   useEffect(() => {
     dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
-
+  const handleLogout = async () => {
+    try {
+      const res = await dispatch(logoutAuth()).unwrap();
+      toast.success("Logout Successfully");
+    } catch (error) {
+      toast.error("Logout Failed");
+      localStorage.clear();
+    }
+  };
   return (
     <>
       {/*  */}
@@ -38,11 +50,12 @@ export default function FormAccount() {
               href="#"
               className="text-base text-blue-100 font-semibold hover:brightness-50"
             >
-              Give us your feedbacks
+              Give us your feedback
             </Link>
             <Link
               href="#"
               className="text-base text-blue-100 font-semibold hover:brightness-50"
+              onClick={handleLogout}
             >
               Log out
             </Link>
@@ -50,7 +63,7 @@ export default function FormAccount() {
           {show && (
             <Popup
               title="Edit Avatar"
-              description="Select an avatar to personalize your account."
+              description="Select an avatar to personalize your account"
               onClose={() => setShow(false)}
               avatar
               userImage={userAccount?.image || ""}
