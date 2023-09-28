@@ -15,7 +15,7 @@ const ArticlePage = () => {
     "beginner" | "intermediate" | "advance" | undefined
   >(undefined);
   const [tagParam, setTagParam] = useState<string[] | undefined>(undefined);
-  const [page] = useState<number>(1);
+  const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(20);
   const data = useAppSelector((state: RootState) => state.articles.data);
   const [sliderOneValue, setSliderOneValue] = useState<number>(0);
@@ -65,6 +65,10 @@ const ArticlePage = () => {
         show={show}
         setShow={setShow}
         status={status}
+        page={page}
+        setPage={setPage}
+        time={time}
+        setTime={setTime}
         setStatus={setStatus}
         levelParam={levelParam}
         setLevelParam={setLevelParam}

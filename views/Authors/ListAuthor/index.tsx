@@ -111,7 +111,7 @@ const AuthorList = () => {
                     <Link className="flex gap-2" href={`/authors/${author.slug}`}>
                       <Image alt="detail" src={detail} width={16} height={16}/>
                       <span className="text-blue-100 text-sm font-light cursor-pointer">
-                        View details
+                        View Details
                       </span>
                     </Link>
                   </div>
