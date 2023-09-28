@@ -65,6 +65,8 @@ const ArticlePage = () => {
         show={show}
         setShow={setShow}
         status={status}
+        time={time}
+        setTime={setTime}
         setStatus={setStatus}
         levelParam={levelParam}
         setLevelParam={setLevelParam}
