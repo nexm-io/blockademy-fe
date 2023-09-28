@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-const labels = ["1m", "10m", "20m", "30m", "40m", "50m", "60m", "", "", "∞"];
+const labels = ["1m", "10m", "20m", "30m", "40m", "50m", "60m", "", "∞"];
 
 interface DoubleRangeSlider {
   time?: number[];
@@ -31,7 +31,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
   const sliderOneRef = useRef<HTMLInputElement | null>(null);
   const sliderTwoRef = useRef<HTMLInputElement | null>(null);
   const sliderTrackRef = useRef<HTMLDivElement | null>(null);
-  const sliderMaxValue = 80;
+  const sliderMaxValue = 70;
   const minGap = 0;
   const fillColor = useCallback(() => {
     const percent1 = (sliderOneValue / sliderMaxValue) * 100;
@@ -55,7 +55,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
     if (sliderTwoValue - sliderOneValue <= minGap) {
       setSliderTwoValue(sliderOneValue + minGap);
     }
-    if (sliderTwoValue > 79) {
+    if (sliderTwoValue > 69) {
       setSliderTwoValue(minGap + 1000);
     } else if (sliderTwoValue < 10) {
       setSliderTwoValue(10);
@@ -65,7 +65,7 @@ const DoubleRangeSlider: React.FC<DoubleRangeSlider> = ({
 
   const updateParentTime = useCallback(() => {
     if (setTime) {
-      if (sliderTwoValue > 99) {
+      if (sliderTwoValue > 69) {
         setTime([sliderOneValue, sliderTwoValue + 1000]);
       }
       setTime([sliderOneValue, sliderTwoValue]);

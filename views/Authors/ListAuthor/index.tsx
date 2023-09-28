@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import img from "@/public/icons/usersuccess.svg";
-import detail from '@/public/icons/detail.svg'
+import detail from "@/public/icons/detail.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getListAuthor } from "@/redux/features/authors/action";
 import ReactPaginate from "react-paginate";
@@ -108,8 +108,11 @@ const AuthorList = () => {
                         </div>
                       </div>
                     </div>
-                    <Link className="flex gap-2" href={`/authors/${author.slug}`}>
-                      <Image alt="detail" src={detail} width={16} height={16}/>
+                    <Link
+                      className="flex gap-2"
+                      href={`/authors/${author.slug}`}
+                    >
+                      <Image alt="detail" src={detail} width={16} height={16} />
                       <span className="text-blue-100 text-sm font-light cursor-pointer">
                         View details
                       </span>
@@ -132,7 +135,7 @@ const AuthorList = () => {
           pageCount={pagination?.total_pages || 1}
           previousLabel="<"
           renderOnZeroPageCount={null}
-          className="pagination flex items-center justify-center md:gap-6 gap-4"
+          className="pagination flex items-center justify-center md:gap-6 gap-4 mt-[40px]"
         />
       </div>
     </div>
