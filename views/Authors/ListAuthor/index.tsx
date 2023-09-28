@@ -14,6 +14,7 @@ const AuthorList = () => {
   const listAuthor = useAppSelector((state) => state.author.data);
   const is_loading = useAppSelector((state) => state.author.isLoading);
   const pagination = useAppSelector((state) => state.author.pagination);
+  console.log("AuthorList ~ pagination:", pagination);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const [limit] = useState<number>(12);
@@ -126,18 +127,20 @@ const AuthorList = () => {
           </div>
         </div>
       )}
-      <div className="">
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={1}
-          pageCount={pagination?.total_pages || 1}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          className="pagination flex items-center justify-center md:gap-6 gap-4 mt-[40px]"
-        />
-      </div>
+      {is_loading && (
+        <div className="">
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={1}
+            pageCount={pagination?.total_pages || 1}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            className="pagination flex items-center justify-center md:gap-6 gap-4 mt-[40px]"
+          />
+        </div>
+      )}
     </div>
   );
 };
