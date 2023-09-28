@@ -37,6 +37,9 @@ const Login = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  const token = useSelector(
+    (state: RootState) => state.auth.token
+  );
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
@@ -50,26 +53,26 @@ const Login = () => {
     mode: "onChange",
   });
   const onSubmit = async (data: FormLogin) => {
-    try {
       const response = await dispatch(
         loginAuth({
           ...data,
         })
       ).unwrap();
+      console.log(response);
+      
       if (response.success) {
         toast.success("Login Successfully");
         push("/");
       }
-    } catch (error) {
-      toast.error("Incorrect password");
-    } finally {
+      response.error && toast.error(response.message)
+
       reset({
         password: "",
       });
-    }
+    
   };
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && token) {
       push("/");
     }
   }, [isAuthenticated, push]);
