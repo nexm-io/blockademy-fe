@@ -22,7 +22,7 @@ import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
-  const [limitPost] = useState<number>(6);
+  const [limitPost] = useState<number>(2);
   const [page, setPage] = useState<number>(1);
   const [itemOffset, setItemOffset] = useState(0);
   const dispatch = useAppDispatch();
@@ -64,33 +64,28 @@ const AuthorDetail = () => {
             <div className="flex flex-col gap-6 mt-6">
               {Array.from({ length: 4 }, (_, index) => (
                 <div
-                  className="flex bg-white w-[703px] h-[170px] shadow-3xl rounded-lg"
+                  className="flex bg-white w-[755px] h-[200px] shadow-3xl rounded-lg"
                   key={index}
                 >
-                  <SkeletionCard
-                    height="170px"
-                    width="280px"
-                    className="basis-[280px]"
-                    radius="8px"
-                  />
+                  <SkeletionCard height="200px" width="280px" radius="8px" />
                   <>
-                    <div className="flex flex-col justify-between gap-4 basis-[58%] px-4">
+                    <div className="flex flex-col justify-between gap-4  px-4">
                       <SkeletionCard
                         height="35px"
-                        width="350px"
+                        width="450px"
                         radius="8px"
                         className="mt-4 ml-4"
                       />
                       <div className="flex flex-col gap-2">
                         <SkeletionCard
                           height="20px"
-                          width="350px"
+                          width="450px"
                           radius="8px"
                           className="ml-4"
                         />
                         <SkeletionCard
                           height="20px"
-                          width="150px"
+                          width="350px"
                           radius="8px"
                           className="ml-4"
                         />
@@ -107,7 +102,7 @@ const AuthorDetail = () => {
               ))}
             </div>
             {/* Right */}
-            <div className="w-[352px]">
+            <div className="w-[325px]">
               <div className="flex items-center gap-6">
                 <SkeletionCard height="90px" width="90px" radius="999px" />
                 <div className="flex flex-col gap-4">
@@ -162,11 +157,11 @@ const AuthorDetail = () => {
             </div>
             {authorPost?.map((item) => (
               <Link href={`/articles/${item?.slug}`} key={item.id}>
-                <div className="w-[703px] flex flex-col md:flex-row gap-4 rounded-lg shadow-4xl cursor-pointer hover:shadow-3xl transition duration-200 ease-linear md:mx-0 mx-4">
-                  <div className="h-[170px] md:basis-[270px] basis-[200px]">
+                <div className="flex flex-col md:flex-row gap-4 rounded-lg shadow-4xl cursor-pointer hover:shadow-3xl transition duration-200 ease-linear md:mx-0 mx-4">
+                  <div className="h-[170px] md:basis-[300px] basis-[200px]">
                     <Image
                       alt="article-img"
-                      width={270}
+                      width={300}
                       height={170}
                       src={
                         item.image
@@ -175,7 +170,7 @@ const AuthorDetail = () => {
                           ? article
                           : article
                       }
-                      className="rounded-md md:w-[270px] md:h-[170px] w-full h-[200px] object-fill"
+                      className="rounded-md md:w-[300px] md:h-[170px] w-full h-[200px] object-fill"
                     ></Image>
                   </div>
                   <div className="flex flex-col gap-4 basis-[58%] p-3 justify-around">
@@ -215,7 +210,7 @@ const AuthorDetail = () => {
           </div>
 
           {/* Right */}
-          <div className="w-[352px] h-full rounded-lg md:mt-12 mt-0 basis-[352px] mx-auto md:mx-0">
+          <div className="w-[325px] h-full rounded-lg md:mt-12 mt-0 basis-[325px] mx-auto md:mx-0">
             {/* Author  */}
             <div className="flex gap-4 rounded-lg items-center">
               <div className="w-[98px] h-[98px] basis-[98px]">
@@ -227,7 +222,7 @@ const AuthorDetail = () => {
                   className="rounded-full w-[98px] h-[98px] object-fill"
                 ></Image>
               </div>
-              <div className="flex gap-2 flex-col basis-[234px]">
+              <div className="flex gap-2 flex-col basis-[214px]">
                 <h2 className="text-[28px] font-bold leading-9 text-black-100 line-clamp-2">
                   {authorProfile?.name}
                 </h2>
