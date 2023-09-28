@@ -16,14 +16,14 @@ const ChangePassword = () => {
     <div>
       <div className="flex items-center gap-2 md:mb-[40px] mb-6 md:mt-[60px] mt-8">
         <h2 className="font-semibold text-2xl ">Change Password</h2>
-        <div className="flex gap-1 items-center">
+        <div onClick={() => setToggle(!toggle)} className="flex gap-1 items-center">
           <Image
             alt="edit-icon"
             src={editIcon}
             className="w-4 h-4 cursor-pointer select-none"
           ></Image>
           <span
-            onClick={() => setToggle(!toggle)}
+            
             className="text-blue-100 text-base font-normal cursor-pointer hover:underline select-none"
           >
             Edit
