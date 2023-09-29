@@ -68,7 +68,7 @@ const CourseLists = function () {
           ))}
         </>
       ) : (
-        details.map((section: CourseTypes) => (
+        (details && details.length !== 0) && details.map((section: CourseTypes) => (
           <div className="md:mt-12 mt-8 lg:mx-0 mx-6" key={section.title}>
             <div>
               <h2 className="text-black-100 md:text-[40px] line-clamp-[9] ml-4 md:ml-0 text-[25px] font-bold w-max md:border-b-[6px] border-b-4 border-b-blue-100">
@@ -103,7 +103,7 @@ const CourseLists = function () {
                   <div>
                     <Button
                       className="capitalize text-base font-medium md:mt-0 mt-4"
-                      disabled={section.list_courses.data.length === 0}
+                      disabled={section.list_courses && section.list_courses.data.length === 0}
                       onClick={() =>
                         push(
                           `/courses/${section.slug}/${section.list_courses.data[0].slug}/${section.list_courses.data[0].lesson_first?.lesson_slug}`

@@ -13,7 +13,7 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
-import { format, isBefore } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
@@ -224,13 +224,39 @@ const CourseItem = () => {
                               </Button>
                             ) : (
                               <Button
-                                onClick={() =>
-                                  handleClaimReward(detail.reward_id)
-                                }
-                              >
-                                Claim reward
-                              </Button>
+                          type="button"
+                          onClick={() => handleClaimReward(detail.reward_id)}
+                          disabled={
+                            isBefore(
+                              new Date(),
+                              new Date(detail.reward_released_date * 1000)
+                            ) 
+                          }
+                          className={`line-clamp-2 md:block   ${
+                            detail.is_finished === 0
+                              ? "opacity-30"
+                              : "btn__contain-shadow "
+                          }`}
+                        >
+                          Claim reward
+                        </Button>
+                              
                             )}
+                            {detail.is_finished === 1 &&
+                      isBefore(
+                        new Date(),
+                        new Date(detail.reward_released_date * 1000)
+                      ) ? (
+                        <span className="text-blue-100 text-xs line-clamp-2">
+                          Reward will be released on{" "}
+                          {format(
+                            detail.reward_released_date * 1000,
+                            "MMM do, yyyy HH:mm"
+                        )}
+                        </span>
+                      ) : (
+                        " "
+                      )}
                           </div>
                         </>
                       ) : (
