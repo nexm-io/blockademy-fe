@@ -27,6 +27,7 @@ type TopicAcademyProps = {
   tagParam?: string[] | undefined;
   setTagParam?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   page?: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   limit?: number;
   sliderOneValue: number;
   setSliderOneValue?: React.Dispatch<React.SetStateAction<number>>;
@@ -44,6 +45,7 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
   tagParam,
   setTagParam,
   page = 1,
+  setPage,
   limit = 20,
   choose,
   setChoose,

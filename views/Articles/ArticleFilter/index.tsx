@@ -30,6 +30,7 @@ type ArticleFilterProps = {
   tagParam?: string[] | undefined;
   setTagParam?: React.Dispatch<React.SetStateAction<string[] | undefined>>;
   page?: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   limit?: number;
   sliderOneValue: number;
   setSliderOneValue?: React.Dispatch<React.SetStateAction<number>>;
@@ -47,6 +48,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   levelParam,
   setLevelParam,
   page = 1,
+  setPage,
   limit = 20,
   choose,
   setChoose,
@@ -58,7 +60,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
   const dispatch = useAppDispatch();
-  const router = useRouter()
+  const router = useRouter();
   const handleSortListClick = () => {
     setStatus?.("list");
   };
@@ -87,21 +89,22 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     }
   };
 
-
   const handleClearFilters = () => {
-    const dispatchParams = {
-      page,
-      // time: time || [],
-      limit: 15,
-    };
     setChoose && setChoose([]);
     setLevelParam && setLevelParam(undefined);
     setTime && setTime([0, 100]);
     setSliderOneValue(0);
     setSliderTwoValue(100);
+    setPage(1);
+    const dispatchParams = {
+      page: 1,
+      time: time || [],
+      limit: 15,
+    };
+
     dispatch(getLatestArticle(dispatchParams));
-    if(getTag) {
-      router.replace('/articles')
+    if (getTag) {
+      router.replace("/articles");
     }
   };
 
@@ -112,7 +115,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
         setChoose(newChoose);
       }
     }
-  }, []);
+  }, [choose, getTag, setChoose]);
 
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
