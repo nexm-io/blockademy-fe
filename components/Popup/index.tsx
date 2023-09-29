@@ -45,7 +45,6 @@ const Popup: React.FC<PopupProps> = ({
   const { handleSubmit, register } = useForm();
   const isLoading = useAppSelector((state) => state.account.isLoading);
   const userAccount = useAppSelector((state) => state.account.data);
-  console.log("isLoading:", isLoading);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
   const dispatch = useAppDispatch();
