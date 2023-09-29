@@ -93,7 +93,7 @@ const AuthorList = () => {
                             src={author.image.original_image || img}
                             width={120}
                             height={120}
-                            className="flex rounded-full w-full h-full object-contain"
+                            className="flex rounded-full w-full h-full object-fill"
                           />
                         </div>
                         <div className="flex flex-col items-center justify-center">
