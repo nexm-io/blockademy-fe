@@ -15,6 +15,8 @@ export interface AuthorResponse {
   dataProfile: AuthorProfileResponse | null;
   data: Array<ListAuthor> | null;
   dataPost: Array<AuthorIntoData> | null;
+  paginationAuthor?: PaginationArticle;
+
 }
 
 export interface ListAuthorPostResponse {
