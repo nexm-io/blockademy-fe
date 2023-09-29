@@ -101,14 +101,20 @@ const FormSettingAccount = ({
                   {" "}
                   Current Password
                 </label>
-                <Input
-                  id="old_password"
-                  register={register}
-                  type="password"
-                  name="old_password"
-                  placeholder="user@emai.com..."
-                  className="bg-white-600"
-                />
+                <div
+                  className={`${
+                    errors?.old_password ? "border border-red-500" : " "
+                  } rounded-md`}
+                >
+                  <Input
+                    id="old_password"
+                    register={register}
+                    type="password"
+                    name="old_password"
+                    placeholder="Current Password"
+                    className="bg-white-600"
+                  />
+                </div>
                 {errors?.old_password && (
                   <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                     {errors.old_password.message}
@@ -123,14 +129,20 @@ const FormSettingAccount = ({
                 {" "}
                 New Password
               </label>
-              <Input
-                id="password"
-                register={register}
-                name="password"
-                type="password"
-                placeholder="user@emai.com..."
-                className="bg-white-600"
-              />
+              <div
+                className={`${
+                  errors?.password ? "border border-red-500" : " "
+                } rounded-md`}
+              >
+                <Input
+                  id="password"
+                  register={register}
+                  name="password"
+                  type="password"
+                  placeholder="New Password"
+                  className="bg-white-600"
+                />
+              </div>
               {errors?.password && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                   {errors.password.message}
@@ -142,14 +154,20 @@ const FormSettingAccount = ({
                 {" "}
                 Confirm Password
               </label>
-              <Input
-                id="password_confirmation"
-                register={register}
-                type="password"
-                name="password_confirmation"
-                placeholder="user@emai.com..."
-                className="bg-white-600"
-              />
+              <div
+                className={`${
+                  errors?.password_confirmation ? "border border-red-500" : " "
+                } rounded-md`}
+              >
+                <Input
+                  id="password_confirmation"
+                  register={register}
+                  type="password"
+                  name="password_confirmation"
+                  placeholder="Confirm Password"
+                  className="bg-white-600"
+                />
+              </div>
               {errors?.password_confirmation && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                   {errors.password_confirmation.message}

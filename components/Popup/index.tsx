@@ -43,8 +43,8 @@ const Popup: React.FC<PopupProps> = ({
   const [imageState, setImageState] = useState<File | null>(null);
   const [getImage, setGetImage] = useState("");
   const { handleSubmit, register } = useForm();
-  const userAccount = useAppSelector((state) => state.account.data);
   const isLoading = useAppSelector((state) => state.account.isLoading);
+  const userAccount = useAppSelector((state) => state.account.data);
   console.log("isLoading:", isLoading);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
@@ -60,9 +60,12 @@ const Popup: React.FC<PopupProps> = ({
   }
   const onSubmit = async () => {
     const res = await dispatch(updateImageAccount(imageSlug)).unwrap();
-    res.success && dispatch(getAccountDetail({ userId: userId }));
-    toast.success("Update image successfully");
-    onClose();
+    if (res.success) {
+      dispatch(getAccountDetail({ userId: userId }));
+      toast.success("Update image successfully");
+      onClose();
+    }
+    res.error && toast.error(res.message);
   };
   return (
     <>

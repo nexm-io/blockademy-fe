@@ -2,7 +2,17 @@ import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
 import { Metadata } from "next";
-import { NextSeo } from "next-seo";
+
+type Props = {
+  params: { title?: string; description?: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: params.title || "Article Detail",
+    description: params.description || "Article Detail Description",
+  };
+}
 
 export default function ArticleDetail({
   params,

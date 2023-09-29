@@ -29,6 +29,7 @@ export default function FormChangeGeneral({
     first_name: Yup.string().required("This field is require!"),
     last_name: Yup.string().required("This field is require!"),
     phone: Yup.string()
+      .required("This field is required!")
       .test("is-numeric", "Phone must contain only numbers", (value) => {
         return /^\d+$/.test(value || " ");
       })
@@ -75,9 +76,8 @@ export default function FormChangeGeneral({
       toast.success("Change Infomation success");
       dispatch(getAccountDetail({ userId: userId }));
       res.success && onToggle(false);
-    } else {
-      toast.error("Change information error");
     }
+    res.error && toast.error(res.message);
   };
   return (
     <div>
@@ -104,14 +104,20 @@ export default function FormChangeGeneral({
                   First Name
                 </label>
 
-                <Input
-                  id="first_name"
-                  register={register}
-                  name="first_name"
-                  defaultValue={accountDetail?.first_name}
-                  placeholder="First name..."
-                  className="bg-white-600"
-                />
+                <div
+                  className={`${
+                    errors?.first_name ? "border border-red-500" : " "
+                  } rounded-md`}
+                >
+                  <Input
+                    id="first_name"
+                    register={register}
+                    name="first_name"
+                    defaultValue={accountDetail?.first_name}
+                    placeholder="First name..."
+                    className="bg-white-600 "
+                  />
+                </div>
                 {errors?.first_name && (
                   <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                     {errors.first_name.message}
@@ -127,15 +133,20 @@ export default function FormChangeGeneral({
                   {" "}
                   Last Name
                 </label>
-
-                <Input
-                  id="last_name"
-                  register={register}
-                  name="last_name"
-                  defaultValue={accountDetail?.last_name}
-                  placeholder="Last name..."
-                  className="bg-white-600"
-                />
+                <div
+                  className={`${
+                    errors?.last_name ? "border border-red-500" : " "
+                  } rounded-md`}
+                >
+                  <Input
+                    id="last_name"
+                    register={register}
+                    name="last_name"
+                    defaultValue={accountDetail?.last_name}
+                    placeholder="Last name..."
+                    className="bg-white-600"
+                  />
+                </div>
                 {errors?.last_name && (
                   <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                     {errors.last_name.message}
@@ -159,7 +170,7 @@ export default function FormChangeGeneral({
             </div>
 
             <div className="flex gap-5 w-full">
-              <div className="w-full">
+              <div className="w-full flex flex-col">
                 <label
                   htmlFor=""
                   className="pl-1 first-name text-gray-300 mb-[5px]"
@@ -168,14 +179,17 @@ export default function FormChangeGeneral({
                   Email address
                 </label>
 
-                <Input
+                {/* <Input
                   id="email"
                   register={register}
                   name="email"
                   value={accountDetail?.email}
                   placeholder="Email..."
                   className="bg-white-600"
-                />
+                /> */}
+                <span className="bg-white-600 h-12 pl-[10px] flex items-center">
+                  {accountDetail?.email}
+                </span>
               </div>
             </div>
           </div>
@@ -198,15 +212,20 @@ export default function FormChangeGeneral({
                   {" "}
                   Phone number
                 </label>
-
-                <Input
-                  id="phone"
-                  register={register}
-                  defaultValue={accountDetail?.phone}
-                  name="phone"
-                  placeholder="Phone number..."
-                  className="bg-white-600"
-                />
+                <div
+                  className={`${
+                    errors?.phone ? "border border-red-500" : " "
+                  } rounded-md`}
+                >
+                  <Input
+                    id="phone"
+                    register={register}
+                    defaultValue={accountDetail?.phone}
+                    name="phone"
+                    placeholder="Phone number..."
+                    className="bg-white-600"
+                  />
+                </div>
                 {errors?.phone && (
                   <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
                     {errors.phone.message}

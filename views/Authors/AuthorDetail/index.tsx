@@ -195,14 +195,7 @@ const AuthorDetail = () => {
                       </p>
                     </div>
 
-                    <div className="self-end">
-                      <div className="flex gap-2">
-                        <Exclamation fill="#fff" className="w-5 h-5" />
-                        <span className="text-blue-100 text-sm font-normal">
-                          View Details
-                        </span>
-                      </div>
-                    </div>
+                   
                   </div>
                 </div>
               </Link>
