@@ -2,14 +2,17 @@ import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
 import { Metadata } from "next";
+import axios from "axios";
 
 type Props = {
-  params: { title?: string; description?: string };
+  params: {
+    slug: string; title?: string; description?: string 
+};
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
-    title: params.title || "Article Detail",
+    title: "Article Details",
     description: params.description || "Article Detail Description",
   };
 }
