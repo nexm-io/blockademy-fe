@@ -44,7 +44,8 @@ export default function FormChangeGeneral({
     setValue,
     getValues,
     reset,
-    formState: { errors },
+
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -75,8 +76,8 @@ export default function FormChangeGeneral({
       toast.success("Change Infomation success");
       dispatch(getAccountDetail({ userId: userId }));
       res.success && onToggle(false);
-    } 
-    res.error && toast.error(res.message)
+    }
+    res.error && toast.error(res.message);
   };
   return (
     <div>
@@ -186,7 +187,9 @@ export default function FormChangeGeneral({
                   placeholder="Email..."
                   className="bg-white-600"
                 /> */}
-                <span className="bg-white-600 h-12 pl-[10px] flex items-center">{accountDetail?.email}</span>
+                <span className="bg-white-600 h-12 pl-[10px] flex items-center">
+                  {accountDetail?.email}
+                </span>
               </div>
             </div>
           </div>
@@ -233,7 +236,13 @@ export default function FormChangeGeneral({
           </div>
 
           <div className="flex gap-5 mt-12">
-            <Button type="submit" className="w-[214px]" size="normal">
+            <Button
+              type="submit"
+              className="w-[214px]"
+              size="normal"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
               Save
             </Button>
 

@@ -54,11 +54,11 @@ const authorReducer = createReducer(initialState, (builder) => {
     .addCase(getListAuthor.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
-      // state.pagination = action.payload.pagination;
+      state.pagination = action.payload.pagination;
       state.error = null;
     })
     .addCase(getListAuthor.rejected, (state, action: PayloadAction<any>) => {
-      state.isLoading = false;
+      state.isLoading = true;
       state.error = action.payload.data;
     });
 });
