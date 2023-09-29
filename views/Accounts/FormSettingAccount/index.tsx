@@ -21,19 +21,19 @@ const FormSettingAccount = ({
 }: {
   onToggle: (status: boolean) => void;
 }) => {
-  
   const dispatch = useAppDispatch();
   const user_id = useAppSelector((state) => state.auth.user);
   const accountDetail = useAppSelector((state) => state.account.data);
 
   const schema = Yup.object({
-    old_password: Yup.string().required("Please enter your password")
-    .trim(),
-    password: Yup.string().required("Please enter your password")
-    .trim()
-    .min(8, "Length from 8 - 160 characters")
-    .max(160, "Length from 8 - 160 characters"),
-    password_confirmation: Yup.string().required("Please enter your password")
+    old_password: Yup.string().required("Please enter your password").trim(),
+    password: Yup.string()
+      .required("Please enter your password")
+      .trim()
+      .min(8, "Length from 8 - 160 characters")
+      .max(160, "Length from 8 - 160 characters"),
+    password_confirmation: Yup.string()
+      .required("Please enter your password")
       .trim()
       .oneOf([Yup.ref("password")], "The password confirmation does not match"),
   });
@@ -45,7 +45,7 @@ const FormSettingAccount = ({
     setValue,
     getValues,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -58,24 +58,22 @@ const FormSettingAccount = ({
     }
   }, [dispatch]);
 
-  const message = useAppSelector(state => state.auth.message)
+  const message = useAppSelector((state) => state.auth.message);
 
-  const onChangePassword: SubmitHandler<FormData> = async (
-    data
-  ) => {
+  const onChangePassword: SubmitHandler<FormData> = async (data) => {
     const detailChange = {
       old_password: data.old_password,
       password: data.password,
       password_confirmation: data.password_confirmation,
     };
-      const res = await dispatch(changePassword(detailChange)).unwrap();
-      if(res.success) {
-        toast.success(res.message)
-        onToggle(false);
-        reset();
-        dispatch(logoutAuth())
-      }
-      res.error && toast.error(res.message)
+    const res = await dispatch(changePassword(detailChange)).unwrap();
+    if (res.success) {
+      toast.success(res.message);
+      onToggle(false);
+      reset();
+      dispatch(logoutAuth());
+    }
+    res.error && toast.error(res.message);
   };
 
   return (
@@ -111,11 +109,11 @@ const FormSettingAccount = ({
                   placeholder="user@emai.com..."
                   className="bg-white-600"
                 />
-                  {errors?.old_password && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.old_password.message}
-              </div>
-            )}
+                {errors?.old_password && (
+                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                    {errors.old_password.message}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -133,11 +131,11 @@ const FormSettingAccount = ({
                 placeholder="user@emai.com..."
                 className="bg-white-600"
               />
-                 {errors?.password && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.password.message}
-              </div>
-            )}
+              {errors?.password && (
+                <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                  {errors.password.message}
+                </div>
+              )}
             </div>
             <div className="w-full">
               <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
@@ -152,16 +150,22 @@ const FormSettingAccount = ({
                 placeholder="user@emai.com..."
                 className="bg-white-600"
               />
-                 {errors?.password_confirmation && (
-              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                {errors.password_confirmation.message}
-              </div>
-            )}
+              {errors?.password_confirmation && (
+                <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                  {errors.password_confirmation.message}
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="flex gap-5 mt-12">
-          <Button type="submit" className="w-[214px]" size="normal">
+          <Button
+            type="submit"
+            className="w-[214px]"
+            size="normal"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
             Save
           </Button>
           <Button

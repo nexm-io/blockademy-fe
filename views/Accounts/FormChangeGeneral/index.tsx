@@ -43,7 +43,8 @@ export default function FormChangeGeneral({
     setValue,
     getValues,
     reset,
-    formState: { errors },
+
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -70,10 +71,10 @@ export default function FormChangeGeneral({
     }
 
     const res = await dispatch(updateAccountDetail(detail)).unwrap();
-    if(res.success) {
-    toast.success("Change Infomation success");
-    dispatch(getAccountDetail({ userId: userId }));
-    res.success && onToggle(false);
+    if (res.success) {
+      toast.success("Change Infomation success");
+      dispatch(getAccountDetail({ userId: userId }));
+      res.success && onToggle(false);
     } else {
       toast.error("Change information error");
     }
@@ -216,7 +217,13 @@ export default function FormChangeGeneral({
           </div>
 
           <div className="flex gap-5 mt-12">
-            <Button type="submit" className="w-[214px]" size="normal">
+            <Button
+              type="submit"
+              className="w-[214px]"
+              size="normal"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+            >
               Save
             </Button>
 

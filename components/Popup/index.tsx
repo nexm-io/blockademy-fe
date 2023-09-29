@@ -44,6 +44,8 @@ const Popup: React.FC<PopupProps> = ({
   const [getImage, setGetImage] = useState("");
   const { handleSubmit, register } = useForm();
   const userAccount = useAppSelector((state) => state.account.data);
+  const isLoading = useAppSelector((state) => state.account.isLoading);
+  console.log("isLoading:", isLoading);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
   const dispatch = useAppDispatch();
@@ -130,7 +132,12 @@ const Popup: React.FC<PopupProps> = ({
                     onChange={handleFileChange}
                   />
                 </div>
-                <Button type="submit" className="w-[182px] h-[42px] mb-6">
+                <Button
+                  type="submit"
+                  className="w-[182px] h-[42px] mb-6"
+                  loading={!isLoading}
+                  disabled={!isLoading}
+                >
                   Save
                 </Button>
               </form>

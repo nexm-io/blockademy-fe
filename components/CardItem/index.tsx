@@ -104,16 +104,12 @@ const CardItem: React.FC<CardItemProps> = ({
         </div>
         <div
           className={`${
-            status === "list"
-              ? "h-full"
-              : status === "menu"
-              ? "basis-full h-full"
-              : ""
-          } ${topicReverse ? "pr-3 md:items-end items-start" : "items-start"} ${
-            topicShort ? "h-[300px]" : ""
-          } ${topicBalance ? "h-auto" : "h-[198px]"} ${
-            topic ? "my-auto" : ""
-          } flex justify-between flex-col  flex-1`}
+            status === "list" ? "" : status === "menu" ? "basis-full " : ""
+          } ${!image ? "" : "h-full"} ${
+            topicReverse ? "pr-3 md:items-end items-start" : "items-start"
+          } ${topicShort ? "h-[300px]" : ""} ${
+            topicBalance ? "h-auto" : "h-[198px]"
+          } ${topic ? "my-auto" : ""} flex justify-between flex-col  flex-1`}
         >
           <h2
             className={`${
@@ -123,17 +119,17 @@ const CardItem: React.FC<CardItemProps> = ({
                 ? "text-[30px] text-white-100"
                 : "text-lg text-black-100 leading-7"
             } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 "} ${
-              topicReverse ? "md:text-right text-left" : ""
-            } ${!image ? "line-clamp-none" : "line-clamp-2 "}
+              topicReverse ? "md:text-right text-left basis-[40px]" : ""
+            } ${!image ? "line-clamp-none " : "line-clamp-1 "}
             ${
               status === "list"
-                ? "h-[56px] md:m-6"
+                ? "h-[56px] basis-[56px] md:m-6"
                 : status === "menu"
-                ? "h-full basis-[56px] ml-6"
+                ? "ml-6"
                 : ""
             }
             ${topic ? "mb-2" : ""} ${
-              topicBalance ? "text-white-100" : ""
+              topicBalance ? "text-white-100 line-clamp-2" : ""
             } font-bold 
          `}
           >
@@ -141,8 +137,8 @@ const CardItem: React.FC<CardItemProps> = ({
           </h2>
           {status === "menu" && !topic && !topicBalance && (
             <p
-              className={`opacity-0 md:w-auto md:h-auto w-0 h-0 md:opacity-100 ml-6 text-black-100 font-normal leading-7 line-clamp-2 ${
-                status === "menu" ? "basis-[56px]" : ""
+              className={`opacity-0 md:w-auto md:h-auto w-0 h-0 md:opacity-100 ml-6 text-black-100 font-normal leading-7 line-clamp-3 ${
+                status === "menu" ? "basis-[80px]" : ""
               }`}
             >
               {data.meta_description}

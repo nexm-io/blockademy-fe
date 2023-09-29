@@ -1,6 +1,8 @@
 import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
+import { Metadata } from "next";
+import { NextSeo } from "next-seo";
 
 export default function ArticleDetail({
   params,
