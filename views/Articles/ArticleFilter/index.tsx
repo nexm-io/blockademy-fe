@@ -59,6 +59,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
 }) => {
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
+  console.log("getTag:", getTag);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const handleSortListClick = () => {
@@ -95,10 +96,10 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setTime && setTime([0, 100]);
     setSliderOneValue(0);
     setSliderTwoValue(100);
-    setPage(1);
+    // setPage(1);
     const dispatchParams = {
-      page: 1,
-      time: time || [],
+      page,
+      // time: time || [],
       limit: 15,
     };
 
@@ -115,7 +116,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
         setChoose(newChoose);
       }
     }
-  }, [choose, getTag, setChoose]);
+  }, []);
 
   return (
     <div className="w-full bg-gray-200 mt-8 md:mt-0">
