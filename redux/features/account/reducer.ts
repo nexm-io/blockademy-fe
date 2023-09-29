@@ -7,6 +7,7 @@ import {
 import { AccountSettingResponse } from "./type";
 
 export const initialState: AccountSettingResponse = {
+  error: null,
   success: false,
   isLoading: false,
   message: "",

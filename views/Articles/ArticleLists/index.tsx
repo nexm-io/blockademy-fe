@@ -37,7 +37,7 @@ interface ArticleListsProps {
   data?: ArticleIntoData[] | null;
   time?: number[];
   page?: number;
-  setPage?: React.Dispatch<React.SetStateAction<number>>
+  setPage?: React.Dispatch<React.SetStateAction<number>>;
   setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
@@ -45,6 +45,8 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
   status,
   setStatus,
   data,
+  choose,
+  levelParam,
   time,
 }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -64,14 +66,12 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     (state: RootState) => state.articles.pagination
   );
 
-
-
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  
+
   const handlePageClick = (event: any) => {
     const selectedPage = event.selected + 1;
     if (selectedPage < 1) {
@@ -88,10 +88,13 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
+  console.log(levelParam);
 
   useEffect(() => {
     let fetchAction, params;
-    
+    if (getTag && choose) {
+      choose.push(getTag);
+    }
     switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
@@ -108,12 +111,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         fetchAction = getLatestArticle;
         params = selectedOption === "Mostly viewed" ? "total_hit" : undefined;
     }
-
-    if (getTag) {
-      dispatch(fetchAction({ limit, page,time, params, tags: getTag }));
-    } else {
-      dispatch(fetchAction({ limit, page,time ,params }));
-    }
+      dispatch(fetchAction({ limit, page,levelParam ,time, params, tags: choose }));
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
   useEffect(() => {

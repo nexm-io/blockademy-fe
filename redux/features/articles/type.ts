@@ -1,6 +1,7 @@
 export interface ArticleListResponse {
   success: boolean;
   isLoading: boolean;
+  isChange: boolean;
   data: Array<ArticleIntoData> | null;
   dataTrending: Array<ArticleIntoData> | null;
   dataRecommend: Array<ArticleIntoData> | null;
