@@ -11,10 +11,11 @@ import { getArticleDetail } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { toast } from "react-toastify";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
+import Head from "next/head";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
-  const is_loading = useAppSelector((state) => state.articles.isChange)
+  const is_loading = useAppSelector((state) => state.articles.isChange);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -23,7 +24,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
     };
     getDetail();
   }, [dispatch]);
-  
+
   const copyCurrentURL = () => {
     const currentURL = window.location.href;
     navigator.clipboard
@@ -38,7 +39,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      {( is_loading ) ? (
+      {is_loading ? (
         <div className="my-[60px]">
           <div className="flex gap-2 mb-[48px]">
             {Array.from({ length: 7 }, (_, index) => (
@@ -61,37 +62,45 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
         </div>
       ) : (
         <>
-          { 
-          detailArticle &&
-            <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[120px] mb-14 md:flex-row">
-            <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
-              <ArticleTag tags={detailArticle.tags} />
-              <ArticleHeading
-                level={detailArticle.level}
-                title={detailArticle.title}
-                date={detailArticle.created_at}
-                duration={detailArticle.read_time}
-              />
-              {/* <ArticleSummary /> */}
-              <ArticlesSection
-                sections={detailArticle.content}
-                author={detailArticle.user}
-                date={detailArticle.created_at}
-              />
-            </div>
-            <div className="w-full md:w-[25%] ">
-              <div className="sticky top-[30px] flex flex-col lg:gap-[75px] md:gap-10 gap-4">
-                <ArticleShare
-                  copyCurrentURL={copyCurrentURL}
-                  title={detailArticle.title}
+          {detailArticle && (
+            <>
+              <Head>
+                <meta
+                  name="description"
+                  content={detailArticle.title}
+                  key="description"
                 />
-                {/* <ArticlesLine onTitleClick={handleTitleClick} data={array} /> */}
-                <ArticleRelate id={detailArticle.id} />
-                {!isLogin && <IsLoginForm />}
+              </Head>
+              <div className=" flex flex-col lg:gap-[85px] md:gap-16 xl:gap-[120px] mb-14 md:flex-row">
+                <div className="md:pb-[75px] lg:px-0 md:px-4 px-6 pb-8 md:w-[75%] w-full">
+                  <ArticleTag tags={detailArticle.tags} />
+                  <ArticleHeading
+                    level={detailArticle.level}
+                    title={detailArticle.title}
+                    date={detailArticle.created_at}
+                    duration={detailArticle.read_time}
+                  />
+                  {/* <ArticleSummary /> */}
+                  <ArticlesSection
+                    sections={detailArticle.content}
+                    author={detailArticle.user}
+                    date={detailArticle.created_at}
+                  />
+                </div>
+                <div className="w-full md:w-[25%] ">
+                  <div className="sticky top-[30px] flex flex-col lg:gap-[75px] md:gap-10 gap-4">
+                    <ArticleShare
+                      copyCurrentURL={copyCurrentURL}
+                      title={detailArticle.title}
+                    />
+                    {/* <ArticlesLine onTitleClick={handleTitleClick} data={array} /> */}
+                    <ArticleRelate id={detailArticle.id} />
+                    {!isLogin && <IsLoginForm />}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          }
+            </>
+          )}
         </>
       )}
     </>

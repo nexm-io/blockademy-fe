@@ -2,6 +2,14 @@ import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
 
+
+import { Metadata, ResolvingMetadata } from 'next';
+import axios from "axios";
+
+type Props = {
+  params: { slug: string };
+};
+
 export default function ArticleDetail({
   params,
 }: {
