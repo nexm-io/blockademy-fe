@@ -43,8 +43,9 @@ const Popup: React.FC<PopupProps> = ({
   const [imageState, setImageState] = useState<File | null>(null);
   const [getImage, setGetImage] = useState("");
   const { handleSubmit, register } = useForm();
-  const isLoading =  useAppSelector((state) => state.account.isLoading);
+  const isLoading = useAppSelector((state) => state.account.isLoading);
   const userAccount = useAppSelector((state) => state.account.data);
+
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
 
   const dispatch = useAppDispatch();
@@ -59,10 +60,10 @@ const Popup: React.FC<PopupProps> = ({
   }
   const onSubmit = async () => {
     const res = await dispatch(updateImageAccount(imageSlug)).unwrap();
-    if(res.success) {
+    if (res.success) {
       dispatch(getAccountDetail({ userId: userId }));
-       toast.success("Update image successfully");
-       onClose();
+      toast.success("Update image successfully");
+      onClose();
     }
     res.error && toast.error(res.message);
   };
@@ -134,10 +135,12 @@ const Popup: React.FC<PopupProps> = ({
                     onChange={handleFileChange}
                   />
                 </div>
-                <Button type="submit" 
-                loading={!isLoading}
-                disabled={!isLoading} 
-                className="w-[182px] h-[42px] mb-6">
+                <Button
+                  type="submit"
+                  className="w-[182px] h-[42px] mb-6"
+                  loading={!isLoading}
+                  disabled={!isLoading}
+                >
                   Save
                 </Button>
               </form>

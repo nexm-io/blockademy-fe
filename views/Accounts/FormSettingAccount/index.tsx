@@ -45,7 +45,7 @@ const FormSettingAccount = ({
     setValue,
     getValues,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -159,14 +159,14 @@ const FormSettingAccount = ({
                   errors?.password_confirmation ? "border border-red-500" : " "
                 } rounded-md`}
               >
-              <Input
-                id="password_confirmation"
-                register={register}
-                type="password"
-                name="password_confirmation"
-                placeholder="Confirm Password"
-                className="bg-white-600"
-              />
+                <Input
+                  id="password_confirmation"
+                  register={register}
+                  type="password"
+                  name="password_confirmation"
+                  placeholder="Confirm Password"
+                  className="bg-white-600"
+                />
               </div>
               {errors?.password_confirmation && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -177,7 +177,13 @@ const FormSettingAccount = ({
           </div>
         </div>
         <div className="flex gap-5 mt-12">
-          <Button type="submit" className="w-[214px]" size="normal">
+          <Button
+            type="submit"
+            className="w-[214px]"
+            size="normal"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
             Save
           </Button>
           <Button

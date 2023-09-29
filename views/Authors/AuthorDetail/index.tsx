@@ -22,7 +22,7 @@ import { enUS } from "date-fns/locale";
 
 const AuthorDetail = () => {
   const [limitUser] = useState<number>(10);
-  const [limitPost] = useState<number>(2);
+  const [limitPost] = useState<number>(6);
   const [page, setPage] = useState<number>(1);
   const [itemOffset, setItemOffset] = useState(0);
   const dispatch = useAppDispatch();
@@ -292,6 +292,7 @@ const AuthorDetail = () => {
             previousLabel="<"
             renderOnZeroPageCount={null}
             className="pagination flex items-center justify-center md:gap-6 gap-4"
+            forcePage={page - 1}
           />
         </div>
       )}

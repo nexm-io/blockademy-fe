@@ -1,14 +1,21 @@
 import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
-
-
-import { Metadata, ResolvingMetadata } from 'next';
+import { Metadata } from "next";
 import axios from "axios";
 
 type Props = {
-  params: { slug: string };
+  params: {
+    slug: string; title?: string; description?: string 
 };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  return {
+    title: "Article Details",
+    description: params.description || "Article Detail Description",
+  };
+}
 
 export default function ArticleDetail({
   params,
