@@ -59,7 +59,6 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
 }) => {
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
-  console.log("getTag:", getTag);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const handleSortListClick = () => {
@@ -79,7 +78,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       tagParam: choose || [],
       time: time || [],
     };
-
+    setPage(1)
     if (type === "Trending") {
       // replace("/articles", { scroll: false });
       dispatch(getTrendingArticle(dispatchParams));
@@ -96,7 +95,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
     setTime && setTime([0, 100]);
     setSliderOneValue(0);
     setSliderTwoValue(100);
-    // setPage(1);
+    setPage(1);
     const dispatchParams = {
       page,
       // time: time || [],
