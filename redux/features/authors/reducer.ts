@@ -14,6 +14,13 @@ const initialState: AuthorResponse = {
     current_page: 0,
     total_pages: 0,
   },
+  paginationAuthor: {
+    total: 0,
+    count: 0,
+    per_page: 0,
+    current_page: 0,
+    total_pages: 0,
+  },
   error: null,
   dataProfile: null,
   dataPost: null,
@@ -54,7 +61,7 @@ const authorReducer = createReducer(initialState, (builder) => {
     .addCase(getListAuthor.fulfilled, (state, action) => {
       state.isLoading = false;
       state.data = action.payload.data;
-      state.pagination = action.payload.pagination;
+      state.paginationAuthor = action.payload.pagination;
       state.error = null;
     })
     .addCase(getListAuthor.rejected, (state, action: PayloadAction<any>) => {

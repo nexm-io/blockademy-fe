@@ -14,7 +14,7 @@ const AuthorList = () => {
   const listAuthor = useAppSelector((state) => state.author.data);
 
   const is_loading = useAppSelector((state) => state.author.isLoading);
-  const pagination = useAppSelector((state) => state.author.pagination);
+  const pagination = useAppSelector((state) => state.author.paginationAuthor);
 
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
