@@ -32,7 +32,7 @@ export const getLatestArticle = createAsyncThunk<
     page?: number;
     limit?: number;
     levelParam?: string;
-    tags?: string[];
+    tags?: string[] | string;
     time?: number[];
   }
 >(

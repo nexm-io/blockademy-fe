@@ -88,13 +88,10 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     selectedOption === "Recently published" ? dataStatus || data : dataStatus;
   const pathname = useSearchParams();
   const getTag = pathname.get("tag");
-  console.log(levelParam);
 
   useEffect(() => {
     let fetchAction, params;
-    if (getTag && choose) {
-      choose.push(getTag);
-    }
+   
     switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
@@ -111,7 +108,12 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         fetchAction = getLatestArticle;
         params = selectedOption === "Mostly viewed" ? "total_hit" : undefined;
     }
+    if (getTag && choose?.length == 0) {
+      dispatch(fetchAction({ limit, page,levelParam ,time, params, tags: getTag }));
+    } else {
       dispatch(fetchAction({ limit, page,levelParam ,time, params, tags: choose }));
+    }
+      
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
   useEffect(() => {
