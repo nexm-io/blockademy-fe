@@ -205,7 +205,7 @@ const CourseItem = () => {
                               <span className="line-clamp-2 leading-6">
                                 {`Completed: ${format(
                                   new Date((detail.completed_at || 1) * 1000),
-                                  "EEE MMM dd yyyy HH:mm:ss"
+                                  "MMM do, yyyy HH:mm"
                                 )}`}
                               </span>
                               {detail.reward_is_claimed === 1 && (

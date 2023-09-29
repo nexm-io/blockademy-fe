@@ -188,8 +188,8 @@ const CourseLists = function () {
                           Reward will be released on{" "}
                           {format(
                             section.reward_released_date * 1000,
-                            "EEE MMM dd yyyy HH:mm:ss"
-                          )}
+                            "MMM do, yyyy HH:mm"
+                        )}
                         </span>
                       ) : (
                         " "
