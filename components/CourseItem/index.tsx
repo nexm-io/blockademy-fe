@@ -267,7 +267,7 @@ const CourseItem = () => {
 
                               new Date(detail.reward_released_date * 1000)
                             ) ? (
-                              <span className="text-blue-100 text-xs truncate">
+                              <span className="text-blue-100 text-xs line-clamp-2">
                                 Reward will be released on{" "}
                                 {format(
                                   detail.reward_released_date * 1000,
