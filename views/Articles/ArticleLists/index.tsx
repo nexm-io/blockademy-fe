@@ -36,15 +36,19 @@ interface ArticleListsProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   data?: ArticleIntoData[] | null;
   time?: number[];
-  page?: number;
-  setPage?: React.Dispatch<React.SetStateAction<number>>
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   setTime?: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const ArticleLists: React.FC<ArticleListsProps> = ({
+  page,
   status,
   setStatus,
+  setPage,
   data,
+  choose,
+  levelParam,
   time,
 }) => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -64,14 +68,11 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     (state: RootState) => state.articles.pagination
   );
 
-
-
-  const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
-  
+
   const handlePageClick = (event: any) => {
     const selectedPage = event.selected + 1;
     if (selectedPage < 1) {
@@ -91,7 +92,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
 
   useEffect(() => {
     let fetchAction, params;
-    
+
     switch (type) {
       case "Trending":
         fetchAction = getTrendingArticle;
@@ -108,11 +109,22 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
         fetchAction = getLatestArticle;
         params = selectedOption === "Mostly viewed" ? "total_hit" : undefined;
     }
-
     if (getTag) {
-      dispatch(fetchAction({ limit, page,time, params, tags: getTag }));
+      choose?.push(getTag);
+      dispatch(
+        fetchAction({
+          limit,
+          page,
+          levelParam,
+          time,
+          params,
+          tags: getTag || choose,
+        })
+      );
     } else {
-      dispatch(fetchAction({ limit, page,time ,params }));
+      dispatch(
+        fetchAction({ limit, page, levelParam, time, params, tags: choose })
+      );
     }
   }, [dispatch, page, selectedOption, limit, type, getTag]);
 
@@ -213,6 +225,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
           previousLabel="<"
           renderOnZeroPageCount={null}
           className="pagination flex items-center justify-center md:gap-6 gap-4"
+          forcePage={page - 1}
         />
       </div>
     </section>

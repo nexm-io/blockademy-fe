@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import empty from "@/public/icons/emptybox.svg";
 import Image from "next/image";
@@ -13,7 +14,7 @@ import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { usePathname, useRouter } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import { STATUS } from "@/utils/status";
-import { format, isBefore } from "date-fns";
+import { format, isAfter, isBefore } from "date-fns";
 import { claimInWallet } from "@/redux/features/user/action";
 import { toast } from "react-toastify";
 import { SkeletionCard } from "../Skeleton/SkeletionCard";
@@ -27,7 +28,6 @@ const CourseItem = () => {
   const isLoading = useAppSelector((state) => state.courses.isLoading);
   const pathname = usePathname();
   const router = useRouter();
-
   const handleClaimReward = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
     res && toast.success("Claim reward successfully!");
@@ -53,6 +53,7 @@ const CourseItem = () => {
       dispatch(getListCourse({ params: "2", limit, page }));
     }
   }, [dispatch, pathname, limit, page]);
+
   const LessonCourse = ({
     detail,
     campaign,
@@ -81,22 +82,28 @@ const CourseItem = () => {
                   blurDataURL={PLACEHOLDER_BASE64}
                 />
               </div>
+
               <div className="flex flex-col justify-between w-full shrink-0 md:basis-[80%] basis-1/2">
                 <div className="flex flex-col">
                   <h2 className="md:text-[28px] text-xl font-bold md:font-semibold line-clamp-2">
                     {item.title}
                   </h2>
+
                   <div className="flex text-sm mt-2 gap-2">
                     <div className="flex gap-2 text-sm">
                       <Image src={clock} alt="" width={20} height={20} />
+
                       <span>{secondsToMinutes(item.duration)} Mins</span>
                     </div>
+
                     <div className="flex gap-2 text-sm">
                       <Image src={quiz} alt="" width={20} height={20} />
+
                       <span>{item.type}</span>
                     </div>
                   </div>
                 </div>
+
                 <div
                   className={`${
                     getLastPathName(pathname) === "progress"
@@ -107,6 +114,7 @@ const CourseItem = () => {
                   <div className="flex items-center gap-2 mt-3 md:mt-0">
                     {Array.from(
                       { length: item.total_lesson || 5 },
+
                       (_, index) => (
                         <div
                           key={index}
@@ -118,8 +126,10 @@ const CourseItem = () => {
                         </div>
                       )
                     )}
+
                     <span className="text-xs text-gray-300">{`${item.total_lesson_completed}/${item.total_lesson}`}</span>
                   </div>
+
                   <Button
                     onClick={() =>
                       router.push(
@@ -145,9 +155,11 @@ const CourseItem = () => {
         {details.length == 0 ? (
           <div className="flex items-center justify-center flex-col gap-9">
             <Image alt="empty-box" src={empty} />
+
             <p className="text-gray-100 text-base font-normal ">
               You will find your finished courses here.
             </p>
+
             <Button onClick={() => router.push("/courses/all")}>
               Start Learning
             </Button>
@@ -167,6 +179,7 @@ const CourseItem = () => {
                     >
                       {detail.title}
                     </h1>
+
                     <div
                       className={`${
                         getLastPathName(pathname) === "progress"
@@ -194,26 +207,31 @@ const CourseItem = () => {
                               blurDataURL={PLACEHOLDER_BASE64}
                             />
                           </div>
+
                           <div
                             className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: detail.description,
                             }}
                           />
+
                           <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
                             <div className="flex flex-col gap-2">
                               <span className="line-clamp-2 leading-6">
                                 {`Completed: ${format(
                                   new Date((detail.completed_at || 1) * 1000),
-                                  "EEE MMM dd yyyy HH:mm:ss"
+
+                                  "MMM do, yyyy HH:mm"
                                 )}`}
                               </span>
+
                               {detail.reward_is_claimed === 1 && (
                                 <span className="line-clamp-2 leading-6">
                                   Claimed
                                 </span>
                               )}
                             </div>
+
                             {detail.reward_is_claimed === 1 ? (
                               <Button
                                 onClick={() =>
@@ -224,18 +242,48 @@ const CourseItem = () => {
                               </Button>
                             ) : (
                               <Button
+                                type="button"
                                 onClick={() =>
                                   handleClaimReward(detail.reward_id)
                                 }
+                                disabled={isBefore(
+                                  new Date(),
+
+                                  new Date(detail.reward_released_date * 1000)
+                                )}
+                                className={`line-clamp-1 md:block   ${
+                                  detail.is_finished === 0
+                                    ? "opacity-30"
+                                    : "btn__contain-shadow "
+                                }`}
                               >
                                 Claim reward
                               </Button>
+                            )}
+
+                            {detail.is_finished === 1 &&
+                            isBefore(
+                              new Date(),
+
+                              new Date(detail.reward_released_date * 1000)
+                            ) ? (
+                              <span className="text-blue-100 text-xs line-clamp-2">
+                                Reward will be released on{" "}
+                                {format(
+                                  detail.reward_released_date * 1000,
+
+                                  "MMM do, yyyy HH:mm"
+                                )}
+                              </span>
+                            ) : (
+                              " "
                             )}
                           </div>
                         </>
                       ) : (
                         ""
                       )}
+
                       <LessonCourse
                         campaign={detail.slug}
                         detail={detail.list_courses?.data}
@@ -247,6 +295,7 @@ const CourseItem = () => {
                 <>
                   <div className="flex gap-4">
                     <SkeletionCard width="332px" height="186px" radius="16px" />
+
                     <div className="flex justify-between w-[650px] mt-2">
                       <div className="flex flex-col gap-2">
                         <SkeletionCard
@@ -254,33 +303,39 @@ const CourseItem = () => {
                           height="30px"
                           radius="16px"
                         />
+
                         <SkeletionCard
                           width="142px"
                           height="30px"
                           radius="16px"
                         />
+
                         <SkeletionCard
                           width="212px"
                           height="30px"
                           radius="16px"
                         />
+
                         <SkeletionCard
                           width="272px"
                           height="30px"
                           radius="16px"
                         />
+
                         <SkeletionCard
                           width="142px"
                           height="30px"
                           radius="16px"
                         />
                       </div>
+
                       <div className="flex flex-col justify-between">
                         <SkeletionCard
                           width="282px"
                           height="30px"
                           radius="16px"
                         />
+
                         <SkeletionCard
                           width="282px"
                           height="30px"
@@ -292,7 +347,9 @@ const CourseItem = () => {
                 </>
               )}
             </div>
+
             {/* Pagination */}
+
             <div className="mt-[60px]">
               <ReactPaginate
                 breakLabel="..."

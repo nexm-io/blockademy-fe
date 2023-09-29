@@ -12,9 +12,10 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 const AuthorList = () => {
   const dispatch = useAppDispatch();
   const listAuthor = useAppSelector((state) => state.author.data);
+
   const is_loading = useAppSelector((state) => state.author.isLoading);
   const pagination = useAppSelector((state) => state.author.pagination);
-  console.log("AuthorList ~ pagination:", pagination);
+
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
   const [limit] = useState<number>(12);
@@ -85,38 +86,31 @@ const AuthorList = () => {
                     key={index}
                     className="flex flex-col items-center justify-between h-[300px] gap-3 pb-4 pt-8 bg-white-100 shadow-lg hover:shadow-3xl rounded-lg border border-gray-200 mb-4"
                   >
-                    <div className="flex flex-col items-center justify-between gap-3">
-                      <div className="w-[120px] h-[120px] rounded-full border border-[#D9D9D9]">
-                        <Image
-                          alt="author"
-                          src={author.image.original_image || img}
-                          width={120}
-                          height={120}
-                          className="flex rounded-full w-full h-full object-contain"
-                        />
-                      </div>
-                      <div className="flex flex-col items-center justify-center">
-                        <p className="text-[24px] font-semibold truncate max-w-[240px]">
-                          {author.first_name + " " + author.last_name}
-                        </p>
-                        <div className="flex gap-4">
-                          <span className="text-xs text-[#727A88] leading-[18px]">
-                            Total posts:{" "}
-                            <span className="text-black-300">
-                              {author.total_post}
+                    <Link href={`/authors/${author.slug}`}>
+                      <div className="flex flex-col items-center justify-between gap-3">
+                        <div className="w-[120px] h-[120px] rounded-full border border-[#D9D9D9]">
+                          <Image
+                            alt="author"
+                            src={author.image.original_image || img}
+                            width={120}
+                            height={120}
+                            className="flex rounded-full w-full h-full object-fill"
+                          />
+                        </div>
+                        <div className="flex flex-col items-center justify-center">
+                          <p className="text-[24px] font-semibold truncate max-w-[240px]">
+                            {author.first_name + " " + author.last_name}
+                          </p>
+                          <div className="flex gap-4">
+                            <span className="text-xs text-[#727A88] leading-[18px]">
+                              Total posts:{" "}
+                              <span className="text-black-300">
+                                {author.total_post}
+                              </span>
                             </span>
-                          </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <Link
-                      className="flex gap-2"
-                      href={`/authors/${author.slug}`}
-                    >
-                      <Image alt="detail" src={detail} width={16} height={16} />
-                      <span className="text-blue-100 text-sm font-light cursor-pointer">
-                        View Details
-                      </span>
                     </Link>
                   </div>
                 </>
@@ -127,7 +121,7 @@ const AuthorList = () => {
           </div>
         </div>
       )}
-      {is_loading && (
+      {!is_loading && (
         <div className="">
           <ReactPaginate
             breakLabel="..."
@@ -138,6 +132,7 @@ const AuthorList = () => {
             previousLabel="<"
             renderOnZeroPageCount={null}
             className="pagination flex items-center justify-center md:gap-6 gap-4 mt-[40px]"
+            forcePage={page - 1}
           />
         </div>
       )}

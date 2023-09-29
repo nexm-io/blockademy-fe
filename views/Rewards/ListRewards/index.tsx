@@ -34,10 +34,10 @@ export default function ListRewards() {
     getRewards();
   }, [dispatch, pathname, listRewards.length]);
 
-  const handleClaimReward = async (id: any) => {
+  const handleClaimReward = async (id: number) => {
     const res = await dispatch(claimInWallet(id)).unwrap();
     res && toast.success("Claim reward successfully!");
-    router.push("/my-rewards/claimed-rewards");
+    router.push("/my-rewards/claimed-rewards");   
   };
 
   return (
@@ -113,7 +113,7 @@ export default function ListRewards() {
                             new Date(reward.released_date * 1000)
                           ) && (
                             <Button
-                              onClick={() => handleClaimReward(reward)}
+                              onClick={() => handleClaimReward(reward.id)}
                               disabled={isBefore(
                                 new Date(),
                                 new Date(reward.released_date * 1000)
@@ -131,8 +131,9 @@ export default function ListRewards() {
                             Reward will be released on{" "}
                             {format(
                               reward.released_date * 1000,
-                              "EEE MMM dd yyyy HH:mm:ss"
-                            )}
+                              "MMM do, yyyy HH:mm"
+                        )}
+                        {" "}
                           </span>
                         ) : (
                           " "

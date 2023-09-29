@@ -1,4 +1,5 @@
 export interface AccountSettingResponse {
+  error: any;
   success: boolean;
   isLoading: boolean;
   message: string;

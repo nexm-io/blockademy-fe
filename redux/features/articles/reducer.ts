@@ -17,6 +17,7 @@ const initialState: ArticleListResponse = {
   dataTrending: null,
   dataRecommend: null,
   isLoading: false,
+  isChange: false,
   pagination: {
     total: 0,
     count: 0,
@@ -114,15 +115,18 @@ const articleReducer = createReducer(initialState, (builder) => {
     });
   builder
     .addCase(getArticleDetail.pending, (state) => {
+      state.isChange=true
       state.isLoading = true;
       state.error = null;
     })
     .addCase(getArticleDetail.fulfilled, (state, action) => {
+      state.isChange=false
       state.isLoading = false;
       state.detail = action.payload.data;
       state.error = null;
     })
     .addCase(getArticleDetail.rejected, (state, action: PayloadAction<any>) => {
+      state.isChange=false
       state.isLoading = false;
       // state.error = action.payload.data;
     });

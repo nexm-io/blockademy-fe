@@ -19,22 +19,30 @@ export const updateAccountDetail = createAsyncThunk<
   AccountSettingResponse,
   any
 >("account/updateAccountDetail", async (details) => {
-  const response = await api.post(`/api/v10/user/update-profile`, details, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  return response.data;
-});
-
-export const updateImageAccount = createAsyncThunk<AccountSettingResponse, any>(
-  "account/updateImageAccount",
-  async (image) => {
-    const response = await api.post(`/api/v10/user/update-image`, image, {
+  try {
+    const response = await api.post(`/api/v10/user/update-profile`, details, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
+  } catch (error: any) {
+    return error.response.data;
+  }
+});
+
+export const updateImageAccount = createAsyncThunk<AccountSettingResponse, any>(
+  "account/updateImageAccount",
+  async (image) => {
+    try {
+      const response = await api.post(`/api/v10/user/update-image`, image, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return error.response.data;
+    }
   }
 );

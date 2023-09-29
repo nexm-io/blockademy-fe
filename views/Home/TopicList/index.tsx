@@ -27,7 +27,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
   const [tagParam, setTagParam] = useState<string[] | undefined>(undefined);
   const [tag, setTag] = useState<any>([]);
   const [page] = useState<number>(1);
-  const [limit] = useState<number>(7);
+  const [limit] = useState<number>(10);
   const dispatch = useAppDispatch();
   const data = useAppSelector((state: RootState) => state.articles.data);
   const isLoading = useAppSelector(
@@ -89,11 +89,11 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
         <div className="max-w-[1152px] mx-auto">
           {/* Topics */}
           <div className="flex gap-8 md:pt-[62px] pt-4 items-center pl-2">
-            <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg ">
+            <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg self-start">
               Topics:
             </h3>
             <div className="flex md:flex-row flex-col md:gap-[15px] gap-2 md:flex-wrap overflow-hidden ">
-              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-full flex-wrap h-8">
+              <div className="flex gap-2 md:gap-[15px] w-[275px] md:w-[90%] flex-wrap h-full">
                 {dataTags ? (
                   <TagItem
                     dataTags={dataTags}

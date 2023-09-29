@@ -31,14 +31,16 @@ export const getLatestArticle = createAsyncThunk<
     params?: string;
     page?: number;
     limit?: number;
-    tags?: string;
+    levelParam?: string;
+    tags?: string[] | string;
     time?: number[];
   }
 >(
   "articles/latest",
-  async ({ limit = 6, page = 1, params = "created_at", tags = " ", time = " "}) => {
+  async ({ limit = 6, page = 1, params = "created_at", tags = " ", time = " ",levelParam}) => {
+    const readLevelParam = levelParam ? `&level=${levelParam}` : "";
     const response = await api.get(
-      `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}&read_time=${time}&sort_field=${params}`
+      `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}${readLevelParam}&read_time=${time}&sort_field=${params}`
     );
     return response.data;
   }
@@ -69,7 +71,7 @@ export const getTrendingArticle = createAsyncThunk<
     page?: number;
     limit?: number;
     trending?: number;
-    levelParam?: "beginner" | "intermediate" | "advance";
+    levelParam?: string;
     tagParam?: string[];
     time?: number[];
   }
