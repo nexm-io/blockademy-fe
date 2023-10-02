@@ -48,7 +48,7 @@ export interface AuthState {
   success: boolean;
   message: string;
   error: boolean;
-  token: string;
+  token: string | null;
   data: any;
 }
 
@@ -59,7 +59,7 @@ export const initialState: AuthState = {
   isLoading: false,
   message: " ",
   error: false,
-  token: "",
+  token: null,
   data: {},
 };
 

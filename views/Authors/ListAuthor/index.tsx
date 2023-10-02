@@ -15,6 +15,7 @@ const AuthorList = () => {
 
   const is_loading = useAppSelector((state) => state.author.isLoading);
   const pagination = useAppSelector((state) => state.author.paginationAuthor);
+  const loadingPost = useAppSelector((state) => state.author.isLoadingPost);
 
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
@@ -37,7 +38,7 @@ const AuthorList = () => {
 
   return (
     <div className="md:mt-10 mt-4 min-h-screen flex flex-col justify-between">
-      {is_loading ? (
+      {(is_loading) ? (
         <div className="mt-2 ">
           <SkeletionCard
             height="40px"
@@ -79,7 +80,7 @@ const AuthorList = () => {
           </div>
 
           <div className="grid grid-cols-4 gap-5">
-            {listAuthor && listAuthor.length > 0 ? (
+            {(listAuthor && listAuthor.length > 0 && !is_loading) ? (
               listAuthor.map((author, index) => (
                 <>
                   <div

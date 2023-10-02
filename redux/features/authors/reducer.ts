@@ -7,6 +7,7 @@ const initialState: AuthorResponse = {
   data: null,
   message: "",
   isLoading: false,
+  isLoadingPost: false,
   pagination: {
     total: 0,
     count: 0,
@@ -44,28 +45,28 @@ const authorReducer = createReducer(initialState, (builder) => {
 
   builder
     .addCase(getAuthorPost.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingPost = true;
       state.error = null;
     })
     .addCase(getAuthorPost.fulfilled, (state, action) => {
-      state.isLoading = false;
+      state.isLoadingPost = false;
       state.dataPost = action.payload.data;
       state.pagination = action.payload.pagination;
       state.error = null;
     })
 
     .addCase(getListAuthor.pending, (state) => {
-      state.isLoading = true;
+      // state.isLoading = true;
       state.error = null;
     })
     .addCase(getListAuthor.fulfilled, (state, action) => {
-      state.isLoading = false;
+      // state.isLoading = false;
       state.data = action.payload.data;
       state.paginationAuthor = action.payload.pagination;
       state.error = null;
     })
     .addCase(getListAuthor.rejected, (state, action: PayloadAction<any>) => {
-      state.isLoading = true;
+      // state.isLoading = true;
       state.error = action.payload.data;
     });
 });

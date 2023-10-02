@@ -152,22 +152,36 @@ const CourseItem = () => {
   return (
     <>
       <div className="w-full flex items-center justify-center md:px-3">
-        {details.length == 0 ? (
-          <div className="flex items-center justify-center flex-col gap-9">
-            <Image alt="empty-box" src={empty} />
+        {isLoading ? (
+          <>
+            <div className="flex gap-4">
+              <SkeletionCard width="332px" height="186px" radius="16px" />
 
-            <p className="text-gray-100 text-base font-normal ">
-              You will find your finished courses here.
-            </p>
+              <div className="flex justify-between w-[650px] mt-2">
+                <div className="flex flex-col gap-2">
+                  <SkeletionCard width="222px" height="30px" radius="16px" />
 
-            <Button onClick={() => router.push("/courses/all")}>
-              Start Learning
-            </Button>
-          </div>
+                  <SkeletionCard width="142px" height="30px" radius="16px" />
+
+                  <SkeletionCard width="212px" height="30px" radius="16px" />
+
+                  <SkeletionCard width="272px" height="30px" radius="16px" />
+
+                  <SkeletionCard width="142px" height="30px" radius="16px" />
+                </div>
+
+                <div className="flex flex-col justify-between">
+                  <SkeletionCard width="282px" height="30px" radius="16px" />
+
+                  <SkeletionCard width="282px" height="30px" radius="8px" />
+                </div>
+              </div>
+            </div>
+          </>
         ) : (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <div className="w-full flex flex-col">
-              {!isLoading && details && details.length > 0 ? (
+              {details && details.length > 0 ? (
                 details.map((detail, index) => (
                   <div key={index} className="mt-12 first:mt-0 mx-7 md:mx-0">
                     <h1
@@ -207,14 +221,12 @@ const CourseItem = () => {
                               blurDataURL={PLACEHOLDER_BASE64}
                             />
                           </div>
-
                           <div
                             className="process_description flex flex-col gap-3 text-base md:min-w-[500px] md:max-w-[500px] overflow-hidden"
                             dangerouslySetInnerHTML={{
                               __html: detail.description,
                             }}
                           />
-
                           <div className="text-xs flex flex-col-reverse md:flex-col justify-between md:max-w-[200px]">
                             <div className="flex flex-col gap-2">
                               <span className="line-clamp-2 leading-6">
@@ -271,7 +283,6 @@ const CourseItem = () => {
                                 Reward will be released on{" "}
                                 {format(
                                   detail.reward_released_date * 1000,
-
                                   "MMM do, yyyy HH:mm"
                                 )}
                               </span>
@@ -293,56 +304,16 @@ const CourseItem = () => {
                 ))
               ) : (
                 <>
-                  <div className="flex gap-4">
-                    <SkeletionCard width="332px" height="186px" radius="16px" />
+                  <div className="flex items-center justify-center flex-col gap-9">
+                    <Image alt="empty-box" src={empty} />
 
-                    <div className="flex justify-between w-[650px] mt-2">
-                      <div className="flex flex-col gap-2">
-                        <SkeletionCard
-                          width="222px"
-                          height="30px"
-                          radius="16px"
-                        />
+                    <p className="text-gray-100 text-base font-normal ">
+                      You will find your finished courses here.
+                    </p>
 
-                        <SkeletionCard
-                          width="142px"
-                          height="30px"
-                          radius="16px"
-                        />
-
-                        <SkeletionCard
-                          width="212px"
-                          height="30px"
-                          radius="16px"
-                        />
-
-                        <SkeletionCard
-                          width="272px"
-                          height="30px"
-                          radius="16px"
-                        />
-
-                        <SkeletionCard
-                          width="142px"
-                          height="30px"
-                          radius="16px"
-                        />
-                      </div>
-
-                      <div className="flex flex-col justify-between">
-                        <SkeletionCard
-                          width="282px"
-                          height="30px"
-                          radius="16px"
-                        />
-
-                        <SkeletionCard
-                          width="282px"
-                          height="30px"
-                          radius="8px"
-                        />
-                      </div>
-                    </div>
+                    <Button onClick={() => router.push("/courses/all")}>
+                      Start Learning
+                    </Button>
                   </div>
                 </>
               )}

@@ -129,7 +129,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 : ""
             }
             ${topic ? "mb-2" : ""} ${
-              topicBalance ? "text-white-100 line-clamp-2" : ""
+              topicBalance ? "text-white-100 line-clamp-2  max-w-[180px]" : ""
             } font-bold 
          `}
           >
