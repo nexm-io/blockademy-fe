@@ -13,6 +13,8 @@ import ListCardTrending from "@/views/Home/ListCardTrending";
 import ListCardRecommend from "@/views/Home/ListCardRecommend";
 import { useEffect, useState } from "react";
 import { UpArrowAlt } from "@styled-icons/boxicons-solid";
+import Image from 'next/image';
+import BackToTop from '@/public/icons/backToTop.svg'
 
 const MainPage = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -69,12 +71,10 @@ const MainPage = () => {
       <TutorialStart />
       <NoSignal />
       {showBackToTop && (
-        <button
-          className="fixed bottom-[60px] right-[60px] animate-bounce w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-300"
-          onClick={scrollToTop}
-        >
-          <UpArrowAlt className="text-white-200 p-1" />
-        </button>
+        <button className="fixed flex items-center justify-center bottom-[60px] right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl" onClick={scrollToTop}>
+      
+        <Image alt="btn" src={BackToTop} width={40} height={40}/>
+      </button>
       )}
     </>
   );

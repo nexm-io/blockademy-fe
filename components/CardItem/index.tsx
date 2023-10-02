@@ -91,10 +91,10 @@ const CardItem: React.FC<CardItemProps> = ({
                   : defaultImg
               }
               className={`${
-                topicBalance ? "w-[352px] md:h-full !h-[100px]" : "w-full"
+                topicBalance ? "!w-[177px] md:h-full !h-[100px]" : "w-full"
               } ${
                 topic ? "md:h-full h-[250px]" : ""
-              } h-[210px] object-cover md:min-w-[352px] rounded-2xl`}
+              } h-[210px] object-cover md:min-w-[177px] rounded-2xl`}
               width={352}
               height={198}
               placeholder="blur"
@@ -119,8 +119,8 @@ const CardItem: React.FC<CardItemProps> = ({
                 ? "text-[30px] text-white-100"
                 : "text-lg text-black-100 leading-7"
             } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 "} ${
-              topicReverse ? "md:text-right text-left basis-[40px]" : ""
-            } ${!image ? "line-clamp-none " : "line-clamp-1 "}
+              topicReverse ? "md:text-right text-left " : ""
+            } ${!image ? "line-clamp-none " : "line-clamp-2 "}
             ${
               status === "list"
                 ? "h-[56px] basis-[56px] md:m-6"
@@ -129,7 +129,7 @@ const CardItem: React.FC<CardItemProps> = ({
                 : ""
             }
             ${topic ? "mb-2" : ""} ${
-              topicBalance ? "text-white-100 line-clamp-2  max-w-[180px]" : ""
+              topicBalance ? "text-white-100 line-clamp-2" : ""
             } font-bold 
          `}
           >
