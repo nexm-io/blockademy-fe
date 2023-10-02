@@ -19,6 +19,7 @@ const Header = () => {
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const userIconRef = useRef<HTMLDivElement | null>(null);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
+  const token = useAppSelector((state) => state.auth.token);
 
   const userAccount = useAppSelector((state) => state.account.data);
   let email = "";
@@ -83,7 +84,7 @@ const Header = () => {
           </div>
         </div>
         <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
-          {isAuthenticated ? (
+          {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
                 className="w-[40px] h-[40px] relative not-prose cursor-pointer select-none"

@@ -6,18 +6,54 @@ import ArticleShare from "@/views/Articles/ArticleShare";
 import ArticleTag from "@/views/Articles/ArticlesTag";
 import IsLoginForm from "@/components/isLoginForm";
 import ArticleRelate from "@/views/Articles/ArticleRelate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getArticleDetail } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { toast } from "react-toastify";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
 import Head from "next/head";
+import {UpArrowAlt} from '@styled-icons/boxicons-solid'
+import Button from "@/components/Common/Button";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
   const is_loading = useAppSelector((state) => state.articles.isChange);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+      const pageHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+      // Calculate the position where the button should appear/disappear
+      const scrollTrigger = 0.6;
+      const hideTrigger = 0.95;
+
+      const shouldShowBackToTop = scrollPosition / pageHeight >= scrollTrigger;
+      const shouldHideBackToTop = scrollPosition / pageHeight >= hideTrigger;
+
+      setShowBackToTop(shouldShowBackToTop);
+
+      // Hide the button when the user reaches the bottom
+      if (shouldHideBackToTop) {
+        setShowBackToTop(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const getDetail = async () => {
       await dispatch(getArticleDetail(`${params.slug}`));
@@ -99,6 +135,11 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                   </div>
                 </div>
               </div>
+              {showBackToTop && (
+                <button className="fixed bottom-[60px] right-[60px] animate-bounce w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-300" onClick={scrollToTop}>
+                  <UpArrowAlt className="text-white-200 p-1"/>
+                </button>
+              )}
             </>
           )}
         </>

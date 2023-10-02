@@ -22,12 +22,13 @@ const authReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loginAuth.rejected, (state) => {
       state.isAuthenticated = false;
-      
     });
 
   builder
     .addCase(userRegister.pending, (state) => {
       state.success = false;
+      state.isLoading = true;
+
     })
     .addCase(userRegister.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -87,15 +88,16 @@ const authReducer = createReducer(initialState, (builder) => {
 
   builder
     .addCase(logoutAuth.pending, (state) => {
-      state.isAuthenticated = true;
+      state.isLoading = true;
     })
     .addCase(logoutAuth.fulfilled, (state) => {
       state.isAuthenticated = false;
-      state.token = "";
+      state.token = null;
       state.user = null;
     })
     .addCase(logoutAuth.rejected, (state) => {
-      state.isAuthenticated = true;
+      state.isAuthenticated = false;
+      state.isLoading = false;
     });
 
     builder

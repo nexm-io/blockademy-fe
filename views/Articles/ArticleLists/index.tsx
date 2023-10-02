@@ -68,6 +68,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     (state: RootState) => state.articles.pagination
   );
 
+  const is_loading = useAppSelector(state => state.articles.isLoading)
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
@@ -197,7 +198,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
               topic={false}
             />
           ))
-        ) : currentData ? (
+        ) : (currentData && !is_loading) ? (
           currentData.map((item, index) => (
             <CardItem
               key={index}

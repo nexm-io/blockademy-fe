@@ -57,7 +57,7 @@ const CourseLists = function () {
 
   return (
     <>
-      {isLoading && details && details.length !== 0 ? (
+      {isLoading ? (
         <>
           {Array.from({ length: 3 }, (_, index) => (
             <>
@@ -66,8 +66,8 @@ const CourseLists = function () {
           ))}
         </>
       ) : (
-        details &&
-        details.length !== 0 &&
+        (details &&
+          details.length !== 0) ?
         details.map((section: CourseTypes) => (
           <div className="md:mt-12 mt-8 lg:mx-0 mx-6" key={section.title}>
             <div>
@@ -213,7 +213,9 @@ const CourseLists = function () {
               </div>
             </div>
           </div>
-        ))
+        )) : <div>
+          Not have any course
+        </div>
       )}
 
       {/* Pagination */}

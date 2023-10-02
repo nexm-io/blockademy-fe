@@ -8,6 +8,7 @@ import {
 
 export interface AuthorResponse {
   isLoading: boolean;
+  isLoadingPost: boolean;
   success?: boolean;
   message: string;
   error: any;
