@@ -91,10 +91,10 @@ const CardItem: React.FC<CardItemProps> = ({
                   : defaultImg
               }
               className={`${
-                topicBalance ? "!w-[177px] md:h-full !h-[100px]" : "w-full"
+                topicBalance ? "!w-[177px] md:min-w-[177px] md:h-full !h-[100px]" : "w-full md:min-w-[352px]"
               } ${
-                topic ? "md:h-full h-[250px]" : ""
-              } h-[210px] object-cover md:min-w-[177px] rounded-2xl`}
+                topic ? "md:h-full h-[250px]" : "md:min-w-[177px]"
+              } h-[210px] object-cover  rounded-2xl max-w-[400px]`}
               width={352}
               height={198}
               placeholder="blur"
