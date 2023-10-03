@@ -164,7 +164,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
           {/* Topic Item */}
           <div className="mt-[50px] crypto__list">
             {/* h1 */}
-            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1  lg:mx-0 mx-3">
+            <div className="flex md:flex-row flex-col gap-4 bg-black-200 rounded-2xl crypto__h1 lg:mx-0 mx-3">
               {!isLoading && data ? (
                 data
                   .slice(0, 1)

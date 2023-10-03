@@ -34,6 +34,7 @@ const AuthorDetail = () => {
   const listAuthor = useAppSelector((state) => state.author.data);
   const pagination = useAppSelector((state) => state.author.pagination);
   const itemsPerPage = Number(pagination?.per_page) || 1;
+  const loadingPost = useAppSelector((state) => state.author.isLoadingPost);
 
   useEffect(() => {
     dispatch(getAuthorProfile(getLastPathName(pathname)));
@@ -56,7 +57,7 @@ const AuthorDetail = () => {
   };
   return (
     <div className="mt-4 max-w-[1440px] pt-8">
-      {isLoading ? (
+      {(isLoading && loadingPost) ? (
         <>
           <SkeletionCard height="40px" width="350px" radius="999px" />
           <div className="flex justify-between">
@@ -155,7 +156,7 @@ const AuthorDetail = () => {
               <div className="w-6 h-2 rounded-lg bg-blue-100"></div>
               <h2 className="text-[32px] font-bold ">All posts by author</h2>
             </div>
-            {authorPost?.map((item) => (
+            {!loadingPost && authorPost?.map((item) => (
               <Link href={`/articles/${item?.slug}`} key={item.id}>
                 <div className="flex flex-col md:flex-row gap-4 rounded-lg shadow-4xl cursor-pointer hover:shadow-3xl transition duration-200 ease-linear md:mx-0 mx-4">
                   <div className="h-[170px] md:basis-[300px] basis-[200px]">

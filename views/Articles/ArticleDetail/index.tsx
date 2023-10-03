@@ -6,18 +6,58 @@ import ArticleShare from "@/views/Articles/ArticleShare";
 import ArticleTag from "@/views/Articles/ArticlesTag";
 import IsLoginForm from "@/components/isLoginForm";
 import ArticleRelate from "@/views/Articles/ArticleRelate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getArticleDetail } from "@/redux/features/articles/action";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { toast } from "react-toastify";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
 import Head from "next/head";
+import { UpArrowAlt } from "@styled-icons/boxicons-solid";
+import Image from "next/image";
+import BackToTop from "@/public/icons/backToTop.svg";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
   const is_loading = useAppSelector((state) => state.articles.isChange);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [bottom, setBottom] = useState(false)
+  useEffect(() => {
+    function handleScroll() {
+      const scrollPosition =
+        window.scrollY || document.documentElement.scrollTop;
+      const pageHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
+
+      const scrollTrigger = 0.5;
+      const hideTrigger = 0.9;
+
+      const shouldShowBackToTop = scrollPosition / pageHeight >= scrollTrigger;
+      const shouldHideBackToTop = scrollPosition / pageHeight >= hideTrigger;
+
+      setShowBackToTop(shouldShowBackToTop);
+      if (shouldHideBackToTop) {
+        setBottom(true)
+      } else {
+        setBottom(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const getDetail = async () => {
       await dispatch(getArticleDetail(`${params.slug}`));
@@ -38,7 +78,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   };
 
   return (
-    <>
+    <div className="relative">
       {is_loading ? (
         <div className="my-[60px]">
           <div className="flex gap-2 mb-[48px]">
@@ -98,12 +138,23 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                     {!isLogin && <IsLoginForm />}
                   </div>
                 </div>
-              </div>
+              </div> 
+              {showBackToTop && (
+              <div className={`flex justify-end w-full  transition-all duration-200 ease-linear fixed right-[75px]  ${!bottom ? 'bottom-[100px]' : 'bottom-[180px]'}`}>
+                  <button
+                  className={` flex items-center justify-center animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl transition-all duration-200 ease-linear`}
+                  onClick={scrollToTop}
+                >
+                  {/* <UpArrowAlt className="text-white-200 p-1"/> */}
+                  <Image alt="btn" src={BackToTop} width={40} height={40} />
+                </button>
+                </div>
+              )}
             </>
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 

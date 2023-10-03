@@ -13,6 +13,7 @@ export const loginAuth = createAsyncThunk<
     return error.response.data;
   }
 });
+
 export const logoutAuth = createAsyncThunk<AuthResponse>(
   "auth/logout",
   async () => {

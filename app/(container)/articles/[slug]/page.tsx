@@ -23,7 +23,7 @@ export default function ArticleDetail({
   params: { slug: string };
 }) {
   return (
-    <>
+    <div className="relative">
       <GiftHeader />
       <ArticleDetailPage params={params} />
       <div className=" full-bleed__footerArticle flex justify-center items-center bg-blue-100  text-white-100 h-[80px]">
@@ -32,6 +32,6 @@ export default function ArticleDetail({
         </Link>
         <span className="ml-5 font-bold cursor-pointer">&rarr;</span>
       </div>
-    </>
+    </div>
   );
 }
