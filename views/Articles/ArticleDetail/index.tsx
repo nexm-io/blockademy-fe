@@ -140,9 +140,9 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                 </div>
               </div> 
               {showBackToTop && (
-              <div className={`flex justify-end w-full bottom-[100px]  ${!bottom ? 'fixed right-[75px]' : 'sticky right-[-75px] h-0'}`}>
+              <div className={`flex justify-end w-full  transition-all duration-200 ease-linear fixed right-[75px]  ${!bottom ? 'bottom-[100px]' : 'bottom-[180px]'}`}>
                   <button
-                  className={`${bottom ? 'relative right-[-85px] bottom-[68px]': ""} flex items-center justify-center animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl transition-all duration-200 ease-linear`}
+                  className={` flex items-center justify-center animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl transition-all duration-200 ease-linear`}
                   onClick={scrollToTop}
                 >
                   {/* <UpArrowAlt className="text-white-200 p-1"/> */}
