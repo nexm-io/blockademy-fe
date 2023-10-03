@@ -10,6 +10,8 @@ import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 
 const ArticleRelate = ({ id }: { id: number }) => {
   const relateList = useAppSelector((state) => state.articles.data);
+  const isLoading = useAppSelector((state) => state.articles.isLoading);
+  
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getListArticle = async () => {
@@ -23,7 +25,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
       <span className="block font-semibold text-[20px] text-black-100 leading-28px">
         Related Articles
       </span>
-      {relateList ? (
+      {(!isLoading && relateList) ? (
         relateList.map((post, index: number) => (
           <Link href={`/articles/${post.slug}`} key={index}>
             <div className="flex flex-col md:max-w-[250px]">

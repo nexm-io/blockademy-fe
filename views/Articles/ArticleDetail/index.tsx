@@ -12,8 +12,9 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { toast } from "react-toastify";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
 import Head from "next/head";
-import {UpArrowAlt} from '@styled-icons/boxicons-solid'
-import Button from "@/components/Common/Button";
+import { UpArrowAlt } from "@styled-icons/boxicons-solid";
+import Image from "next/image";
+import BackToTop from "@/public/icons/backToTop.svg";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
@@ -21,24 +22,26 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const [showBackToTop, setShowBackToTop] = useState(false);
-
+  const [bottom, setBottom] = useState(false)
   useEffect(() => {
     function handleScroll() {
-      const scrollPosition = window.scrollY || document.documentElement.scrollTop;
-      const pageHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPosition =
+        window.scrollY || document.documentElement.scrollTop;
+      const pageHeight =
+        document.documentElement.scrollHeight -
+        document.documentElement.clientHeight;
 
-      // Calculate the position where the button should appear/disappear
-      const scrollTrigger = 0.6;
-      const hideTrigger = 0.95;
+      const scrollTrigger = 0.5;
+      const hideTrigger = 0.9;
 
       const shouldShowBackToTop = scrollPosition / pageHeight >= scrollTrigger;
       const shouldHideBackToTop = scrollPosition / pageHeight >= hideTrigger;
 
       setShowBackToTop(shouldShowBackToTop);
-
-      // Hide the button when the user reaches the bottom
       if (shouldHideBackToTop) {
-        setShowBackToTop(false);
+        setBottom(true)
+      } else {
+        setBottom(false);
       }
     }
     window.addEventListener("scroll", handleScroll);
@@ -46,6 +49,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -74,7 +78,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   };
 
   return (
-    <>
+    <div className="relative">
       {is_loading ? (
         <div className="my-[60px]">
           <div className="flex gap-2 mb-[48px]">
@@ -134,17 +138,23 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                     {!isLogin && <IsLoginForm />}
                   </div>
                 </div>
-              </div>
+              </div> 
               {showBackToTop && (
-                <button className="fixed bottom-[60px] right-[60px] animate-bounce w-10 h-10 rounded-full bg-blue-100 hover:bg-blue-300" onClick={scrollToTop}>
-                  <UpArrowAlt className="text-white-200 p-1"/>
+              <div className={`flex justify-end w-full bottom-[100px]  ${!bottom ? 'fixed right-[75px]' : 'sticky right-[-75px] h-0'}`}>
+                  <button
+                  className={`${bottom ? 'relative right-[-85px] bottom-[68px]': ""} flex items-center justify-center animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl transition-all duration-200 ease-linear`}
+                  onClick={scrollToTop}
+                >
+                  {/* <UpArrowAlt className="text-white-200 p-1"/> */}
+                  <Image alt="btn" src={BackToTop} width={40} height={40} />
                 </button>
+                </div>
               )}
             </>
           )}
         </>
       )}
-    </>
+    </div>
   );
 };
 
