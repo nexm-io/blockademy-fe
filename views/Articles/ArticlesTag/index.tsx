@@ -9,7 +9,7 @@ const ArticleTag = ({
 }) => {
   const router = useRouter();
   return (
-    <div className="flex gap-2 my-8 px-4 md:px-0">
+    <div className="flex gap-2 mt-8 mb-4 px-4 md:px-0 flex-wrap">
       {tags.map((tag, index) => (
         <span
           key={index}
