@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: var(--font-soleil);
+}
+
 .prose :where(a):not(:where([class~="not-prose"] *)) {
   text-decoration: none;
   font-weight: normal;
