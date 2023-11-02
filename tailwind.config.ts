@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+       fontFamily: {
+        sans: ['var(--font-soleil)']
+      },
       colors: {
         black: {
           100: "#14151A",
