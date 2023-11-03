@@ -423,10 +423,10 @@ input[type="range"]::-webkit-slider-thumb:active {
   gap: 12px;
   margin-bottom: 55px;
 }
-
+/* 
 .article_content {
   font-family: "Inter", sans-serif;
-}
+} */
 
 .article_content h2 {
   font-size: 28px;
