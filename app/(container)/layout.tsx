@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import PageContainer from "@/components/PageContainer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { soleil } from "@/utils/constants";
+
 
 export const metadata: Metadata = {
   title: {
@@ -10,16 +12,18 @@ export const metadata: Metadata = {
   },
 };
 
+
+
 export default function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className={`${soleil.variable} font-sans`}>
       <Header />
       <PageContainer>{children}</PageContainer>
       <Footer />
-    </>
+    </div>
   );
 }

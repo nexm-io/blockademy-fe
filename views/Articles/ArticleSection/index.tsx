@@ -1,5 +1,6 @@
 "use client";
 import { UserArticle } from "@/redux/features/articles/type";
+import { soleil } from "@/utils/constants";
 import { formatDateSlash } from "@/utils/formatDate";
 import Link from "next/link";
 import React from "react";
@@ -16,7 +17,7 @@ export default function ArticlesSection({
   author?: UserArticle;
 }) {
   return (
-    <div className="mt-6 md:px-0 ">
+    <div className={`mt-6 md:px-0 ${soleil.variable} font-sans`}>
       <div
         className="article_content block gap-3 text-base"
         dangerouslySetInnerHTML={{ __html: sections }}
