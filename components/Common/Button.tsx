@@ -60,7 +60,7 @@ const Button: React.FC<Props> = ({
           />
         </div>
       ) : null}{" "}
-      <span
+      <div
         className={cn(
           {
             invisible: loading,
@@ -69,7 +69,7 @@ const Button: React.FC<Props> = ({
         )}
       >
         {children}
-      </span>
+      </div>
     </button>
   );
 };

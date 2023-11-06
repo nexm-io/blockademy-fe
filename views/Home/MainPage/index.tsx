@@ -1,20 +1,21 @@
 "use client";
 import TopBody from "@/views/Home/TopBody";
-import ListCard from "@/views/Home/ListCard";
 import JourneyAcademy from "@/views/Home/JourneyAcademy";
 import SpecialContent from "@/views/Home/SpecialContent";
-import TopicList from "@/views/Home/TopicList";
-import NotToKnow from "@/views/Home/NotToKnow";
-import TutorialStart from "@/views/Home/TutorialStart";
-import GiftHeader from "@/components/GiftHeader";
-import NoSignal from "@/components/NoSignal";
-import type { Metadata } from "next";
-import ListCardTrending from "@/views/Home/ListCardTrending";
-import ListCardRecommend from "@/views/Home/ListCardRecommend";
 import { useEffect, useState } from "react";
-import { UpArrowAlt } from "@styled-icons/boxicons-solid";
 import Image from 'next/image';
 import BackToTop from '@/public/icons/backToTop.svg'
+
+// TODO: remove component connection
+// import ListCard from "@/views/Home/ListCard";
+// import TopicList from "@/views/Home/TopicList";
+// import NotToKnow from "@/views/Home/NotToKnow";
+// import TutorialStart from "@/views/Home/TutorialStart";
+// import GiftHeader from "@/components/GiftHeader";
+// import NoSignal from "@/components/NoSignal";
+// import type { Metadata } from "next";
+// import ListCardTrending from "@/views/Home/ListCardTrending";
+// import ListCardRecommend from "@/views/Home/ListCardRecommend";
 
 const MainPage = () => {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -46,30 +47,9 @@ const MainPage = () => {
   };
   return (
     <>
-      <GiftHeader />
       <TopBody />
-      <ListCard
-        cardTitle="Latest Releases"
-        cardLabel="Latest releases"
-        mTop="lg:mt-[160px] md:mt-[80px] mt-[40px]"
-        urlApi="created_at"
-      />
       <JourneyAcademy />
       <SpecialContent />
-      <ListCardTrending
-        cardTitle="Trending"
-        cardLabel="Trending"
-        mTop="mt-[60px]"
-      />
-      <TopicList urlApi="created_at" />
-      <NotToKnow />
-      <ListCardRecommend
-        cardTitle="Recommend"
-        cardLabel="Recommend"
-        mTop="mt-[60px]"
-      />
-      <TutorialStart />
-      <NoSignal />
       {showBackToTop && (
         <button className="fixed flex items-center justify-center bottom-[60px] right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl" onClick={scrollToTop}>
       

@@ -6,7 +6,7 @@ import Button from "../Common/Button";
 const NoSignal = () => {
   return (
     <div className="w-full relative mt-[60px] md:mt-[98px] bg-gray-200 full-bleed__footer">
-      <div className="flex md:flex-row flex-col items-center gap-[40px] md:gap-[150px] py-5 md:py-[66px] max-w-[1152px] mx-auto ">
+      <div className="flex md:flex-row flex-col items-center gap-[40px] md:gap-[150px] py-5 md:py-[66px]">
         <Image alt="mailbox" src={mailbox} width={200}></Image>
         <div className="md:mr-[155px] mx-2 md:mx-0">
           <h2 className="md:text-[60px] text-[32px] md:text-left text-center font-bold leading-[72px] w-full mb-[10px]">
