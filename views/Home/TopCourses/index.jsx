@@ -36,8 +36,18 @@ const TopCourses = () => {
           ))}
         </div>
       </div>
-      <div>
+      <div className="grid grid-cols-4 gap-7">
         <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+        <CoursesItem />
+      </div>
+      <div className="flex justify-center mt-14">
+        <Button>Load more</Button>
       </div>
     </section>
   );

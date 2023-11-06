@@ -17,7 +17,7 @@ module.exports = {
       },
     },
     extend: {
-       fontFamily: {
+      fontFamily: {
         sans: ['var(--font-soleil)']
       },
       colors: {

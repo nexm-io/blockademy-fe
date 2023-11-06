@@ -85,3 +85,16 @@ export const Exclamation: React.FC<IconProps> = ({ fill, className }) => (
     </defs>
   </svg>
 );
+
+export const Star: React.FC<IconProps> = ({ fill, className }) => (
+  <svg
+    width={17}
+    height={15}
+    viewBox="0 0 17 15"
+    fill={fill}
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path id="Star 1" d="M8.5 0L10.9981 4.76393L16.584 5.52786L12.542 9.23607L13.4962 14.4721L8.5 12L3.50383 14.4721L4.45801 9.23607L0.416019 5.52786L6.00191 4.76393L8.5 0Z" fill="currentColor" />
+  </svg>
+)
