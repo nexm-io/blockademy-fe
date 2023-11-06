@@ -5,6 +5,7 @@ import SpecialContent from "@/views/Home/SpecialContent";
 import Topics from "@/views/Home/Topics";
 import TopCourses from "@/views/Home/TopCourses";
 import BackToTop from "@/components/BackToTop";
+import MasterConcepts from "@/views/Home/MasterConcepts";
 
 const MainPage = () => {
   return (
@@ -12,6 +13,7 @@ const MainPage = () => {
       <TopBody />
       <Topics />
       <TopCourses />
+      <MasterConcepts />
       <JourneyAcademy />
       <SpecialContent />
       <BackToTop />
