@@ -142,12 +142,17 @@ const GuidedCourses = () => {
               </ul>
             </div>
           </div>
-          <Image
-            src={guide.image}
+          <video
             width={767}
             height={472}
-            alt="guided blockchain"
-          />
+            autoPlay
+            muted
+            loop
+            preload="auto"
+            playsInline
+          >
+            <source src="/videos/guided.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </section>

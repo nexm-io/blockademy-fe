@@ -34,7 +34,7 @@ const BackToTop = () => {
   return (
     showBackToTop && (
       <button
-        className="fixed flex items-center justify-center bottom-[60px] right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl"
+        className="fixed flex items-center justify-center bottom-4 right-4 sm:bottom-[60px] sm:right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl"
         onClick={scrollToTop}
       >
         <Image alt="btn" src={IconBackToTop} width={40} height={40} />
