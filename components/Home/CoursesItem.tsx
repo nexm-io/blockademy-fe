@@ -5,10 +5,11 @@ import IconUser from "@/public/icons/user.svg";
 import IconVisor from "@/public/icons/visor.svg";
 import IconDotList from "@/public/icons/dot-list.svg";
 import { Star } from "../Icon";
+import Link from "next/link";
 
 const CoursesItem = () => {
   return (
-    <div className="cursor-pointer group">
+    <Link href="#" className="group">
       <div className="rounded overflow-hidden">
         <Image className="w-full transition-all duration-300 group-hover:scale-110" height={189} width={280} src={DemoCourse} alt="Demo course" />
       </div>
@@ -38,7 +39,8 @@ const CoursesItem = () => {
         <div className="flex items-center justify-between mt-[18px] px-2">
           <div className="flex items-center gap-2 rounded-[30px] p-2 bg-green-100/30">
             <span className="w-[6px] h-[6px] bg-green-100 rounded-full inline-block"></span>
-            <p className="text-xs leading-3 -mb-[2px] font-normal">Nguời mới</p>
+            <p className="text-xs leading-3 -mb-[2px] font-normal">Beginner</p>
+            {/*  Beginner | Intermediate | Advance */}
           </div>
           <div className="flex items-center gap-2">
             <Image src={IconDotList} width={15} height={11} alt="dot" />
@@ -46,7 +48,7 @@ const CoursesItem = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center xl:mt-36">
+    <main className="flex flex-col items-center justify-center">
       <MainPage />
     </main>
   );

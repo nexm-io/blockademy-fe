@@ -7,8 +7,8 @@ import React from "react";
 
 const Topics = () => {
   return (
-    <section className="mt-16 w-full">
-      <div className="flex items-center">
+    <section className="mt-8 sm:mt-16 w-full">
+      <div className="flex items-center flex-wrap">
         {TOPIC_LIST.map((topic) => (
           <div
             className={cn(`flex-1 border-r border-transparent`, {
@@ -24,8 +24,8 @@ const Topics = () => {
               )}
               key={topic.id}
             >
-              <Image width={66} height={66} src={topic.img} alt={topic.title} />
-              <p className="text-lg">{topic.title}</p>
+              <Image className="w-[36px] h-[36px] md:w-[66px] md:h-[66px]" width={66} height={66} src={topic.img} alt={topic.title} />
+              <p className="text-[10px] sm:text-sm md:text-lg">{topic.title}</p>
             </Link>
           </div>
         ))}

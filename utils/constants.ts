@@ -1,10 +1,10 @@
 import localFont from "next/font/local";
-import BlockchainImg from "@/public/images/home/topics/blockchain.png";
-import BackendImg from "@/public/images/home/topics/backend.png";
-import FrontendImg from "@/public/images/home/topics/frontend.png";
-import MobileImg from "@/public/images/home/topics/mobile.png";
-import GameImg from "@/public/images/home/topics/game.png";
-import QCImg from "@/public/images/home/topics/QC.png";
+import IconBlockchain from "@/public/icons/blockchain.svg";
+import IconBackend from "@/public/icons/backend.svg";
+import IconFrontend from "@/public/icons/frontend.svg";
+import IconMobile from "@/public/icons/mobile.svg";
+import IconGame from "@/public/icons/game.svg";
+import IconQC from "@/public/icons/QC.svg";
 
 export const soleil = localFont({
   src: [
@@ -28,31 +28,31 @@ export const TOPIC_LIST = [
   {
     id: "blockchain",
     title: "Blockchain",
-    img: BlockchainImg,
+    img: IconBlockchain,
   },
   {
     id: "backend",
     title: "Backend",
-    img: BackendImg,
+    img: IconBackend,
   },
   {
     id: "frontend",
     title: "Frontend",
-    img: FrontendImg,
+    img: IconFrontend,
   },
   {
     id: "mobile",
     title: "Mobile",
-    img: MobileImg,
+    img: IconMobile,
   },
   {
     id: "game",
     title: "Game",
-    img: GameImg,
+    img: IconGame,
   },
   {
     id: "qc",
     title: "QC",
-    img: QCImg,
+    img: IconQC,
   },
 ];

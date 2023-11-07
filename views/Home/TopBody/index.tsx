@@ -22,24 +22,26 @@ const TopBody: React.FC<TopBodyProps> = () => {
     dispatch(getFeaturedArticle({}));
   }, [dispatch]);
   return (
-    <section className="flex items-center gap-5 justify-between w-full">
-      <div className="flex flex-col gap-5">
-        <h1 className="text-[40px] font-bold leading-[52px]">
-          The best way to learn math and <br /> computer science
+    <section className="flex flex-col lg:flex-row items-center gap-5 justify-between w-full mt-28 lg:mt-36">
+      <div className="flex flex-col gap-5 w-full">
+        <h1 className="text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
+          The best way to learn math and <br className="hidden md:block" />{" "}
+          computer science
         </h1>
         <p className="text-gray-100 text-base">
           {`Guided interactive problem solving that's effective and fun.`}
-          <br />
+          {" "}
+          <br className="hidden sm:block" />
           {`Master concepts in 15 minutes a day.`}
         </p>
 
         <div className="mt-3">
-          <Button className="!px-6" onClick={() => push("/courses")}>
+          <Button className="lg:!px-6" onClick={() => push("/courses")}>
             <span className="font-bold">Get start</span>
           </Button>
         </div>
       </div>
-      <div className="w-3/6 flex justify-center">
+      <div className="w-full lg:w-3/6 flex justify-center">
         <Image src={StartImg} width={532} height={327} alt="start-img" />
       </div>
     </section>
