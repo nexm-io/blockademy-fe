@@ -7,7 +7,6 @@ import Link from "next/link";
 import React from "react";
 
 const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
-  console.log(blog);
   return (
     <div className="min-h-[456px] flex flex-col justify-between group">
       <div className="flex flex-col gap-3">
