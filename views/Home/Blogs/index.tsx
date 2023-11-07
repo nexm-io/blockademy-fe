@@ -307,10 +307,10 @@ const DATA = [
 const Blogs = () => {
   return (
     <section className="mt-20 w-full">
-      <h2 className="text-center text-[40px] font-bold leading-[52px] mb-[52px]">
+      <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px] mb-8 sm:mb-[52px]">
         Blockademy blog
       </h2>
-      <div className="grid grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
         {DATA.map((blog) => (
           <BlogItem blog={blog} key={blog.id} />
         ))}

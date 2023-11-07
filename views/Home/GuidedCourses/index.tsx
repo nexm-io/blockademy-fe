@@ -99,16 +99,16 @@ const GuidedCourses = () => {
     <section className="mt-10 w-full">
       <div className="flex flex-col gap-11">
         <div className="flex flex-col gap-1">
-          <h2 className="text-center text-[40px] font-bold leading-[52px]">
+          <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
             Guided courses for every journey
           </h2>
-          <p className="max-w-[806px] mx-auto text-center text-[#525252] text-xl font-bold">
+          <p className="max-w-[806px] mx-auto text-center text-[#525252] text-base sm:text-xl font-bold">
             All of our courses are crafted by award-winning teachers,
             researchers, and professionals from MIT, Caltech, Duke, Microsoft,
             Google, and more.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {TOPIC_LIST.map((topic) => (
             <div
               className={cn(
@@ -127,7 +127,7 @@ const GuidedCourses = () => {
             </div>
           ))}
         </div>
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start flex-wrap gap-10">
           <div className="flex flex-col gap-6">
             <h3 className="text-[22px] font-bold leading-8">{guide.title}</h3>
             <div className="relative">
