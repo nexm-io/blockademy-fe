@@ -10,6 +10,7 @@ import {
   getTrendingArticle,
 } from "./action";
 import { ArticleListResponse } from "./type";
+import { JSX, ReactNode } from "react";
 
 const initialState: ArticleListResponse = {
   success: false,
@@ -29,6 +30,12 @@ const initialState: ArticleListResponse = {
   error: null,
   tags: null,
   featured: null,
+  map: function (arg0: (item: any, index: any) => JSX.Element): ReactNode {
+    throw new Error("Function not implemented.");
+  },
+  slice: function (arg0: number, arg1: number): unknown {
+    throw new Error("Function not implemented.");
+  }
 };
 
 const articleReducer = createReducer(initialState, (builder) => {
