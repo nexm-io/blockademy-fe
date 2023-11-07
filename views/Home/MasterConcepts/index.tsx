@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import ImgEffective from "@/public/images/home/master-concepts/effective.png";
 import ImgLearn from "@/public/images/home/master-concepts/learn-at-your-level.svg.png";
 import ImgGuided from "@/public/images/home/master-concepts/guided-lessons.png.png";
 import ImgMotivated from "@/public/images/home/master-concepts/stay-motivated.svg.png";
@@ -9,7 +8,9 @@ import cn from "@/services/cn";
 
 const MASTER_CONTENT = [
   {
-    image: ImgEffective,
+    image: "",
+    isVideo: true,
+    src: "/videos/hands-on-learning.mp4",
     title: "Effective, hands-on learning",
     reverse: false,
     width: 500,
@@ -62,13 +63,25 @@ const MasterConcepts = () => {
             className="md:px-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 group"
           >
             <div className="overflow-hidden flex justify-center">
-              <Image
-                src={z.image}
-                width={z.width}
-                height={z.height}
-                alt={z.title}
-                className="group-hover:scale-105 transition-all duration-300 w-full"
-              />
+              {z.isVideo ? (
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  preload="auto"
+                  playsInline
+                >
+                  <source src={z.src} type="video/mp4" />
+                </video>
+              ) : (
+                <Image
+                  src={z.image}
+                  width={z.width}
+                  height={z.height}
+                  alt={z.title}
+                  className="group-hover:scale-105 transition-all duration-300 w-full"
+                />
+              )}
             </div>
             <div
               className={cn(`flex flex-col gap-2 sm:gap-5 md:px-8`, {
@@ -78,7 +91,9 @@ const MasterConcepts = () => {
               <h3 className="text-xl sm:text-[28px] leading-[33px] font-bold text-blue-100">
                 {z.title}
               </h3>
-              <p className="text-[#525252] text-base sm:text-xl leading-8">{z.desc}</p>
+              <p className="text-[#525252] text-base sm:text-xl leading-8">
+                {z.desc}
+              </p>
             </div>
           </div>
         ))}

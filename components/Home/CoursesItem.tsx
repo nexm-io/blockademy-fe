@@ -11,7 +11,7 @@ const CoursesItem = () => {
   return (
     <Link href="#" className="group">
       <div className="rounded overflow-hidden">
-        <Image className="w-full transition-all duration-300 group-hover:scale-110" height={189} width={280} src={DemoCourse} alt="Demo course" />
+        <Image className="w-full transition-all duration-500 group-hover:scale-110" height={189} width={280} src={DemoCourse} alt="Demo course" />
       </div>
       <div className="px-2">
         <div className="flex items-center gap-2 mt-6">
