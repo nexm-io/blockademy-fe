@@ -1,15 +1,15 @@
 import React from "react";
-import icon from "@/public/icons/specialcontent.svg";
+import SpecialImg from "@/public/images/home/special.png";
 import Image from "next/image";
 
 const SpecialContent = () => {
   return (
     <section className="md:mt-[74px] mt-[40px]">
-      <div className="w-full lg:h-[621px] h-auto bg-black-200 md:rounded-2xl">
-        <h2 className="text-blue-400 md:text-[38px] text-[30px] font-bold leading-[40px] text-center pt-[48px] pb-[55px]">
+      <div className="bg-black-200 md:rounded-2xl px-10 pt-10">
+        <h2 className="text-blue-400 text-center text-[40px] font-bold leading-[52px] mb-6 lg:mb-12">
           Special value from Blockademy
         </h2>
-        <div className="mx-[20px] md:mx-[40px] flex lg:flex-row flex-col gap-8">
+        <div className="flex lg:flex-row flex-col gap-8">
           <div className="flex flex-col md:gap-[49px] gap-[20px]">
             <div className="space-y-[6px]">
               <h3 className="text-white-100 text-[22px] font-bold leading-[45px]">
@@ -45,11 +45,15 @@ const SpecialContent = () => {
             </div>
           </div>
 
-          <Image
-            alt="logo-special"
-            src={icon}
-            className="lg:w-full w-[200px] md:w-[300px] mx-auto"
-          ></Image>
+          <div className="w-full">
+            <Image
+              alt="special"
+              width={428}
+              height={491}
+              className="-mb-[1px]"
+              src={SpecialImg}
+            />
+          </div>
         </div>
       </div>
     </section>

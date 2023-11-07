@@ -13,7 +13,6 @@ import Chip from "../../../components/Common/Chip";
 import TagItem from "@/components/TagItem";
 import Link from "next/link";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
-import { useSearchParams } from "next/navigation";
 
 interface TopicListProps {
   urlApi?: string;
@@ -86,7 +85,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
           data ? "h-auto" : "h-full"
         }`}
       >
-        <div className="max-w-[1152px] mx-auto">
+        <>
           {/* Topics */}
           <div className="flex gap-8 md:pt-[62px] pt-4 items-center pl-2">
             <h3 className="text-white-100 font-semibold leading-6 text-base md:text-lg self-start">
@@ -379,7 +378,7 @@ const TopicList: React.FC<TopicListProps> = ({ urlApi }) => {
               <HiOutlineArrowRight className="text-blue-400 text-[20px]" />
             </Link>
           </div>
-        </div>
+        </>
       </div>
     </section>
   );

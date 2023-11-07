@@ -62,13 +62,13 @@ const Header = () => {
     }
   };
   return (
-    <header className="bg-white-100 text-black w-full top-0 fixed z-[997] min-h-[74px]">
+    <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
       {/* Top Header */}
-      <div className="relative lg:mx-[75px] md:mx-6 mx-1 flex items-center justify-between py-4 md:px-0 px-4">
+      <div className="container relative flex items-center justify-between py-4">
         <div className="md:w-full w-[40%] flex items-center">
           <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
             <Link href="/">
-              <Image alt="logo" src={logo} className=""></Image>
+              <Image alt="logo" src={logo} width={187} height={35}></Image>
             </Link>
           </div>
           <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">

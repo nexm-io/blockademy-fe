@@ -9,8 +9,15 @@ module.exports = {
     "./views/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+      screens: {
+        xl: "1312px",
+      },
+    },
     extend: {
-       fontFamily: {
+      fontFamily: {
         sans: ['var(--font-soleil)']
       },
       colors: {
