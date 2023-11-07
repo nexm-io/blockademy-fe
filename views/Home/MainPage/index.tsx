@@ -7,6 +7,7 @@ import Topics from "@/views/Home/Topics";
 import TopCourses from "@/views/Home/TopCourses";
 import GuidedCourses from "@/views/Home/GuidedCourses";
 import MasterConcepts from "@/views/Home/MasterConcepts";
+import Blogs from "@/views/Home/Blogs";
 
 import BackToTop from "@/components/BackToTop";
 import Divider from "@/components/Divider";
@@ -22,6 +23,7 @@ const MainPage = () => {
       <GuidedCourses />
       <JourneyAcademy />
       <SpecialContent />
+      <Blogs />
       <BackToTop />
     </>
   );

@@ -15,6 +15,7 @@ const Topics = () => {
               "border-r-[#CCC]":
                 topic.id !== TOPIC_LIST[TOPIC_LIST.length - 1].id,
             })}
+            key={topic.id}
           >
             <Link
               href="/"
