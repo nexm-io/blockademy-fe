@@ -12,8 +12,10 @@ import { toast } from "react-toastify";
 import { hideEmail } from "@/utils/hideEmail";
 import { getAccountDetail } from "@/redux/features/account/action";
 import userDefault from "@/public/images/home/home-iconuser.png";
+import cn from "@/services/cn";
 
 const Header = () => {
+  const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.auth.user);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
@@ -64,7 +66,9 @@ const Header = () => {
   return (
     <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
       {/* Top Header */}
-      <div className="container relative flex items-center justify-between py-4">
+      <div className={cn(`container relative flex items-center justify-between py-4`, {
+        active: isShowMenu,
+      })}>
         <div className="md:w-full w-[40%] flex items-center">
           <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
             <Link href="/">
@@ -137,13 +141,48 @@ const Header = () => {
                   Login
                 </Button>
               </Link>
-              <Link href="/register">
+              <Link className="hidden md:block" href="/register">
                 <Button size="small" className="w-[94px]">
                   Register
                 </Button>
               </Link>
             </>
           )}
+        </div>
+        <div
+          className="hambuger block md:hidden"
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
+          <span></span>
+        </div>
+        <div
+          className={cn(
+            "fixed top-[72px] bg-white-100 transition-all duration-[0.6s] ease-in-out left-0 right-0 bottom-0 translate-x-full",
+            { "!translate-x-0": isShowMenu }
+          )}
+        >
+          <div className="flex flex-col items-center justify-center gap-4 text-base font-normal text-black-100">
+            <Link href="/articles" className="hover:text-blue-100">
+              Articles
+            </Link>
+            <Link href="/courses" className="hover:text-blue-100">
+              Courses
+            </Link>
+            <Link href="/learn-and-earn" className="hover:text-blue-100">
+              Learn & Earn
+            </Link>
+          </div>
+          {isAuthenticated && token ?
+            <></>
+            : (
+              <div className="flex justify-center mt-4">
+                <Link href="/register">
+                  <Button size="small" className="w-[94px]">
+                    Register
+                  </Button>
+                </Link>
+              </div>
+            )}
         </div>
       </div>
     </header>
