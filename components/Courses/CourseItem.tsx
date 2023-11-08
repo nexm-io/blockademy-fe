@@ -25,7 +25,7 @@ const CourseItem = () => {
           <div className="text-xs leading-3 -mb-[2px] font-normal">4.0</div>
         </div>
         <p className="text-xs mt-[10px]">Backend</p>
-        <p className="text-lg font-bold">The Complete 2023 Web Development Bootcamp</p>
+        <p className="text-lg font-bold line-clamp-2">The Complete 2023 Web Development</p>
         <div className="mt-6 flex items-center justify-between bg-[#F0F0F0] py-3 px-[14px]">
           <div className="flex items-center gap-2">
             <Image src={IconUser} width={15} height={10} alt="user" />

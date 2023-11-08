@@ -1,6 +1,7 @@
 "use client";
 import BlogItem from "@/components/Blogs/BlogItem";
 import React from "react";
+import BlogsLoading from "./BlogsLoading";
 
 const DATA = [
   {

@@ -2,7 +2,7 @@
 
 import Button from "@/components/Common/Button";
 import CourseItem from "@/components/Courses/CourseItem";
-import CourseLoading from "@/components/Courses/CourseLoading";
+import CourseLoading from "@/components/Courses/CoursesLoading";
 import React, { useState } from "react";
 
 const FILTER_OPTIONS = {
@@ -40,8 +40,8 @@ const TopCourses = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-        <CourseItem />
         {/* <CourseLoading /> */}
+        <CourseItem />
         <CourseItem />
         <CourseItem />
         <CourseItem />
