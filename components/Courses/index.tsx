@@ -1,8 +1,8 @@
 "use client";
 
 import Button from "@/components/Common/Button";
-import CourseItem from "@/components/Home/CourseItem";
-import CourseLoading from "@/components/Home/CourseLoading";
+import CourseItem from "@/components/Courses/CourseItem";
+import CourseLoading from "@/components/Courses/CourseLoading";
 import React, { useState } from "react";
 
 const FILTER_OPTIONS = {
@@ -21,7 +21,7 @@ const TopCourses = () => {
   const [courseFilter, setCourseFilter] = useState(filterButtons[0].filter);
 
   return (
-    <section className="mt-8 sm:mt-24 w-full">
+    <div className="mt-8 sm:mt-24 w-full">
       <div className="flex items-center flex-wrap gap-4 md:gap-0 justify-between mb-8">
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
           Top Courses
@@ -53,7 +53,7 @@ const TopCourses = () => {
       <div className="flex justify-center mt-14">
         <Button>Load more</Button>
       </div>
-    </section>
+    </div>
   );
 };
 

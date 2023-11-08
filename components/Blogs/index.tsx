@@ -1,5 +1,5 @@
 "use client";
-import BlogItem from "@/components/Home/BlogItem";
+import BlogItem from "@/components/Blogs/BlogItem";
 import React from "react";
 
 const DATA = [
@@ -306,7 +306,7 @@ const DATA = [
 
 const Blogs = () => {
   return (
-    <section className="mt-20 w-full">
+    <div className="mt-20 w-full">
       <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px] mb-8 sm:mb-[52px]">
         Blockademy blog
       </h2>
@@ -315,7 +315,7 @@ const Blogs = () => {
           <BlogItem blog={blog} key={blog.id} />
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
