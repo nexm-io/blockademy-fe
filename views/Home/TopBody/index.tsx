@@ -1,24 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
-import { getFeaturedArticle } from "@/redux/features/articles/action";
-
 interface TopBodyProps {
   urlApi?: string;
 }
 
 const TopBody: React.FC<TopBodyProps> = () => {
   const { push } = useRouter();
-  const dispatch = useAppDispatch();
 
-  const data = useAppSelector((state: RootState) => state.articles.featured);
-
-  useEffect(() => {
-    dispatch(getFeaturedArticle({}));
-  }, [dispatch]);
   return (
     <section className="flex flex-col lg:flex-row items-center gap-5 justify-between w-full mt-28 lg:mt-36">
       <div className="flex flex-col gap-5 w-full">
@@ -39,17 +29,8 @@ const TopBody: React.FC<TopBodyProps> = () => {
         </div>
       </div>
       <div className="w-full lg:w-4/6 flex justify-center">
-        <video
-          autoPlay
-          muted
-          loop
-          preload="auto"
-          playsInline
-        >
-          <source
-            src="/videos/landingpage_cs.mp4"
-            type="video/mp4"
-          />
+        <video autoPlay muted loop preload="auto" playsInline>
+          <source src="/videos/landingpage_cs.mp4" type="video/mp4" />
         </video>
       </div>
     </section>

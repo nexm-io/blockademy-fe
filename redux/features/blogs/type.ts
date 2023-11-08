@@ -16,9 +16,11 @@ export interface BlogDetailType {
 }
 
 export interface BlockType {
+  blogsLoading: boolean;
   data: BlogDetailType[];
 }
 
 export const defaultBlogsReducer: BlockType = {
+  blogsLoading: false,
   data: [],
 };
