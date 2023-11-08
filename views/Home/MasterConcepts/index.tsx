@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import ImgLearn from "@/public/images/home/master-concepts/learn-at-your-level.svg.png";
-import ImgGuided from "@/public/images/home/master-concepts/guided-lessons.png.png";
-import ImgMotivated from "@/public/images/home/master-concepts/stay-motivated.svg.png";
+import ImgLearn from "@/public/images/home/master-concepts/learn-at-your-level.png";
+import ImgGuided from "@/public/images/home/master-concepts/guided-lessons.png";
+import ImgMotivated from "@/public/images/home/master-concepts/stay-motivated.png";
 import Image from "next/image";
 import cn from "@/services/cn";
 

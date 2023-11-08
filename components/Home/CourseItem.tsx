@@ -7,7 +7,7 @@ import IconDotList from "@/public/icons/dot-list.svg";
 import { Star } from "../Icon";
 import Link from "next/link";
 
-const CoursesItem = () => {
+const CourseItem = () => {
   return (
     <Link href="#" className="group">
       <div className="rounded overflow-hidden">
@@ -52,4 +52,4 @@ const CoursesItem = () => {
   );
 };
 
-export default CoursesItem;
+export default CourseItem;
