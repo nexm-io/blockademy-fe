@@ -12,10 +12,10 @@ const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
       <div className="flex flex-col gap-4">
         <div className="rounded overflow-hidden relative">
           <Image
-            src={blog.image.big_image}
+            src={blog.image.original_image}
             className="w-full h-[246px] object-cover group-hover:scale-105 transition-all duration-300"
-            width="0"
-            height="0"
+            width={353}
+            height={246}
             alt={blog.title}
           />
           <div className="absolute top-7 left-8 flex items-center gap-2">

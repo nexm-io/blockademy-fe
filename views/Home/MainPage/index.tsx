@@ -4,11 +4,11 @@ import TopBody from "@/views/Home/TopBody";
 import JourneyAcademy from "@/views/Home/JourneyAcademy";
 import SpecialContent from "@/views/Home/SpecialContent";
 import Topics from "@/views/Home/Topics";
-import TopCourses from "@/views/Home/TopCourses";
 import GuidedCourses from "@/views/Home/GuidedCourses";
 import MasterConcepts from "@/views/Home/MasterConcepts";
-import Blogs from "@/views/Home/Blogs";
 
+import TopCourses from "@/components/Courses";
+import Blogs from "@/components/Blogs";
 import BackToTop from "@/components/BackToTop";
 import Divider from "@/components/Divider";
 
