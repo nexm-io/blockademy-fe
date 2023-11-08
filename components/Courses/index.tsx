@@ -40,10 +40,9 @@ const TopCourses = () => {
       loadCourses({
         limit: LIMIT,
         page,
-        sortDate: courseFilter === FILTER_OPTIONS.oldest ? "asc" : "desc",
       })
     );
-  }, [page, courseFilter]);
+  }, [page]);
 
   return (
     <div className="mt-8 sm:mt-24 w-full">

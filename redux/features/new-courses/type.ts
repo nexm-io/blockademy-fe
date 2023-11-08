@@ -1,6 +1,6 @@
 export interface CourseTypes {
   category: any;
-  course_rating: number;
+  rating_view: number;
   id: string;
   image: { original: string; thumbnail: string };
   level: {

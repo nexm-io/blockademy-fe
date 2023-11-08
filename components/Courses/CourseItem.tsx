@@ -21,7 +21,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   });
 
   const renderRating = () => {
-    const courseRating = course.course_rating;
+    const courseRating = course.rating_view;
     const maxRating = 5;
     const stars = [];
 
@@ -54,7 +54,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
         <div className="flex items-center gap-2 mt-6">
           <div className="flex items-center gap-[2px]">{renderRating()}</div>
           <div className="text-xs leading-3 -mb-[2px] font-normal">
-            {course.course_rating}
+            {course.rating_view}
           </div>
         </div>
         <p className="text-xs mt-[10px]">
