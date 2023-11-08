@@ -3,7 +3,11 @@
 import Button from "@/components/Common/Button";
 import CourseItem from "@/components/Courses/CourseItem";
 import CourseLoading from "@/components/Courses/CoursesLoading";
-import React, { useState } from "react";
+import { loadCourses } from "@/redux/features/new-courses/action";
+import { selectNewCourses } from "@/redux/features/new-courses/reducer";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import cn from "@/services/cn";
+import React, { useEffect, useState } from "react";
 
 const FILTER_OPTIONS = {
   newest: "newest",
@@ -17,8 +21,28 @@ const filterButtons = [
   { filter: FILTER_OPTIONS.overallRating, label: "Overall rating" },
 ];
 
+const LIMIT = 8;
+
 const TopCourses = () => {
   const [courseFilter, setCourseFilter] = useState(filterButtons[0].filter);
+  const [page, setPage] = useState(1);
+  const coursesRx = useAppSelector(selectNewCourses);
+  const dispatch = useAppDispatch();
+
+  const handleLoadMore = () => {
+    if (LIMIT * page <= coursesRx.meta.total) {
+      setPage(page + 1);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(
+      loadCourses({
+        limit: LIMIT,
+        page,
+      })
+    );
+  }, [page]);
 
   return (
     <div className="mt-8 sm:mt-24 w-full">
@@ -40,18 +64,19 @@ const TopCourses = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
-        {/* <CourseLoading /> */}
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
-        <CourseItem />
+        {coursesRx.data.length > 0 &&
+          coursesRx.data.map((course) => (
+            <CourseItem course={course} key={course.id} />
+          ))}
+
+        {coursesRx.coursesLoading && <CourseLoading />}
       </div>
-      <div className="flex justify-center mt-14">
-        <Button>Load more</Button>
+      <div
+        className={cn(`flex justify-center mt-14`, {
+          hidden: LIMIT * page >= coursesRx.meta.total,
+        })}
+      >
+        <Button onClick={handleLoadMore}>Load more</Button>
       </div>
     </div>
   );

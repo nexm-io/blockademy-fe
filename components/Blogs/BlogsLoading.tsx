@@ -1,9 +1,5 @@
 "use client";
-import Image from "next/image";
 import React from "react";
-import IconUser from "@/public/icons/user.svg";
-import IconVisor from "@/public/icons/visor.svg";
-import IconDotList from "@/public/icons/dot-list.svg";
 
 const BlogsLoading = ({ row = 3 }: { row?: number }) => {
   return Array(row)
