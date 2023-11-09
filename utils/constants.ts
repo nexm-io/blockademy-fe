@@ -59,22 +59,15 @@ export const TOPIC_LIST = [
 
 export const MENU = [
   {
-    activePathname: ["/articles"],
-    key: "articles",
-    label: "Articles",
-    pathname: "/articles",
-  },
-  {
     activePathname: ["/courses/all", "/courses"],
     key: "courses",
     label: "Courses",
     pathname: "/courses",
   },
   {
-    activePathname: ["/learn-and-earn"],
-    key: "learn-and-earn",
-    label: "Learn & Earn",
-    pathname: "/learn-and-earn",
+    activePathname: ["/articles"],
+    key: "articles",
+    label: "Articles",
+    pathname: "/articles",
   },
 ];
-
