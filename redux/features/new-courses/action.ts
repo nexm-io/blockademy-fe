@@ -15,3 +15,15 @@ export const loadCourses = createAsyncThunk(
     }
   }
 );
+
+export const loadDetailsCourse = createAsyncThunk(
+  "courses/load-details-course",
+  async (courseId: string) => {
+    try {
+      const { data: course } = await api.get(`/api/v10/course/${courseId}`);
+      return course.data;
+    } catch (error) {
+      return null;
+    }
+  }
+);

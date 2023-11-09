@@ -41,7 +41,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   }, [course.level?.id]);
 
   return (
-    <Link href="#" className="group mb-10">
+    <Link href={`/courses/${course.id}`} className="group mb-10">
       <div className="rounded overflow-hidden">
         <Image
           className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"

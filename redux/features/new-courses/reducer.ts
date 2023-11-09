@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { defaultNewCoursesReducer } from "./type";
 import { RootState } from "@/redux/store";
-import { loadCourses } from "./action";
+import { loadCourses, loadDetailsCourse } from "./action";
 
 const newCoursesReducer = createReducer(defaultNewCoursesReducer, (builder) => {
   builder
@@ -16,6 +16,17 @@ const newCoursesReducer = createReducer(defaultNewCoursesReducer, (builder) => {
     })
     .addCase(loadCourses.rejected, (state) => {
       state.coursesLoading = false;
+    })
+    .addCase(loadDetailsCourse.pending, (state) => {
+      state.courseDetailsLoading = true;
+    })
+    .addCase(loadDetailsCourse.fulfilled, (state, action) => {
+      if (!action.payload) return;
+      state.courseDetails = action.payload;
+      state.courseDetailsLoading = false;
+    })
+    .addCase(loadDetailsCourse.rejected, (state) => {
+      state.courseDetailsLoading = false;
     });
 });
 
