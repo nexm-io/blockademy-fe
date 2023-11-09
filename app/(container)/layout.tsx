@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PageContainer from "@/components/PageContainer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { soleil } from "@/utils/constants";
