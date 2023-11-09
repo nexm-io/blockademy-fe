@@ -6,6 +6,8 @@ import IconMobile from "@/public/icons/mobile.svg";
 import IconGame from "@/public/icons/game.svg";
 import IconQC from "@/public/icons/QC.svg";
 
+export const LIMIT_COURSES = 8;
+
 export const soleil = localFont({
   src: [
     {

@@ -125,6 +125,14 @@ const Header = () => {
                       <li className=" px-4 ">
                         <Link
                           className="hover:text-blue-100 "
+                          href="/courses"
+                        >
+                          My Courses
+                        </Link>
+                      </li>
+                      <li className=" px-4 ">
+                        <Link
+                          className="hover:text-blue-100 "
                           href="/my-rewards"
                         >
                           my rewards

@@ -4,6 +4,7 @@ import Courses from "@/components/Courses";
 import { loadCourses } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { LIMIT_COURSES } from "@/utils/constants";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -19,8 +20,6 @@ const filterButtons = [
   { filter: FILTER_OPTIONS.mostPopular, label: "Most Popular" },
 ];
 
-const LIMIT = 8;
-
 const TopCourses = () => {
   const [sortBy, setSortBy] = useState(filterButtons[0].filter);
   const coursesRx = useAppSelector(selectNewCourses);
@@ -29,7 +28,6 @@ const TopCourses = () => {
   useEffect(() => {
     dispatch(
       loadCourses({
-        limit: LIMIT,
         page: 1,
         sortBy,
       })
@@ -56,9 +54,9 @@ const TopCourses = () => {
         </div>
       </div>
       <Courses courses={coursesRx} />
-      <Link href="/courses" className="flex justify-center mt-14">
+      {coursesRx.data.length !== 0 && <Link href="/courses" className="flex justify-center mt-14">
         <Button>View More</Button>
-      </Link>
+      </Link>}
     </div>
   );
 };

@@ -11,6 +11,7 @@ import { loadDetailsCourse } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import Quizs from "@/components/Quizs";
 import CourseDetailsLoading from "@/components/Courses/CourseDetailsLoading";
+import Link from "next/link";
 
 const CourseDetails = () => {
   const params = useParams();
@@ -46,11 +47,13 @@ const CourseDetails = () => {
                     Reward
                   </span>
                 </Button>
-                <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
-                  <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
-                    Leaderboard
-                  </span>
-                </Button>
+                <Link href="/courses/leaderboard/1">
+                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
+                    <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
+                      Leaderboard
+                    </span>
+                  </Button>
+                </Link>
               </div>
             </div>
             <div className="bg-blue-200 py-3 px-4 flex gap-4">
