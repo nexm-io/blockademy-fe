@@ -2,7 +2,7 @@ import FormAccount from "@/views/Accounts/FormAcount";
 import React from "react";
 const MyAccount = () => {
   return (
-    <div className="mt-[74px] px-4 md:px-0">
+    <div className="mt-[74px] px-4 md:px-0 container">
       <FormAccount />
     </div>
   );

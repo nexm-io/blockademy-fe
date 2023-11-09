@@ -587,6 +587,40 @@ input[type="range"]::-webkit-slider-thumb:active {
   border-color: #1F37B3;
 }
 
+/* collapse custom */
+.leaderboard.ant-collapse,
+.leaderboard.ant-collapse .ant-collapse-item {
+  border: 0;
+}
+
+.leaderboard.ant-collapse .ant-collapse-header {
+  flex-direction: row-reverse;
+  align-items: center;
+  border-radius: 4px!important;
+  padding: 8px;
+}
+
+.leaderboard.ant-collapse .ant-collapse-item:not(:first-child) {
+  margin-top: 40px;
+  border-top: 1px solid #333545;
+  padding-top: 16px;
+}
+
+.leaderboard.ant-collapse .ant-collapse-arrow svg {
+  fill: #333545;
+}
+
+.leaderboard.ant-collapse .ant-collapse-content {
+  background: transparent;
+  border: 0;
+}
+
+.leaderboard.ant-collapse .ant-collapse-content .ant-collapse-content-box {
+  background: transparent;
+  border-radius: 8px;
+  padding: 0;
+}
+
 input[type="file"].hidden {
   display: none;
 }
