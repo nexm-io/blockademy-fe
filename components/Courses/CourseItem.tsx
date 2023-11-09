@@ -91,7 +91,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
           <div className="flex items-center gap-2">
             <Image src={IconDotList} width={15} height={11} alt="dot" />
             <p className="text-xs leading-3 -mb-[2px] font-normal">
-              {course.total_Lecture} Lecture
+              {course.total_Lecture} Lectures
             </p>
           </div>
         </div>

@@ -10,7 +10,7 @@ const newCoursesReducer = createReducer(defaultNewCoursesReducer, (builder) => {
     })
     .addCase(loadCourses.fulfilled, (state, action) => {
       if (!action.payload) return;
-      state.data = [...state.data, ...action.payload.data];
+      state.data = action.payload.data;
       state.meta = action.payload.meta;
       state.coursesLoading = false;
     })

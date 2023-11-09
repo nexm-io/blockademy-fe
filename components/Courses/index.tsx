@@ -6,43 +6,37 @@ import CourseLoading from "@/components/Courses/CoursesLoading";
 import { loadCourses } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import cn from "@/services/cn";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const FILTER_OPTIONS = {
-  newest: "newest",
-  oldest: "oldest",
-  overallRating: "overall-rating",
+  new: "created_at",
+  trending: "total_hit",
+  mostPopular: "rating_view",
 };
 
 const filterButtons = [
-  { filter: FILTER_OPTIONS.newest, label: "Newest" },
-  { filter: FILTER_OPTIONS.oldest, label: "Oldest" },
-  { filter: FILTER_OPTIONS.overallRating, label: "Overall rating" },
+  { filter: FILTER_OPTIONS.new, label: "New" },
+  { filter: FILTER_OPTIONS.trending, label: "Trending" },
+  { filter: FILTER_OPTIONS.mostPopular, label: "Most Popular" },
 ];
 
 const LIMIT = 8;
 
 const TopCourses = () => {
-  const [courseFilter, setCourseFilter] = useState(filterButtons[0].filter);
-  const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState(filterButtons[0].filter);
   const coursesRx = useAppSelector(selectNewCourses);
   const dispatch = useAppDispatch();
-
-  const handleLoadMore = () => {
-    if (LIMIT * page <= coursesRx.meta.total) {
-      setPage(page + 1);
-    }
-  };
 
   useEffect(() => {
     dispatch(
       loadCourses({
         limit: LIMIT,
-        page,
+        page: 1,
+        sortBy,
       })
     );
-  }, [page]);
+  }, [sortBy]);
 
   return (
     <div className="mt-8 sm:mt-24 w-full">
@@ -55,8 +49,8 @@ const TopCourses = () => {
             <Button
               key={button.filter}
               className="lg:px-6 !py-2"
-              kind={courseFilter === button.filter ? "primary" : "secondary"}
-              onClick={() => setCourseFilter(button.filter)}
+              kind={sortBy === button.filter ? "primary" : "secondary"}
+              onClick={() => setSortBy(button.filter)}
             >
               {button.label}
             </Button>
@@ -71,13 +65,9 @@ const TopCourses = () => {
 
         {coursesRx.coursesLoading && <CourseLoading />}
       </div>
-      <div
-        className={cn(`flex justify-center mt-14`, {
-          hidden: LIMIT * page >= coursesRx.meta.total,
-        })}
-      >
-        <Button onClick={handleLoadMore}>Load more</Button>
-      </div>
+      <Link href="/courses" className="flex justify-center mt-14">
+        <Button>View More</Button>
+      </Link>
     </div>
   );
 };
