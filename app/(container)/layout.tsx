@@ -19,9 +19,7 @@ export default function MainLayout({
   return (
     <div className={`${soleil.variable} font-sans`}>
       <Header />
-      <PageContainer>
-        <div className="relative w-full">{children}</div>
-      </PageContainer>
+      <div className="relative w-full">{children}</div>
       <Footer />
     </div>
   );

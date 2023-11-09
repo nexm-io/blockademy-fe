@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 const CourseStatus = () => {
   const pathname = usePathname();
   return (
-    <div className="flex gap-[50px] md:mb-14 mb-5 md:pt-[370px] px-8 lg:pt-[350px] pt-[135px] items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0">
+    <div className="flex gap-[50px] md:mb-14 mb-5 items-start text-white-400 text-base font-normal leading-4 capitalize lg:px-0 mt-16">
       <Link
-        href="/courses/all"
+        href="/courses"
         className={`course-status md:text-base text-sm ${
-          pathname === "/courses/all" ? "active" : ""
+          pathname === "/courses" ? "active" : ""
         }`}
       >
         all courses
