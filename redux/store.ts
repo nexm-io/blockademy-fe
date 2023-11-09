@@ -8,7 +8,6 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import exampleReducer from "./features/example/reducer";
 import authReducer from "./features/auth/reducer";
-import { courseReducer } from "./features/courses/reducer";
 import { articleReducer } from "./features/articles/reducer";
 import { userReducer } from "./features/user/reducer";
 import { authorReducer } from "./features/authors/reducer";
@@ -24,7 +23,6 @@ const persistConfig = {
 const rootReducer = combineReducers({
   example: exampleReducer,
   auth: authReducer,
-  courses: courseReducer,
   newCourses: newCoursesReducer,
   articles: articleReducer,
   user: userReducer,
