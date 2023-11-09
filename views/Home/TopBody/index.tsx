@@ -13,13 +13,16 @@ const TopBody: React.FC<TopBodyProps> = () => {
     <section className="flex flex-col lg:flex-row items-center gap-5 justify-between w-full mt-28 lg:mt-36">
       <div className="flex flex-col gap-5 w-full">
         <h1 className="text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
-          The best way to learn math and <br className="hidden md:block" />{" "}
-          computer science
+          Unlocking the Power of Blockchain
         </h1>
         <p className="text-gray-100 text-base">
-          {`Guided interactive problem solving that's effective and fun.`}{" "}
+          Discover the world of blockchain technology and cryptocurrency with 
           <br className="hidden sm:block" />
-          {`Master concepts in 15 minutes a day.`}
+          {" "}
+          hands-on, interactive learning that’s both engaging and effective.
+          <br className="hidden sm:block" />
+          {" "}
+          Master the fundamentals in just 15 minutes a day.
         </p>
 
         <div className="mt-3">
