@@ -5,10 +5,8 @@ import { loadCourses } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Button from "@/components/Common/Button";
-import { TOPIC_LIST } from "@/utils/constants";
+import { LIMIT_COURSES, TOPIC_LIST } from "@/utils/constants";
 import Pagination from "@/components/Pagination";
-
-const LIMIT = 8;
 
 const CoursesView = () => {
   const [cateSelected, setCateSelected] = useState("all");
@@ -19,7 +17,6 @@ const CoursesView = () => {
   useEffect(() => {
     dispatch(
       loadCourses({
-        limit: LIMIT,
         page,
         sortBy: "created_at",
       })
@@ -53,7 +50,7 @@ const CoursesView = () => {
         </div>
       </div>
       <div className="mt-6 md:mt-[60px]">
-        <Courses courses={coursesRx} />
+        <Courses currPage={page} courses={coursesRx} />
       </div>
       {coursesRx.data.length !== 0 && <div className="flex justify-center mt-6">
         <Pagination
@@ -61,7 +58,7 @@ const CoursesView = () => {
           onPageChange={(page) => {
             setPage(page);
           }}
-          pageSize={LIMIT}
+          pageSize={LIMIT_COURSES}
           siblingCount={1}
           totalCount={coursesRx.meta.total}
         />
