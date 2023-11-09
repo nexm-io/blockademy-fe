@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import banner from "@/public/images/course/course-1.png";
 
-const CourseBanner = () => {
+const Banner = () => {
   return (
     <div className="relative">
       <Image alt="banner-course" src={banner} className="w-full min-h-[200px] sm:min-h-[300px] object-cover" />
@@ -17,4 +17,4 @@ const CourseBanner = () => {
   );
 };
 
-export default CourseBanner;
+export default Banner;

@@ -12,7 +12,7 @@ import Blogs from "@/components/Blogs";
 import BackToTop from "@/components/BackToTop";
 import Divider from "@/components/Divider";
 
-const MainPage = () => {
+const HomeView = () => {
   return (
     <>
       <TopBody />
@@ -29,4 +29,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default HomeView;

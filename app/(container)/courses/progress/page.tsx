@@ -1,6 +1,6 @@
 import Courses from "@/components/Courses";
 import PageContainer from "@/components/PageContainer";
-import CourseBanner from "@/views/Courses/CourseBanner";
+import CourseBanner from "@/views/Courses/Banner";
 import CourseStatus from "@/views/Courses/CourseStatus";
 import { Metadata } from "next";
 import React from "react";

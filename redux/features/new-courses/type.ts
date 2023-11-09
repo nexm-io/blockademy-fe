@@ -28,37 +28,18 @@ export interface MetaCoursesType {
   to: number;
   total: number;
 }
-
-export interface CourseDetail {
-  campaign_id: string;
-  campaign_slug: string;
-  reward_id: number;
-  id: string;
-  title: string;
-  campaign_title: string;
-  slug: string;
-  order: number;
-  lesson_data: any;
-  lesson_type: string;
-  is_complete: number;
-  reward_is_claimed: number;
-  reward_released_date: number;
-  is_finished: number;
-  other_courses: any;
-}
-
 export interface CoursesType {
   coursesLoading: boolean;
   data: CourseTypes[];
   courseDetailsLoading: boolean;
-  courseDetails: CourseDetail | null;
+  courseDetails: any | null;
   meta: MetaCoursesType;
 }
 
 export const defaultNewCoursesReducer: CoursesType = {
-  coursesLoading: false,
+  coursesLoading: true,
   data: [],
-  courseDetailsLoading: false,
+  courseDetailsLoading: true,
   courseDetails: null,
   meta: {
     current_page: 0,

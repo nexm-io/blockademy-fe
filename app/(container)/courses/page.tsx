@@ -1,7 +1,7 @@
 import NoSignal from "@/components/NoSignal";
 import PageContainer from "@/components/PageContainer";
 import CoursesView from "@/views/Courses";
-import CourseBanner from "@/views/Courses/CourseBanner";
+import CourseBanner from "@/views/Courses/Banner";
 import { Metadata } from "next";
 import React from "react";
 

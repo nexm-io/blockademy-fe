@@ -1,5 +1,5 @@
 import PageContainer from "@/components/PageContainer";
-import CourseDetails from "@/views/Courses/CourseDetails";
+import CourseDetails from "@/views/Courses/Details";
 
 export default function CoursesSlug() {
   return (
