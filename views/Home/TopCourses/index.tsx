@@ -56,9 +56,9 @@ const TopCourses = () => {
         </div>
       </div>
       <Courses courses={coursesRx} />
-      <Link href="/courses" className="flex justify-center mt-14">
+      {coursesRx.data.length !== 0 && <Link href="/courses" className="flex justify-center mt-14">
         <Button>View More</Button>
-      </Link>
+      </Link>}
     </div>
   );
 };

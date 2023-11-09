@@ -55,7 +55,7 @@ const CoursesView = () => {
       <div className="mt-6 md:mt-[60px]">
         <Courses courses={coursesRx} />
       </div>
-      <div className="flex justify-center mt-6">
+      {coursesRx.data.length !== 0 && <div className="flex justify-center mt-6">
         <Pagination
           currentPage={page}
           onPageChange={(page) => {
@@ -65,7 +65,7 @@ const CoursesView = () => {
           siblingCount={1}
           totalCount={coursesRx.meta.total}
         />
-      </div>
+      </div>}
     </div>
   );
 };
