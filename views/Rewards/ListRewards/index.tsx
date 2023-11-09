@@ -13,7 +13,7 @@ import banner from "@/public/images/course/course-1.png";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import CourseBanner from "@/views/Courses/CourseBanner";
+import CourseBanner from "@/views/Courses/Banner";
 import { toast } from "react-toastify";
 import defaultImg from "@/public/images/home/home-default.png";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import PageContainer from "@/components/PageContainer";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { soleil } from "@/utils/constants";
@@ -19,9 +18,7 @@ export default function MainLayout({
   return (
     <div className={`${soleil.variable} font-sans`}>
       <Header />
-      <PageContainer>
-        <div className="relative w-full">{children}</div>
-      </PageContainer>
+      <div className="relative w-full">{children}</div>
       <Footer />
     </div>
   );

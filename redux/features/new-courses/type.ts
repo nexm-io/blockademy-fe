@@ -28,16 +28,19 @@ export interface MetaCoursesType {
   to: number;
   total: number;
 }
-
 export interface CoursesType {
   coursesLoading: boolean;
   data: CourseTypes[];
+  courseDetailsLoading: boolean;
+  courseDetails: any | null;
   meta: MetaCoursesType;
 }
 
 export const defaultNewCoursesReducer: CoursesType = {
-  coursesLoading: false,
+  coursesLoading: true,
   data: [],
+  courseDetailsLoading: true,
+  courseDetails: null,
   meta: {
     current_page: 0,
     from: 0,

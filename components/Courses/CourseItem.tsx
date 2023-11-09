@@ -15,6 +15,7 @@ const LEVEL_COLORS = {
 };
 
 const CourseItem = ({ course }: { course: CourseTypes }) => {
+  const [srcCourse, setSrcCourse] = useState(course.image.original);
   const [levelStyle, setLevelStyle] = useState({
     bgColor: "bg-gray-300/30",
     dotColor: "bg-gray-300",
@@ -35,18 +36,19 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   };
 
   useEffect(() => {
-    const levelId = course.level?.id as 1 || 2 || 3;
+    const levelId = (course.level?.id as 1) || 2 || 3;
     setLevelStyle(LEVEL_COLORS[levelId]);
   }, [course.level?.id]);
 
   return (
-    <Link href="#" className="group mb-10">
+    <Link href={`/courses/${course.id}`} className="group mb-10">
       <div className="rounded overflow-hidden">
         <Image
           className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"
           height={189}
           width={280}
-          src={course.image.original}
+          onError={() => setSrcCourse("/images/course/default-img.png")}
+          src={srcCourse}
           alt={course.title}
         />
       </div>

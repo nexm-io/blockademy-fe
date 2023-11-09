@@ -1,4 +1,5 @@
-import MainPage from "@/views/Home/MainPage";
+import PageContainer from "@/components/PageContainer";
+import HomeView from "@/views/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,8 +7,10 @@ export const metadata: Metadata = {
 };
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-center">
-      <MainPage />
-    </main>
+    <PageContainer>
+      <main className="flex flex-col items-center justify-center">
+        <HomeView />
+      </main>
+    </PageContainer>
   );
 }
