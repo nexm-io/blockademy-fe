@@ -22,7 +22,7 @@ const CourseDetails = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(loadDetailsCourse(courseId as string));
+    if (courseId) dispatch(loadDetailsCourse(courseId as string));
   }, [courseId]);
 
   return (
@@ -47,7 +47,7 @@ const CourseDetails = () => {
                     Reward
                   </span>
                 </Button>
-                <Link href="/courses/leaderboard/1">
+                <Link href="/courses/leaderboard?id=1">
                   <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
                     <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
                       Leaderboard

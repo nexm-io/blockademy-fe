@@ -1,6 +1,9 @@
-"use client";
-import { useRouter } from "next/navigation";
+import PageContainer from "@/components/PageContainer";
+import LeaderboardView from "@/views/Courses/Leaderboard";
 export default function Leaderboard() {
-  const router = useRouter();
-  return router.back();
+  return (
+    <PageContainer>
+      <LeaderboardView />
+    </PageContainer>
+  );
 }

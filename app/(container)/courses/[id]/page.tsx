@@ -1,10 +1,10 @@
 import PageContainer from "@/components/PageContainer";
-import CourseDetails from "@/views/Courses/Details";
+import CourseDetailsView from "@/views/Courses/Details";
 
-export default function CoursesSlug() {
+export default function CourseDetail() {
   return (
     <PageContainer>
-      <CourseDetails />
+      <CourseDetailsView />
     </PageContainer>
   );
 }
