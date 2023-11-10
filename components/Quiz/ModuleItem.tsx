@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React from "react";
 
-const QuizItem = () => {
+const ModuleItem = () => {
   return (
     <div className="px-4 py-3 bg-white-600 rounded-lg flex justify-between items-center cursor-pointer">
       <div className="flex-1">
@@ -36,4 +36,4 @@ const QuizItem = () => {
   );
 };
 
-export default QuizItem;
+export default ModuleItem;

@@ -9,6 +9,7 @@ import {
   changePassword,
 } from "./action";
 import { initialState } from "./type";
+import { RootState } from "@/redux/store";
 
 const authReducer = createReducer(initialState, (builder) => {
   builder
@@ -28,7 +29,6 @@ const authReducer = createReducer(initialState, (builder) => {
     .addCase(userRegister.pending, (state) => {
       state.success = false;
       state.isLoading = true;
-
     })
     .addCase(userRegister.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -100,7 +100,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.isLoading = false;
     });
 
-    builder
+  builder
     .addCase(changePassword.pending, (state) => {
       state.isLoading = true;
     })
@@ -114,5 +114,7 @@ const authReducer = createReducer(initialState, (builder) => {
       state.message = action.payload.message;
     });
 });
+
+export const selectAuth = (state: RootState) => state.auth;
 
 export default authReducer;

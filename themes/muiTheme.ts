@@ -1,3 +1,4 @@
+"use client";
 import { createTheme } from "@mui/material/styles";
 
 const muiTheme = createTheme({
@@ -10,7 +11,7 @@ const muiTheme = createTheme({
   },
   typography: {
     fontFamily: ["CentraNo2"].join(","),
-    fontSize: "14px",
+    fontSize: 14,
   },
   components: {
     MuiButton: {
@@ -79,7 +80,7 @@ const muiTheme = createTheme({
           },
         },
         {
-          props: { variant: "outlined", active: true },
+          props: { variant: "outlined" },
           style: {
             color: "#ffffff",
             backgroundColor: "black",
@@ -137,7 +138,7 @@ const muiTheme = createTheme({
       },
       variants: [
         {
-          props: { name: "base" },
+          props: {},
           style: {
             width: "20px !important",
             height: "20px !important",

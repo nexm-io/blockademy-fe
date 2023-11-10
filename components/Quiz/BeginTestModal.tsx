@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { MouseEventHandler } from "react";
 
 export default function BeginTestModal(props: {
@@ -16,8 +17,10 @@ export default function BeginTestModal(props: {
   onCloseModalBeginTest: () => void;
   handleStartQuiz: MouseEventHandler<HTMLButtonElement> | undefined;
 }) {
+  const router = useRouter();
+
   const handleClose = () => {
-    props.onCloseModalBeginTest();
+    router.back();
   };
 
   return (

@@ -1,34 +1,24 @@
 "use client";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams } from "next/navigation";
 import React from "react";
 import { loadDetailsCourse } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
-import Quizs from "@/components/Quiz";
+import Modules from "@/components/Quiz/Modules";
 import CourseDetailsLoading from "@/components/Courses/CourseDetailsLoading";
 import Link from "next/link";
-import BeginTestModal from "@/components/Quiz/BeginTestModal";
 
 const CourseDetailsView = () => {
   const params = useParams();
   const courseId = params.id;
   const { courseDetails, courseDetailsLoading } =
     useAppSelector(selectNewCourses);
-  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
 
   const dispatch = useAppDispatch();
-
-  const handleStartQuiz = () => {
-    console.log("start");
-  };
-
-  const handleClickQuiz = () => {
-    setIsModalBeginTestOpen(true);
-  };
 
   useEffect(() => {
     if (courseId) dispatch(loadDetailsCourse(courseId as string));
@@ -36,13 +26,6 @@ const CourseDetailsView = () => {
 
   return (
     <div className="mt-32">
-      {isModalBeginTestOpen && (
-        <BeginTestModal
-          isModalBeginTestOpen={isModalBeginTestOpen}
-          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
-          handleStartQuiz={handleStartQuiz}
-        />
-      )}
       {courseDetailsLoading ? (
         <CourseDetailsLoading />
       ) : (
@@ -53,14 +36,13 @@ const CourseDetailsView = () => {
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">
-                <Button
-                  className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto"
-                  onClick={handleClickQuiz}
-                >
-                  <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                    Complete Quizz
-                  </span>
-                </Button>
+                <Link href="/quiz/1">
+                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto">
+                    <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                      Complete Quizz
+                    </span>
+                  </Button>
+                </Link>
                 <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full sm:w-auto">
                   <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
                     Reward
@@ -96,7 +78,7 @@ const CourseDetailsView = () => {
                   }}
                 />
               </div>
-              <Quizs />
+              <Modules />
             </div>
           </section>
         </>
