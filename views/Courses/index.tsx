@@ -50,19 +50,21 @@ const CoursesView = () => {
         </div>
       </div>
       <div className="mt-6 md:mt-[60px]">
-        <Courses currPage={page} courses={coursesRx} />
+        <Courses courses={coursesRx} />
       </div>
-      {coursesRx.data.length !== 0 && <div className="flex justify-center mt-6">
-        <Pagination
-          currentPage={page}
-          onPageChange={(page) => {
-            setPage(page);
-          }}
-          pageSize={LIMIT_COURSES}
-          siblingCount={1}
-          totalCount={coursesRx.meta.total}
-        />
-      </div>}
+      {coursesRx.data.length !== 0 && (
+        <div className="flex justify-center mt-6">
+          <Pagination
+            currentPage={page}
+            onPageChange={(page) => {
+              setPage(page);
+            }}
+            pageSize={LIMIT_COURSES}
+            siblingCount={1}
+            totalCount={coursesRx.meta.total}
+          />
+        </div>
+      )}
     </div>
   );
 };
