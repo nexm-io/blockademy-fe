@@ -39,7 +39,7 @@ const CourseDetailsView = () => {
                 <Link href="/quiz/1">
                   <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto">
                     <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                      Complete Quizz
+                      Complete Quiz
                     </span>
                   </Button>
                 </Link>

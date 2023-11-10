@@ -56,7 +56,7 @@ const JourneyAcademy = () => {
             03
           </span>
           <h3 className="text-white-100 text-center lg:text-[28px] text-[20px] font-semibold leading-[44px]">
-            Complete Quizz
+            Complete Quiz
           </h3>
         </div>
         {/* Item 4 */}
