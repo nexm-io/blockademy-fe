@@ -36,20 +36,25 @@ const CourseDetailsView = () => {
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">
-                <Link href="/quiz/1">
-                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto">
+                <Link href="/quiz/1" className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
                     <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
                       Complete Quiz
                     </span>
                   </Button>
                 </Link>
-                <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full sm:w-auto">
-                  <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                    Reward
-                  </span>
-                </Button>
-                <Link href="/courses/leaderboard?id=1">
-                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
+                <Link href="#" className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
+                    <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+                      Reward
+                    </span>
+                  </Button>
+                </Link>
+                <Link
+                  href="/courses/leaderboard?id=1"
+                  className="w-full md:w-auto inline-block"
+                >
+                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
                     <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
                       Leaderboard
                     </span>
