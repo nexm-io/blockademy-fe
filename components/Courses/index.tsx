@@ -4,10 +4,11 @@ import React from "react";
 import CourseItem from "@/components/Courses/CourseItem";
 import CourseLoading from "@/components/Courses/CoursesLoading";
 import { CoursesType } from "@/redux/features/new-courses/type";
+import cn from "@/services/cn";
 
 const Courses = ({ courses }: { courses: CoursesType }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7">
+    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7`)}>
       {courses.coursesLoading ? (
         <CourseLoading />
       ) : courses.data.length !== 0 ? (
@@ -19,7 +20,7 @@ const Courses = ({ courses }: { courses: CoursesType }) => {
           There are currently no available courses
         </div>
       )}
-    </div>
+    </div >
   );
 };
 

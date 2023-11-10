@@ -7,7 +7,7 @@ const CoursesLoading = ({ row = 8 }: { row?: number }) => {
     .map((_z, index) => (
       <div key={index} className="bg-gray-300/8000 rounded overflow-hidden mb-10">
         <div className="bg-gray-400/20 h-[202px] skeleton rounded"></div>
-        <div className="px-2">
+        <div className="px-2 pb-2">
           <div className="flex items-center gap-2 mt-6 bg-gray-400/20 h-[15px] rounded"></div>
           <p className="bg-gray-400/20 h-[72px] rounded-b skeleton mt-[10px]"></p>
           <div className="mt-6 flex items-center justify-between bg-gray-400/20 h-[35px]"></div>
