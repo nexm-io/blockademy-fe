@@ -2,7 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Providers } from "@/redux/provider";
 import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "@mui/material/styles";
 import "react-toastify/dist/ReactToastify.css";
+import muiTheme from "@/themes/muiTheme";
 export const metadata: Metadata = {
   title: {
     template: "%s | Blockademy",
@@ -39,7 +41,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>
+        </Providers>
         <ToastContainer autoClose={1000} pauseOnHover={false} />
       </body>
     </html>

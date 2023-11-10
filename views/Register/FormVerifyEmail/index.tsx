@@ -47,16 +47,17 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
 
   const onSubmit = async (e: FormData) => {
     onMailChange("email", e.email);
+    setFormState("formRegister")
 
-    try {
-      const res = await dispatch(sendOtp(e)).unwrap();
-      res.success && setFormState("otp");
-    } catch (e) {
-      console.error(e);
-      toast.error("Email is exist!");
-    } finally {
-      reset();
-    }
+    // try {
+    //   const res = await dispatch(sendOtp(e)).unwrap();
+    //   res.success && setFormState("otp");
+    // } catch (e) {
+    //   console.error(e);
+    //   toast.error("Email is exist!");
+    // } finally {
+    //   reset();
+    // }
   };
 
   return (
@@ -94,9 +95,9 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
               type="submit"
               loading={isSubmitting}
               disabled={isSubmitting}
-              className="!bg-red-500 hover:!bg-red-100 w-full"
+              className="w-full"
             >
-              Send OTP
+              Next
             </Button>
           </div>
 

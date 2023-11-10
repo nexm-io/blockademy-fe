@@ -5,15 +5,15 @@ import { useEffect } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams } from "next/navigation";
-import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import { loadDetailsCourse } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
-import Quizs from "@/components/Quizs";
+import Modules from "@/components/Quiz/Modules";
 import CourseDetailsLoading from "@/components/Courses/CourseDetailsLoading";
 import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
-const CourseDetails = () => {
+const CourseDetailsView = () => {
   const params = useParams();
   const courseId = params.id;
   const { courseDetails, courseDetailsLoading } =
@@ -37,18 +37,25 @@ const CourseDetails = () => {
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">
-                <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto">
-                  <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                    Complete Quizz
-                  </span>
-                </Button>
-                <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full sm:w-auto">
-                  <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                    Reward
-                  </span>
-                </Button>
-                <Link href="/courses/leaderboard?id=1">
-                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
+                <Link href="/quiz/1" className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
+                    <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                      Complete Quiz
+                    </span>
+                  </Button>
+                </Link>
+                <Link href="#" className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
+                    <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+                      Reward
+                    </span>
+                  </Button>
+                </Link>
+                <Link
+                  href="/courses/leaderboard?id=1"
+                  className="w-full md:w-auto inline-block"
+                >
+                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
                     <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
                       Leaderboard
                     </span>
@@ -77,13 +84,14 @@ const CourseDetails = () => {
                   }}
                 />
               </div>
-              <Quizs />
+              <Modules />
             </div>
           </section>
         </>
       )}
+      <BackToTop onlyShowOnMobile />
     </div>
   );
 };
 
-export default CourseDetails;
+export default CourseDetailsView;
