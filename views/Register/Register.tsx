@@ -36,9 +36,9 @@ const Register = () => {
           />
         )}
 
-        {formState === "otp" && (
+        {/* {formState === "otp" && (
           <FormOtp email={mail.email} setFormState={setFormState} />
-        )}
+        )} */}
         {formState === "formRegister" && (
           <FormPanel
             email={mail.email}
