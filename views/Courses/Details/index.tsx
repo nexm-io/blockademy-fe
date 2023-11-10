@@ -11,6 +11,7 @@ import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import Modules from "@/components/Quiz/Modules";
 import CourseDetailsLoading from "@/components/Courses/CourseDetailsLoading";
 import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
 const CourseDetailsView = () => {
   const params = useParams();
@@ -88,6 +89,7 @@ const CourseDetailsView = () => {
           </section>
         </>
       )}
+      <BackToTop onlyShowOnMobile />
     </div>
   );
 };
