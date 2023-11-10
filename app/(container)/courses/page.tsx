@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Courses",
 };
 
-const CourseAll = () => {
+const CourseAllPage = () => {
   return (
     <div className="mt-[74px]">
       <CourseBanner />
@@ -21,4 +21,4 @@ const CourseAll = () => {
   );
 };
 
-export default CourseAll;
+export default CourseAllPage;

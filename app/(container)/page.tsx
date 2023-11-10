@@ -5,7 +5,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Home",
 };
-export default function Home() {
+export default function HomePage() {
   return (
     <PageContainer>
       <main className="flex flex-col items-center justify-center">
