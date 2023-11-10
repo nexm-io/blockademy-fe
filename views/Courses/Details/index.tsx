@@ -32,8 +32,8 @@ const CourseDetailsView = () => {
       ) : (
         <>
           <section className="md:mt-[56px] mt-8 lg:px-0 px-3">
-            <div className="flex justify-between items-center flex-wrap mb-4">
-              <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
+            <div className="flex justify-between items-center flex-wrap lg:flex-nowrap mb-4">
+              <h1 className="text-black-100 font-bold md:text-4xl text-3xl lg:w-1/2">
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">

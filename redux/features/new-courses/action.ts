@@ -4,9 +4,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const loadCourses = createAsyncThunk(
   "courses/load-courses",
-  async (params: { page: number; sortBy?: string }) => {
-    const { page, sortBy = "created_at" } = params;
-    const url = `/api/v10/course?limit=${LIMIT_COURSES}&page=${page}&sort_by=${sortBy}:desc`;
+  async (params: { page: number; sortBy?: string, order?: number }) => {
+    const { page, sortBy = "created_at", order = 0 } = params;
+    const url = `/api/v10/course?limit=${LIMIT_COURSES}&page=${page}&sort_by=${sortBy}:desc&category_order=${order}`;
 
     try {
       const { data: courses } = await api.get(url);
