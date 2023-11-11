@@ -17,6 +17,7 @@ export interface CourseTypes {
   total_Lecture: number;
   total_candidate: number;
   total_hit: number;
+  lesson_first: any;
 }
 
 export interface MetaCoursesType {
