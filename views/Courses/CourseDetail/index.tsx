@@ -14,31 +14,27 @@ import { RootState } from "@/redux/store";
 import {
   getDetailCourse,
 } from "@/redux/features/courses/action";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
-import BreadCrumb from "@/components/BreadCrumb";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
+  const searchParams = useSearchParams();
   const courseId = params.id;
+  const slug = searchParams.get("slug");
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const courseDetail = useAppSelector(
-    (state: RootState) => state.courses.details
-  );
-  // const [currLesson, setCurrLesson] = useState(courseDetail?.lesson_first)
-  const isLoading = useAppSelector(
-    (state: RootState) => state.courses.isLoading
-  );
+  const courseDetail = useAppSelector((state: RootState) => state.courses.details);
+  const isLoading = useAppSelector((state: RootState) => state.courses.isLoading);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string))
-  }, [courseId]);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -138,48 +134,50 @@ const CourseDetail = () => {
                 <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map((lesson, index) => (
-                      <>
-                        {lesson.lesson_type_format === 2 &&
-                          formState === "video" && (
-                            <>
-                              <VideoPlayer
-                                typeUpload={lesson.lesson_type_upload}
-                                url={lesson.lesson_link}
-                                onChangeForm={handleChangeForm}
-                                onChangeStatus={handleOnchange}
-                              />
-                            </>
+                      slug === slugifyText(lesson.lesson_slug) && (
+                        <>
+                          {lesson.lesson_type_format === 2 &&
+                            formState === "video" && (
+                              <>
+                                <VideoPlayer
+                                  typeUpload={lesson.lesson_type_upload}
+                                  url={lesson.lesson_link}
+                                  onChangeForm={handleChangeForm}
+                                  onChangeStatus={handleOnchange}
+                                />
+                              </>
+                            )}
+                          {formState === "quiz" && (
+                            <Quiz
+                              lesson={lesson}
+                              index={index}
+                              campaign_id={courseDetail.campaign_id}
+                              course_id={courseDetail.id}
+                            />
                           )}
-                        {formState === "quiz" && (
-                          <Quiz
-                            lesson={lesson}
-                            index={index}
-                            campaign_id={courseDetail.campaign_id}
-                            course_id={courseDetail.id}
-                          />
-                        )}
-                        <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
-                          {lesson.lesson_title}
-                        </h2>
-                        <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                          <div
-                            className="flex flex-col gap-3 text-xs course-content md:text-base"
-                            dangerouslySetInnerHTML={{
-                              __html: lesson.lesson_description,
-                            }}
-                          />
-                        </div>
-                        {lesson.lesson_type_format !== 2 && (
-                          <Button
-                            onClick={() => {
-                              setFormState("quiz");
-                              scrollToTop();
-                            }}
-                          >
-                            Complete Quizz
-                          </Button>
-                        )}
-                      </>
+                          <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
+                            {lesson.lesson_title}
+                          </h2>
+                          <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                            <div
+                              className="flex flex-col gap-3 text-xs course-content md:text-base"
+                              dangerouslySetInnerHTML={{
+                                __html: lesson.lesson_description,
+                              }}
+                            />
+                          </div>
+                          {lesson.lesson_type_format !== 2 && (
+                            <Button
+                              onClick={() => {
+                                setFormState("quiz");
+                                scrollToTop();
+                              }}
+                            >
+                              Complete Quizz
+                            </Button>
+                          )}
+                        </>
+                      )
                     ))
                   ) : (
                     <div>No Lesson</div>
@@ -197,7 +195,9 @@ const CourseDetail = () => {
                         className="cursor-pointer"
                         onClick={() => {
                           router.push(
-                            `/courses/${courseId}`
+                            `/courses/${courseId}?slug=${slugifyText(
+                              courseDetail?.lesson_data[index].lesson_slug || ""
+                            )}`
                           );
                         }}
                       >

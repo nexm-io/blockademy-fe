@@ -12,7 +12,6 @@ import { CourseResponse } from "./type";
 const initialState: CourseResponse = {
   success: false,
   isLoading: true,
-  lesson_first: {},
   data: [],
   error: null,
   details: null,

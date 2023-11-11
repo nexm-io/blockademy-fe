@@ -8,10 +8,8 @@ import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { getLastPathName } from "@/utils/getPathName";
-import slugify from "slugify";
-import bar from "@/public/icons/bar.svg";
 import slugifyText from "@/utils/slugifyText";
 import { STATUS } from "@/utils/status";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
@@ -31,6 +29,8 @@ const CourseModule: React.FC<CourseModuleProps> = ({
 }) => {
   const [active, setActive] = useState(status);
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("slug");
   useEffect(() => {
     if (is_complete === 1) {
       setActive("completed");
@@ -62,10 +62,10 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       </div>
 
       {active !== STATUS.COMPLETED &&
-      (getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ||
-        active === "already") ? (
+        (slug === slugifyText(lesson.lesson_slug) ||
+          active === "already") ? (
         <div className="w-[18px] h-full flex items-center">
-          {getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ? (
+          {slug === slugifyText(lesson.lesson_slug) ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <PlayCircle className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
@@ -80,7 +80,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       )}
       {active === STATUS.COMPLETED && (
         <div className="w-[18px] h-full flex items-center">
-          {getLastPathName(pathname) === slugifyText(lesson.lesson_slug) ? (
+          {slug === slugifyText(lesson.lesson_slug) ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />

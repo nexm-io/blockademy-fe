@@ -24,7 +24,6 @@ export interface CourseResponse {
   pagination: PaginationArticle | null;
   error: any;
   details: CourseDetail | null;
-  lesson_first: any;
   quiz: QuizDataResponse;
   message?: string;
 }
@@ -96,9 +95,10 @@ export interface CourseDetail {
   id: string;
   title: string;
   campaign_title: string;
+  lesson_first: any;
   slug: string;
   order: number;
-  lesson_data: Array<Lesson>;
+  lesson_data: Lesson[];
   lesson_type: string;
   is_complete: number;
   reward_is_claimed: number;
