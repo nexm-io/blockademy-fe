@@ -7,6 +7,7 @@ import { Star } from "../Icon";
 import Link from "next/link";
 import { CourseTypes } from "@/redux/features/new-courses/type";
 import cn from "@/services/cn";
+import slugifyText from "@/utils/slugifyText";
 
 const LEVEL_COLORS = {
   1: { bgColor: "bg-green-100/30", dotColor: "bg-green-100" },
@@ -41,10 +42,12 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   }, [course.level?.id]);
 
   return (
-    <Link href={`/courses/${course.id}`} className="group mb-10">
+    <Link href={`/courses/${course.id}?slug=${slugifyText(
+      course?.lesson_first.lesson_slug || ""
+    )}`} className="group mb-10 shadow-sm shadow-gray-400">
       <div className="rounded overflow-hidden">
         <Image
-          className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"
+          className="w-full h-[202px] object-contain transition-all duration-500 group-hover:scale-110"
           height={189}
           width={280}
           onError={() => setSrcCourse("/images/course/default-img.png")}
@@ -52,7 +55,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
           alt={course.title}
         />
       </div>
-      <div className="px-2">
+      <div className="px-2 pb-2">
         <div className="flex items-center gap-2 mt-6">
           <div className="flex items-center gap-[2px]">{renderRating()}</div>
           <div className="text-xs leading-3 -mb-[2px] font-normal">

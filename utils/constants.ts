@@ -4,7 +4,7 @@ import IconBackend from "@/public/icons/backend.svg";
 import IconFrontend from "@/public/icons/frontend.svg";
 import IconMobile from "@/public/icons/mobile.svg";
 import IconGame from "@/public/icons/game.svg";
-import IconQC from "@/public/icons/QC.svg";
+import IconQC from "@/public/icons/qc.svg";
 
 export const LIMIT_COURSES = 8;
 export const TYPE_QUIZ = {

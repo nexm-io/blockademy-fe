@@ -11,6 +11,7 @@ import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import Modules from "@/components/Quiz/Modules";
 import CourseDetailsLoading from "@/components/Courses/CourseDetailsLoading";
 import Link from "next/link";
+import BackToTop from "@/components/BackToTop";
 
 const CourseDetailsView = () => {
   const params = useParams();
@@ -31,25 +32,30 @@ const CourseDetailsView = () => {
       ) : (
         <>
           <section className="md:mt-[56px] mt-8 lg:px-0 px-3">
-            <div className="flex justify-between items-center flex-wrap mb-4">
-              <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
+            <div className="flex justify-between items-center flex-wrap lg:flex-nowrap mb-4">
+              <h1 className="text-black-100 font-bold md:text-4xl text-3xl lg:w-1/2">
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">
-                <Link href="/quiz/1">
-                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full sm:w-auto">
+                <Link href="/quiz/1" className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
                     <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                      Complete Quizz
+                      Complete Quiz
                     </span>
                   </Button>
                 </Link>
-                <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full sm:w-auto">
-                  <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                    Reward
-                  </span>
-                </Button>
-                <Link href="/courses/leaderboard?id=1">
-                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full sm:w-auto">
+                <Link href={`/reward/${courseId}`} className="w-full md:w-auto inline-block">
+                  <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
+                    <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+                      Reward
+                    </span>
+                  </Button>
+                </Link>
+                <Link
+                  href="/courses/leaderboard?id=1"
+                  className="w-full md:w-auto inline-block"
+                >
+                  <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
                     <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
                       Leaderboard
                     </span>
@@ -83,6 +89,7 @@ const CourseDetailsView = () => {
           </section>
         </>
       )}
+      <BackToTop onlyShowOnMobile />
     </div>
   );
 };

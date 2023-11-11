@@ -3,8 +3,13 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import IconBackToTop from "@/public/icons/backToTop.svg";
 import React from "react";
+import cn from "@/services/cn";
 
-const BackToTop = () => {
+const BackToTop = ({
+  onlyShowOnMobile = false,
+}: {
+  onlyShowOnMobile?: boolean;
+}) => {
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
@@ -34,7 +39,13 @@ const BackToTop = () => {
   return (
     showBackToTop && (
       <button
-        className="fixed flex items-center justify-center right-4 bottom-[60px] sm:right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl"
+        className={cn(
+          `fixed items-center justify-center right-4 bottom-[60px] sm:right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl z-50`,
+          {
+            "flex md:hidden": onlyShowOnMobile,
+            flex: !onlyShowOnMobile,
+          }
+        )}
         onClick={scrollToTop}
       >
         <Image alt="btn" src={IconBackToTop} width={40} height={40} />
