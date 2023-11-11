@@ -78,3 +78,38 @@ export const MENU = [
     pathname: "/articles",
   },
 ];
+
+export const CHECK_STATUS_QUIZ = {
+  NOT_STARTED: "new",
+  PASSED: "passed",
+  FAILED: "failed",
+};
+
+export const QUIZ_COMPLETED = 1;
+export const QUIZ_NOT_COMPLETED = 0;
+
+export const CHECK_SHOW_QUIZ = {
+  1: "completed",
+  0: "not-completed",
+};
+
+export const CHECK_STATUS_ASSIGNMENT = {
+  COMPLETED: "completed",
+  NOT_COMPLETED: "not-completed",
+};
+
+export const RESULT_QUIZ_PASS = 1;
+export const RESULT_QUIZ_FAIL = 0;
+
+export const RESULT_QUIZ = {
+  1: "Pass",
+  0: "Fail",
+};
+
+export const RESULT_QUESTION_CORRECT = 1;
+export const RESULT_QUESTION_INCORRECT = 0;
+
+export const RESULT_QUESTION = {
+  1: "Correct",
+  0: "Incorrect",
+};

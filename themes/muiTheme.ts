@@ -167,7 +167,7 @@ const muiTheme = createTheme({
     MuiTypography: {
       variants: [
         {
-          props: { color: "not-started" },
+          props: { color: "new" },
           style: {
             color: "#3A78E8",
             padding: "4px 28px",
