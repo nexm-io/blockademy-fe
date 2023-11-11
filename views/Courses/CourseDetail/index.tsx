@@ -19,6 +19,8 @@ import { getLastPathName } from "@/utils/getPathName";
 import slugifyText from "@/utils/slugifyText";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
+import api from "@/services/axios";
+import { toast } from "react-toastify";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -29,6 +31,7 @@ const CourseDetail = () => {
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const courseDetail = useAppSelector((state: RootState) => state.courses.details);
   const isLoading = useAppSelector((state: RootState) => state.courses.isLoading);
+  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -52,6 +55,21 @@ const CourseDetail = () => {
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
   };
+
+  const handleApplyCourse = async () => {
+    if (!isLogin) {
+      router.push("/login");
+      return;
+    }
+    try {
+      const response = await api.post(`/api/v10/register-course?course_id=${courseId}`);
+      if (response.status === 200) {
+        console.log("success");
+      }
+    } catch (error) {
+      return null;
+    }
+  }
 
   return (
     <div className="container mt-36">
@@ -94,30 +112,38 @@ const CourseDetail = () => {
                   {courseDetail?.title}
                 </h1>
                 <div className="flex items-center flex-wrap gap-3">
-                  <Link href="/quiz/1" className="w-full md:w-auto inline-block">
-                    <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
-                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                        Complete Quiz
-                      </span>
+                  {isLogin && false ? (
+                    <>
+                      <Link href="/quiz/1" className="w-full md:w-auto inline-block">
+                        <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
+                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                            Complete Quiz
+                          </span>
+                        </Button>
+                      </Link>
+                      <Link href="#" className="w-full md:w-auto inline-block">
+                        <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
+                          <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+                            Reward
+                          </span>
+                        </Button>
+                      </Link>
+                      <Link
+                        href="/courses/leaderboard?id=1"
+                        className="w-full md:w-auto inline-block"
+                      >
+                        <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
+                          <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
+                            Leaderboard
+                          </span>
+                        </Button>
+                      </Link>
+                    </>
+                  ) : (
+                    <Button onClick={handleApplyCourse} className="!px-6 w-full">
+                      Apply Course
                     </Button>
-                  </Link>
-                  <Link href="#" className="w-full md:w-auto inline-block">
-                    <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
-                      <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                        Reward
-                      </span>
-                    </Button>
-                  </Link>
-                  <Link
-                    href="/courses/leaderboard?id=1"
-                    className="w-full md:w-auto inline-block"
-                  >
-                    <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
-                      <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
-                        Leaderboard
-                      </span>
-                    </Button>
-                  </Link>
+                  )}
                 </div>
               </div>
 

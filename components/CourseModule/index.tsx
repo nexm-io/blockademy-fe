@@ -8,8 +8,7 @@ import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
-import { usePathname, useSearchParams } from "next/navigation";
-import { getLastPathName } from "@/utils/getPathName";
+import { useSearchParams } from "next/navigation";
 import slugifyText from "@/utils/slugifyText";
 import { STATUS } from "@/utils/status";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
@@ -28,7 +27,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   is_watching,
 }) => {
   const [active, setActive] = useState(status);
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug");
   useEffect(() => {
@@ -56,7 +54,9 @@ const CourseModule: React.FC<CourseModuleProps> = ({
 
           <div className="flex gap-[6px]">
             <Image alt="quiz-icon" src={quiz}></Image>
-            <span className="text-xs leading-5">Quiz</span>
+            <span className="text-xs leading-5">
+              {lesson.lesson_type_format === 1 ? "Text" : "Video"}
+            </span>
           </div>
         </div>
       </div>

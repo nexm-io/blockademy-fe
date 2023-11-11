@@ -7,6 +7,7 @@ import { Star } from "../Icon";
 import Link from "next/link";
 import { CourseTypes } from "@/redux/features/new-courses/type";
 import cn from "@/services/cn";
+import slugifyText from "@/utils/slugifyText";
 
 const LEVEL_COLORS = {
   1: { bgColor: "bg-green-100/30", dotColor: "bg-green-100" },
@@ -41,7 +42,9 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   }, [course.level?.id]);
 
   return (
-    <Link href={`/courses/${course.id}`} className="group mb-10 shadow-sm shadow-gray-400">
+    <Link href={`/courses/${course.id}?slug=${slugifyText(
+      course?.lesson_first.lesson_slug || ""
+    )}`} className="group mb-10 shadow-sm shadow-gray-400">
       <div className="rounded overflow-hidden">
         <Image
           className="w-full h-[202px] object-contain transition-all duration-500 group-hover:scale-110"
