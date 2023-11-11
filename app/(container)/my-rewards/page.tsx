@@ -1,12 +1,10 @@
-import NoSignal from "@/components/NoSignal";
 import ListRewards from "@/views/Rewards/ListRewards";
 import React from "react";
 
-const MyReward = () => {
+const MyRewardPage = () => {
   return <div className="mt-[74px]">
-      <ListRewards />
-      <NoSignal />
+    <ListRewards />
   </div>;
 };
 
-export default MyReward;
+export default MyRewardPage;
