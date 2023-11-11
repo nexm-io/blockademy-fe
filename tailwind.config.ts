@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-soleil)']
+        sans: ["var(--font-soleil)"],
       },
       colors: {
         black: {
@@ -36,7 +36,7 @@ module.exports = {
           500: "#2B3139",
           600: "#FAFAFA",
           700: "#F8F8F8",
-          800: "#F0F0F0"
+          800: "#F0F0F0",
         },
 
         gray: {
@@ -58,6 +58,7 @@ module.exports = {
           500: "#D7F1FF",
           600: "#C6EAFF",
           700: "#0B76A4",
+          800: "#0068b5",
         },
         red: {
           100: "#FF1D1D",
@@ -74,7 +75,7 @@ module.exports = {
         orange: {
           100: "#FFE2C9",
           200: "#E56700",
-        }
+        },
       },
       boxShadow: {
         "3xl":
