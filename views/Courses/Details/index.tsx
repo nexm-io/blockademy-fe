@@ -44,7 +44,7 @@ const CourseDetailsView = () => {
                     </span>
                   </Button>
                 </Link>
-                <Link href="#" className="w-full md:w-auto inline-block">
+                <Link href={`/reward/${courseId}`} className="w-full md:w-auto inline-block">
                   <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
                     <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
                       Reward
