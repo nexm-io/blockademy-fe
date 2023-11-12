@@ -9,9 +9,7 @@ import {
   UserAnswerType,
 } from "./type";
 import api from "@/services/axios";
-import {
-  QUIZ_COMPLETED,
-} from "@/utils/constants";
+import { QUIZ_COMPLETED } from "@/utils/constants";
 
 export const loadQuizs = createAsyncThunk(
   "quiz/load-quizs",
@@ -137,16 +135,19 @@ export const checkShowResult = createAsyncThunk(
       //   dispatch(setDurationQuiz(checkShowResultRes?.data?.time));
       if (typeof checkShowResultRes?.data?.is_completed !== "number")
         return false;
-      if (
-        checkShowResultRes?.data?.is_completed === QUIZ_COMPLETED &&
-        checkShowResultRes?.data?.isPossibleToRejoin === 0
-      )
+
+      if (checkShowResultRes?.data?.is_completed === QUIZ_COMPLETED)
         return true;
-      if (
-        checkShowResultRes?.data?.is_completed === QUIZ_COMPLETED &&
-        checkShowResultRes?.data?.isPossibleToRejoin === 1
-      )
-        return false;
+      // if (
+      //   checkShowResultRes?.data?.is_completed === QUIZ_COMPLETED &&
+      //   checkShowResultRes?.data?.isPossibleToRejoin === 0
+      // )
+      //   return true;
+      // if (
+      //   checkShowResultRes?.data?.is_completed === QUIZ_COMPLETED &&
+      //   checkShowResultRes?.data?.isPossibleToRejoin === 1
+      // )
+      //   return false;
       return false;
     } catch (error) {
       return false;

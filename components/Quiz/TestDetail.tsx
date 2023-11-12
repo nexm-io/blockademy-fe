@@ -33,12 +33,14 @@ import {
   setListView,
   setQuesDetail,
   setQuizAnswer,
+  setShowResult,
   setTimeStart,
 } from "@/redux/features/quiz/action";
 import Button from "../Common/Button";
 import PreviewQuiz from "./PreviewQuiz";
 import CountdownClock from "./CountdownClock";
 import EndTestModal from "./EndTestModal";
+import ShowImageModal from "./ShowImageModal";
 
 // eslint-disable-next-line react/display-name
 const MyMemoizedComponent = memo((time: { time: number }) => {
@@ -261,7 +263,7 @@ const TestDetail = () => {
       //   })
       // );
       router.push(`/result/${id}`);
-      // dispatch(setShowResult(true));
+      dispatch(setShowResult(true));
       dispatch(getListResult(listQues[0]?.post_id));
     }
   };
@@ -291,7 +293,8 @@ const TestDetail = () => {
           const resStartTime = await dispatch(getStartTime(id));
           const res = await dispatch(checkShowResult(id));
           if (res.payload) {
-            await dispatch(getListResult(id));
+            router.push(`/result/${id}`);
+            // await dispatch(getListResult(id));
           } else {
             if (resStartTime.payload?.start_time) return await handleSendQuiz();
             setIsModalBeginTestOpen(true);
@@ -336,11 +339,11 @@ const TestDetail = () => {
   //   return null;
   // }
 
-  useEffect(() => {
-    if (token && id) {
-      setIsModalBeginTestOpen(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (token && id) {
+  //     setIsModalBeginTestOpen(true);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -901,11 +904,13 @@ const TestDetail = () => {
         isModalEndTestOpen={isModalEndTestOpen}
         onClose={() => setIsModalEndTestOpen(false)}
       />
-      {/* <ShowImageModal
-        isModalShowImageOpen={isModalShowImageOpen}
-        onCloseModalShowImage={() => setIsModalShowImageOpen(false)}
-        dataImage={quesDetail?.image?.original_image}
-      /> */}
+      {quesDetail?.image?.original_image && (
+        <ShowImageModal
+          isModalShowImageOpen={isModalShowImageOpen}
+          onCloseModalShowImage={() => setIsModalShowImageOpen(false)}
+          dataImage={quesDetail?.image?.original_image}
+        />
+      )}
     </>
   );
 };
