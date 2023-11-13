@@ -15,7 +15,7 @@ const MASTER_CONTENT = [
     reverse: false,
     width: 500,
     height: 338,
-    desc: "Visual, interactive lessons make concepts feel intuitive — so even complex ideas just click. Our real-time feedback and simple explanations make learning efficient.",
+    desc: "Elevate your understanding of blockchain through visually engaging, interactive lessons that render complex concepts intuitive. Benefit from real-time feedback and straightforward explanations for an efficient and effective learning experience.",
   },
   {
     image: ImgLearn,
@@ -23,7 +23,7 @@ const MASTER_CONTENT = [
     reverse: true,
     width: 488,
     height: 330,
-    desc: "Students and professionals alike can hone dormant skills or learn new ones. Progress through lessons and challenges tailored to your level. Designed for ages 13 to 113.",
+    desc: "Whether you’re a student or a professional, unlock new skills or refine existing ones with lessons and challenges crafted just for you.",
   },
   {
     image: ImgGuided,
@@ -31,7 +31,7 @@ const MASTER_CONTENT = [
     reverse: false,
     width: 500,
     height: 330,
-    desc: "We make it easy to stay on track, see your progress, and build your problem solving skills one concept at a time.",
+    desc: "Simplify your journey in the blockchain domain with seamless progress tracking, ensuring you stay on course, witness your advancements, and enhance your problem-solving skills, one concept at a time.",
   },
   {
     image: ImgMotivated,
@@ -39,21 +39,21 @@ const MASTER_CONTENT = [
     reverse: true,
     width: 488,
     height: 264,
-    desc: "Form a real learning habit with fun content that’s always well-paced, game-like progress tracking, and friendly reminders.",
+    desc: "Cultivate a genuine learning routine with enjoyable content, consistently paced lessons, gamified progress tracking, and friendly reminders in the realm of blockchain education.",
   },
 ];
 
 const MasterConcepts = () => {
   return (
-    <section className="md:mt-[74px] mt-[40px] w-full">
+    <section className="md:mt-36 mt-[40px] w-full">
       <div className="flex flex-col gap-1 mb-12">
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
-          Master concepts in 15 minutes a day
+          Master Blockchain Concepts in 15 Minutes a Day
         </h2>
         <p className="max-w-[806px] mx-auto text-center text-[#525252] text-base sm:text-xl font-bold">
-          Whether you’re a complete beginner or ready to dive into machine
-          learning and beyond, Brilliant makes it easy to level up fast with
-          fun, bite-sized lessons.
+          Explore blockchain effortlessly with Blockademy—simplified, enjoyable
+          lessons for beginners and enthusiasts alike. Master the intricacies at
+          your own pace and unlock the world of blockchain mastery.
         </p>
       </div>
       <div className="flex flex-col gap-10 lg:gap-0">
@@ -64,13 +64,7 @@ const MasterConcepts = () => {
           >
             <div className="overflow-hidden flex justify-center">
               {z.isVideo ? (
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  preload="auto"
-                  playsInline
-                >
+                <video autoPlay muted loop preload="auto" playsInline>
                   <source src={z.src} type="video/mp4" />
                 </video>
               ) : (
