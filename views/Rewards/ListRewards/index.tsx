@@ -37,9 +37,9 @@ export default function ListRewards() {
         </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-10">
-        <RewardItem status="passed" />
+        {/* <RewardItem status="passed" />
         <RewardItem status="not-completed" />
-        <RewardItem status="failed" />
+        <RewardItem status="failed" /> */}
       </div>
     </div>
   );
