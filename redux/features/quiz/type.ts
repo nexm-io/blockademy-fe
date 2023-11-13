@@ -165,6 +165,11 @@ export type listResultDataType = {
   total_incorrect_answer: number;
   result: number;
   list_question_answer: QuestionAnswerType[];
+  course_id: string;
+  course_slug: string;
+  lesson_first: {
+    lesson_slug: string;
+  };
 };
 
 export type QuestionAnswerType = {

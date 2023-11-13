@@ -1,7 +1,6 @@
 import { AnswerType } from "@/redux/features/quiz/type";
 import { useAppSelector } from "@/redux/hook";
 import { TYPE_QUIZ } from "@/utils/constants";
-// import { LoadingButton } from "@mui/lab";
 import { Box, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { PropsWithChildren, useEffect } from "react";

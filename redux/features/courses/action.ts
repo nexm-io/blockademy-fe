@@ -16,16 +16,18 @@ export const getListCourse = createAsyncThunk<
   return response.data;
 });
 
-export const getDetailCourse = createAsyncThunk("courses/detail-course", async (courseId: string) => {
-  try {
-    const { data: course } = await api.get(
-      `/api/v10/course/${courseId}`
-    );
-    return course;
-  } catch (error) {
-    return null;
+export const getDetailCourse = createAsyncThunk(
+  "courses/detail-course",
+  async (courseId: string) => {
+    try {
+      const { data: course } = await api.get(`/api/v10/course/${courseId}`);
+      console.log("course", course);
+      return course;
+    } catch (error) {
+      return null;
+    }
   }
-});
+);
 
 export const getAnswerQuiz = createAsyncThunk<
   QuizResponse,

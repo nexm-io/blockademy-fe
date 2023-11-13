@@ -2,35 +2,26 @@
 
 import { Box, Skeleton, Stack, Typography } from "@mui/material";
 
-import { useDispatch, useSelector } from "react-redux";
-// import { RESULT_QUIZ, RESULT_QUESTION, TYPE_QUIZ } from "@/config/constants";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { tomorrow } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { useEffect, useState } from "react";
-// import SendFeedbackModal from "../Settings/SendFeedbackModal";
-import { useRouter } from "next/router";
-// import { getListResult } from "@/features/quiz/action";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-// import { getListResult } from "@/redux/features/quiz/action";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   RESULT_QUESTION_CORRECT,
+  RESULT_QUIZ_FAIL,
   RESULT_QUIZ_PASS,
   TYPE_QUIZ,
 } from "@/utils/constants";
 import { getListResult } from "@/redux/features/quiz/action";
 import Image from "next/image";
+import Button from "../Common/Button";
 
 export default function ResultQuiz() {
   const { listResultData, loadingListResult, iShowFeedBack } = useAppSelector(
     (state) => state.quiz
   );
   const dispatch = useAppDispatch();
-  // const { query } = useRouter();
+  const router = useRouter();
   const { id } = useParams();
-  // const { id } = query;
-  // const [isOpenModalFeedback, setIsOpenModalFeedback] = useState(iShowFeedBack);
-
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
@@ -63,10 +54,6 @@ export default function ResultQuiz() {
     return trimmedStr;
   };
 
-  // const handleCloseFeedbackModal = () => {
-  //   setIsOpenModalFeedback(false);
-  // };
-
   useEffect(() => {
     const handleKeyDown = (event: any) => {
       if (event.keyCode === 123) {
@@ -90,7 +77,7 @@ export default function ResultQuiz() {
   return (
     <>
       {loadingListResult ? (
-        <Stack sx={{ my: 4, maxWidth: "650px" }}>
+        <Stack sx={{ maxWidth: "650px", py: 10, m: "auto" }}>
           <Skeleton variant="text" sx={{ maxWidth: "250px" }} height={50} />
           <Skeleton variant="text" sx={{ maxWidth: "300px" }} height={50} />
           <Skeleton
@@ -106,28 +93,43 @@ export default function ResultQuiz() {
         </Stack>
       ) : (
         <Box
-          sx={{ maxWidth: "650px", mt: 4 }}
+          sx={{ maxWidth: "650px", py: 10, m: "auto" }}
           onCopy={(e) => {
             e.preventDefault();
           }}
         >
-          {/* <SendFeedbackModal
-            title="Give FeedBack"
-            data="What do you think about IC-FPGA Academy?"
-            isModalOpen={isOpenModalFeedback}
-            button="Submit"
-            onClose={handleCloseFeedbackModal}
-          /> */}
-          <Typography
-            sx={{
-              color: "var(--primary-black)",
-              fontSize: "24px",
-              fontWeight: 500,
-              lineHeight: "32px",
-            }}
-          >
-            {listResultData?.quiz}
-          </Typography>
+          <div className="flex justify-between">
+            <Typography
+              sx={{
+                color: "var(--primary-black)",
+                fontSize: "24px",
+                fontWeight: 500,
+                lineHeight: "32px",
+              }}
+            >
+              {listResultData?.quiz}
+            </Typography>
+            <div className="flex gap-4">
+              {listResultData?.result === RESULT_QUIZ_FAIL && (
+                <Button
+                  onClick={() => router.push(`/quiz/${id}`)}
+                  className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
+                >
+                  Try again
+                </Button>
+              )}
+              <Button
+                onClick={() =>
+                  router.push(
+                    `/courses/${listResultData?.course_id}?slug=${listResultData?.lesson_first?.lesson_slug}`
+                  )
+                }
+                className="!px-6 !py-2 w-full sm:w-auto"
+              >
+                Back To Courses
+              </Button>
+            </div>
+          </div>
           <Typography
             sx={{
               color: "var(--primary-color-100)",

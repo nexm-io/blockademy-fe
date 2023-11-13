@@ -53,12 +53,6 @@ const TimeUpModal: React.FC<
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
-      // dispatch(
-      //   setToast({
-      //     message: "Submit your assignment successfully!",
-      //     severity: "success",
-      //   })
-      // );
       push(`/result/${id}`);
       dispatch(setShowResult(true));
       dispatch(getListResult(listQues[0]?.post_id));

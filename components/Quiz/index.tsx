@@ -4,18 +4,13 @@ import Button from "../Common/Button";
 import { Lesson } from "@/redux/features/courses/type";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
-  claimReward,
   getAnswerQuiz,
   resetFinish,
   saveAnswerQuiz,
 } from "@/redux/features/courses/action";
 import { usePathname, useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
-import slugify from "slugify";
 import slugifyText from "@/utils/slugifyText";
-import { toast } from "react-toastify";
-import { isBefore } from "date-fns";
-import { claimInWallet } from "@/redux/features/user/action";
 import Popup from "../Popup";
 
 const Quiz = ({

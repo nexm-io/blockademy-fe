@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-// import ResultQuiz from "./ResultQuiz";
 import Button from "../Common/Button";
 
 export default function EndTestModal(props: {
@@ -41,14 +40,12 @@ export default function EndTestModal(props: {
             question_id: item.question_id,
             answer_id: item.answer_id,
             question_type: item.question_type,
-            // question_level: item.question_level,
           }
         : {
             question_id: item.question_id,
             answer_id: item.answer_id,
             question_type: item.question_type,
             answer_content: item.answer_content,
-            // question_level: item.question_level,
           }
     );
     const list = {
@@ -59,12 +56,6 @@ export default function EndTestModal(props: {
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
-      //   dispatch(
-      //     setToast({
-      //       message: "Submit your assignment successfully!",
-      //       severity: "success",
-      //     })
-      //   );
       router.push(`/result/${id}`);
       dispatch(setShowResult(true));
       dispatch(getListResult(listQues[0]?.post_id));
