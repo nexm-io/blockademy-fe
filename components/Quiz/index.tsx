@@ -62,7 +62,7 @@ const Quiz = ({
     }
   };
 
-  const incompleteCourses = courseDetail?.other_courses.data.filter(
+  const incompleteCourses = courseDetail?.other_courses?.data.filter(
     (course) => course.is_completed === 0
   );
 
@@ -201,7 +201,7 @@ const Quiz = ({
         )}
     </div>
   ) : (
-    <div>No Quizz </div>
+    <div>No Quiz </div>
   );
 };
 

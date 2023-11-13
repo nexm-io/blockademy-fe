@@ -102,8 +102,10 @@ export interface CourseDetail {
   lesson_type: string;
   is_complete: number;
   reward_is_claimed: number;
+  assigment_id: string;
   reward_released_date: number;
   is_finished: number;
+  is_registered: number;
   other_courses: {
     data: Array<ListCourse>;
   };

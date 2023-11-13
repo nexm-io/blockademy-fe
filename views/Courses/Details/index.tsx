@@ -37,7 +37,7 @@ const CourseDetailsView = () => {
                 {courseDetails?.title}
               </h1>
               <div className="flex items-center flex-wrap gap-3">
-                <Link href="/quiz/1" className="w-full md:w-auto inline-block">
+                <Link href={`/quiz/${courseDetails?.assigment_id}`} className="w-full md:w-auto inline-block">
                   <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
                     <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
                       Complete Quiz
