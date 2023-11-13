@@ -16,8 +16,8 @@ const HomeView = () => {
       <TopBody />
       <Topics />
       <TopCourses />
-      <JourneyAcademy />
       <MasterConcepts />
+      <JourneyAcademy />
       {/* <Divider /> */}
       {/* <GuidedCourses /> */}
       <SpecialContent />

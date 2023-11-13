@@ -13,6 +13,12 @@ export const TYPE_QUIZ = {
   IQ: "iq",
 };
 
+export const ASSIGNMENT_STATUS = {
+  PASSED: "passed",
+  NOT_COMPLETED: "new",
+  FAILED: "failed",
+};
+
 export const soleil = localFont({
   src: [
     {

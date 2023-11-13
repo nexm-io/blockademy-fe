@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
 import { Lesson } from "@/redux/features/courses/type";
@@ -11,6 +11,9 @@ import { useParams, useSearchParams } from "next/navigation";
 import slugifyText from "@/utils/slugifyText";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
 import api from "@/services/axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 interface CourseModuleProps {
   lesson: Lesson;
@@ -22,8 +25,13 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
   const courseId = params.id;
   const slug = searchParams.get("slug");
   const [isCompleted, setIsCompleted] = useState(!!lesson.is_complete);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const token = useSelector((state: RootState) => state.auth.token);
 
   const handleCompleteLesson = async () => {
+    if (!isAuthenticated || !token || isCompleted) return;
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lesson.lesson_id}`
@@ -35,6 +43,10 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
       return null;
     }
   };
+
+  useEffect(() => {
+    if (!isAuthenticated || !token) setIsCompleted(false);
+  }, [token, isAuthenticated]);
 
   return (
     <div
