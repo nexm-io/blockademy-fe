@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    enterFullScreen();
+    // enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -140,8 +140,6 @@ const TestDetail = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-
-  const initialValue = answerUserChoose ? answerUserChoose?.value : "";
 
   const handleChange = (event: any) => {
     if (!quesDetail) return;
@@ -256,7 +254,6 @@ const TestDetail = () => {
 
   const [hasFetchData, setHasFetchData] = useState(false);
 
-
   const removeWhiteSpace = (str: string) => {
     if (!str) return "";
     const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
@@ -280,9 +277,9 @@ const TestDetail = () => {
   useEffect(() => {
     if (isSubmitInButton) return;
     const handleKeyPress = async (event: any) => {
-      if (!document.fullscreenElement) {
-        await handleSendQuiz();
-      }
+      // if (!document.fullscreenElement) {
+      //   await handleSendQuiz();
+      // }
     };
 
     const handleKeyDown = (event: any) => {
@@ -306,467 +303,462 @@ const TestDetail = () => {
     };
   });
 
-
   return (
     <>
-      {
-        isModalBeginTestOpen ? (
-          <BeginTestModal
-            isModalBeginTestOpen={isModalBeginTestOpen}
-            onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
-            handleStartQuiz={handleStartQuiz}
-          />
-        ) : !isShowPreview && quesDetail ? (
-          listQues?.length > 0 &&
-          !loadingCheckShowResult && (
-            <Box
-              className="main quiz"
+      {isModalBeginTestOpen ? (
+        <BeginTestModal
+          isModalBeginTestOpen={isModalBeginTestOpen}
+          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
+          handleStartQuiz={handleStartQuiz}
+        />
+      ) : !isShowPreview && quesDetail ? (
+        listQues?.length > 0 &&
+        !loadingCheckShowResult && (
+          <Box
+            className="main quiz"
+            sx={{
+              mx: { xs: "20px", lg: "100px" },
+              pt: "70px",
+              mb: "100px",
+            }}
+            onCopy={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <Typography
               sx={{
-                mx: { xs: "20px", lg: "100px" },
-                pt: "70px",
-                mb: "100px",
-              }}
-              onCopy={(e) => {
-                e.preventDefault();
+                color: "var(--primary-black)",
+                fontSize: "24px",
+                fontWeight: 500,
+                lineHeight: "32px",
               }}
             >
-              <Typography
-                sx={{
-                  color: "var(--primary-black)",
-                  fontSize: "24px",
-                  fontWeight: 500,
-                  lineHeight: "32px",
-                }}
-              >
-                {quesDetail?.quiz_title}
-              </Typography>
+              {quesDetail?.quiz_title}
+            </Typography>
 
-              <Typography
-                sx={{
-                  color: "var(--primary-color-100)",
-                  fontSize: "20px",
-                  fontWeight: 500,
-                  lineHeight: "32px",
-                  mt: 2,
-                  mb: "20px",
-                }}
-              >
-                {removeWhiteSpace(quesDetail?.quiz_description)}
-              </Typography>
+            <Typography
+              sx={{
+                color: "var(--primary-color-100)",
+                fontSize: "20px",
+                fontWeight: 500,
+                lineHeight: "32px",
+                mt: 2,
+                mb: "20px",
+              }}
+            >
+              {removeWhiteSpace(quesDetail?.quiz_description)}
+            </Typography>
 
-              <Card
-                // name="quiz"
+            <Card
+              // name="quiz"
+              sx={{
+                display: "flex",
+                gap: "40px",
+                flexDirection: { xs: "column-reverse", lg: "row" },
+                justifyContent: "center",
+                alignItems: { lg: "start" },
+              }}
+            >
+              <Box
                 sx={{
                   display: "flex",
-                  gap: "40px",
-                  flexDirection: { xs: "column-reverse", lg: "row" },
+                  flexDirection: "column",
+                  backgroundColor: "#F9F9F9",
+                  borderRadius: "20px",
+                  p: "20px",
+                  minWidth: { lg: "556px" },
+                  maxWidth: { lg: "556px" },
+                }}
+              >
+                {/* FillinQuiz */}
+                {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
+                  <CardContent sx={{ flex: "1 0 auto", width: { lg: "100%" } }}>
+                    <Typography
+                      sx={{
+                        color: "var(--primary-black)",
+                        fontSize: "26px",
+                        fontWeight: 500,
+                        lineHeight: "34px",
+                        mb: "25px",
+                      }}
+                    >
+                      Question <span>{quesDetail?.order}</span>
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#121230",
+                        fontSize: "26px",
+                        fontWeight: 500,
+                        lineHeight: "39px",
+                        userSelect: "none",
+                      }}
+                    >
+                      {quesDetail?.question}
+                    </Typography>
+                    {quesDetail?.question_description &&
+                      !checkWhiteSpace(quesDetail?.question_description) && (
+                        <Box sx={{ overflow: "auto" }}>
+                          <Box
+                            sx={{
+                              color: "#71738B",
+                              lineHeight: "25px",
+                              userSelect: "none",
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: quesDetail?.question_description,
+                            }}
+                          />
+                        </Box>
+                      )}
+                    {quesDetail?.image && (
+                      <Box
+                        sx={{
+                          maxWidth: "200px",
+                          cursor: "zoom-in",
+                          userSelect: "none",
+                        }}
+                        onClick={handleShowImage}
+                      >
+                        <Image
+                          src={quesDetail?.image?.original_image}
+                          // src={quesDetail?.image}
+                          alt="question-image"
+                          width={100}
+                          height={150}
+                          layout="responsive"
+                        />
+                      </Box>
+                    )}
+                    <TextField
+                      sx={{
+                        marginTop: "17px",
+                        mb: "23px",
+                        width: { lg: "95%" },
+                      }}
+                      fullWidth
+                      name="quiz"
+                      multiline
+                      rows={5}
+                      value={value}
+                      placeholder="Your answer"
+                      onChange={(event) => {
+                        handleAnswer(event.target.value);
+                      }}
+                      onCopy={handleCopyPaste}
+                      onCut={handleCopyPaste}
+                      onPaste={handleCopyPaste}
+                    />
+                  </CardContent>
+                )}
+                {/* MultipleQuiz */}
+                {(quesDetail?.question_type === TYPE_QUIZ.MULTIPLE_CHOICE ||
+                  quesDetail?.question_type === TYPE_QUIZ.IQ) && (
+                  <CardContent
+                    sx={{
+                      flex: "1 0 auto",
+                      minHeight: "402px",
+                      maxWidth: "100%",
+                      width: { lg: "100%" },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "var(--primary-black)",
+                        fontSize: "26px",
+                        fontWeight: 500,
+                        lineHeight: "34px",
+                        mb: "25px",
+                      }}
+                    >
+                      Question <span>{quesDetail?.order}</span>
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#121230",
+                        fontSize: "26px",
+                        fontWeight: 500,
+                        lineHeight: "39px",
+                        mb: "20px",
+                        userSelect: "none",
+                      }}
+                    >
+                      {quesDetail?.question}
+                    </Typography>
+                    {quesDetail?.question_description &&
+                      !checkWhiteSpace(quesDetail?.question_description) && (
+                        <Box
+                          sx={{
+                            ml: 4,
+                            fontSize: "18px",
+                            overflow: "auto",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              color: "#71738B",
+                              lineHeight: "25px",
+                              userSelect: "none",
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: quesDetail?.question_description,
+                            }}
+                          />
+                        </Box>
+                      )}
+                    {quesDetail?.image && (
+                      <Box
+                        sx={{
+                          maxWidth: "200px",
+                          cursor: "zoom-in",
+                          userSelect: "none",
+                        }}
+                        onClick={handleShowImage}
+                      >
+                        <Image
+                          src={quesDetail?.image?.original_image}
+                          // src={quesDetail?.image}
+                          alt="question-image"
+                          width={100}
+                          height={150}
+                          layout="responsive"
+                        />
+                      </Box>
+                    )}
+                    <FormControl component="fieldset" sx={{ width: "100%" }}>
+                      <RadioGroup
+                        aria-labelledby="demo-controlled-radio-buttons-group"
+                        name="controlled-radio-buttons-group"
+                        value={value}
+                        onChange={handleChange}
+                      >
+                        <Grid container columns={12}>
+                          {quesDetail?.answer_list?.map((item, index) => (
+                            <Grid
+                              key={index}
+                              item
+                              xs={12}
+                              sm={12}
+                              sx={{ mb: "14px" }}
+                            >
+                              <FormControlLabel
+                                value={item?.id}
+                                control={
+                                  <Radio
+                                    icon={
+                                      <Box
+                                        sx={{
+                                          backgroundColor:
+                                            "var(--primary-color-700)",
+                                          height: "38px",
+                                          width: "38px",
+                                          borderRadius: "5px",
+                                        }}
+                                      />
+                                    }
+                                    checkedIcon={
+                                      <Box
+                                        sx={{
+                                          height: "38px",
+                                          width: "38px",
+                                          backgroundColor:
+                                            "var(--primary-color-100)",
+                                          display: "flex",
+                                          alignItems: "center",
+                                          justifyContent: "center",
+                                          borderRadius: "5px",
+                                        }}
+                                      >
+                                        <Typography
+                                          sx={{
+                                            color: "white",
+                                            fontSize: "30px",
+                                          }}
+                                        >
+                                          &#10003;
+                                        </Typography>
+                                      </Box>
+                                    }
+                                    name="checkbox"
+                                    sx={{
+                                      "&:hover": { bgcolor: "transparent" },
+                                    }}
+                                    disableRipple
+                                  />
+                                }
+                                label={item.answer_text}
+                                sx={{
+                                  ":hover": {
+                                    backgroundColor: "unset",
+                                  },
+                                  fontSize: "20px",
+                                  lineHeight: "29px",
+                                  color: "#1E1E3A",
+                                  minWidth: "170px",
+                                  wordBreak: "break-word",
+                                  userSelect: "none",
+                                }}
+                              />
+                              {item?.image && (
+                                <Box sx={{ maxWidth: "200px", width: "95%" }}>
+                                  <Image
+                                    // src={item?.image}
+                                    src={item?.image?.original_image}
+                                    alt="question-image"
+                                    width={100}
+                                    height={150}
+                                    layout="responsive"
+                                  />
+                                </Box>
+                              )}
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </RadioGroup>
+                    </FormControl>
+                  </CardContent>
+                )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    px: "12px",
+                    pb: "20px",
+                  }}
+                >
+                  <div className="flex items-center flex-col sm:flex-row gap-6">
+                    <Button
+                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
+                      disabled={quesDetail?.order === 1}
+                      onClick={handlePrevQuestion}
+                    >
+                      <span>Previous question</span>
+                    </Button>
+                    <Button
+                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
+                      disabled={quesDetail?.order === listQues?.length}
+                      onClick={handleNextQuestion}
+                    >
+                      <span>Next question</span>
+                    </Button>
+                  </div>
+                  <Typography
+                    sx={{
+                      color: "#CF1818",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      fontWeight: 500,
+                      textDecorationLine: "underline",
+                      cursor: "pointer",
+                      userSelect: "none",
+                    }}
+                    onClick={handleEndTest}
+                  >
+                    End Test
+                  </Typography>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "row", lg: "column" },
+                  alignItems: "center",
                   justifyContent: "center",
-                  alignItems: { lg: "start" },
+                  gap: { xs: "40px", lg: 0 },
                 }}
               >
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
-                    backgroundColor: "#F9F9F9",
-                    borderRadius: "20px",
-                    p: "20px",
-                    minWidth: { lg: "556px" },
-                    maxWidth: { lg: "556px" },
+                    alignItems: "center",
                   }}
                 >
-                  {/* FillinQuiz */}
-                  {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
-                    <CardContent
-                      sx={{ flex: "1 0 auto", width: { lg: "100%" } }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "var(--primary-black)",
-                          fontSize: "26px",
-                          fontWeight: 500,
-                          lineHeight: "34px",
-                          mb: "25px",
-                        }}
-                      >
-                        Question <span>{quesDetail?.order}</span>
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#121230",
-                          fontSize: "26px",
-                          fontWeight: 500,
-                          lineHeight: "39px",
-                          userSelect: "none",
-                        }}
-                      >
-                        {quesDetail?.question}
-                      </Typography>
-                      {quesDetail?.question_description &&
-                        !checkWhiteSpace(quesDetail?.question_description) && (
-                          <Box sx={{ overflow: "auto" }}>
-                            <Box
-                              sx={{
-                                color: "#71738B",
-                                lineHeight: "25px",
-                                userSelect: "none",
-                              }}
-                              dangerouslySetInnerHTML={{
-                                __html: quesDetail?.question_description,
-                              }}
-                            />
-                          </Box>
-                        )}
-                      {quesDetail?.image && (
-                        <Box
-                          sx={{
-                            maxWidth: "200px",
-                            cursor: "zoom-in",
-                            userSelect: "none",
-                          }}
-                          onClick={handleShowImage}
-                        >
-                          <Image
-                            src={quesDetail?.image?.original_image}
-                            // src={quesDetail?.image}
-                            alt="question-image"
-                            width={100}
-                            height={150}
-                            layout="responsive"
-                          />
-                        </Box>
-                      )}
-                      <TextField
-                        sx={{
-                          marginTop: "17px",
-                          mb: "23px",
-                          width: { lg: "95%" },
-                        }}
-                        fullWidth
-                        name="quiz"
-                        multiline
-                        rows={5}
-                        value={value}
-                        placeholder="Your answer"
-                        onChange={(event) => {
-                          handleAnswer(event.target.value);
-                        }}
-                        onCopy={handleCopyPaste}
-                        onCut={handleCopyPaste}
-                        onPaste={handleCopyPaste}
-                      />
-                    </CardContent>
-                  )}
-                  {/* MultipleQuiz */}
-                  {(quesDetail?.question_type === TYPE_QUIZ.MULTIPLE_CHOICE ||
-                    quesDetail?.question_type === TYPE_QUIZ.IQ) && (
-                    <CardContent
-                      sx={{
-                        flex: "1 0 auto",
-                        minHeight: "402px",
-                        maxWidth: "100%",
-                        width: { lg: "100%" },
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "var(--primary-black)",
-                          fontSize: "26px",
-                          fontWeight: 500,
-                          lineHeight: "34px",
-                          mb: "25px",
-                        }}
-                      >
-                        Question <span>{quesDetail?.order}</span>
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#121230",
-                          fontSize: "26px",
-                          fontWeight: 500,
-                          lineHeight: "39px",
-                          mb: "20px",
-                          userSelect: "none",
-                        }}
-                      >
-                        {quesDetail?.question}
-                      </Typography>
-                      {quesDetail?.question_description &&
-                        !checkWhiteSpace(quesDetail?.question_description) && (
-                          <Box
-                            sx={{
-                              ml: 4,
-                              fontSize: "18px",
-                              overflow: "auto",
-                            }}
-                          >
-                            <Box
-                              sx={{
-                                color: "#71738B",
-                                lineHeight: "25px",
-                                userSelect: "none",
-                              }}
-                              dangerouslySetInnerHTML={{
-                                __html: quesDetail?.question_description,
-                              }}
-                            />
-                          </Box>
-                        )}
-                      {quesDetail?.image && (
-                        <Box
-                          sx={{
-                            maxWidth: "200px",
-                            cursor: "zoom-in",
-                            userSelect: "none",
-                          }}
-                          onClick={handleShowImage}
-                        >
-                          <Image
-                            src={quesDetail?.image?.original_image}
-                            // src={quesDetail?.image}
-                            alt="question-image"
-                            width={100}
-                            height={150}
-                            layout="responsive"
-                          />
-                        </Box>
-                      )}
-                      <FormControl component="fieldset" sx={{ width: "100%" }}>
-                        <RadioGroup
-                          aria-labelledby="demo-controlled-radio-buttons-group"
-                          name="controlled-radio-buttons-group"
-                          value={value}
-                          onChange={handleChange}
-                        >
-                          <Grid container columns={12}>
-                            {quesDetail?.answer_list?.map((item, index) => (
-                              <Grid
-                                key={index}
-                                item
-                                xs={12}
-                                sm={12}
-                                sx={{ mb: "14px" }}
-                              >
-                                <FormControlLabel
-                                  value={item?.id}
-                                  control={
-                                    <Radio
-                                      icon={
-                                        <Box
-                                          sx={{
-                                            backgroundColor:
-                                              "var(--primary-color-700)",
-                                            height: "38px",
-                                            width: "38px",
-                                            borderRadius: "5px",
-                                          }}
-                                        />
-                                      }
-                                      checkedIcon={
-                                        <Box
-                                          sx={{
-                                            height: "38px",
-                                            width: "38px",
-                                            backgroundColor:
-                                              "var(--primary-color-100)",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            borderRadius: "5px",
-                                          }}
-                                        >
-                                          <Typography
-                                            sx={{
-                                              color: "white",
-                                              fontSize: "30px",
-                                            }}
-                                          >
-                                            &#10003;
-                                          </Typography>
-                                        </Box>
-                                      }
-                                      name="checkbox"
-                                      sx={{
-                                        "&:hover": { bgcolor: "transparent" },
-                                      }}
-                                      disableRipple
-                                    />
-                                  }
-                                  label={item.answer_text}
-                                  sx={{
-                                    ":hover": {
-                                      backgroundColor: "unset",
-                                    },
-                                    fontSize: "20px",
-                                    lineHeight: "29px",
-                                    color: "#1E1E3A",
-                                    minWidth: "170px",
-                                    wordBreak: "break-word",
-                                    userSelect: "none",
-                                  }}
-                                />
-                                {item?.image && (
-                                  <Box sx={{ maxWidth: "200px", width: "95%" }}>
-                                    <Image
-                                      // src={item?.image}
-                                      src={item?.image?.original_image}
-                                      alt="question-image"
-                                      width={100}
-                                      height={150}
-                                      layout="responsive"
-                                    />
-                                  </Box>
-                                )}
-                              </Grid>
-                            ))}
-                          </Grid>
-                        </RadioGroup>
-                      </FormControl>
-                    </CardContent>
-                  )}
+                  <Box
+                    sx={{
+                      backgroundColor: "var(--primary-color-100)",
+                      borderRadius: "20px",
+                      width: "295px",
+                      height: "130px",
+                      textAlign: "center",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      userSelect: "none",
+                    }}
+                  >
+                    <Typography sx={{ color: "white" }}>
+                      Remaining Time
+                    </Typography>
+                    <MyMemoizedComponent
+                      time={
+                        duration - (Date.now() - dataStartTime) / 1000 < 0
+                          ? 0
+                          : duration - (Date.now() - dataStartTime) / 1000
+                      }
+                    />
+                  </Box>
                   <Box
                     sx={{
                       display: "flex",
+                      gap: "18px",
                       alignItems: "center",
-                      justifyContent: "space-between",
-                      px: "12px",
-                      pb: "20px",
+                      justifyContent: "center",
+                      mt: 2,
+                      mb: { lg: "47px" },
                     }}
                   >
-                    <div className="flex items-center flex-col sm:flex-row gap-6">
-                      <Button
-                        className=" bg-[#0068b5] w-[180px] flex items-center !px-4 "
-                        disabled={quesDetail?.order === 1}
-                        onClick={handlePrevQuestion}
-                      >
-                        <span>Previous question</span>
-                      </Button>
-                      <Button
-                        className=" bg-[#0068b5] w-[180px] flex items-center !px-4 "
-                        disabled={quesDetail?.order === listQues?.length}
-                        onClick={handleNextQuestion}
-                      >
-                        <span>Next question</span>
-                      </Button>
-                    </div>
                     <Typography
                       sx={{
-                        color: "#CF1818",
-                        fontSize: "16px",
-                        lineHeight: "22px",
+                        color: "var(--primary-color-100)",
                         fontWeight: 500,
-                        textDecorationLine: "underline",
+                        userSelect: "none",
+                      }}
+                    >
+                      <span>{userAnswer?.length}</span>/
+                      <span>{listQues?.length}</span> Question done
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#9EA3AE",
+                        fontWeight: 300,
+                        fontSize: "14px",
+                        lineHeight: "20px",
+                        textDecoration: "underline",
                         cursor: "pointer",
                         userSelect: "none",
                       }}
-                      onClick={handleEndTest}
+                      onClick={handeViewDetail}
                     >
-                      End Test
+                      View Details
                     </Typography>
                   </Box>
                 </Box>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: { xs: "row", lg: "column" },
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: { xs: "40px", lg: 0 },
+                    display: { xs: "none", md: "inline-block" },
+                    userSelect: "none",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        backgroundColor: "var(--primary-color-100)",
-                        borderRadius: "20px",
-                        width: "295px",
-                        height: "130px",
-                        textAlign: "center",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        userSelect: "none",
-                      }}
-                    >
-                      <Typography sx={{ color: "white" }}>
-                        Remaining Time
-                      </Typography>
-                      <MyMemoizedComponent
-                        time={
-                          duration - (Date.now() - dataStartTime) / 1000 < 0
-                            ? 0
-                            : duration - (Date.now() - dataStartTime) / 1000
-                        }
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        gap: "18px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        mt: 2,
-                        mb: { lg: "47px" },
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          color: "var(--primary-color-100)",
-                          fontWeight: 500,
-                          userSelect: "none",
-                        }}
-                      >
-                        <span>{userAnswer?.length}</span>/
-                        <span>{listQues?.length}</span> Question done
-                      </Typography>
-                      <Typography
-                        sx={{
-                          color: "#9EA3AE",
-                          fontWeight: 300,
-                          fontSize: "14px",
-                          lineHeight: "20px",
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                          userSelect: "none",
-                        }}
-                        onClick={handeViewDetail}
-                      >
-                        View Details
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: { xs: "none", md: "inline-block" },
-                      userSelect: "none",
-                    }}
-                  >
-                    <Image
-                      src="/images/quiz/quiz-icon.png"
-                      alt="quiz"
-                      width={176}
-                      height={205}
-                    />
-                  </Box>
+                  <Image
+                    src="/images/quiz/quiz-icon.png"
+                    alt="quiz"
+                    width={176}
+                    height={205}
+                  />
                 </Box>
-              </Card>
-            </Box>
-          )
-        ) : (
-          <PreviewQuiz
-            isShowPreview={isShowPreview}
-            onClose={() => setIsShowPreview(false)}
-            handleSubmit={() => setIsModalEndTestOpen(true)}
-          />
+              </Box>
+            </Card>
+          </Box>
         )
-      }
+      ) : (
+        <PreviewQuiz
+          isShowPreview={isShowPreview}
+          onClose={() => setIsShowPreview(false)}
+          handleSubmit={() => setIsModalEndTestOpen(true)}
+        />
+      )}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}

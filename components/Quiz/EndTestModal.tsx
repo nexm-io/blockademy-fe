@@ -149,7 +149,7 @@ export default function EndTestModal(props: {
             <span>Submit</span>
           </LoadingButton> */}
           <Button
-            className="flex justify-center items-center w-[160px] m-auto mb-[32px]"
+            className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
             size="small"
             onClick={handleSendQuiz}
             loading={loadingSendQuiz}

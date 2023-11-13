@@ -10,7 +10,7 @@ const muiTheme = createTheme({
     warning: { main: "#FFB700" },
   },
   typography: {
-    fontFamily: ["CentraNo2"].join(","),
+    fontFamily: ["var(--font-soleil)"].join(","),
     fontSize: 14,
   },
   components: {

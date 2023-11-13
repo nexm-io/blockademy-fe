@@ -193,22 +193,22 @@ const PreviewQuiz: React.FC<
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
+            // flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
             gap: 4,
             my: 6,
           }}
         >
+          <span className=" cursor-pointer" onClick={onClose}>
+            Back to assignment
+          </span>
           <Button
             className="bg-blue-800 w-[200px] rounded-sm hover:bg-[#003366] "
             onClick={handleSubmit}
           >
             <span>Submit</span>
           </Button>
-          <span className=" cursor-pointer" onClick={onClose}>
-            Back to assignment
-          </span>
         </Box>
       </Box>
     </>

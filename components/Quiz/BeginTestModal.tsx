@@ -3,17 +3,14 @@
 import {
   Box,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { MouseEventHandler } from "react";
 import Button from "../Common/Button";
 import { useAppDispatch } from "@/redux/hook";
-import { resetBeginTest } from "@/redux/features/quiz/action";
 
 export default function BeginTestModal(props: {
   isModalBeginTestOpen: boolean;
@@ -28,9 +25,6 @@ export default function BeginTestModal(props: {
   };
 
   const handleGoBack = () => {
-    // dispatch(resetBeginTest());
-    // router.push("/my-assignment")
-    // onCloseModalBeginTest();
     router.back();
   };
 
@@ -93,7 +87,7 @@ export default function BeginTestModal(props: {
           </DialogContentText>
         </DialogContent>
         <Button
-          className="flex justify-center items-center w-[160px] m-auto mb-[32px]"
+          className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
           size="small"
           onClick={props.handleStartQuiz}
         >
