@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    // enterFullScreen();
+    enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -277,9 +277,9 @@ const TestDetail = () => {
   useEffect(() => {
     if (isSubmitInButton) return;
     const handleKeyPress = async (event: any) => {
-      // if (!document.fullscreenElement) {
-      //   await handleSendQuiz();
-      // }
+      if (!document.fullscreenElement) {
+        await handleSendQuiz();
+      }
     };
 
     const handleKeyDown = (event: any) => {

@@ -16,6 +16,7 @@ import {
 import { useParams, useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 import React, { PropsWithChildren } from "react";
+import Button from "../Common/Button";
 
 const TimeUpModal: React.FC<
   PropsWithChildren<{
@@ -88,24 +89,13 @@ const TimeUpModal: React.FC<
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <LoadingButton
-            fullWidth
-            loading={loadingSendQuiz}
-            loadingPosition="end"
-            variant="contained"
-            sx={{
-              backgroundColor: "var(--primary-color-100)",
-              fontWeight: 400,
-              width: "160px",
-              display: "flex",
-              alignItems: "center",
-              margin: "auto",
-              mb: "32px",
-            }}
+          <Button
+            className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+            size="small"
             onClick={handleSendQuiz}
           >
-            <span>Submit</span>
-          </LoadingButton>
+            Submit
+          </Button>
         </DialogActions>
       </Dialog>
     </>
