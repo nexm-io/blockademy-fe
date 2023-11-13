@@ -117,7 +117,7 @@ const CourseDetail = () => {
                   {isLogin && courseDetail?.is_registered ? (
                     <>
                       <Link
-                        href={`/quiz/${courseId}`}
+                        href={`/quiz/${courseDetail?.assigment_id}`}
                         className="w-full md:w-auto inline-block"
                       >
                         <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
@@ -136,7 +136,7 @@ const CourseDetail = () => {
                           </span>
                         </Button>
                       </Link>
-                      <Link
+                      {/* <Link
                         href="/courses/leaderboard?id=1"
                         className="w-full md:w-auto inline-block"
                       >
@@ -145,7 +145,7 @@ const CourseDetail = () => {
                             Leaderboard
                           </span>
                         </Button>
-                      </Link>
+                      </Link> */}
                     </>
                   ) : (
                     <Button
