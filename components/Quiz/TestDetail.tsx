@@ -18,7 +18,7 @@ import {
   Grid,
 } from "@mui/material";
 import Image from "next/image";
-import { TYPE_QUIZ } from "@/utils/constants";
+import { TYPE_QUIZ, soleil } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { formatUtcTime } from "@/services/formatDate";
 import {
@@ -765,93 +765,102 @@ const TestDetail = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box
-          sx={{ p: 5, minWidth: "560px", minHeight: "420px" }}
-          onCopy={(e) => {
-            e.preventDefault();
-          }}
+        <div
+          className={` ${soleil.variable} font-sans !text-[12px] flex flex-col items-center`}
         >
           <Box
-            sx={{
-              position: "absolute",
-              top: "10px",
-              right: "10px",
-              cursor: "pointer",
+            sx={{ px: 2, py: 5, minWidth: "560px", minHeight: "420px" }}
+            onCopy={(e) => {
+              e.preventDefault();
             }}
-            onClick={handleCloseModal}
           >
-            <Image src="/icons/close.svg" alt="close" width={13} height={13} />
-          </Box>
-          <Grid container columns={12} gap={1}>
-            {filterListView?.map((item, index) => (
-              <Grid key={index} xs={12} md={5} sx={{ mr: 4 }}>
-                <Box
-                  sx={{
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
+            <Box
+              sx={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                cursor: "pointer",
+              }}
+              onClick={handleCloseModal}
+            >
+              <Image
+                src="/icons/close.svg"
+                alt="close"
+                width={13}
+                height={13}
+              />
+            </Box>
+            <Grid container columns={12} gap={1}>
+              {filterListView?.map((item, index) => (
+                <Grid key={index} xs={12} md={5} sx={{ mr: 4 }}>
+                  <Box
                     sx={{
-                      color: "var(--primary-color-100)",
-                      fontWeight: 500,
-                      mr: "20px",
+                      fontSize: "14px",
+                      lineHeight: "20px",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    Question{" "}
-                    <Box
-                      component="span"
-                      sx={{
-                        display: "inline-block",
-                        width: "10px",
-                        textAlign: "center",
-                        userSelect: "none",
-                      }}
-                    >
-                      {item?.order}
-                    </Box>
-                  </Typography>
-                  {item?.complete ? (
-                    <Typography
-                      sx={{
-                        color: "var(--primary-black)",
-                        fontWeight: 500,
-                        minWidth: "75px",
-                      }}
-                    >
-                      Completed
-                    </Typography>
-                  ) : (
                     <Typography
                       sx={{
                         color: "var(--primary-color-100)",
-                        fontWeight: 300,
-                        minWidth: "75px",
+                        fontWeight: 500,
+                        mr: "20px",
                       }}
                     >
-                      Not Started
+                      Question{" "}
+                      <Box
+                        component="span"
+                        sx={{
+                          display: "inline-block",
+                          width: "10px",
+                          textAlign: "center",
+                          userSelect: "none",
+                        }}
+                      >
+                        {item?.order}
+                      </Box>
                     </Typography>
-                  )}
-                  <Typography
-                    sx={{
-                      color: "var(--primary-color-700)",
-                      textDecoration: "underline",
-                      fontWeight: 300,
-                      ml: "11px",
-                      cursor: "pointer",
-                      "&:hover": { color: "var(--primary-color-100)" },
-                    }}
-                    onClick={() => handleGoToQues(item?.order)}
-                  >
-                    View
-                  </Typography>
-                </Box>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+                    {item?.complete ? (
+                      <Typography
+                        sx={{
+                          color: "var(--primary-black)",
+                          fontWeight: 500,
+                          minWidth: "75px",
+                        }}
+                      >
+                        Completed
+                      </Typography>
+                    ) : (
+                      <Typography
+                        sx={{
+                          color: "var(--primary-color-100)",
+                          fontWeight: 300,
+                          minWidth: "75px",
+                        }}
+                      >
+                        Not Started
+                      </Typography>
+                    )}
+                    <Typography
+                      sx={{
+                        color: "var(--primary-color-700)",
+                        textDecoration: "underline",
+                        fontWeight: 300,
+                        ml: "11px",
+                        cursor: "pointer",
+                        "&:hover": { color: "var(--primary-color-100)" },
+                      }}
+                      onClick={() => handleGoToQues(item?.order)}
+                    >
+                      View
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </div>
       </Dialog>
       <EndTestModal
         isModalEndTestOpen={isModalEndTestOpen}

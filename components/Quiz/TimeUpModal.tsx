@@ -17,6 +17,7 @@ import { useParams, useRouter } from "next/navigation";
 // import { useRouter } from "next/router";
 import React, { PropsWithChildren } from "react";
 import Button from "../Common/Button";
+import { soleil } from "@/utils/constants";
 
 const TimeUpModal: React.FC<
   PropsWithChildren<{
@@ -67,36 +68,40 @@ const TimeUpModal: React.FC<
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Typography
-          component="h2"
-          variant="h5"
-          sx={{
-            color: "#CF1818",
-            fontSize: "18px",
-            fontWeight: 500,
-            marginTop: "51px",
-            textAlign: "center",
-          }}
+        <p
+          className={` ${soleil.variable} !font-sans flex flex-col items-center `}
         >
-          {`Time's up!`}
-        </Typography>
-        <DialogContent sx={{ textAlign: "center", px: "40px" }}>
-          <DialogContentText
-            id="alert-dialog-description"
-            sx={{ maxWidth: "340px", color: "#CF1818", fontWeight: 500 }}
+          <Typography
+            component="h2"
+            variant="h5"
+            sx={{
+              color: "#CF1818",
+              fontSize: "18px",
+              fontWeight: 500,
+              marginTop: "51px",
+              textAlign: "center",
+            }}
           >
-            Please click submit to get your result!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
-            size="small"
-            onClick={handleSendQuiz}
-          >
-            Submit
-          </Button>
-        </DialogActions>
+            {`Time's up!`}
+          </Typography>
+          <DialogContent sx={{ textAlign: "center", px: "40px" }}>
+            <DialogContentText
+              id="alert-dialog-description"
+              sx={{ maxWidth: "340px", color: "#CF1818", fontWeight: 500 }}
+            >
+              Please click submit to get your result!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+              size="small"
+              onClick={handleSendQuiz}
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        </p>
       </Dialog>
     </>
   );

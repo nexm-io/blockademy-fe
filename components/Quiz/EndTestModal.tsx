@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import Button from "../Common/Button";
+import { soleil } from "@/utils/constants";
 
 export default function EndTestModal(props: {
   isModalEndTestOpen: boolean;
@@ -67,68 +68,72 @@ export default function EndTestModal(props: {
     <>
       <Dialog
         open={props.isModalEndTestOpen}
-        onClose={props.onClose}
+        // onClose={props.onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        sx={{ fontFamily: "var(--font-soleil) !important" }}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "18px",
-            right: "18px",
-            cursor: "pointer",
-          }}
-          onClick={props.onClose}
+        <div
+          className={`${soleil.variable} !font-sans flex flex-col items-center`}
         >
-          <Image src="/icons/close.svg" alt="close" width={16} height={16} />
-        </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "18px",
+              right: "18px",
+              cursor: "pointer",
+            }}
+            onClick={props.onClose}
+          >
+            <Image src="/icons/close.svg" alt="close" width={16} height={16} />
+          </Box>
 
-        <Typography
-          component="h2"
-          variant="h5"
-          sx={{
-            color: "#CF1818",
-            fontSize: "18px",
-            fontWeight: 500,
-            marginTop: "51px",
-            textAlign: "center",
-          }}
-        >
-          Warning!
-        </Typography>
-        <DialogContent sx={{ textAlign: "center", px: "40px" }}>
-          <DialogContentText
-            id="alert-dialog-description"
-            sx={{ maxWidth: "340px", color: "#CF1818", fontWeight: 500 }}
-          >
-            Are you sure, you want to submit the Quiz ?
-          </DialogContentText>
-          <DialogContentText
-            id="alert-dialog-description"
+          <Typography
+            component="h2"
+            variant="h5"
             sx={{
-              maxWidth: "320px",
-              color: "var(--primary-black)",
-              fontWeight: 300,
-              fontSize: "14px",
-            }}
-          >
-            After click <span className=" font-semibold">{"'Submit'"}</span>,
-            all your answer will be saved
-          </DialogContentText>
-          <DialogContentText
-            id="alert-dialog-description"
-            sx={{
-              maxWidth: "320px",
               color: "#CF1818",
+              fontSize: "18px",
               fontWeight: 500,
-              fontSize: "14px",
+              marginTop: "51px",
+              textAlign: "center",
             }}
           >
-            Please do not close the pop-up until we have the results.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          {/* <LoadingButton
+            Warning!
+          </Typography>
+          <DialogContent sx={{ textAlign: "center", px: "40px" }}>
+            <DialogContentText
+              id="alert-dialog-description"
+              sx={{ maxWidth: "340px", color: "#CF1818", fontWeight: 500 }}
+            >
+              Are you sure, you want to submit the Quiz ?
+            </DialogContentText>
+            <DialogContentText
+              id="alert-dialog-description"
+              sx={{
+                maxWidth: "320px",
+                color: "var(--primary-black)",
+                fontWeight: 300,
+                fontSize: "14px",
+              }}
+            >
+              After click <span className=" font-semibold">{"'Submit'"}</span>,
+              all your answer will be saved
+            </DialogContentText>
+            <DialogContentText
+              id="alert-dialog-description"
+              sx={{
+                maxWidth: "320px",
+                color: "#CF1818",
+                fontWeight: 500,
+                fontSize: "14px",
+              }}
+            >
+              Please do not close the pop-up until we have the results.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {/* <LoadingButton
             fullWidth
             loading={loadingSendQuiz}
             loadingPosition="end"
@@ -148,15 +153,16 @@ export default function EndTestModal(props: {
           >
             <span>Submit</span>
           </LoadingButton> */}
-          <Button
-            className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
-            size="small"
-            onClick={handleSendQuiz}
-            loading={loadingSendQuiz}
-          >
-            Submit
-          </Button>
-        </DialogActions>
+            <Button
+              className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+              size="small"
+              onClick={handleSendQuiz}
+              loading={loadingSendQuiz}
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        </div>
       </Dialog>
     </>
   );

@@ -165,6 +165,9 @@ const muiTheme = createTheme({
       ],
     },
     MuiTypography: {
+      styleOverrides: {
+        root: { fontFamily: "var(--font-soleil)" },
+      },
       variants: [
         {
           props: { color: "new" },

@@ -17,7 +17,7 @@ export default function AuthLayout({
           </Link>
         </div>
       </header>
-        <div className={`w-full relative ${soleil.variable} font-sans`}>{children}</div>
+        <div className={`w-full relative ${soleil.variable} !font-sans`}>{children}</div>
     </>
   );
 }
