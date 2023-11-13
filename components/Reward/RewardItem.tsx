@@ -15,9 +15,11 @@ import { toast } from "react-toastify";
 const RewardItem = ({
   rewardDetailLoading,
   data: { course_id, assignment_status, title, is_claimed, assigment_id },
+  handleViewCertificate,
 }: {
   rewardDetailLoading: boolean;
   data: RewardDetails;
+  handleViewCertificate: () => void;
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
@@ -39,7 +41,7 @@ const RewardItem = ({
           setLoading(false);
         }
       } else {
-        console.log("get detail certificate");
+        handleViewCertificate();
       }
     } else {
       router.push(`/quiz/${assigment_id}`);
@@ -77,10 +79,15 @@ const RewardItem = ({
                   assignment_status.slug === ASSIGNMENT_STATUS.FAILED,
               })}
             >
-              {assignment_status.name}
+              {assignment_status.slug === ASSIGNMENT_STATUS.NOT_COMPLETED
+                ? "Not Completed"
+                : assignment_status.name}
             </p>
           </>
         )}
+        <p className="text-red-100 text-xs">
+          You need to pass 80% questions to get certificate
+        </p>
         <div className="flex justify-end mt-4">
           <Button
             disabled={rewardDetailLoading}
@@ -91,7 +98,7 @@ const RewardItem = ({
               ? !is_claimed
                 ? "Get Certificate"
                 : "View Detail"
-              : "Quiz Result"}
+              : "Complete Quiz"}
             {loading && (
               <Loader3 className="animate-spin ml-2" width={25} height={25} />
             )}
