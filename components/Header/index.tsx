@@ -25,12 +25,10 @@ const Header = () => {
   const userIconRef = useRef<HTMLDivElement | null>(null);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const token = useAppSelector((state) => state.auth.token);
-
   const userAccount = useAppSelector((state) => state.account.data);
-  let email = "";
-  if (data !== null) {
-    email = hideEmail(data.email);
-  }
+  const [email, setEmail] = useState<string>();
+  const [image, setImage] = useState<string>();
+
   const [isOpen, setIsOpen] = useState(false);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -66,6 +64,13 @@ const Header = () => {
       localStorage.clear();
     }
   };
+  useEffect(() => {
+    if (data !== null) setEmail(hideEmail(data.email));
+  }, [data]);
+  useEffect(() => {
+    setImage(userAccount?.image);
+  }, [userAccount]);
+
   return (
     <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
       {/* Top Header */}
@@ -106,7 +111,7 @@ const Header = () => {
               >
                 <Image
                   alt="avatar-user"
-                  src={userAccount?.image || userDefault}
+                  src={image || userDefault}
                   width={40}
                   height={40}
                   className="w-[40px] h-[40px] rounded-full select-none"
@@ -123,10 +128,7 @@ const Header = () => {
                     </Link>
                     <ul className="capitalize flex flex-col gap-2 mt-3 ">
                       <li className=" px-4 ">
-                        <Link
-                          className="hover:text-blue-100 "
-                          href="/courses"
-                        >
+                        <Link className="hover:text-blue-100 " href="/courses">
                           My Courses
                         </Link>
                       </li>
