@@ -41,7 +41,7 @@ const CourseDetail = () => {
 
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
-  }, []);
+  }, [showPopup]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -71,7 +71,6 @@ const CourseDetail = () => {
       );
       if (response.status === 200) {
         setShowPopup(true);
-        dispatch(getDetailCourse(courseId as string)); 
       }
     } catch (error) {
       return null;
@@ -118,7 +117,7 @@ const CourseDetail = () => {
                   {isLogin && courseDetail?.is_registered ? (
                     <>
                       <Link
-                        href="/quiz/1"
+                        href={`/quiz/${courseId}`}
                         className="w-full md:w-auto inline-block"
                       >
                         <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
@@ -241,8 +240,6 @@ const CourseDetail = () => {
                         }}
                       >
                         <CourseModule
-                          is_watching={isWatching}
-                          is_complete={lesson.is_complete}
                           key={index}
                           lesson={lesson}
                         />
