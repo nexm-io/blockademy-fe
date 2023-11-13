@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 const JourneyAcademy = () => {
   const { push } = useRouter();
   return (
-    <section className="w-full mt-10 md:mt-16 lg:mt-36 bg-blue-200 px-4 md:px-12 py-14 rounded-[20px]">
+    <section className="w-full mt-10 md:mt-16 lg:mt-[74px] bg-blue-200 px-4 md:px-12 py-14 rounded-[20px]">
       <div className="flex items-center justify-between flex-wrap lg:flex-nowrap gap-4">
         <div className="flex flex-col gap-7">
           <h2 className="text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
