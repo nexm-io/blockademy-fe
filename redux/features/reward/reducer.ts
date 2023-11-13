@@ -15,7 +15,7 @@ const rewardReducer = createReducer(defaultRewardReducer, (builder: any) => {
     })
     .addCase(getRewardDetail.rejected, (state: any) => {
       state.rewardDetailLoading = false;
-    });
+    })
 });
 
 export const selectReward = (state: RootState) => state.reward;

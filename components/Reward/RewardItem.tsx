@@ -9,10 +9,12 @@ import { RewardDetails } from "@/redux/features/reward/type";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import { useRouter } from "next/navigation";
 import { Loader3 } from "@styled-icons/remix-line";
+import api from "@/services/axios";
+import { toast } from "react-toastify";
 
 const RewardItem = ({
   rewardDetailLoading,
-  data: { assignment_status, title, is_claimed, assigment_id },
+  data: { course_id, assignment_status, title, is_claimed, assigment_id },
 }: {
   rewardDetailLoading: boolean;
   data: RewardDetails;
@@ -20,10 +22,22 @@ const RewardItem = ({
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
       if (!is_claimed) {
-        console.log("call api claim");
+        setLoading(true);
+        try {
+          const { data: info } = await api.get(
+            `/api/v10/claim-reward/${course_id}`
+          );
+          if (info.status === 200)
+            toast.success("Claim certificate is success");
+        } catch (error) {
+          toast.warning("Something wrong...");
+          return null;
+        } finally {
+          setLoading(false);
+        }
       } else {
         console.log("get detail certificate");
       }
