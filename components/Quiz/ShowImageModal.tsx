@@ -23,12 +23,7 @@ export default function ShowImageModal(props: {
           }}
           onClick={props.onCloseModalShowImage}
         >
-          <Image
-            src="/images/icons/close.svg"
-            alt="close"
-            width={16}
-            height={16}
-          />
+          <Image src="/icons/close.svg" alt="close" width={16} height={16} />
         </Box>
         <Box sx={{ width: "500px", height: "auto", mt: "30px" }}>
           <Image

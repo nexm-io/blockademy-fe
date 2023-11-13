@@ -17,6 +17,8 @@ import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader, Loader3 } from "@styled-icons/remix-line";
+import BeginTestModal from "@/components/Quiz/BeginTestModal";
+import { getStartTime } from "@/redux/features/quiz/action";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -28,6 +30,8 @@ const CourseDetail = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
+
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -76,6 +80,37 @@ const CourseDetail = () => {
     }
   };
 
+  // const enterFullScreen = () => {
+  //   const elem = document.documentElement as any;
+  //   if (elem.requestFullscreen) {
+  //     elem.requestFullscreen();
+  //   } else if (elem.webkitRequestFullscreen) {
+  //     elem.webkitRequestFullscreen();
+  //   } else if (elem.msRequestFullscreen) {
+  //     elem.msRequestFullscreen();
+  //   }
+  //   window.scrollTo(0, 1);
+  // };
+
+  // const handleStartQuiz = async () => {
+  //   console.log("courseDetail", courseDetail);
+  //   router.push(`/quiz/${courseDetail?.assigment_id}`);
+  //   // if (!dataStartTime) {
+  //   //   await dispatch(saveStartTime(id));
+  //   //   dispatch(setTimeStart(Date.now()));
+  //   // }
+  //   // setIsModalBeginTestOpen(false);
+  //   // await dispatch(getListQuesOfQuiz(id));
+  //   // await dispatch(getStartTime(id));
+  //   // setIsModalBeginTestOpen(false);
+  //   // window.history.pushState(null, "", window.location.href);
+  //   // window.onpopstate = function () {
+  //   //   window.history.pushState(null, "", window.location.href);
+  //   // };
+
+  //   enterFullScreen();
+  // };
+
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
   }, []);
@@ -123,16 +158,39 @@ const CourseDetail = () => {
                 <div className="flex items-center flex-wrap gap-3">
                   {isLogin && registered ? (
                     <>
-                      <Link
-                        href={`/quiz/${courseDetail?.assigment_id}`}
-                        className="w-full md:w-auto inline-block"
-                      >
-                        <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
-                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                            Complete Quiz
-                          </span>
-                        </Button>
-                      </Link>
+                      {courseDetail?.is_completed === 0 ? (
+                        // <div className="w-full md:w-auto inline-block">
+                        //   <Button
+                        //     onClick={() => setIsModalBeginTestOpen(true)}
+                        //     className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                        //   >
+                        //     <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                        //       Complete Quiz
+                        //     </span>
+                        //   </Button>
+                        // </div>
+                        <Link
+                          href={`/quiz/${courseDetail?.assigment_id}`}
+                          className="w-full md:w-auto inline-block"
+                        >
+                          <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
+                            <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                              Complete Quiz
+                            </span>
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Link
+                          href={`/result/${courseDetail?.assigment_id}`}
+                          className="w-full md:w-auto inline-block"
+                        >
+                          <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
+                            <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                              View result Quiz
+                            </span>
+                          </Button>
+                        </Link>
+                      )}
                       <Link
                         href={`/reward/${courseId}`}
                         className="w-full md:w-auto inline-block"
@@ -271,6 +329,12 @@ const CourseDetail = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
+
+      {/* <BeginTestModal
+        isModalBeginTestOpen={isModalBeginTestOpen}
+        onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
+        handleStartQuiz={handleStartQuiz}
+      /> */}
     </div>
   );
 };

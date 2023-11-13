@@ -21,16 +21,17 @@ export default function BeginTestModal(props: {
   handleStartQuiz: () => void;
 }) {
   const router = useRouter();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const handleClose = () => {
     router.back();
   };
 
   const handleGoBack = () => {
-    dispatch(resetBeginTest());
-    router.push("/my-assignment")
-    // history.back();
+    // dispatch(resetBeginTest());
+    // router.push("/my-assignment")
+    // onCloseModalBeginTest();
+    router.back();
   };
 
   return (
