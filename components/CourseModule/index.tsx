@@ -1,27 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
 import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
-import { PlayCircle } from "@styled-icons/fluentui-system-regular/PlayCircle";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import slugifyText from "@/utils/slugifyText";
-import { STATUS } from "@/utils/status";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
-import { useAppDispatch } from "@/redux/hook";
 import api from "@/services/axios";
 
 interface CourseModuleProps {
   lesson: Lesson;
 }
 
-const CourseModule: React.FC<CourseModuleProps> = ({
-  lesson,
-}) => {
+const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
   const searchParams = useSearchParams();
   const params = useParams();
   const courseId = params.id;
@@ -81,7 +76,11 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         </div>
       ) : (
         <div className="w-[18px] h-full flex items-center">
-          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
+          {slug === slugifyText(lesson.lesson_slug) ? (
+            <BarChartAlt2 className="text-blue-100" />
+          ) : (
+            <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
+          )}
         </div>
       )}
     </div>

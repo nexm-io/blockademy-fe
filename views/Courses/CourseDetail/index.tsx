@@ -10,11 +10,7 @@ import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import {
-  useParams,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import slugifyText from "@/utils/slugifyText";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
@@ -29,6 +25,7 @@ const CourseDetail = () => {
   const slug = searchParams.get("slug");
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [registered, setRegistered] = useState<boolean>(false);
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -38,10 +35,6 @@ const CourseDetail = () => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
-  useEffect(() => {
-    dispatch(getDetailCourse(courseId as string));
-  }, [showPopup]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -70,12 +63,21 @@ const CourseDetail = () => {
         `/api/v10/register-course?course_id=${courseId}`
       );
       if (response.status === 200) {
+        setRegistered(true);
         setShowPopup(true);
       }
     } catch (error) {
       return null;
     }
   };
+
+  useEffect(() => {
+    dispatch(getDetailCourse(courseId as string));
+  }, []);
+
+  useEffect(() => {
+    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
+  }, [courseDetail]);
 
   return (
     <div className="container mt-36">
@@ -114,7 +116,7 @@ const CourseDetail = () => {
                   {courseDetail?.title}
                 </h1>
                 <div className="flex items-center flex-wrap gap-3">
-                  {isLogin && courseDetail?.is_registered ? (
+                  {isLogin && registered ? (
                     <>
                       <Link
                         href={`/quiz/${courseDetail?.assigment_id}`}
@@ -239,10 +241,7 @@ const CourseDetail = () => {
                           );
                         }}
                       >
-                        <CourseModule
-                          key={index}
-                          lesson={lesson}
-                        />
+                        <CourseModule key={index} lesson={lesson} />
                       </div>
                     ))}
                 </div>
