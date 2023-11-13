@@ -16,6 +16,7 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
+import { Loader, Loader3 } from "@styled-icons/remix-line";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -26,6 +27,7 @@ const CourseDetail = () => {
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -58,6 +60,7 @@ const CourseDetail = () => {
       router.push("/login");
       return;
     }
+    setLoading(true);
     try {
       const response = await api.get(
         `/api/v10/register-course?course_id=${courseId}`
@@ -68,6 +71,8 @@ const CourseDetail = () => {
       }
     } catch (error) {
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -155,6 +160,13 @@ const CourseDetail = () => {
                       className="!px-6 w-full"
                     >
                       Apply Course
+                      {loading && (
+                        <Loader3
+                          className="animate-spin ml-2"
+                          width={25}
+                          height={25}
+                        />
+                      )}
                     </Button>
                   )}
                 </div>

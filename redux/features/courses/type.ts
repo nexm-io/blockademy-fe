@@ -100,7 +100,7 @@ export interface CourseDetail {
   order: number;
   lesson_data: Lesson[];
   lesson_type: string;
-  is_complete: number;
+  is_completed: number;
   reward_is_claimed: number;
   assigment_id: string;
   reward_released_date: number;
