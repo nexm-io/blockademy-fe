@@ -20,6 +20,7 @@ const CoursesView = () => {
   const [page, setPage] = useState(1);
   const dispatch = useAppDispatch();
   const cateRx = useAppSelector(selectCategory);
+  const prevCategory = useRef<number>();
 
   useEffect(() => {
     dispatch(loadCategory());
@@ -29,11 +30,16 @@ const CoursesView = () => {
     const y =
       divRef.current.getBoundingClientRect().top + window.pageYOffset - 100;
     window.scrollTo({ top: y, behavior: "smooth" });
+
+    const newCategory = cateRx.currCategory;
+    const shouldResetPage = newCategory !== prevCategory.current;
+    prevCategory.current = newCategory;
+
     dispatch(
       loadCourses({
-        page,
+        page: shouldResetPage ? 1 : page,
         sortBy: "created_at",
-        order: cateRx.currCategory,
+        order: newCategory,
       })
     );
   }, [page, cateRx.currCategory]);

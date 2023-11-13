@@ -45,7 +45,7 @@ const MASTER_CONTENT = [
 
 const MasterConcepts = () => {
   return (
-    <section className="md:mt-36 mt-[40px] w-full">
+    <section className="md:mt-[74px] mt-[40px] w-full">
       <div className="flex flex-col gap-1 mb-12">
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
           Master Blockchain Concepts in 15 Minutes a Day
