@@ -169,6 +169,7 @@ export type listResultDataType = {
   course_slug: string;
   lesson_first: {
     lesson_slug: string;
+    lesson_id: string;
   };
 };
 

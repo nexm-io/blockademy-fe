@@ -21,7 +21,6 @@ export const getDetailCourse = createAsyncThunk(
   async (courseId: string) => {
     try {
       const { data: course } = await api.get(`/api/v10/course/${courseId}`);
-      console.log("course", course);
       return course;
     } catch (error) {
       return null;

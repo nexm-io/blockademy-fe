@@ -121,7 +121,7 @@ export default function ResultQuiz() {
               <Button
                 onClick={() =>
                   router.push(
-                    `/courses/${listResultData?.course_id}?slug=${listResultData?.lesson_first?.lesson_slug}`
+                    `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
                   )
                 }
                 className="!px-6 !py-2 w-full sm:w-auto"
