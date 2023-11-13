@@ -6,7 +6,6 @@ import { selectAuth } from "@/redux/features/auth/reducer";
 import { useSelector } from "react-redux";
 import {
   Box,
-  // Button,
   Card,
   CardContent,
   Dialog,
@@ -66,11 +65,9 @@ const TestDetail = () => {
     listQues,
     userAnswer,
     listView,
-    listResultData,
     duration,
     dataStartTime,
     quesDetail,
-    isCheckShowResult,
     loadingCheckShowResult,
     isSubmitInButton,
   } = useAppSelector((state) => state.quiz);
@@ -143,9 +140,6 @@ const TestDetail = () => {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  // const handleShowImage = () => {
-  //   setIsModalShowImageOpen(true);
-  // };
 
   const initialValue = answerUserChoose ? answerUserChoose?.value : "";
 
@@ -238,14 +232,12 @@ const TestDetail = () => {
             question_id: item.question_id,
             answer_id: item.answer_id,
             question_type: item.question_type,
-            // question_level: item.question_level,
           }
         : {
             question_id: item.question_id,
             answer_id: item.answer_id,
             question_type: item.question_type,
             answer_content: item.answer_content,
-            // question_level: item.question_level,
           }
     );
     const list = {
@@ -256,12 +248,6 @@ const TestDetail = () => {
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
-      // dispatch(
-      //   setToast({
-      //     message: "Submit your assignment successfully!",
-      //     severity: "success",
-      //   })
-      // );
       router.push(`/result/${id}`);
       dispatch(setShowResult(true));
       dispatch(getListResult(listQues[0]?.post_id));
@@ -270,13 +256,6 @@ const TestDetail = () => {
 
   const [hasFetchData, setHasFetchData] = useState(false);
 
-  // const checkWhiteSpace = (item) => {
-  //   const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
-  //   if (isWhitespace) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
 
   const removeWhiteSpace = (str: string) => {
     if (!str) return "";
@@ -290,15 +269,7 @@ const TestDetail = () => {
         const fetchData = async () => {
           if (typeof id !== "string") return;
           dispatch(resetBeginTest());
-          const resStartTime = await dispatch(getStartTime(id));
-          const res = await dispatch(checkShowResult(id));
-          if (res.payload) {
-            router.push(`/result/${id}`);
-            // await dispatch(getListResult(id));
-          } else {
-            if (resStartTime.payload?.start_time) return await handleSendQuiz();
-            setIsModalBeginTestOpen(true);
-          }
+          setIsModalBeginTestOpen(true);
         };
         fetchData();
         setHasFetchData(true);
@@ -335,20 +306,10 @@ const TestDetail = () => {
     };
   });
 
-  // if (loadingCheckShowResult) {
-  //   return null;
-  // }
-
-  // useEffect(() => {
-  //   if (token && id) {
-  //     setIsModalBeginTestOpen(true);
-  //   }
-  // }, []);
 
   return (
     <>
       {
-        // !isCheckShowResult ? (
         isModalBeginTestOpen ? (
           <BeginTestModal
             isModalBeginTestOpen={isModalBeginTestOpen}

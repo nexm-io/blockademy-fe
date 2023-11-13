@@ -4,7 +4,9 @@ import ResultQuiz from "@/components/Quiz/ResultQuiz";
 export default function TestPage() {
   return (
     <PageContainer>
-      <ResultQuiz />
+      <div className="mt-10">
+        <ResultQuiz />
+      </div>
     </PageContainer>
   );
 }

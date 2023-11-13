@@ -52,6 +52,7 @@
   --primary-color-500: #4e4e4e;
   --primary-color-600: #0e00b5;
   --primary-color-700: #aeb4bc;
+  --primary-color-800: #003964;
 
   --normal-color-100: #869aff;
   --normal-color-200: #1f37b3;
@@ -698,15 +699,15 @@ input[type="range"]::-webkit-slider-thumb:active {
     padding-right: 60px !important;
   }
 
-  @media (min-width: 992px) {
+  /* @media (min-width: 992px) {
     padding-left: 84px !important;
     padding-right: 84px !important;
-  }
+  } */
 
-  @media (min-width: 1600px) {
+  /* @media (min-width: 1600px) {
     padding-left: 280px !important;
     padding-right: 280px !important;
-  }
+  } */
 }
 
 .quiz {

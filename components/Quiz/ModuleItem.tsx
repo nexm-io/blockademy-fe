@@ -30,7 +30,6 @@ const ModuleItem = () => {
       </div>
       <div className=" min-w-[100px] flex justify-end">
         <Image src="/icons/bar.svg" alt="clock-icon" width={24} height={24} />
-        {/* <Image src="/icons/check.svg" alt="clock-icon" width={24} height={24} /> */}
       </div>
     </div>
   );
