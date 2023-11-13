@@ -201,7 +201,7 @@ const Quiz = ({
         )}
     </div>
   ) : (
-    <div>No Quizz </div>
+    <div>No Quiz </div>
   );
 };
 

@@ -19,7 +19,6 @@ import slugifyText from "@/utils/slugifyText";
 import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import api from "@/services/axios";
-import Popup from "@/components/Popup";
 import InfoPopup from "@/components/Popup/InfoPopup";
 
 const CourseDetail = () => {
@@ -67,11 +66,12 @@ const CourseDetail = () => {
       return;
     }
     try {
-      const response = await api.post(
+      const response = await api.get(
         `/api/v10/register-course?course_id=${courseId}`
       );
       if (response.status === 200) {
-        setShowPopup(true); 
+        setShowPopup(true);
+        dispatch(getDetailCourse(courseId as string)); 
       }
     } catch (error) {
       return null;
@@ -115,7 +115,7 @@ const CourseDetail = () => {
                   {courseDetail?.title}
                 </h1>
                 <div className="flex items-center flex-wrap gap-3">
-                  {isLogin && false ? (
+                  {isLogin && courseDetail?.is_registered ? (
                     <>
                       <Link
                         href="/quiz/1"
@@ -212,7 +212,7 @@ const CourseDetail = () => {
                                   scrollToTop();
                                 }}
                               >
-                                Complete Quizz
+                                Complete Quiz
                               </Button>
                             )}
                           </>

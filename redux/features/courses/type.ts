@@ -104,6 +104,7 @@ export interface CourseDetail {
   reward_is_claimed: number;
   reward_released_date: number;
   is_finished: number;
+  is_registered: number;
   other_courses: {
     data: Array<ListCourse>;
   };
