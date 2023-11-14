@@ -16,14 +16,14 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
-import { Loader, Loader3 } from "@styled-icons/remix-line";
+import { Loader3 } from "@styled-icons/remix-line";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
   const searchParams = useSearchParams();
   const courseId = params.id;
-  const slug = searchParams.get("slug");
+  const lessonId = searchParams.get("lesson_id") || 0 as number;
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
@@ -48,7 +48,18 @@ const CourseDetail = () => {
 
   const handleChangeForm = (status: boolean) => {
     if (status) {
-      setFormState(`quiz`);
+      const lessonData = courseDetail?.lesson_data || [];
+      const currIndex = lessonData.findIndex(lesson => lesson.lesson_id === Number(lessonId)) || 0;
+      const lessonLength = lessonData.length - 1;
+
+      const nextLessonId = currIndex < lessonLength
+        ? lessonData[currIndex + 1].lesson_id
+        : lessonData[0].lesson_id;
+
+      const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
+      router.push(url);
+
+      // setFormState(`quiz`);
     }
   };
 
@@ -200,7 +211,7 @@ const CourseDetail = () => {
                   {courseDetail ? (
                     courseDetail.lesson_data.map(
                       (lesson, index) =>
-                        slug === slugifyText(lesson.lesson_slug) && (
+                        Number(lessonId) === lesson.lesson_id && (
                           <>
                             {lesson.lesson_type_format === 2 &&
                               formState === "video" && (
@@ -213,7 +224,7 @@ const CourseDetail = () => {
                                   />
                                 </>
                               )}
-                            {formState === "quiz" && (
+                            {lesson.lesson_type_format === 1 && formState === "quiz" && (
                               <Quiz
                                 lesson={lesson}
                                 index={index}
@@ -261,9 +272,7 @@ const CourseDetail = () => {
                         className="cursor-pointer"
                         onClick={() => {
                           router.push(
-                            `/courses/${courseId}?slug=${slugifyText(
-                              courseDetail?.lesson_data[index].lesson_slug || ""
-                            )}`
+                            `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
                           );
                         }}
                       >
