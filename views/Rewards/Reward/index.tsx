@@ -94,11 +94,12 @@ const RewardView = () => {
     if (fontLoaded) {
       ctx.fillStyle = "#000";
       ctx.font = "16px Soleil";
-      ctx.fillText(
-        format(new Date(rewardRx.rewardDetails.claim_at), "MMM dd, yyyy"),
-        215,
-        390
-      );
+      rewardRx.rewardDetails.claim_at &&
+        ctx.fillText(
+          format(new Date(rewardRx.rewardDetails.claim_at), "MMM dd, yyyy"),
+          215,
+          390
+        );
 
       const name =
         rewardRx.rewardDetails.last_name && rewardRx.rewardDetails.first_name
