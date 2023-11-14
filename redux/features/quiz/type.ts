@@ -31,6 +31,7 @@ export type QuizReducerType = {
   isCheckShowResult: boolean;
   iShowFeedBack: boolean;
   isSubmitInButton: boolean;
+  isViewResultInCourse: boolean;
 };
 
 export const defaultQuizReducer: QuizReducerType = {
@@ -61,6 +62,7 @@ export const defaultQuizReducer: QuizReducerType = {
   isCheckShowResult: false,
   iShowFeedBack: false,
   isSubmitInButton: false,
+  isViewResultInCourse: true,
 };
 
 export type StatusQuizType = {

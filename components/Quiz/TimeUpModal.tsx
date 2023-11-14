@@ -1,11 +1,10 @@
 import {
-  getListResult,
   sendMultiQuizResult,
+  setIsViewResultInCourse,
   setShowResult,
 } from "@/redux/features/quiz/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { formatUtcTime } from "@/services/formatDate";
-import { LoadingButton } from "@mui/lab";
 import {
   Dialog,
   DialogActions,
@@ -55,9 +54,9 @@ const TimeUpModal: React.FC<
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
+      dispatch(setIsViewResultInCourse(false));
       push(`/result/${id}`);
       dispatch(setShowResult(true));
-      dispatch(getListResult(listQues[0]?.post_id));
       onClose();
     }
   };

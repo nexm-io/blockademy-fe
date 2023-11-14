@@ -22,13 +22,12 @@ import { TYPE_QUIZ, soleil } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { formatUtcTime } from "@/services/formatDate";
 import {
-  checkShowResult,
   getListQuesOfQuiz,
-  getListResult,
   getStartTime,
   resetBeginTest,
   saveStartTime,
   sendMultiQuizResult,
+  setIsViewResultInCourse,
   setListView,
   setQuesDetail,
   setQuizAnswer,
@@ -161,7 +160,6 @@ const TestDetail = () => {
         question_id: quesDetail?.id,
         answer_id: event.target.value,
         question_type: quesDetail?.question_type,
-        // question_level: quesDetail?.question_level,
         order: quesDetail?.order,
         value: event.target.value,
         valueAnswer: answerItem?.answer_text,
@@ -190,7 +188,6 @@ const TestDetail = () => {
           answer_id: `${answer_id}`,
           answer_content: val,
           question_type: quesDetail?.question_type,
-          // question_level: quesDetail?.question_level,
           order: quesDetail?.order,
           value: val,
           valueAnswer: val,
@@ -246,9 +243,9 @@ const TestDetail = () => {
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
+      dispatch(setIsViewResultInCourse(false));
       router.push(`/result/${id}`);
       dispatch(setShowResult(true));
-      dispatch(getListResult(listQues[0]?.post_id));
     }
   };
 

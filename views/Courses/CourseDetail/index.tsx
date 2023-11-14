@@ -17,13 +17,14 @@ import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
+import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
   const searchParams = useSearchParams();
   const courseId = params.id;
-  const lessonId = searchParams.get("lesson_id") || 0 as number;
+  const lessonId = searchParams.get("lesson_id") || (0 as number);
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
@@ -49,12 +50,16 @@ const CourseDetail = () => {
   const handleChangeForm = (status: boolean) => {
     if (status) {
       const lessonData = courseDetail?.lesson_data || [];
-      const currIndex = lessonData.findIndex(lesson => lesson.lesson_id === Number(lessonId)) || 0;
+      const currIndex =
+        lessonData.findIndex(
+          (lesson) => lesson.lesson_id === Number(lessonId)
+        ) || 0;
       const lessonLength = lessonData.length - 1;
 
-      const nextLessonId = currIndex < lessonLength
-        ? lessonData[currIndex + 1].lesson_id
-        : lessonData[0].lesson_id;
+      const nextLessonId =
+        currIndex < lessonLength
+          ? lessonData[currIndex + 1].lesson_id
+          : lessonData[0].lesson_id;
 
       const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
       router.push(url);
@@ -147,16 +152,24 @@ const CourseDetail = () => {
                           </Button>
                         </Link>
                       ) : (
-                        <Link
-                          href={`/result/${courseDetail?.assigment_id}`}
-                          className="w-full md:w-auto inline-block"
+                        // <Link
+                        //   href={`/result/${courseDetail?.assigment_id}`}
+                        //   className="w-full md:w-auto inline-block"
+                        // >
+                        <Button
+                          onClick={() => {
+                            dispatch(setIsViewResultInCourse(true));
+                            router.push(
+                              `/result/${courseDetail?.assigment_id}`
+                            );
+                          }}
+                          className=" md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                         >
-                          <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
-                            <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                              View result Quiz
-                            </span>
-                          </Button>
-                        </Link>
+                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                            View result Quiz
+                          </span>
+                        </Button>
+                        // </Link>
                       )}
                       <Link
                         href={`/reward/${courseId}`}
@@ -224,14 +237,15 @@ const CourseDetail = () => {
                                   />
                                 </>
                               )}
-                            {lesson.lesson_type_format === 1 && formState === "quiz" && (
-                              <Quiz
-                                lesson={lesson}
-                                index={index}
-                                campaign_id={courseDetail.campaign_id}
-                                course_id={courseDetail.id}
-                              />
-                            )}
+                            {lesson.lesson_type_format === 1 &&
+                              formState === "quiz" && (
+                                <Quiz
+                                  lesson={lesson}
+                                  index={index}
+                                  campaign_id={courseDetail.campaign_id}
+                                  course_id={courseDetail.id}
+                                />
+                              )}
                             <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                               {lesson.lesson_title}
                             </h2>
@@ -294,7 +308,6 @@ const CourseDetail = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
-
     </div>
   );
 };

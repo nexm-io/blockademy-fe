@@ -11,21 +11,27 @@ import {
   RESULT_QUIZ_PASS,
   TYPE_QUIZ,
 } from "@/utils/constants";
-import { getListResult } from "@/redux/features/quiz/action";
+import {
+  getListHighestResult,
+  getListResult,
+} from "@/redux/features/quiz/action";
 import Image from "next/image";
 import Button from "../Common/Button";
 
 export default function ResultQuiz() {
-  const { listResultData, loadingListResult } = useAppSelector(
-    (state) => state.quiz
-  );
+  const { listResultData, loadingListResult, isViewResultInCourse } =
+    useAppSelector((state) => state.quiz);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
-      await dispatch(getListResult(id));
+      if (isViewResultInCourse) {
+        await dispatch(getListHighestResult(id));
+      } else {
+        await dispatch(getListResult(id));
+      }
     };
     fetchData();
   }, [dispatch, id]);
