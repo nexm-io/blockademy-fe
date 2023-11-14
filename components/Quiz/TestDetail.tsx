@@ -315,7 +315,7 @@ const TestDetail = () => {
           <Box
             className="main quiz"
             sx={{
-              mx: { xs: "20px", lg: "100px" },
+              mx: { xs: "0", lg: "100px" },
               pt: "70px",
               mb: "100px",
             }}
