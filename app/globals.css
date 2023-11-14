@@ -87,7 +87,9 @@ html {
 #content menu,
 ol,
 ul {
-  list-style: normal;
+  list-style: revert;
+  padding-left: revert;
+  margin: revert;
 }
 
 /* Skeleton  */

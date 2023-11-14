@@ -18,6 +18,7 @@ import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
 import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
+import BackToTop from "@/components/BackToTop";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -218,8 +219,8 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-[18px] md:p-2 lg:p-4 xl:p-0">
-              <div className="lg:w-[753px] w-full px-4 md:px-0">
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-0 md:p-2 lg:p-4 xl:p-0">
+              <div className="lg:w-[753px] w-full px-0 md:px-0">
                 <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map(
@@ -309,6 +310,7 @@ const CourseDetail = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
+      <BackToTop  />
     </div>
   );
 };
