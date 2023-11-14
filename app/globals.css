@@ -85,8 +85,8 @@ html {
 }
 
 #content menu,
-ol,
-ul {
+#content ol,
+#content ul {
   list-style: revert;
   padding-left: revert;
   margin: revert;
