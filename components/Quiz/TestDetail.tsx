@@ -333,7 +333,7 @@ const TestDetail = () => {
               {quesDetail?.quiz_title}
             </Typography>
 
-            <Typography
+            {/* <Typography
               sx={{
                 color: "var(--primary-color-100)",
                 fontSize: "20px",
@@ -344,7 +344,7 @@ const TestDetail = () => {
               }}
             >
               {removeWhiteSpace(quesDetail?.quiz_description)}
-            </Typography>
+            </Typography> */}
 
             <Card
               // name="quiz"
@@ -614,15 +614,7 @@ const TestDetail = () => {
                     </FormControl>
                   </CardContent>
                 )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    px: "12px",
-                    pb: "20px",
-                  }}
-                >
+                <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
                   <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
                       className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
@@ -653,7 +645,7 @@ const TestDetail = () => {
                   >
                     End Test
                   </Typography>
-                </Box>
+                </div>
               </Box>
               <Box
                 sx={{

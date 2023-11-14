@@ -82,7 +82,7 @@ const Header = () => {
           }
         )}
       >
-        <div className="md:w-full w-[40%] flex items-center">
+        <div className="md:w-full max-w-[230px] sm:w-[40%] flex items-center">
           <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
             <Link href="/">
               <Image alt="logo" src={logo} width={187} height={35}></Image>
