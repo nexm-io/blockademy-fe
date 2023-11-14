@@ -61,6 +61,7 @@ export default function ResultQuiz() {
   };
 
   useEffect(() => {
+    scrollToTop();
     const handleKeyDown = (event: any) => {
       if (event.keyCode === 123) {
         event.preventDefault();
@@ -79,6 +80,12 @@ export default function ResultQuiz() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -113,14 +120,14 @@ export default function ResultQuiz() {
             </Typography>
             {/* </div> */}
             <div className="flex gap-4">
-              {listResultData?.result === RESULT_QUIZ_FAIL && (
-                <Button
-                  onClick={() => router.push(`/quiz/${id}`)}
-                  className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
-                >
-                  Try Again
-                </Button>
-              )}
+              {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
+              <Button
+                onClick={() => router.push(`/quiz/${id}`)}
+                className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
+              >
+                Try Again
+              </Button>
+              {/* )} */}
               <Button
                 onClick={() =>
                   router.push(
