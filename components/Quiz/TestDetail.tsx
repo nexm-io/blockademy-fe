@@ -762,7 +762,7 @@ const TestDetail = () => {
           className={` ${soleil.variable} font-sans !text-[12px] flex flex-col items-center`}
         >
           <Box
-            sx={{ px: 2, py: 5, minWidth: "560px", minHeight: "420px" }}
+            sx={{ px: 2, py: 5, minWidth: {xs: 'unset', lg: "560px"}, minHeight: "420px" }}
             onCopy={(e) => {
               e.preventDefault();
             }}
