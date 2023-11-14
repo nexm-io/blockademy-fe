@@ -39,6 +39,7 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "highlight.js": "^11.8.0",
+    "jspdf": "^2.5.1",
     "next": "13.4.19",
     "next-seo": "^6.1.0",
     "next-share": "^0.25.0",

@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useRouter } from "next/navigation";
 import { userRegister } from "@/redux/features/auth/action";
 import Button from "@/components/Common/Button";
 import Image from "next/image";
@@ -13,10 +12,11 @@ import Input from "@/components/Common/Input";
 import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
 const schema = Yup.object({
-  password: Yup.string().required("Please enter your password")
-  .trim()
-  .min(8, "Length from 8 - 160 characters")
-  .max(160, "Length from 8 - 160 characters"),
+  password: Yup.string()
+    .required("Please enter your password")
+    .trim()
+    .min(8, "Length from 8 - 160 characters")
+    .max(160, "Length from 8 - 160 characters"),
   // .matches(
   //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
   //   "Password must have a lowercase letter, a number and one special character"
@@ -28,18 +28,22 @@ const schema = Yup.object({
 
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
-  email: string;
+  info: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+  };
   onMailChange: (key: string, value: string) => void;
 }
 
 const FormPanel: React.FC<FormRegisterProps> = ({
   setFormState,
-  email,
+  info,
   onMailChange,
 }) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
-  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -55,7 +59,7 @@ const FormPanel: React.FC<FormRegisterProps> = ({
   const onSubmit = async (e: FormData) => {
     onMailChange("password", e.password);
     try {
-      const res = await dispatch(userRegister({ email, ...e })).unwrap();
+      const res = await dispatch(userRegister({ ...info, ...e })).unwrap();
       res.success && setFormState("fromReceive");
     } catch (e) {
       console.error("Some thing wrong!", e);

@@ -9,6 +9,8 @@ import FormReceiveUpdate from "./FormReceiveUpdate";
 const Register = () => {
   const [formState, setFormState] = useState("register");
   const [mail, setMail] = useState({
+    first_name: " ",
+    last_name: " ",
     email: " ",
     password: "",
   });
@@ -41,7 +43,7 @@ const Register = () => {
         )} */}
         {formState === "formRegister" && (
           <FormPanel
-            email={mail.email}
+            info={mail}
             onMailChange={handleMailChange}
             setFormState={setFormState}
           />
