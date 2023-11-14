@@ -16,6 +16,7 @@ import {
   TextField,
   Typography,
   Grid,
+  Stack
 } from "@mui/material";
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
@@ -208,7 +209,7 @@ const TestDetail = () => {
     if (!quesDetail?.order) return;
     const initValue = userAnswer.find((i) => i.order === quesDetail?.order + 1);
     setValue(initValue?.value || "");
-    if (quesDetail?.order <= totalQuestion) {
+    if (quesDetail?.order < totalQuestion) {
       dispatch(setQuesDetail(listQues[quesDetail?.order]));
     }
   };
@@ -333,7 +334,7 @@ const TestDetail = () => {
               {quesDetail?.quiz_title}
             </Typography>
 
-            <Typography
+            {/* <Typography
               sx={{
                 color: "var(--primary-color-100)",
                 fontSize: "20px",
@@ -344,7 +345,7 @@ const TestDetail = () => {
               }}
             >
               {removeWhiteSpace(quesDetail?.quiz_description)}
-            </Typography>
+            </Typography> */}
 
             <Card
               // name="quiz"
@@ -458,17 +459,35 @@ const TestDetail = () => {
                       width: { lg: "100%" },
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "var(--primary-black)",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "34px",
-                        mb: "25px",
-                      }}
-                    >
-                      Question <span>{quesDetail?.order}</span>
-                    </Typography>
+                    <Stack direction="row" justifyContent="space-between" flexWrap="nowrap" alignItems="flex-start">
+                      <Typography
+                        sx={{
+                          color: "var(--primary-black)",
+                          fontSize: "26px",
+                          fontWeight: 500,
+                          lineHeight: "34px",
+                          mb: "25px",
+                        }}
+                      >
+                        Question <span>{quesDetail?.order}</span>
+                      </Typography>
+
+                      <Typography
+                    sx={{
+                      color: "#CF1818",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      fontWeight: 500,
+                      textDecorationLine: "underline",
+                      cursor: "pointer",
+                      userSelect: "none",
+                    }}
+                    onClick={handleEndTest}
+                  >
+                    End Test
+                  </Typography>
+                    </Stack>
+
                     <Typography
                       sx={{
                         color: "#121230",
@@ -513,7 +532,6 @@ const TestDetail = () => {
                       >
                         <Image
                           src={quesDetail?.image?.original_image}
-                          // src={quesDetail?.image}
                           alt="question-image"
                           width={100}
                           height={150}
@@ -614,16 +632,8 @@ const TestDetail = () => {
                     </FormControl>
                   </CardContent>
                 )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    px: "12px",
-                    pb: "20px",
-                  }}
-                >
-                  <div className="flex items-center flex-col sm:flex-row gap-6">
+                <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
+                <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
                       className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
                       disabled={quesDetail?.order === 1}
@@ -639,21 +649,7 @@ const TestDetail = () => {
                       <span>Next question</span>
                     </Button>
                   </div>
-                  <Typography
-                    sx={{
-                      color: "#CF1818",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      fontWeight: 500,
-                      textDecorationLine: "underline",
-                      cursor: "pointer",
-                      userSelect: "none",
-                    }}
-                    onClick={handleEndTest}
-                  >
-                    End Test
-                  </Typography>
-                </Box>
+                </div>
               </Box>
               <Box
                 sx={{
@@ -766,7 +762,7 @@ const TestDetail = () => {
           className={` ${soleil.variable} font-sans !text-[12px] flex flex-col items-center`}
         >
           <Box
-            sx={{ px: 2, py: 5, minWidth: "560px", minHeight: "420px" }}
+            sx={{ px: 2, py: 5, minWidth: {xs: 'unset', lg: "560px"}, minHeight: "420px" }}
             onCopy={(e) => {
               e.preventDefault();
             }}
