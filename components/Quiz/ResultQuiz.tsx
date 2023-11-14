@@ -106,7 +106,7 @@ export default function ResultQuiz() {
         </Stack>
       ) : (
         <Box sx={{ py: 10, m: "auto" }}>
-          <div className="flex justify-between">
+          <div className="flex flex-col md:flex-row justify-between">
             {/* <div className="mt-2 mb-"> */}
             <Typography
               sx={{
@@ -119,14 +119,14 @@ export default function ResultQuiz() {
               Result
             </Typography>
             {/* </div> */}
-            <div className="flex gap-4">
+            <div className="flex flex-col md:flex-row gap-4">
               {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
-              <Button
-                onClick={() => router.push(`/quiz/${id}`)}
-                className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
-              >
-                Try Again
-              </Button>
+                <Button
+                  onClick={() => router.push(`/quiz/${id}`)}
+                  className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
+                >
+                  Try Again
+                </Button>
               {/* )} */}
               <Button
                 onClick={() =>

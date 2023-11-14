@@ -703,8 +703,8 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .main {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 
   @media (min-width: 768px) {
     padding-left: 60px !important;
