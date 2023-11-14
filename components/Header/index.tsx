@@ -127,7 +127,12 @@ const Header = () => {
                       {email}
                     </Link>
                     <ul className="capitalize flex flex-col gap-2 mt-3 ">
-                      <li className=" px-4 ">
+                    <li className=" px-4 ">
+                        <Link className="hover:text-blue-100 " href="/my-account">
+                          My Account
+                        </Link>
+                      </li>
+                      {/* <li className=" px-4 ">
                         <Link className="hover:text-blue-100 " href="/courses">
                           My Courses
                         </Link>
@@ -139,7 +144,7 @@ const Header = () => {
                         >
                           my rewards
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="px-4">
                         <Button
                           size="small"

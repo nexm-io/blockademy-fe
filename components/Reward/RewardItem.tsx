@@ -85,9 +85,11 @@ const RewardItem = ({
             </p>
           </>
         )}
-        <p className="text-red-100 text-xs">
-          You need to pass 80% questions to get certificate
-        </p>
+        {assignment_status.slug !== ASSIGNMENT_STATUS.PASSED && (
+          <p className="text-red-100 text-xs">
+            You need to pass 80% questions to get certificate
+          </p>
+        )}
         <div className="flex justify-end mt-4">
           <Button
             disabled={rewardDetailLoading}
