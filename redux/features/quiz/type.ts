@@ -132,6 +132,7 @@ export type ItemListViewType = {
 
   complete: boolean;
   value?: string | null;
+  answer_id: number;
 };
 
 export type UserAnswerType = {
