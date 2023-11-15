@@ -60,7 +60,7 @@ const MasterConcepts = () => {
         {MASTER_CONTENT.map((z, index) => (
           <div
             key={index}
-            className="md:px-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 group"
+            className="md:px-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 group mb-10"
           >
             <div className="overflow-hidden flex justify-center">
               {z.isVideo ? (
