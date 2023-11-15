@@ -132,13 +132,13 @@ const CourseDetail = () => {
         </div>
       ) : (
         <>
-          <section className="md:mt-[56px] mt-8 lg:px-0 px-3">
-            <div>
-              <div className="flex justify-between items-center flex-wrap lg:flex-nowrap mb-4">
-                <h1 className="text-black-100 font-bold md:text-4xl text-3xl lg:w-1/2">
+          <section className="md:mt-[56px] mt-8">
+            <div className="grid gap-4">
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
+                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
                 </h1>
-                <div className="flex items-center flex-wrap gap-3">
+                <div className="flex items-center flex-wrap gap-2">
                   {isLogin && registered && courseDetail?.assigment_id ? (
                     <>
                       {courseDetail?.is_completed === 0 ? (
@@ -210,17 +210,18 @@ const CourseDetail = () => {
                   )}
                 </div>
               </div>
-
-              <div className="bg-blue-200 py-3 px-4 flex gap-4">
-                <Image alt="gift-icon" src={gift}></Image>
-                <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                  Log into your Blockademy account to register courses, track
-                  progress and claim your rewards.
-                </span>
-              </div>
+              {isLogin ? null : (
+                <div className="bg-blue-200 py-3 px-4 flex gap-2">
+                  <Image alt="gift-icon" src={gift}></Image>
+                  <span className="md:text-base text-[13px] font-normal text-black-100 ">
+                    Log into your Blockademy account to register courses, track
+                    progress and claim your rewards.
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-0 md:p-2 lg:p-4 xl:p-0">
-              <div className="lg:w-[753px] w-full px-0 md:px-0">
+            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0 md:p-2 lg:p-4 xl:p-0">
+              <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
                 <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map(
@@ -278,8 +279,8 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <div className="h-full sticky top-[100px]">
-                <div className="flex flex-col gap-4 px-4 md:px-0 ">
+              <div className="h-full w-full sticky top-[100px]">
+                <div className="flex flex-col gap-4 md:px-0 ">
                   {courseDetail?.lesson_data.length !== 0 &&
                     !isLoading &&
                     courseDetail?.lesson_data.map((lesson, index) => (
@@ -306,11 +307,11 @@ const CourseDetail = () => {
         <InfoPopup
           title="Congratulations!"
           desc="Thanks for joining the course. Please enjoy your journey, complete
-          quizz and get certificate."
+          quiz and get certificate."
           onClose={() => setShowPopup(false)}
         />
       )}
-      <BackToTop  />
+      <BackToTop />
     </div>
   );
 };

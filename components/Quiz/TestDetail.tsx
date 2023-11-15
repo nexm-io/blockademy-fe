@@ -307,6 +307,14 @@ const TestDetail = () => {
     };
   });
 
+  const checkDisabledFinishTest = () => {
+    if (quesDetail?.order === listQues?.length) {
+      const itemNotAnswer = filterListView?.find((i) => !i.complete);
+      if (itemNotAnswer) return true;
+    }
+    return false;
+  };
+
   return (
     <>
       {isModalBeginTestOpen ? (
@@ -657,6 +665,7 @@ const TestDetail = () => {
                     <Button
                       className=" !bg-[#0068b5] hover:!bg-[#004070] w-[180px] flex items-center !px-4 "
                       onClick={handleNextQuestion}
+                      disabled={checkDisabledFinishTest()}
                     >
                       {quesDetail?.order === listQues?.length ? (
                         <span>Finish test</span>

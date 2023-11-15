@@ -53,8 +53,8 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
       <h2 className="mt-[40px] text-black-100 text-center text-[30px] font-bold ">
         Forgot your Blockademy account?
       </h2>
-      <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mt-[29px] mb-1">
+      <form className="w-full mt-8" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mb-1">
           <label
             htmlFor="email"
             className="text-black-100 text-sm font-normal leading-5 cursor-pointer"
@@ -86,14 +86,14 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
           Submit
         </Button>
 
-        <div className="w-full text-center mt-4 mb-[40px]">
+        <div className="w-full text-center mt-3 mb-[40px]">
           <p className="text-sm font-light text-gray-600">
             Dont&apos;t have an account?{" "}
             <Link
               href="/register"
-              className="underline inline-block text-blue-700 "
+              className="text-blue-100 hover:underline cursor-pointer inline-block"
             >
-              Sign up here
+              Sign up
             </Link>
           </p>
         </div>

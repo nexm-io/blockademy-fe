@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const SpecialContent = () => {
   return (
-    <section className="md:mt-[74px] mt-[40px]">
+    <section className="mt-10 sm:mt-20">
       <div className="bg-black-200 md:rounded-2xl px-4 sm:px-10 pt-10">
         <h2 className="text-blue-400 text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px] mb-6 lg:mb-12">
           Special value from Blockademy

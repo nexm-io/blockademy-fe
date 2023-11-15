@@ -63,7 +63,7 @@ const FormReset = () => {
       </h2>
       <form className="w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-          <span className="text-sm text-black-400 self-start leading-5 mb-2">
+          <span className="text-sm text-black-400 self-start leading-5">
             Password
           </span>
           <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
@@ -98,7 +98,7 @@ const FormReset = () => {
         </div>
 
         <div className="flex flex-col items-center w-full mx-auto mt-4 mb-6 rounded-md ">
-          <span className="text-sm text-black-400 self-start leading-5 mb-2">
+          <span className="text-sm text-black-400 self-start leading-5">
             Confirm Password
           </span>
           <div className="relative flex items-center bg-white-100 border rounded w-full justify-center">
@@ -142,12 +142,12 @@ const FormReset = () => {
           Submit
         </Button>
 
-        <div className="w-full text-center mt-4 mb-[40px]">
+        <div className="w-full text-center mt-3 mb-[40px]">
           <p className="text-sm font-light text-gray-600">
             Have an account?{" "}
             <Link
               href="/login"
-              className="underline inline-block text-blue-700 "
+              className="hover:underline inline-block text-blue-100"
             >
               Log in here
             </Link>
