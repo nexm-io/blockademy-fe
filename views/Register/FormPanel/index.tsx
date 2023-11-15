@@ -11,6 +11,7 @@ import Image from "next/image";
 import Input from "@/components/Common/Input";
 import { useAppDispatch } from "@/redux/hook";
 import InfoGraphic from "../InfoGraphic";
+import { toast } from "react-toastify";
 const schema = Yup.object({
   password: Yup.string()
     .required("Please enter your password")
@@ -61,8 +62,11 @@ const FormPanel: React.FC<FormRegisterProps> = ({
     try {
       const res = await dispatch(userRegister({ ...info, ...e })).unwrap();
       res.success && setFormState("fromReceive");
+      if (res.response.data?.error) {
+        toast.error(res.response.data?.message);
+      }
     } catch (e) {
-      console.error("Some thing wrong!", e);
+      console.log(e);
     } finally {
       reset();
     }

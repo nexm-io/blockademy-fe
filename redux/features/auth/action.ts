@@ -37,8 +37,12 @@ export const userRegister = createAsyncThunk(
     password: string;
     password_confirmation?: string;
   }) => {
-    const response = await api.post("/api/v10/signup", userRegister);
-    return response.data;
+    try {
+      const response = await api.post("/api/v10/signup", userRegister);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 
