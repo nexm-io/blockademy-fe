@@ -16,7 +16,7 @@ const Courses = ({ courses }: { courses: CoursesType }) => {
           <CourseItem course={course} key={course.id} />
         ))
       ) : (
-        <div className="text-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">
+        <div className="text-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-4xl">
           There are currently no available courses
         </div>
       )}

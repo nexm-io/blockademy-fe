@@ -147,7 +147,7 @@ const Login = () => {
               loading={isSubmitting}
               disabled={isSubmitting}
             >
-              Submit
+              Log in
             </Button>
           </div>
 

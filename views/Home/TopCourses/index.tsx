@@ -40,7 +40,7 @@ const TopCourses = () => {
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
           Top Courses
         </h2>
-        <div className="flex items-center flex-wrap gap-3">
+        {/* <div className="flex items-center flex-wrap gap-3">
           {filterButtons.map((button) => (
             <Button
               key={button.filter}
@@ -51,10 +51,10 @@ const TopCourses = () => {
               {button.label}
             </Button>
           ))}
-        </div>
+        </div> */}
       </div>
       <Courses courses={coursesRx} />
-      {coursesRx.data.length !== 0 && <Link href="/courses" className="flex justify-center mt-14">
+      {coursesRx.data.length > 8 && <Link href="/courses" className="flex justify-center mt-14">
         <Button>View More</Button>
       </Link>}
     </div>

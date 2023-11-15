@@ -38,9 +38,7 @@ export const userRegister = createAsyncThunk(
     password_confirmation?: string;
   }) => {
     try {
-      console.log(userRegister);
       const response = await api.post("/api/v10/signup", userRegister);
-      console.log(response);
       return response.data;
     } catch (error) {
       return error;
@@ -64,11 +62,15 @@ export const verifyEmail = createAsyncThunk<AuthResponse, VerifyDetail>(
   }
 );
 
-export const forgotAuth = createAsyncThunk<AuthResponse, Pick<User, "email">>(
+export const forgotAuth = createAsyncThunk(
   "auth/forgot-password",
   async (userForgot: Pick<User, "email">) => {
-    const response = await api.post("/api/v10/forgot-password", userForgot);
-    return response.data;
+    try {
+      const response = await api.post("/api/v10/forgot-password", userForgot);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 
