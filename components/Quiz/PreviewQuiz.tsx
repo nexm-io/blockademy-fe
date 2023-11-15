@@ -204,7 +204,7 @@ const PreviewQuiz: React.FC<
             Back to assignment
           </span>
           <Button
-            className="bg-blue-800 w-[200px] rounded-sm hover:bg-[#003366] "
+            className="!bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[200px] "
             onClick={handleSubmit}
           >
             <span>Submit</span>

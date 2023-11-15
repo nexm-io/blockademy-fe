@@ -343,6 +343,7 @@ const TestDetail = () => {
                 fontSize: "24px",
                 fontWeight: 500,
                 lineHeight: "32px",
+                mb: 2,
               }}
             >
               {quesDetail?.quiz_title}
@@ -654,7 +655,7 @@ const TestDetail = () => {
                 <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
                   <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
-                      className={` !bg-[#0068b5] ${
+                      className={` !bg-[#0068b5] !rounded-[12px] ${
                         quesDetail?.order === 1 ? "" : "hover:!bg-[#004070]"
                       } w-[180px] flex items-center !px-4`}
                       disabled={quesDetail?.order === 1}
@@ -663,7 +664,7 @@ const TestDetail = () => {
                       <span>Previous question</span>
                     </Button>
                     <Button
-                      className=" !bg-[#0068b5] hover:!bg-[#004070] w-[180px] flex items-center !px-4 "
+                      className=" !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4 "
                       onClick={handleNextQuestion}
                       disabled={checkDisabledFinishTest()}
                     >
@@ -723,8 +724,7 @@ const TestDetail = () => {
                       gap: "18px",
                       alignItems: "center",
                       justifyContent: "center",
-                      mt: 2,
-                      mb: { lg: "47px" },
+                      my: 2,
                     }}
                   >
                     <Typography
@@ -732,12 +732,13 @@ const TestDetail = () => {
                         color: "var(--primary-color-100)",
                         fontWeight: 500,
                         userSelect: "none",
+                        textAlign: "center",
                       }}
                     >
-                      <span>{userAnswer?.length}</span>/
-                      <span>{listQues?.length}</span> Question done
+                      You have completed {userAnswer?.length} out of{" "}
+                      {listQues?.length} questions.
                     </Typography>
-                    <Typography
+                    {/* <Typography
                       sx={{
                         color: "#9EA3AE",
                         fontWeight: 300,
@@ -750,8 +751,22 @@ const TestDetail = () => {
                       onClick={handeViewDetail}
                     >
                       View Details
-                    </Typography>
+                    </Typography> */}
                   </Box>
+                  <div className="flex mb-4 items-center flex-col sm:flex-row gap-2">
+                    <Button
+                      className={` !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4`}
+                      onClick={handeViewDetail}
+                    >
+                      <span>Review Answers</span>
+                    </Button>
+                    <Button
+                      onClick={() => setIsShowPreview(true)}
+                      className=" !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4 "
+                    >
+                      <span>Finish Test</span>
+                    </Button>
+                  </div>
                 </Box>
                 <Box
                   sx={{
