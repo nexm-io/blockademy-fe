@@ -30,6 +30,7 @@ import {
   Stack,
 } from "@mui/material";
 import { soleil } from "@/utils/constants";
+import Link from "next/link";
 
 const CertButton = ({ courseId }: { courseId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -156,6 +157,47 @@ export default function ResultQuiz() {
         </Stack>
       ) : (
         <Box sx={{ py: 10, m: "auto" }}>
+          <nav className="w-full rounded-md">
+            <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+              <li className="leading-[23px] hover:underline cursor-pointer">
+                <Link href="/">
+                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    Home
+                  </span>
+                </Link>
+              </li>
+              <li className="leading-[23px]">
+                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+              </li>
+              <li className="leading-[23px] hover:underline">
+                <Link href="/courses">
+                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    Courses
+                  </span>
+                </Link>
+              </li>
+              <li className="leading-[23px]">
+                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+              </li>
+              <li className="leading-[23px] hover:underline">
+                <Link
+                  href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
+                >
+                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    {listResultData?.quiz}
+                  </span>
+                </Link>
+              </li>
+              <li className="leading-[23px]">
+                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+              </li>
+              <li className="leading-[23px]">
+                <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                  Result
+                </span>
+              </li>
+            </ol>
+          </nav>
           <div className="flex flex-col md:flex-row justify-between">
             {/* <div className="mt-2 mb-"> */}
             <Typography

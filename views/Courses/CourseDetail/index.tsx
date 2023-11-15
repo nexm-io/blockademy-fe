@@ -31,8 +31,8 @@ const CourseDetail = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [stepCompleted, setStepCompleted] = useState<string[]>([])
-  const [completedLesson, setCompletedLesson] = useState<number[]>([])
+  const [stepCompleted, setStepCompleted] = useState<string[]>([]);
+  const [completedLesson, setCompletedLesson] = useState<number[]>([]);
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -48,9 +48,10 @@ const CourseDetail = () => {
   );
   const token = useSelector((state: RootState) => state.auth.token);
   const isCompletedQuiz = useMemo(() => {
-    if(!courseDetail?.lesson_data || !courseDetail?.lesson_data.length) return false
-    return courseDetail?.lesson_data.every(item => item.is_complete === 1)
-  }, [courseDetail?.lesson_data])
+    if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
+      return false;
+    return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
+  }, [courseDetail?.lesson_data]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -59,29 +60,32 @@ const CourseDetail = () => {
     });
   };
 
-  const handleChangeForm = useCallback((status: boolean) => {
-    if (status) {
-      const lessonData = courseDetail?.lesson_data || [];
-      const currIndex =
-        lessonData.findIndex(
-          (lesson) => lesson.lesson_id === Number(lessonId)
-        ) || 0;
-      const lessonLength = lessonData.length - 1;
+  const handleChangeForm = useCallback(
+    (status: boolean) => {
+      if (status) {
+        const lessonData = courseDetail?.lesson_data || [];
+        const currIndex =
+          lessonData.findIndex(
+            (lesson) => lesson.lesson_id === Number(lessonId)
+          ) || 0;
+        const lessonLength = lessonData.length - 1;
 
-      const nextLessonId =
-        currIndex < lessonLength
-          ? lessonData[currIndex + 1].lesson_id
-          : lessonData[0].lesson_id;
-      const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
-      setStepCompleted([...stepCompleted, 'video'])
-      console.log('stepCompleted',stepCompleted)
-      if(stepCompleted.length > 1) {
-        router.push(url);
-        setStepCompleted([])
+        const nextLessonId =
+          currIndex < lessonLength
+            ? lessonData[currIndex + 1].lesson_id
+            : lessonData[0].lesson_id;
+        const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
+        setStepCompleted([...stepCompleted, "video"]);
+        console.log("stepCompleted", stepCompleted);
+        if (stepCompleted.length > 1) {
+          router.push(url);
+          setStepCompleted([]);
+        }
+        // setFormState(`quiz`);
       }
-      // setFormState(`quiz`);
-    }
-  }, [courseDetail?.lesson_data, courseId, lessonId, router, stepCompleted]);
+    },
+    [courseDetail?.lesson_data, courseId, lessonId, router, stepCompleted]
+  );
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -117,21 +121,22 @@ const CourseDetail = () => {
   }, [courseDetail]);
 
   const handleScroll = useCallback(() => {
-    const bottom = document.body.getBoundingClientRect().bottom <= window.innerHeight
-    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes('read')) {
-      setStepCompleted([...stepCompleted, 'read'])
+    const bottom =
+      document.body.getBoundingClientRect().bottom <= window.innerHeight;
+    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes("read")) {
+      setStepCompleted([...stepCompleted, "read"]);
     }
-  }, [stepCompleted])
+  }, [stepCompleted]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
-      return () => {
-        document.removeEventListener("scroll", handleScroll);
-      };
-  }, [handleScroll])
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
-  const handleCheckCompletedCourse = useCallback(async() => {
-    if(stepCompleted.length < 2 ) return
+  const handleCheckCompletedCourse = useCallback(async () => {
+    if (stepCompleted.length < 2) return;
     if (!isAuthenticated || !token) return;
     try {
       const response = await api.post(
@@ -139,17 +144,23 @@ const CourseDetail = () => {
       );
       if (response.status === 200) {
         setCompletedLesson([...completedLesson, +lessonId]);
-        setStepCompleted([])
+        setStepCompleted([]);
       }
     } catch (error) {
       return null;
     }
-  }, [stepCompleted, isAuthenticated, token, courseId, lessonId, completedLesson])
+  }, [
+    stepCompleted,
+    isAuthenticated,
+    token,
+    courseId,
+    lessonId,
+    completedLesson,
+  ]);
 
   useEffect(() => {
-    handleCheckCompletedCourse()
-  }, [handleCheckCompletedCourse])
-
+    handleCheckCompletedCourse();
+  }, [handleCheckCompletedCourse]);
 
   return (
     <div className="container mt-36">
@@ -183,6 +194,39 @@ const CourseDetail = () => {
         <>
           <section className="md:mt-[56px] mt-8">
             <div className="grid gap-4">
+              <nav className="w-full rounded-md">
+                <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+                  <li className="leading-[23px] hover:underline cursor-pointer">
+                    <Link href="/">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Home
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  <li className="leading-[23px] hover:underline">
+                    <Link href="/courses">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Courses
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      {courseDetail?.title}
+                    </span>
+                  </li>
+                </ol>
+              </nav>
               <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
@@ -207,33 +251,37 @@ const CourseDetail = () => {
                         //   className="w-full md:w-auto inline-block"
                         // >
                         <>
-                        {isCompletedQuiz ? <Button
-                          onClick={() => {
-                            dispatch(setIsViewResultInCourse(true));
-                            router.push(
-                              `/result/${courseDetail?.assigment_id}`
-                            );
-                          }}
-                          className=" md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                        >
-                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                            View result Quiz
-                          </span>
-                        </Button> : null}
+                          {isCompletedQuiz ? (
+                            <Button
+                              onClick={() => {
+                                dispatch(setIsViewResultInCourse(true));
+                                router.push(
+                                  `/result/${courseDetail?.assigment_id}`
+                                );
+                              }}
+                              className=" md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                            >
+                              <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                                View result Quiz
+                              </span>
+                            </Button>
+                          ) : null}
                         </>
 
                         // </Link>
                       )}
-                      {isCompletedQuiz ? <Link
-                        href={`/reward/${courseId}`}
-                        className="w-full md:w-auto inline-block"
-                      >
-                        <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
-                          <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                            Reward
-                          </span>
-                        </Button>
-                      </Link> : null}
+                      {isCompletedQuiz ? (
+                        <Link
+                          href={`/reward/${courseId}`}
+                          className="w-full md:w-auto inline-block"
+                        >
+                          <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
+                            <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+                              Reward
+                            </span>
+                          </Button>
+                        </Link>
+                      ) : null}
 
                       {/* <Link
                         href="/courses/leaderboard?id=1"
@@ -336,7 +384,11 @@ const CourseDetail = () => {
                           );
                         }}
                       >
-                        <CourseModule key={index} lesson={lesson} completedLesson={completedLesson}/>
+                        <CourseModule
+                          key={index}
+                          lesson={lesson}
+                          completedLesson={completedLesson}
+                        />
                       </div>
                     ))}
                 </div>
