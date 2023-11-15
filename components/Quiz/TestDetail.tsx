@@ -209,10 +209,16 @@ const TestDetail = () => {
   };
   const handleNextQuestion = async () => {
     if (!quesDetail?.order) return;
-    const initValue = userAnswer.find((i) => i.order === quesDetail?.order + 1);
-    setValue(initValue?.value || "");
-    if (quesDetail?.order <= totalQuestion) {
-      dispatch(setQuesDetail(listQues[quesDetail?.order]));
+    if (quesDetail?.order === listQues?.length) {
+      handleEndTest();
+    } else {
+      const initValue = userAnswer.find(
+        (i) => i.order === quesDetail?.order + 1
+      );
+      setValue(initValue?.value || "");
+      if (quesDetail?.order <= totalQuestion) {
+        dispatch(setQuesDetail(listQues[quesDetail?.order]));
+      }
     }
   };
 
@@ -628,21 +634,24 @@ const TestDetail = () => {
                 >
                   <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
+                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4"
                       disabled={quesDetail?.order === 1}
                       onClick={handlePrevQuestion}
                     >
                       <span>Previous question</span>
                     </Button>
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
-                      disabled={quesDetail?.order === listQues?.length}
+                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4"
                       onClick={handleNextQuestion}
                     >
-                      <span>Next question</span>
+                      {quesDetail?.order === listQues?.length ? (
+                        <span>Finish test</span>
+                      ) : (
+                        <span>Next question</span>
+                      )}
                     </Button>
                   </div>
-                  <Typography
+                  {/* <Typography
                     sx={{
                       color: "#CF1818",
                       fontSize: "16px",
@@ -655,7 +664,7 @@ const TestDetail = () => {
                     onClick={handleEndTest}
                   >
                     End Test
-                  </Typography>
+                  </Typography> */}
                 </Box>
               </Box>
               <Box
