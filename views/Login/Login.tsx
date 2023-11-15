@@ -57,8 +57,8 @@ const Login = () => {
       })
     ).unwrap();
     if (response.success) {
-      toast.success("Login Successfully");
       push("/");
+      toast.success("Login Successfully");
     }
     response.error && toast.error(response.message);
 

@@ -151,7 +151,7 @@ const RewardView = () => {
   }
 
   return (
-    <div className="container mt-24 sm:mt-32 min-h-[55vh]">
+    <div className="container mt-24 sm:mt-32 sm:min-h-[55vh]">
       <div
         className={cn({
           hidden: viewCertificate,
@@ -196,7 +196,7 @@ const RewardView = () => {
         <div className="flex justify-center">
           <canvas
             ref={canvasRef}
-            className="max-w-[1000px]"
+            className="max-w-[350px] sm:max-w-[400px] md:max-w-[700px] lg:max-w-[1000px]"
             width="1440"
             height="946"
           />
