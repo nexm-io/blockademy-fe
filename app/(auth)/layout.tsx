@@ -14,7 +14,7 @@ export default function AuthLayout({
         <div className="container py-4">
           <div className="flex justify-center md:justify-start">
             <Link href="/">
-              <Image alt="logo" src={logo} width={187} height={35}></Image>
+              <Image alt="logo" src={logo} width={164} height={49}></Image>
             </Link>
           </div>
         </div>
