@@ -1,11 +1,10 @@
 "use client";
 
-import { Box, Skeleton, Stack, Typography } from "@mui/material";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, useRouter } from "next/navigation";
 import {
+  ASSIGNMENT_STATUS,
   RESULT_QUESTION_CORRECT,
   RESULT_QUIZ_FAIL,
   RESULT_QUIZ_PASS,
@@ -17,6 +16,57 @@ import {
 } from "@/redux/features/quiz/action";
 import Image from "next/image";
 import Button from "../Common/Button";
+import { selectReward } from "@/redux/features/reward/reducer";
+import { getRewardDetail } from "@/redux/features/reward/action";
+import api from "@/services/axios";
+import { toast } from "react-toastify";
+import {
+  Box,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  Typography,
+  Skeleton,
+  Stack,
+} from "@mui/material";
+import { soleil } from "@/utils/constants";
+
+const CertButton = ({ courseId }: { courseId: string }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { rewardDetailLoading, rewardDetails } = useAppSelector(selectReward);
+  const dispatch = useAppDispatch();
+
+  const onViewCert = async () => {
+    if (rewardDetails.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
+      if (!rewardDetails.is_claimed) {
+        setIsLoading(true);
+        try {
+          await api.get(`/api/v10/claim-reward/${courseId}`);
+          dispatch(getRewardDetail(courseId as string));
+          toast.success("Claim certificate is success");
+        } catch (error) {
+          toast.warning("Something wrong...");
+          return null;
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      // TODO: show cert
+    } else {
+      // TODO: show message
+    }
+  };
+
+  useEffect(() => {
+    dispatch(getRewardDetail(courseId));
+  }, [dispatch, courseId]);
+
+  return (
+    <Button loading={rewardDetailLoading || isLoading} onClick={onViewCert}>
+      Certificate
+    </Button>
+  );
+};
 
 export default function ResultQuiz() {
   const { listResultData, loadingListResult, isViewResultInCourse } =
@@ -121,14 +171,14 @@ export default function ResultQuiz() {
             {/* </div> */}
             <div className="flex flex-col md:flex-row gap-4">
               {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
-                <Button
-                  onClick={() => router.push(`/quiz/${id}`)}
-                  className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
-                >
-                  Try Again
-                </Button>
-              {/* )} */}
               <Button
+                onClick={() => router.push(`/quiz/${id}`)}
+                className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
+              >
+                Try Again
+              </Button>
+              {/* )} */}
+              {/* <Button
                 onClick={() =>
                   router.push(
                     `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
@@ -137,7 +187,10 @@ export default function ResultQuiz() {
                 className="!px-6 !py-2 w-full sm:w-auto"
               >
                 Back to course
-              </Button>
+              </Button> */}
+              {listResultData?.result === RESULT_QUIZ_PASS ? (
+                <CertButton courseId={listResultData.course_id} />
+              ) : null}
             </div>
           </div>
 
