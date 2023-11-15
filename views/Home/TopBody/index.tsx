@@ -27,7 +27,7 @@ const TopBody: React.FC<TopBodyProps> = () => {
 
         <div className="mt-3">
           <Button className="lg:!px-6" onClick={() => push("/courses")}>
-            <span className="font-bold">Get Started </span>
+            <span className="font-bold">Get started</span>
           </Button>
         </div>
       </div>
