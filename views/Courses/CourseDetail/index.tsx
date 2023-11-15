@@ -4,7 +4,7 @@ import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/CourseModule";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -19,6 +19,7 @@ import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
 import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
 import BackToTop from "@/components/BackToTop";
+import { useSelector } from "react-redux";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -30,6 +31,8 @@ const CourseDetail = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [stepCompleted, setStepCompleted] = useState<string[]>([])
+  const [completedLesson, setCompletedLesson] = useState<number[]>([])
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -40,6 +43,14 @@ const CourseDetail = () => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const token = useSelector((state: RootState) => state.auth.token);
+  const isCompletedQuiz = useMemo(() => {
+    if(!courseDetail?.lesson_data || !courseDetail?.lesson_data.length) return false
+    return courseDetail?.lesson_data.filter(item => item.is_complete === 1)
+  }, [courseDetail?.lesson_data])
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -48,7 +59,7 @@ const CourseDetail = () => {
     });
   };
 
-  const handleChangeForm = (status: boolean) => {
+  const handleChangeForm = useCallback((status: boolean) => {
     if (status) {
       const lessonData = courseDetail?.lesson_data || [];
       const currIndex =
@@ -61,13 +72,16 @@ const CourseDetail = () => {
         currIndex < lessonLength
           ? lessonData[currIndex + 1].lesson_id
           : lessonData[0].lesson_id;
-
       const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
-      router.push(url);
-
+      setStepCompleted([...stepCompleted, 'video'])
+      console.log('stepCompleted',stepCompleted)
+      if(stepCompleted.length > 1) {
+        router.push(url);
+        setStepCompleted([])
+      }
       // setFormState(`quiz`);
     }
-  };
+  }, [courseDetail?.lesson_data, courseId, lessonId, router, stepCompleted]);
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -101,6 +115,41 @@ const CourseDetail = () => {
   useEffect(() => {
     if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
   }, [courseDetail]);
+
+  const handleScroll = useCallback(() => {
+    const bottom = document.body.getBoundingClientRect().bottom <= window.innerHeight
+    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes('read')) {
+      setStepCompleted([...stepCompleted, 'read'])
+    }
+  }, [stepCompleted])
+
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+      return () => {
+        document.removeEventListener("scroll", handleScroll);
+      };
+  }, [handleScroll])
+
+  const handleCheckCompletedCourse = useCallback(async() => {
+    if(stepCompleted.length < 2 ) return
+    if (!isAuthenticated || !token) return;
+    try {
+      const response = await api.post(
+        `/api/v10/course/${courseId}/lesson/${lessonId}`
+      );
+      if (response.status === 200) {
+        setCompletedLesson([...completedLesson, +lessonId]);
+        setStepCompleted([])
+      }
+    } catch (error) {
+      return null;
+    }
+  }, [stepCompleted, isAuthenticated, token, courseId, lessonId, completedLesson])
+
+  useEffect(() => {
+    handleCheckCompletedCourse()
+  }, [handleCheckCompletedCourse])
+
 
   return (
     <div className="container mt-36">
@@ -157,7 +206,8 @@ const CourseDetail = () => {
                         //   href={`/result/${courseDetail?.assigment_id}`}
                         //   className="w-full md:w-auto inline-block"
                         // >
-                        <Button
+                        <>
+                        {isCompletedQuiz ? <Button
                           onClick={() => {
                             dispatch(setIsViewResultInCourse(true));
                             router.push(
@@ -169,10 +219,12 @@ const CourseDetail = () => {
                           <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
                             View result Quiz
                           </span>
-                        </Button>
+                        </Button> : null}
+                        </>
+
                         // </Link>
                       )}
-                      <Link
+                      {isCompletedQuiz ? <Link
                         href={`/reward/${courseId}`}
                         className="w-full md:w-auto inline-block"
                       >
@@ -181,7 +233,8 @@ const CourseDetail = () => {
                             Reward
                           </span>
                         </Button>
-                      </Link>
+                      </Link> : null}
+
                       {/* <Link
                         href="/courses/leaderboard?id=1"
                         className="w-full md:w-auto inline-block"
@@ -293,7 +346,7 @@ const CourseDetail = () => {
                           );
                         }}
                       >
-                        <CourseModule key={index} lesson={lesson} />
+                        <CourseModule key={index} lesson={lesson} completedLesson={completedLesson}/>
                       </div>
                     ))}
                 </div>
