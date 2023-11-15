@@ -40,13 +40,23 @@ const TopCourses = () => {
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
           Top Courses
         </h2>
+        {/* <div className="flex items-center flex-wrap gap-3">
+          {filterButtons.map((button) => (
+            <Button
+              key={button.filter}
+              className="lg:px-6 !py-2"
+              kind={sortBy === button.filter ? "primary" : "secondary"}
+              onClick={() => setSortBy(button.filter)}
+            >
+              {button.label}
+            </Button>
+          ))}
+        </div> */}
       </div>
       <Courses courses={coursesRx} />
-      {coursesRx.data.length > 8 && (
-        <Link href="/courses" className="flex justify-center mt-14">
-          <Button>View More</Button>
-        </Link>
-      )}
+      {coursesRx.data.length > 8 && <Link href="/courses" className="flex justify-center mt-14">
+        <Button>View More</Button>
+      </Link>}
     </div>
   );
 };

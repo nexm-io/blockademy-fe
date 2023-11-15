@@ -46,10 +46,12 @@ const CoursesView = () => {
 
   return (
     <div className="mt-8 sm:mt-20" ref={divRef}>
-      <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
-        All Blockademy Courses
-      </h2>
-      {cateRx.categoryLoading ? (
+      {coursesRx.data.length !== 0 && (
+        <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
+          All Blockademy Courses
+        </h2>
+      )}
+      {/* {cateRx.categoryLoading ? (
         <div className="w-full h-[42px] skeleton mt-10"></div>
       ) : (
         <div className="flex items-center justify-center flex-wrap gap-3 mt-10">
@@ -73,7 +75,7 @@ const CoursesView = () => {
             </Button>
           ))}
         </div>
-      )}
+      )} */}
       <div className="mt-6 md:mt-[60px]">
         <Courses courses={coursesRx} />
       </div>
