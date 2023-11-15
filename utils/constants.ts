@@ -119,3 +119,13 @@ export const RESULT_QUESTION = {
   1: "Correct",
   0: "Incorrect",
 };
+
+export const COURSE_STATUS = {
+  INPROGRESS: 'inprogress',
+  COMPLETED: 'completed'
+}
+
+export const TAB_STATUS = {
+  PROGRESS: 'progress',
+  COMPLETED: 'completed'
+}

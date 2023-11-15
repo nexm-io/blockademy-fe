@@ -382,7 +382,7 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .course-status.active {
-  @apply text-black-100 border-b-[3px] border-b-blue-100 md:pb-[23px] pb-2;
+  @apply text-black-100 border-b-[3px] border-b-blue-100 pb-2;
 }
 
 .course-content .css-143tmma {
