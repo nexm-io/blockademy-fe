@@ -33,6 +33,7 @@ const Header = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (
@@ -48,13 +49,16 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+
   useEffect(() => {
     dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
+
   const handleUserIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsOpen(!isOpen);
   };
+
   const handleLogout = async () => {
     try {
       const res = await dispatch(logoutAuth()).unwrap();
@@ -64,12 +68,25 @@ const Header = () => {
       localStorage.clear();
     }
   };
+
   useEffect(() => {
     if (data !== null) setEmail(hideEmail(data.email));
   }, [data]);
   useEffect(() => {
     setImage(userAccount?.image);
   }, [userAccount]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      window.innerWidth >= 767 && setShowMenu(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
@@ -82,12 +99,10 @@ const Header = () => {
           }
         )}
       >
-        <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center">
-          <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
-            <Link href="/">
-              <Image alt="logo" src={logo} width={187} height={35}></Image>
-            </Link>
-          </div>
+        <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center gap-[105px]">
+          <Link href="/">
+            <Image alt="logo" src={logo} width={187} height={35}></Image>
+          </Link>
           <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
             {MENU.map((z) => (
               <Link
@@ -181,7 +196,7 @@ const Header = () => {
             { "!translate-x-0": isShowMenu }
           )}
         >
-          <div className="flex flex-col items-center justify-center gap-4 text-base font-normal text-black-100">
+          <div className="flex flex-col items-center justify-center gap-6 text-base font-normal text-black-100 mt-10">
             {MENU.map((z) => (
               <Link
                 href={z.pathname}

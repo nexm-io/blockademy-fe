@@ -10,19 +10,13 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      <header
-        className={`bg-white-100 text-black w-full top-0 left-0 fixed z-[999] min-h-[74px] ${soleil.variable} font-sans container`}
-      >
-        <div className="relative md:mx-[75px] mx-1 flex items-center justify-center md:justify-start py-4">
-          <Link href="/" className="relative w-[200px]">
-            <Image
-              src={logo}
-              alt="Wink"
-              width={336}
-              height={103}
-              className="mx-auto"
-            />
-          </Link>
+      <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
+        <div className="container py-4">
+          <div className="flex justify-center md:justify-start">
+            <Link href="/">
+              <Image alt="logo" src={logo} width={187} height={35}></Image>
+            </Link>
+          </div>
         </div>
       </header>
       <div className={`w-full relative ${soleil.variable} !font-sans`}>
