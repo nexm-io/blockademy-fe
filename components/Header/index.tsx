@@ -101,7 +101,7 @@ const Header = () => {
       >
         <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center gap-[105px]">
           <Link href="/">
-            <Image alt="logo" src={logo} width={187} height={35}></Image>
+            <Image alt="logo" src={logo} width={164} height={49}></Image>
           </Link>
           <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
             {MENU.map((z) => (
