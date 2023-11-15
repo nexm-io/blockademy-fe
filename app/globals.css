@@ -706,20 +706,6 @@ input[type="range"]::-webkit-slider-thumb:active {
   padding-left: 0 !important;
   padding-right: 0 !important;
 
-  @media (min-width: 768px) {
-    padding-left: 60px !important;
-    padding-right: 60px !important;
-  }
-
-  /* @media (min-width: 992px) {
-    padding-left: 84px !important;
-    padding-right: 84px !important;
-  } */
-
-  /* @media (min-width: 1600px) {
-    padding-left: 280px !important;
-    padding-right: 280px !important;
-  } */
 }
 
 .quiz {
