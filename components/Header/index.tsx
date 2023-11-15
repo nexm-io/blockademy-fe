@@ -163,12 +163,7 @@ const Header = () => {
             <>
               <Link href="/login">
                 <Button size="small" outlined className="w-[94px]">
-                  Login
-                </Button>
-              </Link>
-              <Link className="hidden md:block" href="/register">
-                <Button size="small" className="w-[94px]">
-                  Register
+                  Log in
                 </Button>
               </Link>
             </>
@@ -200,21 +195,6 @@ const Header = () => {
               </Link>
             ))}
           </div>
-          {isAuthenticated && token ? (
-            <></>
-          ) : (
-            <div className="flex justify-center mt-4">
-              <Link href="/register">
-                <Button
-                  size="small"
-                  onClick={() => setShowMenu(false)}
-                  className="w-[94px]"
-                >
-                  Register
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
       </div>
     </header>

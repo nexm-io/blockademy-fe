@@ -307,7 +307,7 @@ const CourseDetail = () => {
         <InfoPopup
           title="Congratulations!"
           desc="Thanks for joining the course. Please enjoy your journey, complete
-          quizz and get certificate."
+          quiz and get certificate."
           onClose={() => setShowPopup(false)}
         />
       )}

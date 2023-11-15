@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { Loader3 } from "@styled-icons/remix-line";
 import api from "@/services/axios";
 import { toast } from "react-toastify";
+import { useAppDispatch } from "@/redux/hook";
+import { getRewardDetail } from "@/redux/features/reward/action";
 
 const RewardItem = ({
   rewardDetailLoading,
@@ -23,17 +25,16 @@ const RewardItem = ({
 }) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const handleClick = async () => {
     if (assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
       if (!is_claimed) {
         setLoading(true);
         try {
-          const { data: info } = await api.get(
-            `/api/v10/claim-reward/${course_id}`
-          );
-          if (info.status === 200)
-            toast.success("Claim certificate is success");
+          await api.get(`/api/v10/claim-reward/${course_id}`);
+          dispatch(getRewardDetail(course_id as string));
+          toast.success("Claim certificate is success");
         } catch (error) {
           toast.warning("Something wrong...");
           return null;
