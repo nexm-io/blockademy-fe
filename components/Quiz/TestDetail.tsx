@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    enterFullScreen();
+    // enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -282,7 +282,7 @@ const TestDetail = () => {
     if (isSubmitInButton) return;
     const handleKeyPress = async (event: any) => {
       if (!document.fullscreenElement) {
-        await handleSendQuiz();
+        // await handleSendQuiz();
       }
     };
 
@@ -327,11 +327,12 @@ const TestDetail = () => {
         listQues?.length > 0 &&
         !loadingCheckShowResult && (
           <Box
-            className="main quiz"
+            // className="main quiz"
             sx={{
               mx: { xs: "0", lg: "100px" },
               pt: "70px",
               mb: "100px",
+              color: "#1E2329",
             }}
             onCopy={(e) => {
               e.preventDefault();
@@ -368,24 +369,30 @@ const TestDetail = () => {
                 display: "flex",
                 gap: "40px",
                 flexDirection: { xs: "column-reverse", lg: "row" },
-                justifyContent: "center",
-                alignItems: { lg: "start" },
+                justifyContent: "between",
+                // alignItems: { lg: "start" },
               }}
             >
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  backgroundColor: "#F9F9F9",
-                  borderRadius: "20px",
-                  p: "20px",
-                  minWidth: { lg: "556px" },
-                  maxWidth: { lg: "556px" },
+                  backgroundColor: "#F5F8FF",
+                  borderRadius: "8px",
+                  p: "24px",
+                  // minWidth: { lg: "556px" },
+                  // maxWidth: { lg: "556px" },
                 }}
               >
                 {/* FillinQuiz */}
                 {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
-                  <CardContent sx={{ flex: "1 0 auto", width: { lg: "100%" } }}>
+                  <CardContent
+                    sx={{
+                      flex: "1 0 auto",
+                      width: { lg: "100%" },
+                      p: "0 !important",
+                    }}
+                  >
                     <Typography
                       sx={{
                         color: "var(--primary-black)",
@@ -469,7 +476,7 @@ const TestDetail = () => {
                   <CardContent
                     sx={{
                       flex: "1 0 auto",
-                      minHeight: "402px",
+                      // minHeight: "402px",
                       maxWidth: "100%",
                       width: { lg: "100%" },
                     }}
@@ -482,11 +489,11 @@ const TestDetail = () => {
                     >
                       <Typography
                         sx={{
-                          color: "var(--primary-black)",
-                          fontSize: "26px",
+                          color: "#1F37B3",
+                          fontSize: "20px",
                           fontWeight: 500,
                           lineHeight: "34px",
-                          mb: "25px",
+                          mb: "12px",
                         }}
                       >
                         Question <span>{quesDetail?.order}</span>
@@ -511,7 +518,7 @@ const TestDetail = () => {
                     <Typography
                       sx={{
                         color: "#121230",
-                        fontSize: "26px",
+                        fontSize: "24px",
                         fontWeight: 500,
                         lineHeight: "39px",
                         mb: "20px",
@@ -573,45 +580,50 @@ const TestDetail = () => {
                               item
                               xs={12}
                               sm={12}
-                              sx={{ mb: "14px" }}
+                              sx={{ mb: "10px" }}
                             >
                               <FormControlLabel
                                 value={item?.id}
                                 control={
                                   <Radio
                                     icon={
-                                      <Box
-                                        sx={{
-                                          backgroundColor:
-                                            "var(--primary-color-700)",
-                                          height: "38px",
-                                          width: "38px",
-                                          borderRadius: "5px",
-                                        }}
-                                      />
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="11.5"
+                                          fill="white"
+                                          stroke="#89939E"
+                                        />
+                                      </svg>
                                     }
                                     checkedIcon={
-                                      <Box
-                                        sx={{
-                                          height: "38px",
-                                          width: "38px",
-                                          backgroundColor:
-                                            "var(--primary-color-100)",
-                                          display: "flex",
-                                          alignItems: "center",
-                                          justifyContent: "center",
-                                          borderRadius: "5px",
-                                        }}
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
                                       >
-                                        <Typography
-                                          sx={{
-                                            color: "white",
-                                            fontSize: "30px",
-                                          }}
-                                        >
-                                          &#10003;
-                                        </Typography>
-                                      </Box>
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="11.5"
+                                          stroke="#1F37B3"
+                                        />
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="6"
+                                          fill="#1F37B3"
+                                        />
+                                      </svg>
                                     }
                                     name="checkbox"
                                     sx={{
@@ -652,38 +664,38 @@ const TestDetail = () => {
                     </FormControl>
                   </CardContent>
                 )}
-                <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
-                  <div className="flex items-center flex-col sm:flex-row gap-6">
-                    <Button
-                      className={` !bg-[#0068b5] !rounded-[12px] ${
-                        quesDetail?.order === 1 ? "" : "hover:!bg-[#004070]"
-                      } w-[180px] flex items-center !px-4`}
-                      disabled={quesDetail?.order === 1}
-                      onClick={handlePrevQuestion}
-                    >
-                      <span>Previous question</span>
-                    </Button>
-                    <Button
-                      className=" !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4 "
-                      onClick={handleNextQuestion}
-                      disabled={checkDisabledFinishTest()}
-                    >
-                      {quesDetail?.order === listQues?.length ? (
-                        <span>Finish test</span>
-                      ) : (
-                        <span>Next question</span>
-                      )}
-                    </Button>
-                  </div>
+                <div className="flex items-center  justify-between flex-col sm:flex-row">
+                  <Button
+                    className={` !bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
+                      quesDetail?.order === 1 ? "" : "hover:!bg-[#B7E5FF]"
+                    } w-[180px] flex items-center !px-4`}
+                    disabled={quesDetail?.order === 1}
+                    onClick={handlePrevQuestion}
+                  >
+                    <span>Previous question</span>
+                  </Button>
+                  <Button
+                    className=" !bg-[#1F37B3] hover:!bg-[#1530BC] !rounded-[4px] w-[180px] flex items-center !px-4 "
+                    onClick={handleNextQuestion}
+                    disabled={checkDisabledFinishTest()}
+                  >
+                    {quesDetail?.order === listQues?.length ? (
+                      <span>Finish test</span>
+                    ) : (
+                      <span>Next question</span>
+                    )}
+                  </Button>
                 </div>
               </Box>
               <Box
                 sx={{
+                  width: { xs: "full", lg: "295px" },
                   display: "flex",
                   flexDirection: { xs: "row", lg: "column" },
                   alignItems: "center",
                   justifyContent: "center",
                   gap: { xs: "40px", lg: 0 },
+                  borderRadius: "8px",
                 }}
               >
                 <Box
@@ -695,7 +707,7 @@ const TestDetail = () => {
                 >
                   <Box
                     sx={{
-                      backgroundColor: "var(--primary-color-100)",
+                      backgroundColor: "#F5F8FF",
                       borderRadius: "20px",
                       width: "295px",
                       height: "130px",
@@ -707,9 +719,7 @@ const TestDetail = () => {
                       userSelect: "none",
                     }}
                   >
-                    <Typography sx={{ color: "white" }}>
-                      Remaining Time
-                    </Typography>
+                    <Typography>Remaining Time</Typography>
                     <MyMemoizedComponent
                       time={
                         duration - (Date.now() - dataStartTime) / 1000 < 0
@@ -729,7 +739,8 @@ const TestDetail = () => {
                   >
                     <Typography
                       sx={{
-                        color: "var(--primary-color-100)",
+                        // color: "var(--primary-color-100)",
+                        fontSize: "14px",
                         fontWeight: 500,
                         userSelect: "none",
                         textAlign: "center",
@@ -753,16 +764,17 @@ const TestDetail = () => {
                       View Details
                     </Typography> */}
                   </Box>
-                  <div className="flex mb-4 items-center flex-col sm:flex-row gap-2">
+                  <div className="flex items-center flex-col gap-2 w-full">
                     <Button
-                      className={` !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4`}
+                      className={` !bg-[#1F37B3] text-white  !rounded-[4px] !w-full flex items-center !px-4`}
                       onClick={handeViewDetail}
                     >
                       <span>Review Answers</span>
                     </Button>
                     <Button
                       onClick={() => setIsShowPreview(true)}
-                      className=" !bg-[#0068b5] hover:!bg-[#004070] !rounded-[12px] w-[180px] flex items-center !px-4 "
+                      disabled={checkDisabledFinishTest()}
+                      className=" !bg-[#C6EAFF] !text-[#0B76A4] hover:!bg-[#B7E5FF] !rounded-[4px] !w-full flex items-center !px-4 "
                     >
                       <span>Finish Test</span>
                     </Button>
@@ -772,6 +784,7 @@ const TestDetail = () => {
                   sx={{
                     display: { xs: "none", md: "inline-block" },
                     userSelect: "none",
+                    mt: 4,
                   }}
                 >
                   <Image

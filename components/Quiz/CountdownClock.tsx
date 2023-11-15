@@ -45,7 +45,7 @@ function CountdownClock({ date }: { date: number }) {
         <Box>
           <Box
             sx={{
-              color: "white",
+              color: "#1F37B3",
               fontSize: "35px",
               fontWeight: 500,
               lineHeight: "45px",
@@ -106,7 +106,7 @@ function CountdownClock({ date }: { date: number }) {
           ) : ( */}
           <Box
             sx={{
-              color: "var(--primary-white)",
+              color: "#1F37B3",
               fontSize: "35px",
               fontWeight: 500,
               lineHeight: "45px",
