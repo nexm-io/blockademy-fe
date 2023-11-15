@@ -49,7 +49,7 @@ const CourseDetail = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const isCompletedQuiz = useMemo(() => {
     if(!courseDetail?.lesson_data || !courseDetail?.lesson_data.length) return false
-    return courseDetail?.lesson_data.filter(item => item.is_complete === 1)
+    return courseDetail?.lesson_data.every(item => item.is_complete === 1)
   }, [courseDetail?.lesson_data])
 
   const scrollToTop = () => {
