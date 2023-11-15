@@ -151,7 +151,7 @@ const RewardView = () => {
   }
 
   return (
-    <div className="container mt-24 sm:mt-32 sm:min-h-[55vh]">
+    <div className="container mt-24 sm:mt-32 min-h-[63vh]">
       <div
         className={cn({
           hidden: viewCertificate,
