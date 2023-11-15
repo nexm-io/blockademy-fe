@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 const schema = Yup.object({
@@ -36,14 +37,18 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
   });
   const onSubmit = async (data: FormForgot) => {
     try {
-      const response = await dispatch(
+      const res = await dispatch(
         forgotAuth({
           ...data,
         })
       ).unwrap();
-      response.success && setFormState("formsendmail");
+      res.success && setFormState("formsendmail");
+      if (res.response.data?.error) {
+        toast.error(res.response.data?.message);
+        return;
+      }
     } catch (error) {
-      console.error("Login failed", error);
+      console.error(error);
     } finally {
       reset();
     }
