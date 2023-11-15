@@ -42,7 +42,7 @@ const TopCourses = () => {
         </h2>
       </div>
       <Courses courses={coursesRx} />
-      {coursesRx.data.length > 0 && (
+      {coursesRx.data.length > 8 && (
         <Link href="/courses" className="flex justify-center mt-14">
           <Button>View More</Button>
         </Link>
