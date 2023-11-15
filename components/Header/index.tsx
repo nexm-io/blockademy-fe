@@ -82,7 +82,7 @@ const Header = () => {
           }
         )}
       >
-        <div className="md:w-full w-[40%] flex items-center">
+        <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center">
           <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
             <Link href="/">
               <Image alt="logo" src={logo} width={187} height={35}></Image>
@@ -127,7 +127,12 @@ const Header = () => {
                       {email}
                     </Link>
                     <ul className="capitalize flex flex-col gap-2 mt-3 ">
-                      <li className=" px-4 ">
+                    <li className=" px-4 ">
+                        <Link className="hover:text-blue-100 " href="/my-account">
+                          My Account
+                        </Link>
+                      </li>
+                      {/* <li className=" px-4 ">
                         <Link className="hover:text-blue-100 " href="/courses">
                           My Courses
                         </Link>
@@ -139,7 +144,7 @@ const Header = () => {
                         >
                           my rewards
                         </Link>
-                      </li>
+                      </li> */}
                       <li className="px-4">
                         <Button
                           size="small"

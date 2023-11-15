@@ -4,6 +4,7 @@ import { RootState } from "@/redux/store";
 import {
   checkShowFeedback,
   checkShowResult,
+  getListHighestResult,
   getListQuesOfQuiz,
   getListResult,
   getListStatusQuiz,
@@ -12,6 +13,7 @@ import {
   loadQuizs,
   resetBeginTest,
   sendMultiQuizResult,
+  setIsViewResultInCourse,
   setListView,
   setQuesDetail,
   setQuizAnswer,
@@ -34,8 +36,8 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
       state.listQuiz = action.payload;
       state.loadingListQuiz = false;
     })
-     // get list status
-     .addCase(getListStatusQuiz.pending, (state) => {
+    // get list status
+    .addCase(getListStatusQuiz.pending, (state) => {
       state.loadingQuizStatus = true;
     })
     .addCase(getListStatusQuiz.fulfilled, (state, action) => {
@@ -101,6 +103,17 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
     .addCase(getListResult.rejected, (state) => {
       state.loadingListResult = false;
     })
+    // get list highest result
+    .addCase(getListHighestResult.pending, (state) => {
+      state.loadingListResult = true;
+    })
+    .addCase(getListHighestResult.fulfilled, (state, action) => {
+      state.loadingListResult = false;
+      state.listResultData = action.payload;
+    })
+    .addCase(getListHighestResult.rejected, (state) => {
+      state.loadingListResult = false;
+    })
     // send quiz result
     .addCase(sendMultiQuizResult.pending, (state) => {
       state.loadingSendQuiz = true;
@@ -140,8 +153,8 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
     .addCase(checkShowResult.rejected, (state) => {
       state.loadingCheckShowResult = false;
     })
-     // get start time
-     .addCase(getStartTime.pending, (state) => {
+    // get start time
+    .addCase(getStartTime.pending, (state) => {
       state.loadingGetStartTime = true;
     })
     .addCase(getStartTime.fulfilled, (state, action) => {
@@ -150,6 +163,9 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
     })
     .addCase(getStartTime.rejected, (state) => {
       state.loadingGetStartTime = false;
+    })
+    .addCase(setIsViewResultInCourse, (state, action) => {
+      state.isViewResultInCourse = action.payload;
     });
 });
 

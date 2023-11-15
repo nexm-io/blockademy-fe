@@ -8,12 +8,10 @@ import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { useParams, useSearchParams } from "next/navigation";
-import slugifyText from "@/utils/slugifyText";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
 import api from "@/services/axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { selectAuth } from "@/redux/features/auth/reducer";
 
 interface CourseModuleProps {
   lesson: Lesson;
@@ -23,7 +21,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
   const searchParams = useSearchParams();
   const params = useParams();
   const courseId = params.id;
-  const slug = searchParams.get("slug");
+  const lessonId = searchParams.get("lesson_id") || 0 as number;
   const [isCompleted, setIsCompleted] = useState(!!lesson.is_complete);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -80,7 +78,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
 
       {isCompleted ? (
         <div className="w-[18px] h-full flex items-center">
-          {slug === slugifyText(lesson.lesson_slug) ? (
+          {Number(lessonId) === lesson.lesson_id ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
@@ -88,7 +86,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
         </div>
       ) : (
         <div className="w-[18px] h-full flex items-center">
-          {slug === slugifyText(lesson.lesson_slug) ? (
+          {Number(lessonId) === lesson.lesson_id ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />

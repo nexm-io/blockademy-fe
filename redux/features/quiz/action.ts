@@ -97,6 +97,21 @@ export const getListResult = createAsyncThunk(
   }
 );
 
+export const getListHighestResult = createAsyncThunk(
+  "quiz/get-quiz-highest-result",
+  async (payload: string) => {
+    try {
+      const { data: getResultQuizRes } = await api.get(
+        `/api/v10/quiz/${payload}/list-result-greatest-score`
+      );
+      if (!getResultQuizRes) return;
+      return getResultQuizRes.data;
+    } catch (error) {
+      return null;
+    }
+  }
+);
+
 export const sendMultiQuizResult = createAsyncThunk<any, DataSendQuiz>(
   "quiz/send-quiz-result",
   async (payloads) => {
@@ -183,4 +198,8 @@ export const getStartTime = createAsyncThunk(
       return null;
     }
   }
+);
+
+export const setIsViewResultInCourse = createAction<boolean>(
+  "quiz/set-view-result"
 );

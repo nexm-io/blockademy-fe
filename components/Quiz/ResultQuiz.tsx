@@ -11,21 +11,27 @@ import {
   RESULT_QUIZ_PASS,
   TYPE_QUIZ,
 } from "@/utils/constants";
-import { getListResult } from "@/redux/features/quiz/action";
+import {
+  getListHighestResult,
+  getListResult,
+} from "@/redux/features/quiz/action";
 import Image from "next/image";
 import Button from "../Common/Button";
 
 export default function ResultQuiz() {
-  const { listResultData, loadingListResult } = useAppSelector(
-    (state) => state.quiz
-  );
+  const { listResultData, loadingListResult, isViewResultInCourse } =
+    useAppSelector((state) => state.quiz);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
-      await dispatch(getListResult(id));
+      if (isViewResultInCourse) {
+        await dispatch(getListHighestResult(id));
+      } else {
+        await dispatch(getListResult(id));
+      }
     };
     fetchData();
   }, [dispatch, id]);
@@ -55,6 +61,7 @@ export default function ResultQuiz() {
   };
 
   useEffect(() => {
+    scrollToTop();
     const handleKeyDown = (event: any) => {
       if (event.keyCode === 123) {
         event.preventDefault();
@@ -73,6 +80,12 @@ export default function ResultQuiz() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <>
@@ -93,7 +106,7 @@ export default function ResultQuiz() {
         </Stack>
       ) : (
         <Box sx={{ py: 10, m: "auto" }}>
-          <div className="flex justify-between">
+          <div className="flex flex-col md:flex-row justify-between">
             {/* <div className="mt-2 mb-"> */}
             <Typography
               sx={{
@@ -106,19 +119,19 @@ export default function ResultQuiz() {
               Result
             </Typography>
             {/* </div> */}
-            <div className="flex gap-4">
-              {listResultData?.result === RESULT_QUIZ_FAIL && (
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
                 <Button
                   onClick={() => router.push(`/quiz/${id}`)}
                   className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
                 >
                   Try Again
                 </Button>
-              )}
+              {/* )} */}
               <Button
                 onClick={() =>
                   router.push(
-                    `/courses/${listResultData?.course_id}?slug=${listResultData?.lesson_first?.lesson_slug}`
+                    `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
                   )
                 }
                 className="!px-6 !py-2 w-full sm:w-auto"

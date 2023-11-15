@@ -16,14 +16,16 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
-import { Loader, Loader3 } from "@styled-icons/remix-line";
+import { Loader3 } from "@styled-icons/remix-line";
+import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
+import BackToTop from "@/components/BackToTop";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
   const searchParams = useSearchParams();
   const courseId = params.id;
-  const slug = searchParams.get("slug");
+  const lessonId = searchParams.get("lesson_id") || (0 as number);
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
@@ -48,7 +50,22 @@ const CourseDetail = () => {
 
   const handleChangeForm = (status: boolean) => {
     if (status) {
-      setFormState(`quiz`);
+      const lessonData = courseDetail?.lesson_data || [];
+      const currIndex =
+        lessonData.findIndex(
+          (lesson) => lesson.lesson_id === Number(lessonId)
+        ) || 0;
+      const lessonLength = lessonData.length - 1;
+
+      const nextLessonId =
+        currIndex < lessonLength
+          ? lessonData[currIndex + 1].lesson_id
+          : lessonData[0].lesson_id;
+
+      const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
+      router.push(url);
+
+      // setFormState(`quiz`);
     }
   };
 
@@ -136,16 +153,24 @@ const CourseDetail = () => {
                           </Button>
                         </Link>
                       ) : (
-                        <Link
-                          href={`/result/${courseDetail?.assigment_id}`}
-                          className="w-full md:w-auto inline-block"
+                        // <Link
+                        //   href={`/result/${courseDetail?.assigment_id}`}
+                        //   className="w-full md:w-auto inline-block"
+                        // >
+                        <Button
+                          onClick={() => {
+                            dispatch(setIsViewResultInCourse(true));
+                            router.push(
+                              `/result/${courseDetail?.assigment_id}`
+                            );
+                          }}
+                          className=" md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                         >
-                          <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
-                            <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                              View result Quiz
-                            </span>
-                          </Button>
-                        </Link>
+                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                            View result Quiz
+                          </span>
+                        </Button>
+                        // </Link>
                       )}
                       <Link
                         href={`/reward/${courseId}`}
@@ -194,13 +219,13 @@ const CourseDetail = () => {
                 </span>
               </div>
             </div>
-            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-[18px] md:p-2 lg:p-4 xl:p-0">
-              <div className="lg:w-[753px] w-full px-4 md:px-0">
+            <div className="relative mt-10 flex gap-12 lg:flex-row flex-col w-full p-0 md:p-2 lg:p-4 xl:p-0">
+              <div className="lg:w-[753px] w-full px-0 md:px-0">
                 <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map(
                       (lesson, index) =>
-                        slug === slugifyText(lesson.lesson_slug) && (
+                        Number(lessonId) === lesson.lesson_id && (
                           <>
                             {lesson.lesson_type_format === 2 &&
                               formState === "video" && (
@@ -213,19 +238,21 @@ const CourseDetail = () => {
                                   />
                                 </>
                               )}
-                            {formState === "quiz" && (
-                              <Quiz
-                                lesson={lesson}
-                                index={index}
-                                campaign_id={courseDetail.campaign_id}
-                                course_id={courseDetail.id}
-                              />
-                            )}
+                            {lesson.lesson_type_format === 1 &&
+                              formState === "quiz" && (
+                                <Quiz
+                                  lesson={lesson}
+                                  index={index}
+                                  campaign_id={courseDetail.campaign_id}
+                                  course_id={courseDetail.id}
+                                />
+                              )}
                             <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
                               {lesson.lesson_title}
                             </h2>
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
+                                id="content"
                                 className="flex flex-col gap-3 text-xs course-content md:text-base"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
@@ -261,9 +288,7 @@ const CourseDetail = () => {
                         className="cursor-pointer"
                         onClick={() => {
                           router.push(
-                            `/courses/${courseId}?slug=${slugifyText(
-                              courseDetail?.lesson_data[index].lesson_slug || ""
-                            )}`
+                            `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
                           );
                         }}
                       >
@@ -285,7 +310,7 @@ const CourseDetail = () => {
           onClose={() => setShowPopup(false)}
         />
       )}
-
+      <BackToTop  />
     </div>
   );
 };

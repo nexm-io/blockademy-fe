@@ -16,19 +16,19 @@ import {
   TextField,
   Typography,
   Grid,
+  Stack,
 } from "@mui/material";
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { formatUtcTime } from "@/services/formatDate";
 import {
-  checkShowResult,
   getListQuesOfQuiz,
-  getListResult,
   getStartTime,
   resetBeginTest,
   saveStartTime,
   sendMultiQuizResult,
+  setIsViewResultInCourse,
   setListView,
   setQuesDetail,
   setQuizAnswer,
@@ -161,7 +161,6 @@ const TestDetail = () => {
         question_id: quesDetail?.id,
         answer_id: event.target.value,
         question_type: quesDetail?.question_type,
-        // question_level: quesDetail?.question_level,
         order: quesDetail?.order,
         value: event.target.value,
         valueAnswer: answerItem?.answer_text,
@@ -190,7 +189,6 @@ const TestDetail = () => {
           answer_id: `${answer_id}`,
           answer_content: val,
           question_type: quesDetail?.question_type,
-          // question_level: quesDetail?.question_level,
           order: quesDetail?.order,
           value: val,
           valueAnswer: val,
@@ -216,7 +214,7 @@ const TestDetail = () => {
         (i) => i.order === quesDetail?.order + 1
       );
       setValue(initValue?.value || "");
-      if (quesDetail?.order <= totalQuestion) {
+      if (quesDetail?.order < totalQuestion) {
         dispatch(setQuesDetail(listQues[quesDetail?.order]));
       }
     }
@@ -252,9 +250,9 @@ const TestDetail = () => {
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
+      dispatch(setIsViewResultInCourse(false));
       router.push(`/result/${id}`);
       dispatch(setShowResult(true));
-      dispatch(getListResult(listQues[0]?.post_id));
     }
   };
 
@@ -323,7 +321,7 @@ const TestDetail = () => {
           <Box
             className="main quiz"
             sx={{
-              mx: { xs: "20px", lg: "100px" },
+              mx: { xs: "0", lg: "100px" },
               pt: "70px",
               mb: "100px",
             }}
@@ -342,7 +340,7 @@ const TestDetail = () => {
               {quesDetail?.quiz_title}
             </Typography>
 
-            <Typography
+            {/* <Typography
               sx={{
                 color: "var(--primary-color-100)",
                 fontSize: "20px",
@@ -353,7 +351,7 @@ const TestDetail = () => {
               }}
             >
               {removeWhiteSpace(quesDetail?.quiz_description)}
-            </Typography>
+            </Typography> */}
 
             <Card
               // name="quiz"
@@ -467,17 +465,40 @@ const TestDetail = () => {
                       width: { lg: "100%" },
                     }}
                   >
-                    <Typography
-                      sx={{
-                        color: "var(--primary-black)",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "34px",
-                        mb: "25px",
-                      }}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      flexWrap="nowrap"
+                      alignItems="flex-start"
                     >
-                      Question <span>{quesDetail?.order}</span>
-                    </Typography>
+                      <Typography
+                        sx={{
+                          color: "var(--primary-black)",
+                          fontSize: "26px",
+                          fontWeight: 500,
+                          lineHeight: "34px",
+                          mb: "25px",
+                        }}
+                      >
+                        Question <span>{quesDetail?.order}</span>
+                      </Typography>
+
+                      {/* <Typography
+                        sx={{
+                          color: "#CF1818",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: 500,
+                          textDecorationLine: "underline",
+                          cursor: "pointer",
+                          userSelect: "none",
+                        }}
+                        onClick={handleEndTest}
+                      >
+                        End Test
+                      </Typography> */}
+                    </Stack>
+
                     <Typography
                       sx={{
                         color: "#121230",
@@ -522,7 +543,6 @@ const TestDetail = () => {
                       >
                         <Image
                           src={quesDetail?.image?.original_image}
-                          // src={quesDetail?.image}
                           alt="question-image"
                           width={100}
                           height={150}
@@ -623,25 +643,19 @@ const TestDetail = () => {
                     </FormControl>
                   </CardContent>
                 )}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    px: "12px",
-                    pb: "20px",
-                  }}
-                >
+                <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
                   <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4"
+                      className={` !bg-[#0068b5] ${
+                        quesDetail?.order === 1 ? "" : "hover:!bg-[#004070]"
+                      } w-[180px] flex items-center !px-4`}
                       disabled={quesDetail?.order === 1}
                       onClick={handlePrevQuestion}
                     >
                       <span>Previous question</span>
                     </Button>
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4"
+                      className=" !bg-[#0068b5] hover:!bg-[#004070] w-[180px] flex items-center !px-4 "
                       onClick={handleNextQuestion}
                     >
                       {quesDetail?.order === listQues?.length ? (
@@ -651,21 +665,7 @@ const TestDetail = () => {
                       )}
                     </Button>
                   </div>
-                  {/* <Typography
-                    sx={{
-                      color: "#CF1818",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      fontWeight: 500,
-                      textDecorationLine: "underline",
-                      cursor: "pointer",
-                      userSelect: "none",
-                    }}
-                    onClick={handleEndTest}
-                  >
-                    End Test
-                  </Typography> */}
-                </Box>
+                </div>
               </Box>
               <Box
                 sx={{
@@ -778,7 +778,12 @@ const TestDetail = () => {
           className={` ${soleil.variable} font-sans !text-[12px] flex flex-col items-center`}
         >
           <Box
-            sx={{ px: 2, py: 5, minWidth: "560px", minHeight: "420px" }}
+            sx={{
+              px: 2,
+              py: 5,
+              minWidth: { xs: "unset", lg: "560px" },
+              minHeight: "420px",
+            }}
             onCopy={(e) => {
               e.preventDefault();
             }}

@@ -1,7 +1,7 @@
 import {
   checkShowFeedback,
-  getListResult,
   sendMultiQuizResult,
+  setIsViewResultInCourse,
   setShowResult,
   setSubmitInBtn,
 } from "@/redux/features/quiz/action";
@@ -57,9 +57,9 @@ export default function EndTestModal(props: {
     };
     const res = await dispatch(sendMultiQuizResult(list));
     if (res.payload) {
+      dispatch(setIsViewResultInCourse(false));
       router.push(`/result/${id}`);
       dispatch(setShowResult(true));
-      dispatch(getListResult(listQues[0]?.post_id));
       dispatch(checkShowFeedback(true));
       props.onClose();
     }
@@ -68,7 +68,6 @@ export default function EndTestModal(props: {
     <>
       <Dialog
         open={props.isModalEndTestOpen}
-        // onClose={props.onClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         sx={{ fontFamily: "var(--font-soleil) !important" }}

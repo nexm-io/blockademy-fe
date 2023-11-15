@@ -84,6 +84,18 @@ html {
   scroll-behavior: smooth;
 }
 
+#content menu,
+#content ol,
+#content ul {
+  list-style: revert;
+  padding-left: revert;
+  margin: revert;
+}
+
+#content ol {
+  font-size: initial;
+}
+
 /* Skeleton  */
 .skeleton {
   background-color: #eee;
@@ -486,7 +498,7 @@ input[type="range"]::-webkit-slider-thumb:active {
   gap: 12px;
   margin-bottom: 55px;
 }
-/* 
+/*
 .article_content {
   font-family: "Inter", sans-serif;
 } */
@@ -691,10 +703,10 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 
 .main {
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 
-  @media (min-width: 480px) {
+  @media (min-width: 768px) {
     padding-left: 60px !important;
     padding-right: 60px !important;
   }

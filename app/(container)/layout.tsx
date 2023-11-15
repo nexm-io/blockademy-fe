@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { soleil } from "@/utils/constants";
+import ClientOnly from "@/components/ClientOnly";
 
 export const metadata: Metadata = {
   title: {
@@ -17,7 +18,9 @@ export default function MainLayout({
 }) {
   return (
     <div className={`${soleil.variable} font-sans`}>
-      <Header />
+      <ClientOnly>
+        <Header />
+      </ClientOnly>
       <div className="relative w-full">{children}</div>
       <Footer />
     </div>
