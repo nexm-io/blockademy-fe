@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
   Grid,
-  Stack
+  Stack,
 } from "@mui/material";
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
@@ -207,10 +207,16 @@ const TestDetail = () => {
   };
   const handleNextQuestion = async () => {
     if (!quesDetail?.order) return;
-    const initValue = userAnswer.find((i) => i.order === quesDetail?.order + 1);
-    setValue(initValue?.value || "");
-    if (quesDetail?.order < totalQuestion) {
-      dispatch(setQuesDetail(listQues[quesDetail?.order]));
+    if (quesDetail?.order === listQues?.length) {
+      handleEndTest();
+    } else {
+      const initValue = userAnswer.find(
+        (i) => i.order === quesDetail?.order + 1
+      );
+      setValue(initValue?.value || "");
+      if (quesDetail?.order < totalQuestion) {
+        dispatch(setQuesDetail(listQues[quesDetail?.order]));
+      }
     }
   };
 
@@ -300,6 +306,14 @@ const TestDetail = () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   });
+
+  const checkDisabledFinishTest = () => {
+    if (quesDetail?.order === listQues?.length) {
+      const itemNotAnswer = filterListView?.find((i) => !i.complete);
+      if (itemNotAnswer) return true;
+    }
+    return false;
+  };
 
   return (
     <>
@@ -459,7 +473,12 @@ const TestDetail = () => {
                       width: { lg: "100%" },
                     }}
                   >
-                    <Stack direction="row" justifyContent="space-between" flexWrap="nowrap" alignItems="flex-start">
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      flexWrap="nowrap"
+                      alignItems="flex-start"
+                    >
                       <Typography
                         sx={{
                           color: "var(--primary-black)",
@@ -472,20 +491,20 @@ const TestDetail = () => {
                         Question <span>{quesDetail?.order}</span>
                       </Typography>
 
-                      <Typography
-                    sx={{
-                      color: "#CF1818",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      fontWeight: 500,
-                      textDecorationLine: "underline",
-                      cursor: "pointer",
-                      userSelect: "none",
-                    }}
-                    onClick={handleEndTest}
-                  >
-                    End Test
-                  </Typography>
+                      {/* <Typography
+                        sx={{
+                          color: "#CF1818",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: 500,
+                          textDecorationLine: "underline",
+                          cursor: "pointer",
+                          userSelect: "none",
+                        }}
+                        onClick={handleEndTest}
+                      >
+                        End Test
+                      </Typography> */}
                     </Stack>
 
                     <Typography
@@ -633,20 +652,26 @@ const TestDetail = () => {
                   </CardContent>
                 )}
                 <div className="flex items-center flex-col sm:flex-row jus px-[12px] py-[20px]">
-                <div className="flex items-center flex-col sm:flex-row gap-6">
+                  <div className="flex items-center flex-col sm:flex-row gap-6">
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
+                      className={` !bg-[#0068b5] ${
+                        quesDetail?.order === 1 ? "" : "hover:!bg-[#004070]"
+                      } w-[180px] flex items-center !px-4`}
                       disabled={quesDetail?.order === 1}
                       onClick={handlePrevQuestion}
                     >
                       <span>Previous question</span>
                     </Button>
                     <Button
-                      className=" !bg-[#0068b5] w-[180px] flex items-center !px-4 "
-                      disabled={quesDetail?.order === listQues?.length}
+                      className=" !bg-[#0068b5] hover:!bg-[#004070] w-[180px] flex items-center !px-4 "
                       onClick={handleNextQuestion}
+                      disabled={checkDisabledFinishTest()}
                     >
-                      <span>Next question</span>
+                      {quesDetail?.order === listQues?.length ? (
+                        <span>Finish test</span>
+                      ) : (
+                        <span>Next question</span>
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -762,7 +787,12 @@ const TestDetail = () => {
           className={` ${soleil.variable} font-sans !text-[12px] flex flex-col items-center`}
         >
           <Box
-            sx={{ px: 2, py: 5, minWidth: {xs: 'unset', lg: "560px"}, minHeight: "420px" }}
+            sx={{
+              px: 2,
+              py: 5,
+              minWidth: { xs: "unset", lg: "560px" },
+              minHeight: "420px",
+            }}
             onCopy={(e) => {
               e.preventDefault();
             }}

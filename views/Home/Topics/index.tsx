@@ -19,7 +19,7 @@ const Topics = () => {
   }, []);
 
   return (
-    <section className="mt-8 sm:mt-16 w-full">
+    <section className="mt-10 sm:mt-20 w-full">
       <div className="flex items-center flex-wrap">
         {cateRx.categoryLoading ? (
           <div className="skeleton h-[130px] w-full"></div>
