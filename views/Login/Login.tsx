@@ -154,13 +154,13 @@ const Login = () => {
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-3">
             <Link
               href="/forgot-password"
-              className="block text-center md:text-left text-gray-300 hover:underline cursor-pointer"
+              className="block text-center md:text-left text-gray-300 hover:underline cursor-pointer text-sm"
             >
               Forgot password?
             </Link>
             <Link
               href="/register"
-              className="block text-center md:text-left text-blue-100 hover:underline cursor-pointer"
+              className="block text-center md:text-left text-blue-100 hover:underline cursor-pointer text-sm"
             >
               Create a Blockademy Account
             </Link>

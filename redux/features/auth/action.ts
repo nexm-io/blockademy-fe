@@ -38,7 +38,9 @@ export const userRegister = createAsyncThunk(
     password_confirmation?: string;
   }) => {
     try {
+      console.log(userRegister);
       const response = await api.post("/api/v10/signup", userRegister);
+      console.log(response);
       return response.data;
     } catch (error) {
       return error;
