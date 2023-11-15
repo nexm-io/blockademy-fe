@@ -313,16 +313,6 @@ const CourseDetail = () => {
                                 }}
                               />
                             </div>
-                            {lesson.lesson_type_format !== 2 && (
-                              <Button
-                                onClick={() => {
-                                  setFormState("quiz");
-                                  scrollToTop();
-                                }}
-                              >
-                                Complete Quiz
-                              </Button>
-                            )}
                           </>
                         )
                     )
