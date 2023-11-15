@@ -1,15 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Button from "@/components/Common/Button";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import Input from "@/components/Common/Input";
-import human from "@/public/icons/human.svg";
-import googleIcon from "@/public/icons/google.svg";
-import registerbg from "@/public/icons/registerbg.svg";
-import apple from "@/public/icons/apple.svg";
 import Link from "next/link";
 import InfoGraphic from "../InfoGraphic";
 interface FormRegisterProps {
@@ -21,7 +12,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
 
   const handleSignup = () => {
     setIsSubmitting(true);
-    setFormState("verifyemail");
+    setFormState("formRegister");
   };
 
   return (
@@ -39,7 +30,7 @@ const FormRegister: React.FC<FormRegisterProps> = ({ setFormState }) => {
               disabled={isSubmitting}
               onClick={handleSignup}
             >
-              Sign Up With Email
+              Sign Up
             </Button>
           </div>
 

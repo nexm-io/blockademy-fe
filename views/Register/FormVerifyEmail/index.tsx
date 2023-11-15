@@ -1,18 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/Common/Button";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Input from "@/components/Common/Input";
-import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
 import InfoGraphic from "../InfoGraphic";
-import { sendOtp } from "@/redux/features/auth/action";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   onMailChange: (key: string, value: string) => void;
@@ -34,9 +28,6 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
   setFormState,
   onMailChange,
 }) => {
-  const [message, setMessage] = useState("");
-
-  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -52,16 +43,6 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
     onMailChange("first_name", e.first_name);
     onMailChange("last_name", e.last_name);
     setFormState("formRegister");
-
-    // try {
-    //   const res = await dispatch(sendOtp(e)).unwrap();
-    //   res.success && setFormState("otp");
-    // } catch (e) {
-    //   console.error(e);
-    //   toast.error("Email is exist!");
-    // } finally {
-    //   reset();
-    // }
   };
 
   return (

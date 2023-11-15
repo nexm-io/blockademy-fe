@@ -93,7 +93,7 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
               href="/register"
               className="underline inline-block text-blue-700 "
             >
-              Sign up here
+              Sign up
             </Link>
           </p>
         </div>
