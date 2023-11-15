@@ -48,7 +48,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({ lesson }) => {
 
   return (
     <div
-      className="xl:w-[352px] w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg"
+      className="w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg"
       onClick={handleCompleteLesson}
     >
       <div className="flex flex-col">

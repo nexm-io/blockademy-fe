@@ -17,7 +17,7 @@ const Blogs = () => {
   }, []);
 
   return (
-    <div className="mt-20 w-full">
+    <div className="mt-10 sm:mt-20 w-full">
       <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px] mb-8 sm:mb-[52px]">
         Blockademy Articles
       </h2>

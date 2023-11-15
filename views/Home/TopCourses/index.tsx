@@ -35,7 +35,7 @@ const TopCourses = () => {
   }, [sortBy]);
 
   return (
-    <div className="mt-8 sm:mt-24 w-full">
+    <div className="mt-10 sm:mt-20 w-full">
       <div className="flex items-center flex-wrap gap-4 md:gap-0 justify-between mb-8">
         <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
           Top Courses
