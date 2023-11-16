@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import cn from "@/services/cn";
 import jsPDF from "jspdf";
 import { format } from "date-fns";
+import { RewardLoading } from "@/components/Reward/RewardLoading";
 
 const RewardView = () => {
   const router = useRouter();
@@ -171,11 +172,15 @@ const RewardView = () => {
         </div>
         <div className="flex justify-center items-center lg:mt-10">
           <div className="w-full lg:w-1/3">
-            <RewardItem
-              rewardDetailLoading={rewardRx.rewardDetailLoading}
-              data={rewardRx.rewardDetails}
-              handleViewCertificate={() => setViewCertificate(true)}
-            />
+            {rewardRx.rewardDetailLoading ? (
+              <RewardLoading />
+            ) : (
+              <RewardItem
+                rewardDetailLoading={rewardRx.rewardDetailLoading}
+                data={rewardRx.rewardDetails}
+                handleViewCertificate={() => setViewCertificate(true)}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,45 +1,43 @@
 "use client";
-import Button from "@/components/Common/Button";
-import {
-  claimInWallet,
-  fetchRewardAvailable,
-} from "@/redux/features/user/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import React, { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { getListRewards } from "@/redux/features/reward/action";
+import { selectReward } from "@/redux/features/reward/reducer";
 import RewardItem from "@/components/Reward/RewardItem";
+import { RewardLoading } from "@/components/Reward/RewardLoading";
 
 export default function ListRewards() {
-  const pathname = usePathname();
+  const rewardRx = useAppSelector(selectReward);
   const dispatch = useAppDispatch();
-  const listRewards = useAppSelector((state) => state.user.data);
-  const router = useRouter();
 
   useEffect(() => {
-    const getRewards = async () => {
-      await dispatch(fetchRewardAvailable());
-    };
-    getRewards();
-  }, [dispatch, pathname, listRewards.length]);
+    dispatch(getListRewards());
+  }, [dispatch]);
+
+  console.log(rewardRx);
 
   return (
-    <div className="container mt-24 sm:mt-32">
+    <div className="container mt-24 sm:mt-32 min-h-[64vh]">
       <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
         <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-          My Rewards
+          Accomplishments
         </h1>
-        <Button
-          onClick={() => router.back()}
-          className="!px-6 !py-2 w-full sm:w-auto"
-        >
-          Back To Courses
-        </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-10">
-        {/* <RewardItem status="passed" />
-        <RewardItem status="not-completed" />
-        <RewardItem status="failed" /> */}
+        {rewardRx.listRewardLoading ? (
+          <RewardLoading row={3} />
+        ) : (
+          rewardRx.rewards
+            .filter((z) => z.is_completed_assignment)
+            .map((reward) => (
+              <RewardItem
+                key={reward.course_id}
+                data={reward}
+                rewardDetailLoading={rewardRx.listRewardLoading}
+                handleViewCertificate={() => {}}
+              />
+            ))
+        )}
       </div>
     </div>
   );

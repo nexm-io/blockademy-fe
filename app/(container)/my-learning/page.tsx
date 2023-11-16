@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import CourseBanner from "@/views/Courses/Banner";
 
 export const metadata: Metadata = {
-  title: "My Courses",
+  title: "My Learning",
 };
 
 const MyCourse: React.FC = () => {

@@ -16,6 +16,8 @@ export type RewardDetails = {
 export type RewardReducerType = {
   rewardDetailLoading: boolean;
   rewardDetails: RewardDetails;
+  rewards: RewardDetails[];
+  listRewardLoading: boolean;
 };
 
 export const defaultRewardReducer: RewardReducerType = {
@@ -34,4 +36,6 @@ export const defaultRewardReducer: RewardReducerType = {
     is_claimed: 0,
     claim_at: "",
   },
+  rewards: [],
+  listRewardLoading: true,
 };
