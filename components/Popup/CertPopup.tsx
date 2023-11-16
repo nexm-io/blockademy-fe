@@ -2,6 +2,7 @@ import { Close } from "@styled-icons/remix-line";
 import React from "react";
 import Button from "../Common/Button";
 import Image from "next/image";
+import slugifyText from "@/utils/slugifyText";
 
 const CertPopup = ({
   onClose,
@@ -17,18 +18,18 @@ const CertPopup = ({
   } | null;
 }) => {
   const exportPDF = () => {
-    const filename = `${assets?.firstName} ${assets?.lastName} ${assets?.courseName}`;
-    if (!assets) return
-    fetch(assets?.pdf).then(
-      function (t) {
-        return t.blob().then((b) => {
-          var a = document.createElement("a");
-          a.href = URL.createObjectURL(b);
-          a.setAttribute("download", `${filename}.pdf`);
-          a.click();
-        });
-      }
+    const filename = slugifyText(
+      `${assets?.firstName} ${assets?.lastName} ${assets?.courseName}`
     );
+    if (!assets) return;
+    fetch(assets?.pdf).then(function (t) {
+      return t.blob().then((b) => {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(b);
+        a.setAttribute("download", `${filename}.pdf`);
+        a.click();
+      });
+    });
   };
   return (
     <>
