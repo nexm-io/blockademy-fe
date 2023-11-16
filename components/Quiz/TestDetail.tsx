@@ -378,6 +378,7 @@ const TestDetail = () => {
                   backgroundColor: "#F5F8FF",
                   borderRadius: "8px",
                   p: "24px",
+                  width: "100%",
                 }}
               >
                 {/* FillinQuiz */}
