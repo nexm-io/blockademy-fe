@@ -27,10 +27,6 @@ const PreviewQuiz: React.FC<
     return item;
   });
 
-  useEffect(() => {
-    console.log(filterListView);
-  }, [filterListView]);
-
   const checkWhiteSpace = (item: string) => {
     const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
     if (isWhitespace) {

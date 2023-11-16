@@ -383,7 +383,7 @@ export default function ResultQuiz() {
                         <RadioGroup
                           aria-labelledby="demo-controlled-radio-buttons-group"
                           name="controlled-radio-buttons-group"
-                          value={z.user_answer.id}
+                          value={z.user_answer ? z.user_answer?.id : null}
                         >
                           <div className={cn(`grid gap-2`, {})}>
                             {z?.list_answer?.map((item: any, index: number) => (
@@ -396,7 +396,7 @@ export default function ResultQuiz() {
                                       item.id === z.correct_answer.id,
                                     "bg-[#FF3333]/5":
                                       !z.result_answer &&
-                                      item.id === z.user_answer.id,
+                                      item.id === z.user_answer?.id,
                                   }
                                 )}
                               >
@@ -478,7 +478,7 @@ export default function ResultQuiz() {
                                   </svg>
                                 ) : null}
                                 {!z.result_answer &&
-                                item.id === z.user_answer.id ? (
+                                item.id === z.user_answer?.id ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="40"
