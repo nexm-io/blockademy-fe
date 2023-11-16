@@ -31,9 +31,11 @@ import {
 } from "@mui/material";
 import { soleil } from "@/utils/constants";
 import Link from "next/link";
+import CertPopup from "../Popup/CertPopup";
 
 const CertButton = ({ courseId }: { courseId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { rewardDetailLoading, rewardDetails } = useAppSelector(selectReward);
   const dispatch = useAppDispatch();
 
@@ -52,6 +54,7 @@ const CertButton = ({ courseId }: { courseId: string }) => {
           setIsLoading(false);
         }
       }
+      setIsOpenPopup(true);
       // TODO: show cert
     } else {
       // TODO: show message
@@ -63,9 +66,12 @@ const CertButton = ({ courseId }: { courseId: string }) => {
   }, [dispatch, courseId]);
 
   return (
-    <Button loading={rewardDetailLoading || isLoading} onClick={onViewCert}>
-      Certificate
-    </Button>
+    <>
+      <Button loading={rewardDetailLoading || isLoading} onClick={onViewCert}>
+        Certificate
+      </Button>
+      {isOpenPopup ? <CertPopup onClose={() => setIsOpenPopup(false)} /> : null}
+    </>
   );
 };
 
