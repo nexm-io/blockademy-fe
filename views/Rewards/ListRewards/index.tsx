@@ -5,14 +5,27 @@ import { getListRewards } from "@/redux/features/reward/action";
 import { selectReward } from "@/redux/features/reward/reducer";
 import RewardItem from "@/components/Reward/RewardItem";
 import { RewardLoading } from "@/components/Reward/RewardLoading";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 export default function ListRewards() {
   const rewardRx = useAppSelector(selectReward);
   const dispatch = useAppDispatch();
+  const router = useRouter();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const token = useSelector((state: RootState) => state.auth.token);
 
   useEffect(() => {
     dispatch(getListRewards());
   }, [dispatch]);
+
+  if (!isAuthenticated || !token) {
+    router.push("/");
+    return;
+  }
 
   return (
     <div className="container mt-24 sm:mt-32 min-h-[64vh]">

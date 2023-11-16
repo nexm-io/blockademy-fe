@@ -5,39 +5,19 @@ import RewardEnable from "@/public/icons/reward-enable.svg";
 import Button from "../Common/Button";
 import cn from "@/services/cn";
 import { RewardDetails } from "@/redux/features/reward/type";
-import { ASSIGNMENT_STATUS } from "@/utils/constants";
-import { useRouter } from "next/navigation";
 import { Loader3 } from "@styled-icons/remix-line";
-import api from "@/services/axios";
-import { toast } from "react-toastify";
-import { useAppDispatch } from "@/redux/hook";
-import { getRewardDetail } from "@/redux/features/reward/action";
 
 const RewardItem = ({
   rewardDetailLoading,
-  data: { course_id, assignment_status, title, is_claimed, assigment_id },
+  data: { assignment_status, title, is_claimed },
 }: {
   rewardDetailLoading: boolean;
   data: RewardDetails;
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
 
   const handleClick = async () => {
-    if (!is_claimed) {
-      setLoading(true);
-      try {
-        await api.get(`/api/v10/claim-reward/${course_id}`);
-        dispatch(getRewardDetail(course_id as string));
-        toast.success("Claim certificate is success");
-      } catch (error) {
-        toast.warning("Something wrong...");
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      // TODO: Handle View Certificate
-    }
+    // TODO: handle get certificate -> show popup
   };
 
   return (
@@ -62,15 +42,13 @@ const RewardItem = ({
             })}
             onClick={handleClick}
           >
-            {loading ? (
-              <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2">
+              {loading ? (
                 <Loader3 className="animate-spin ml-2" width={25} height={25} />
-              </span>
-            ) : !is_claimed ? (
-              "Get Certificate"
-            ) : (
-              "Preview"
-            )}
+              ) : (
+                <span>Certificate</span>
+              )}
+            </span>
           </Button>
         </div>
       </div>

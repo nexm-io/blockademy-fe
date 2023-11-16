@@ -26,7 +26,7 @@ const RewardView = () => {
   }, []);
 
   if (!isAuthenticated || !token) {
-    router.back();
+    router.push("/");
     return;
   }
 
