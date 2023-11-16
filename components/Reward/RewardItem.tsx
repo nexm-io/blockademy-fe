@@ -6,10 +6,11 @@ import Button from "../Common/Button";
 import cn from "@/services/cn";
 import { RewardDetails } from "@/redux/features/reward/type";
 import { Loader3 } from "@styled-icons/remix-line";
+import MyCertificate from "../MyCertificate";
 
 const RewardItem = ({
   rewardDetailLoading,
-  data: { assignment_status, title, is_claimed },
+  data: { assignment_status, title, is_claimed, course_id },
 }: {
   rewardDetailLoading: boolean;
   data: RewardDetails;
@@ -34,22 +35,9 @@ const RewardItem = ({
           <p className="text-grey-700 text-xl">Grade Achieved: 80%</p>
         </div>
         <div className="flex justify-end">
-          <Button
-            disabled={rewardDetailLoading}
-            className={cn(`min-w-[184px] !py-[10px]`, {
-              "!bg-blue-600 !text-blue-700 hover:!bg-blue-800 hover:!text-white-100 duration-300 transition-all ease-in-out":
-                is_claimed,
-            })}
-            onClick={handleClick}
-          >
-            <span className="flex items-center gap-2">
-              {loading ? (
-                <Loader3 className="animate-spin ml-2" width={25} height={25} />
-              ) : (
-                <span>Certificate</span>
-              )}
-            </span>
-          </Button>
+          <div className="w-[184px]">
+            <MyCertificate courseId={course_id} />
+          </div>
         </div>
       </div>
     </div>
