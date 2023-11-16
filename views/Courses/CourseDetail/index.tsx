@@ -1,191 +1,195 @@
-'use client'
-import Link from 'next/link'
-import gift from '@/public/icons/giftcourse.svg'
-import Image from 'next/image'
-import VideoPlayer from '@/components/VideoPlayer'
-import CourseModule from '@/components/CourseModule'
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import Quiz from '@/components/Quiz'
-import Button from '@/components/Common/Button'
-import { useAppDispatch, useAppSelector } from '@/redux/hook'
-import { RootState } from '@/redux/store'
-import { getDetailCourse } from '@/redux/features/courses/action'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import slugifyText from '@/utils/slugifyText'
-import { SkeletionCard } from '@/components/Skeleton/SkeletionCard'
-import React from 'react'
-import api from '@/services/axios'
-import InfoPopup from '@/components/Popup/InfoPopup'
-import { Loader3 } from '@styled-icons/remix-line'
-import { setIsViewResultInCourse } from '@/redux/features/quiz/action'
-import BackToTop from '@/components/BackToTop'
-import { useSelector } from 'react-redux'
+"use client";
+import Link from "next/link";
+import gift from "@/public/icons/giftcourse.svg";
+import Image from "next/image";
+import VideoPlayer from "@/components/VideoPlayer";
+import CourseModule from "@/components/CourseModule";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Quiz from "@/components/Quiz";
+import Button from "@/components/Common/Button";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { RootState } from "@/redux/store";
+import { getDetailCourse } from "@/redux/features/courses/action";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import slugifyText from "@/utils/slugifyText";
+import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
+import React from "react";
+import api from "@/services/axios";
+import InfoPopup from "@/components/Popup/InfoPopup";
+import { Loader3 } from "@styled-icons/remix-line";
+import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
+import BackToTop from "@/components/BackToTop";
+import { useSelector } from "react-redux";
+import { Skeleton } from "@mui/material";
 
 const CourseDetail = () => {
-  const [formState, setFormState] = useState<'video' | 'quiz'>('video')
-  const params = useParams()
-  const searchParams = useSearchParams()
-  const courseId = params.id
-  const lessonId = searchParams.get('lesson_id') || (0 as number)
-  const [isWatching, setIsWatching] = useState<boolean>(false)
-  const [showPopup, setShowPopup] = useState(false)
-  const [registered, setRegistered] = useState<boolean>(false)
-  const [loading, setLoading] = useState<boolean>(false)
-  const [stepCompleted, setStepCompleted] = useState<string[]>([])
-  const [completedLesson, setCompletedLesson] = useState<number[]>([])
-  const [urlNextLesson, setUrlNextLesson] = useState<string>('')
-  const [isNextLesson, setIsNextLesson] = useState<boolean>(false)
+  const [formState, setFormState] = useState<"video" | "quiz">("video");
+  const params = useParams();
+  const searchParams = useSearchParams();
+  const courseId = params.id;
+  const lessonId = searchParams.get("lesson_id") || (0 as number);
+  const [isWatching, setIsWatching] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [registered, setRegistered] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [stepCompleted, setStepCompleted] = useState<string[]>([]);
+  const [completedLesson, setCompletedLesson] = useState<number[]>([]);
+  const [urlNextLesson, setUrlNextLesson] = useState<string>("");
+  const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
-  )
+  );
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
-  )
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated)
-  const dispatch = useAppDispatch()
-  const router = useRouter()
+  );
+  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
-  )
-  const token = useSelector((state: RootState) => state.auth.token)
+  );
+  const token = useSelector((state: RootState) => state.auth.token);
   const isCompletedQuiz = useMemo(() => {
     if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
-      return false
-    return courseDetail?.lesson_data.every((item) => item.is_complete === 1)
-  }, [courseDetail?.lesson_data])
+      return false;
+    return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
+  }, [courseDetail?.lesson_data]);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
-    })
-  }
+      behavior: "smooth",
+    });
+  };
 
   const isLastLesson = useMemo(() => {
-    const lessonData = courseDetail?.lesson_data || []
+    const lessonData = courseDetail?.lesson_data || [];
     const currIndex =
       lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0
-    const lessonLength = lessonData.length - 1
-    return currIndex >= lessonLength
-  }, [courseDetail?.lesson_data, lessonId])
+      0;
+    const lessonLength = lessonData.length - 1;
+    return currIndex >= lessonLength;
+  }, [courseDetail?.lesson_data, lessonId]);
 
   const isNotCompletedLesson = useMemo(() => {
-    return isCompletedQuiz || isLastLesson && completedLesson.includes(+lessonId) ? false : true
-  }, [completedLesson, isCompletedQuiz, isLastLesson, lessonId])
+    return isCompletedQuiz ||
+      (isLastLesson && completedLesson.includes(+lessonId))
+      ? false
+      : true;
+  }, [completedLesson, isCompletedQuiz, isLastLesson, lessonId]);
 
   const getNextLessonUrl = useCallback(() => {
-    const lessonData = courseDetail?.lesson_data || []
+    const lessonData = courseDetail?.lesson_data || [];
     const currIndex =
       lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0
-    const lessonLength = lessonData.length - 1
+      0;
+    const lessonLength = lessonData.length - 1;
 
     const nextLessonId =
       currIndex < lessonLength
         ? lessonData[currIndex + 1].lesson_id
-        : lessonData[0].lesson_id
-    const url = `/courses/${courseId}?lesson_id=${nextLessonId}`
-    return url
-  }, [courseDetail?.lesson_data, courseId, lessonId])
+        : lessonData[0].lesson_id;
+    const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
+    return url;
+  }, [courseDetail?.lesson_data, courseId, lessonId]);
 
   const getPrevLessonUrl = useCallback(() => {
-    const lessonData = courseDetail?.lesson_data || []
+    const lessonData = courseDetail?.lesson_data || [];
     const currIndex =
       lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0
-    const lessonLength = lessonData.length - 1
+      0;
+    const lessonLength = lessonData.length - 1;
 
     const prevLessonId =
       currIndex < lessonLength
         ? lessonData[currIndex - 1].lesson_id
-        : lessonData[0].lesson_id
-    const url = `/courses/${courseId}?lesson_id=${prevLessonId}`
-    return url
-  }, [courseDetail?.lesson_data, courseId, lessonId])
+        : lessonData[0].lesson_id;
+    const url = `/courses/${courseId}?lesson_id=${prevLessonId}`;
+    return url;
+  }, [courseDetail?.lesson_data, courseId, lessonId]);
 
   const handleChangeForm = useCallback(
     (status: boolean) => {
       if (status) {
-        const url = getNextLessonUrl()
-        setStepCompleted([...stepCompleted, 'video'])
-        setUrlNextLesson(url)
+        const url = getNextLessonUrl();
+        setStepCompleted([...stepCompleted, "video"]);
+        setUrlNextLesson(url);
         if (stepCompleted.length >= 1) {
-          setIsNextLesson(true)
+          setIsNextLesson(true);
         }
         // setFormState(`quiz`);
       }
     },
     [getNextLessonUrl, stepCompleted]
-  )
+  );
 
   const handleOnchange = (status: boolean) => {
-    setIsWatching(status)
-  }
+    setIsWatching(status);
+  };
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
-      router.push('/login')
-      return
+      router.push("/login");
+      return;
     }
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await api.get(
         `/api/v10/register-course?course_id=${courseId}`
-      )
+      );
       if (response.status === 200) {
-        setRegistered(true)
-        setShowPopup(true)
+        setRegistered(true);
+        setShowPopup(true);
       }
     } catch (error) {
-      return null
+      return null;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    dispatch(getDetailCourse(courseId as string))
-  }, [])
+    dispatch(getDetailCourse(courseId as string));
+  }, []);
 
   useEffect(() => {
-    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered)
-  }, [courseDetail])
+    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
+  }, [courseDetail]);
 
   const handleScroll = useCallback(() => {
     const bottom =
-      document.body.getBoundingClientRect().bottom <= window.innerHeight
-    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes('read')) {
-      setStepCompleted([...stepCompleted, 'read'])
+      document.body.getBoundingClientRect().bottom <= window.innerHeight;
+    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes("read")) {
+      setStepCompleted([...stepCompleted, "read"]);
     }
-  }, [stepCompleted])
+  }, [stepCompleted]);
 
   useEffect(() => {
-    document.addEventListener('scroll', handleScroll)
+    document.addEventListener("scroll", handleScroll);
     return () => {
-      document.removeEventListener('scroll', handleScroll)
-    }
-  }, [handleScroll])
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   const handleCheckCompletedCourse = useCallback(async () => {
-    if (stepCompleted.length < 2) return
-    if (!isAuthenticated || !token) return
+    if (stepCompleted.length < 2) return;
+    if (!isAuthenticated || !token) return;
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
-      )
+      );
       if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId])
-        setStepCompleted([])
+        setCompletedLesson([...completedLesson, +lessonId]);
+        setStepCompleted([]);
         if (isNextLesson && !isLastLesson) {
-          router.push(urlNextLesson)
+          router.push(urlNextLesson);
         }
       }
     } catch (error) {
-      return null
+      return null;
     } finally {
-      setIsNextLesson(false)
+      setIsNextLesson(false);
     }
   }, [
     stepCompleted,
@@ -197,40 +201,64 @@ const CourseDetail = () => {
     isNextLesson,
     router,
     urlNextLesson,
-    isLastLesson
-  ])
+    isLastLesson,
+  ]);
 
   useEffect(() => {
-    handleCheckCompletedCourse()
-  }, [handleCheckCompletedCourse])
+    handleCheckCompletedCourse();
+  }, [handleCheckCompletedCourse]);
 
   return (
     <div className="container mt-36">
       {isLoading ? (
-        <div className="my-[60px] flex flex-col gap-4">
-          <div className="mt-6 flex flex-col gap-4">
-            <SkeletionCard height="44px" radius="16px" />
-            <SkeletionCard height="36px" radius="16px" mobileCardFull />
-          </div>
-          <div className="mt-7 flex gap-[48px]">
-            <SkeletionCard height="500px" width="753px" radius="16px" />
-            <div className="flex flex-col gap-4">
-              {Array.from({ length: 5 }, (_, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col gap-2 px-[23px] rounded-lg py-4 bg-gray-200"
-                >
-                  <SkeletionCard key={index} height="20px" width="306px" />
-                  <SkeletionCard key={index} height="20px" width="306px" />
-                </div>
-              ))}
+        <div className="md:mt-[56px] mt-8">
+          <div className="">
+            <Skeleton
+              variant="rounded"
+              sx={{ maxWidth: "300px" }}
+              height={24}
+            />
+            <div className="flex flex-col md:flex-row justify-between mt-[52px]">
+              <Skeleton variant="rounded" sx={{ width: "400px" }} height={50} />
             </div>
           </div>
-          <SkeletionCard height="36px" width="340px" radius="16px" />
-          <SkeletionCard height="18px" width="753px" radius="16px" />
-          <SkeletionCard height="18px" width="753px" radius="16px" />
-          <SkeletionCard height="18px" width="753px" radius="16px" />
-          <SkeletionCard height="18px" width="753px" radius="16px" />
+          <div className="mt-10">
+            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
+              <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
+                <Skeleton
+                  variant="rounded"
+                  sx={{ width: "100%" }}
+                  height={400}
+                />
+                <div className="mt-4 grid gap-2">
+                  {Array(10)
+                    .fill(0)
+                    .map((z, i) => (
+                      <Skeleton
+                        key={i}
+                        variant="rounded"
+                        sx={{ width: "100%" }}
+                        height={24}
+                      />
+                    ))}
+                </div>
+              </div>
+              <div className="h-full w-full sticky top-[100px]">
+                <div className="flex flex-col gap-4 md:px-0 ">
+                  <Skeleton
+                    variant="rounded"
+                    sx={{ width: "100%" }}
+                    height={68}
+                  />
+                  <Skeleton
+                    variant="rounded"
+                    sx={{ width: "100%" }}
+                    height={68}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <>
@@ -269,7 +297,7 @@ const CourseDetail = () => {
                   </li>
                 </ol>
               </nav>
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap mt-[36px]">
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
                 </h1>
@@ -281,8 +309,8 @@ const CourseDetail = () => {
                           className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                           disabled={isNotCompletedLesson}
                           onClick={() => {
-                            if(isNotCompletedLesson) return
-                            router.push(`/quiz/${courseDetail?.assigment_id}`)
+                            if (isNotCompletedLesson) return;
+                            router.push(`/quiz/${courseDetail?.assigment_id}`);
                           }}
                         >
                           <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
@@ -298,10 +326,10 @@ const CourseDetail = () => {
                           {!isNotCompletedLesson ? (
                             <Button
                               onClick={() => {
-                                dispatch(setIsViewResultInCourse(true))
+                                dispatch(setIsViewResultInCourse(true));
                                 router.push(
                                   `/result/${courseDetail?.assigment_id}`
-                                )
+                                );
                               }}
                               className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                             >
@@ -363,7 +391,7 @@ const CourseDetail = () => {
                 </div>
               )}
             </div>
-            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0 md:p-2 lg:p-4 xl:p-0">
+            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
                 <div className="w-full">
                   {courseDetail ? (
@@ -372,7 +400,7 @@ const CourseDetail = () => {
                         Number(lessonId) === lesson.lesson_id && (
                           <>
                             {lesson.lesson_type_format === 2 &&
-                              formState === 'video' && (
+                              formState === "video" && (
                                 <>
                                   <VideoPlayer
                                     typeUpload={lesson.lesson_type_upload}
@@ -383,7 +411,7 @@ const CourseDetail = () => {
                                 </>
                               )}
                             {lesson.lesson_type_format === 1 &&
-                              formState === 'quiz' && (
+                              formState === "quiz" && (
                                 <Quiz
                                   lesson={lesson}
                                   index={index}
@@ -399,7 +427,7 @@ const CourseDetail = () => {
                                 id="content"
                                 className="flex flex-col gap-3 text-xs course-content md:text-base"
                                 dangerouslySetInnerHTML={{
-                                  __html: lesson.lesson_description
+                                  __html: lesson.lesson_description,
                                 }}
                               />
                             </div>
@@ -407,8 +435,8 @@ const CourseDetail = () => {
                               <Button
                                 className="!px-6 w-auto"
                                 onClick={() => {
-                                  const url = getPrevLessonUrl()
-                                  router.push(url)
+                                  const url = getPrevLessonUrl();
+                                  router.push(url);
                                 }}
                               >
                                 Previous Lesson
@@ -417,12 +445,14 @@ const CourseDetail = () => {
                               <Button
                                 className="!px-6 w-auto"
                                 disabled={
-                                  !(completedLesson.includes(+lessonId) ||
-                                    lesson.is_complete === 1)
+                                  !(
+                                    completedLesson.includes(+lessonId) ||
+                                    lesson.is_complete === 1
+                                  )
                                 }
                                 onClick={() => {
-                                  const url = getNextLessonUrl()
-                                  router.push(url)
+                                  const url = getNextLessonUrl();
+                                  router.push(url);
                                 }}
                               >
                                 Next Lesson
@@ -448,7 +478,7 @@ const CourseDetail = () => {
                         onClick={() => {
                           router.push(
                             `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
-                          )
+                          );
                         }}
                       >
                         <CourseModule
@@ -475,13 +505,13 @@ const CourseDetail = () => {
       )}
       <BackToTop />
     </div>
-  )
-}
+  );
+};
 
-export default CourseDetail
+export default CourseDetail;
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: false
-  }
-}
+    fallback: false,
+  };
+};
