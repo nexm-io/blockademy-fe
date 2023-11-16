@@ -142,6 +142,7 @@ const TestDetail = () => {
   };
 
   const handleChange = (event: any) => {
+    console.log("event", event);
     if (!quesDetail) return;
     const answerItem = quesDetail?.answer_list?.find(
       (i) => i.id === Number(event.target.value)
@@ -221,6 +222,7 @@ const TestDetail = () => {
   };
 
   const handleGoToQues = (order: number) => {
+    console.log("value", value);
     dispatch(setQuesDetail(listQues[order - 1]));
     const initValue = userAnswer.find((i) => i.order === order);
     setValue(initValue?.value || "");
@@ -566,100 +568,102 @@ const TestDetail = () => {
                         />
                       </Box>
                     )}
-                    <FormControl component="fieldset" sx={{ width: "100%" }}>
+                    <FormControl sx={{ width: "100%" }}>
                       <RadioGroup
-                        aria-labelledby="demo-controlled-radio-buttons-group"
-                        name="controlled-radio-buttons-group"
+                        // aria-labelledby="demo-controlled-radio-buttons-group"
+                        id={`question-${quesDetail.id}`}
                         value={value}
                         onChange={handleChange}
                       >
-                        <Grid container columns={12}>
-                          {quesDetail?.answer_list?.map((item, index) => (
-                            <Grid
-                              key={index}
-                              item
-                              xs={12}
-                              sm={12}
-                              sx={{ mb: "10px" }}
-                            >
-                              <FormControlLabel
-                                value={item?.id}
-                                control={
-                                  <Radio
-                                    icon={
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                      >
-                                        <circle
-                                          cx="12"
-                                          cy="12"
-                                          r="11.5"
-                                          fill="white"
-                                          stroke="#89939E"
-                                        />
-                                      </svg>
-                                    }
-                                    checkedIcon={
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                      >
-                                        <circle
-                                          cx="12"
-                                          cy="12"
-                                          r="11.5"
-                                          stroke="#1F37B3"
-                                        />
-                                        <circle
-                                          cx="12"
-                                          cy="12"
-                                          r="6"
-                                          fill="#1F37B3"
-                                        />
-                                      </svg>
-                                    }
-                                    name="checkbox"
-                                    sx={{
-                                      "&:hover": { bgcolor: "transparent" },
-                                    }}
-                                    disableRipple
-                                  />
-                                }
-                                label={item.answer_text}
-                                sx={{
-                                  ":hover": {
-                                    backgroundColor: "unset",
-                                  },
-                                  fontSize: "20px",
-                                  lineHeight: "29px",
-                                  color: "#1E1E3A",
-                                  minWidth: "170px",
-                                  wordBreak: "break-word",
-                                  userSelect: "none",
-                                }}
-                              />
-                              {item?.image && (
-                                <Box sx={{ maxWidth: "200px", width: "95%" }}>
-                                  <Image
-                                    // src={item?.image}
-                                    src={item?.image?.original_image}
-                                    alt="question-image"
-                                    width={100}
-                                    height={150}
-                                    layout="responsive"
-                                  />
-                                </Box>
-                              )}
-                            </Grid>
-                          ))}
-                        </Grid>
+                        {/* <Grid container columns={12}> */}
+                        {quesDetail?.answer_list?.map((item, index) => (
+                          <Grid
+                            key={index}
+                            item
+                            xs={12}
+                            sm={12}
+                            sx={{ mb: "10px" }}
+                          >
+                            <FormControlLabel
+                              id={`${item?.id}`}
+                              name={`${item?.id}`}
+                              value={item?.id}
+                              control={
+                                <Radio
+                                  icon={
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                    >
+                                      <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="11.5"
+                                        fill="white"
+                                        stroke="#89939E"
+                                      />
+                                    </svg>
+                                  }
+                                  checkedIcon={
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                    >
+                                      <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="11.5"
+                                        stroke="#1F37B3"
+                                      />
+                                      <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="6"
+                                        fill="#1F37B3"
+                                      />
+                                    </svg>
+                                  }
+                                  // name="checkbox"
+                                  sx={{
+                                    "&:hover": { bgcolor: "transparent" },
+                                  }}
+                                  // disableRipple
+                                />
+                              }
+                              label={item.answer_text}
+                              sx={{
+                                ":hover": {
+                                  backgroundColor: "unset",
+                                },
+                                fontSize: "20px",
+                                lineHeight: "29px",
+                                color: "#1E1E3A",
+                                minWidth: "170px",
+                                wordBreak: "break-word",
+                                // userSelect: "none",
+                              }}
+                            />
+                            {item?.image && (
+                              <Box sx={{ maxWidth: "200px", width: "95%" }}>
+                                <Image
+                                  // src={item?.image}
+                                  src={item?.image?.original_image}
+                                  alt="question-image"
+                                  width={100}
+                                  height={150}
+                                  layout="responsive"
+                                />
+                              </Box>
+                            )}
+                          </Grid>
+                        ))}
+                        {/* </Grid> */}
                       </RadioGroup>
                     </FormControl>
                   </CardContent>
