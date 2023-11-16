@@ -1,153 +1,191 @@
-"use client";
-import Link from "next/link";
-import gift from "@/public/icons/giftcourse.svg";
-import Image from "next/image";
-import VideoPlayer from "@/components/VideoPlayer";
-import CourseModule from "@/components/CourseModule";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Quiz from "@/components/Quiz";
-import Button from "@/components/Common/Button";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
-import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import slugifyText from "@/utils/slugifyText";
-import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
-import React from "react";
-import api from "@/services/axios";
-import InfoPopup from "@/components/Popup/InfoPopup";
-import { Loader3 } from "@styled-icons/remix-line";
-import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
-import BackToTop from "@/components/BackToTop";
-import { useSelector } from "react-redux";
+'use client'
+import Link from 'next/link'
+import gift from '@/public/icons/giftcourse.svg'
+import Image from 'next/image'
+import VideoPlayer from '@/components/VideoPlayer'
+import CourseModule from '@/components/CourseModule'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import Quiz from '@/components/Quiz'
+import Button from '@/components/Common/Button'
+import { useAppDispatch, useAppSelector } from '@/redux/hook'
+import { RootState } from '@/redux/store'
+import { getDetailCourse } from '@/redux/features/courses/action'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import slugifyText from '@/utils/slugifyText'
+import { SkeletionCard } from '@/components/Skeleton/SkeletionCard'
+import React from 'react'
+import api from '@/services/axios'
+import InfoPopup from '@/components/Popup/InfoPopup'
+import { Loader3 } from '@styled-icons/remix-line'
+import { setIsViewResultInCourse } from '@/redux/features/quiz/action'
+import BackToTop from '@/components/BackToTop'
+import { useSelector } from 'react-redux'
 
 const CourseDetail = () => {
-  const [formState, setFormState] = useState<"video" | "quiz">("video");
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const courseId = params.id;
-  const lessonId = searchParams.get("lesson_id") || (0 as number);
-  const [isWatching, setIsWatching] = useState<boolean>(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [registered, setRegistered] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [stepCompleted, setStepCompleted] = useState<string[]>([]);
-  const [completedLesson, setCompletedLesson] = useState<number[]>([]);
+  const [formState, setFormState] = useState<'video' | 'quiz'>('video')
+  const params = useParams()
+  const searchParams = useSearchParams()
+  const courseId = params.id
+  const lessonId = searchParams.get('lesson_id') || (0 as number)
+  const [isWatching, setIsWatching] = useState<boolean>(false)
+  const [showPopup, setShowPopup] = useState(false)
+  const [registered, setRegistered] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [stepCompleted, setStepCompleted] = useState<string[]>([])
+  const [completedLesson, setCompletedLesson] = useState<number[]>([])
+  const [urlNextLesson, setUrlNextLesson] = useState<string>('')
+  const [isNextLesson, setIsNextLesson] = useState<boolean>(false)
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
-  );
+  )
   const isLoading = useAppSelector(
     (state: RootState) => state.courses.isLoading
-  );
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  )
+  const isLogin = useAppSelector((state) => state.auth.isAuthenticated)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
-  );
-  const token = useSelector((state: RootState) => state.auth.token);
+  )
+  const token = useSelector((state: RootState) => state.auth.token)
   const isCompletedQuiz = useMemo(() => {
     if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
-      return false;
-    return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
-  }, [courseDetail?.lesson_data]);
+      return false
+    return courseDetail?.lesson_data.every((item) => item.is_complete === 1)
+  }, [courseDetail?.lesson_data])
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
-    });
-  };
+      behavior: 'smooth'
+    })
+  }
+
+  const isLastLesson = useMemo(() => {
+    const lessonData = courseDetail?.lesson_data || []
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0
+    const lessonLength = lessonData.length - 1
+    return currIndex >= lessonLength
+  }, [courseDetail?.lesson_data, lessonId])
+
+  const isNotCompletedLesson = useMemo(() => {
+    return isCompletedQuiz || isLastLesson && completedLesson.includes(+lessonId) ? false : true
+  }, [completedLesson, isCompletedQuiz, isLastLesson, lessonId])
+
+  const getNextLessonUrl = useCallback(() => {
+    const lessonData = courseDetail?.lesson_data || []
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0
+    const lessonLength = lessonData.length - 1
+
+    const nextLessonId =
+      currIndex < lessonLength
+        ? lessonData[currIndex + 1].lesson_id
+        : lessonData[0].lesson_id
+    const url = `/courses/${courseId}?lesson_id=${nextLessonId}`
+    return url
+  }, [courseDetail?.lesson_data, courseId, lessonId])
+
+  const getPrevLessonUrl = useCallback(() => {
+    const lessonData = courseDetail?.lesson_data || []
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0
+    const lessonLength = lessonData.length - 1
+
+    const prevLessonId =
+      currIndex < lessonLength
+        ? lessonData[currIndex - 1].lesson_id
+        : lessonData[0].lesson_id
+    const url = `/courses/${courseId}?lesson_id=${prevLessonId}`
+    return url
+  }, [courseDetail?.lesson_data, courseId, lessonId])
 
   const handleChangeForm = useCallback(
     (status: boolean) => {
       if (status) {
-        const lessonData = courseDetail?.lesson_data || [];
-        const currIndex =
-          lessonData.findIndex(
-            (lesson) => lesson.lesson_id === Number(lessonId)
-          ) || 0;
-        const lessonLength = lessonData.length - 1;
-
-        const nextLessonId =
-          currIndex < lessonLength
-            ? lessonData[currIndex + 1].lesson_id
-            : lessonData[0].lesson_id;
-        const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
-        setStepCompleted([...stepCompleted, "video"]);
-        console.log("stepCompleted", stepCompleted);
-        if (stepCompleted.length > 1) {
-          router.push(url);
-          setStepCompleted([]);
+        const url = getNextLessonUrl()
+        setStepCompleted([...stepCompleted, 'video'])
+        setUrlNextLesson(url)
+        if (stepCompleted.length >= 1) {
+          setIsNextLesson(true)
         }
         // setFormState(`quiz`);
       }
     },
-    [courseDetail?.lesson_data, courseId, lessonId, router, stepCompleted]
-  );
+    [getNextLessonUrl, stepCompleted]
+  )
 
   const handleOnchange = (status: boolean) => {
-    setIsWatching(status);
-  };
+    setIsWatching(status)
+  }
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
-      router.push("/login");
-      return;
+      router.push('/login')
+      return
     }
-    setLoading(true);
+    setLoading(true)
     try {
       const response = await api.get(
         `/api/v10/register-course?course_id=${courseId}`
-      );
+      )
       if (response.status === 200) {
-        setRegistered(true);
-        setShowPopup(true);
+        setRegistered(true)
+        setShowPopup(true)
       }
     } catch (error) {
-      return null;
+      return null
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    dispatch(getDetailCourse(courseId as string));
-  }, []);
+    dispatch(getDetailCourse(courseId as string))
+  }, [])
 
   useEffect(() => {
-    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
-  }, [courseDetail]);
+    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered)
+  }, [courseDetail])
 
   const handleScroll = useCallback(() => {
     const bottom =
-      document.body.getBoundingClientRect().bottom <= window.innerHeight;
-    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes("read")) {
-      setStepCompleted([...stepCompleted, "read"]);
+      document.body.getBoundingClientRect().bottom <= window.innerHeight
+    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes('read')) {
+      setStepCompleted([...stepCompleted, 'read'])
     }
-  }, [stepCompleted]);
+  }, [stepCompleted])
 
   useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
+    document.addEventListener('scroll', handleScroll)
     return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [handleScroll])
 
   const handleCheckCompletedCourse = useCallback(async () => {
-    if (stepCompleted.length < 2) return;
-    if (!isAuthenticated || !token) return;
+    if (stepCompleted.length < 2) return
+    if (!isAuthenticated || !token) return
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
-      );
+      )
       if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId]);
-        setStepCompleted([]);
+        setCompletedLesson([...completedLesson, +lessonId])
+        setStepCompleted([])
+        if (isNextLesson && !isLastLesson) {
+          router.push(urlNextLesson)
+        }
       }
     } catch (error) {
-      return null;
+      return null
+    } finally {
+      setIsNextLesson(false)
     }
   }, [
     stepCompleted,
@@ -156,11 +194,15 @@ const CourseDetail = () => {
     courseId,
     lessonId,
     completedLesson,
-  ]);
+    isNextLesson,
+    router,
+    urlNextLesson,
+    isLastLesson
+  ])
 
   useEffect(() => {
-    handleCheckCompletedCourse();
-  }, [handleCheckCompletedCourse]);
+    handleCheckCompletedCourse()
+  }, [handleCheckCompletedCourse])
 
   return (
     <div className="container mt-36">
@@ -235,31 +277,33 @@ const CourseDetail = () => {
                   {isLogin && registered && courseDetail?.assigment_id ? (
                     <>
                       {courseDetail?.is_completed === 0 ? (
-                        <Link
-                          href={`/quiz/${courseDetail?.assigment_id}`}
-                          className="w-full md:w-auto inline-block"
+                        <Button
+                          className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                          disabled={isNotCompletedLesson}
+                          onClick={() => {
+                            if(isNotCompletedLesson) return
+                            router.push(`/quiz/${courseDetail?.assigment_id}`)
+                          }}
                         >
-                          <Button className="!px-6 bg-blue-600 group hover:bg-blue-600/50 w-full">
-                            <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                              Complete Quiz
-                            </span>
-                          </Button>
-                        </Link>
+                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                            Complete Quiz
+                          </span>
+                        </Button>
                       ) : (
                         // <Link
                         //   href={`/result/${courseDetail?.assigment_id}`}
                         //   className="w-full md:w-auto inline-block"
                         // >
                         <>
-                          {isCompletedQuiz ? (
+                          {!isNotCompletedLesson ? (
                             <Button
                               onClick={() => {
-                                dispatch(setIsViewResultInCourse(true));
+                                dispatch(setIsViewResultInCourse(true))
                                 router.push(
                                   `/result/${courseDetail?.assigment_id}`
-                                );
+                                )
                               }}
-                              className=" md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                              className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                             >
                               <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
                                 View result Quiz
@@ -267,10 +311,8 @@ const CourseDetail = () => {
                             </Button>
                           ) : null}
                         </>
-
-                        // </Link>
                       )}
-                      {isCompletedQuiz ? (
+                      {!isNotCompletedLesson ? (
                         <Link
                           href={`/reward/${courseId}`}
                           className="w-full md:w-auto inline-block"
@@ -330,7 +372,7 @@ const CourseDetail = () => {
                         Number(lessonId) === lesson.lesson_id && (
                           <>
                             {lesson.lesson_type_format === 2 &&
-                              formState === "video" && (
+                              formState === 'video' && (
                                 <>
                                   <VideoPlayer
                                     typeUpload={lesson.lesson_type_upload}
@@ -341,7 +383,7 @@ const CourseDetail = () => {
                                 </>
                               )}
                             {lesson.lesson_type_format === 1 &&
-                              formState === "quiz" && (
+                              formState === 'quiz' && (
                                 <Quiz
                                   lesson={lesson}
                                   index={index}
@@ -357,10 +399,35 @@ const CourseDetail = () => {
                                 id="content"
                                 className="flex flex-col gap-3 text-xs course-content md:text-base"
                                 dangerouslySetInnerHTML={{
-                                  __html: lesson.lesson_description,
+                                  __html: lesson.lesson_description
                                 }}
                               />
                             </div>
+                            {isLastLesson ? (
+                              <Button
+                                className="!px-6 w-auto"
+                                onClick={() => {
+                                  const url = getPrevLessonUrl()
+                                  router.push(url)
+                                }}
+                              >
+                                Previous Lesson
+                              </Button>
+                            ) : (
+                              <Button
+                                className="!px-6 w-auto"
+                                disabled={
+                                  !(completedLesson.includes(+lessonId) ||
+                                    lesson.is_complete === 1)
+                                }
+                                onClick={() => {
+                                  const url = getNextLessonUrl()
+                                  router.push(url)
+                                }}
+                              >
+                                Next Lesson
+                              </Button>
+                            )}
                           </>
                         )
                     )
@@ -381,7 +448,7 @@ const CourseDetail = () => {
                         onClick={() => {
                           router.push(
                             `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
-                          );
+                          )
                         }}
                       >
                         <CourseModule
@@ -408,13 +475,13 @@ const CourseDetail = () => {
       )}
       <BackToTop />
     </div>
-  );
-};
+  )
+}
 
-export default CourseDetail;
+export default CourseDetail
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: false,
-  };
-};
+    fallback: false
+  }
+}
