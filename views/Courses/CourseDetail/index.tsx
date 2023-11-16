@@ -67,26 +67,26 @@ const CourseDetail = () => {
     () =>
       courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
     [courseDetail?.lesson_data, lessonId]
-  )
+  );
 
   const lessonOrder = useMemo(() => {
-    const lessonData = courseDetail?.lesson_data || []
+    const lessonData = courseDetail?.lesson_data || [];
     const currIndex =
       lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0
-    const lessonLength = lessonData.length - 1
+      0;
+    const lessonLength = lessonData.length - 1;
     return {
       first: lessonData?.[0]?.lesson_id === +lessonId,
-      last: currIndex >= lessonLength
-    }
-  }, [courseDetail?.lesson_data, lessonId])
+      last: currIndex >= lessonLength,
+    };
+  }, [courseDetail?.lesson_data, lessonId]);
 
   const isNotCompletedLesson = useMemo(() => {
     return isCompletedQuiz ||
       (lessonOrder.last && completedLesson.includes(+lessonId))
       ? false
-      : true
-  }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId])
+      : true;
+  }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId]);
 
   const getNextLessonUrl = useCallback(() => {
     const lessonData = courseDetail?.lesson_data || [];
@@ -167,14 +167,14 @@ const CourseDetail = () => {
   }, [courseDetail]);
 
   const handleScroll = useCallback(() => {
-    const bodyBottom = document.body.getBoundingClientRect().bottom
-    const bottom = Math.round(bodyBottom) <= window.innerHeight
+    const bodyBottom = document.body.getBoundingClientRect().bottom;
+    const bottom = Math.round(bodyBottom) <= window.innerHeight;
     if (
       bottom &&
       !completedLesson.includes(+lessonId) &&
-      !stepCompleted.includes('read')
+      !stepCompleted.includes("read")
     ) {
-      setStepCompleted([...stepCompleted, 'read'])
+      setStepCompleted([...stepCompleted, "read"]);
     }
   }, [completedLesson, lessonId, stepCompleted]);
 
@@ -187,27 +187,27 @@ const CourseDetail = () => {
 
   const isCompletedStep = useMemo(() => {
     if (!lesson?.lesson_description) {
-      return stepCompleted.includes('video')
+      return stepCompleted.includes("video");
     }
     if (!lesson?.lesson_link) {
-      return stepCompleted.includes('read')
+      return stepCompleted.includes("read");
     }
-    return stepCompleted.length >= 2
-  }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted])
+    return stepCompleted.length >= 2;
+  }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted]);
 
   const handleCheckCompletedCourse = useCallback(async () => {
-    if (!isCompletedStep) return
-    if (completedLesson.includes(+lessonId)) return
-    if (!isAuthenticated || !token) return
+    if (!isCompletedStep) return;
+    if (completedLesson.includes(+lessonId)) return;
+    if (!isAuthenticated || !token) return;
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
       );
       if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId])
-        setStepCompleted([])
+        setCompletedLesson([...completedLesson, +lessonId]);
+        setStepCompleted([]);
         if (isNextLesson && !lessonOrder.last) {
-          router.push(urlNextLesson)
+          router.push(urlNextLesson);
         }
       }
     } catch (error) {
@@ -225,8 +225,8 @@ const CourseDetail = () => {
     isNextLesson,
     lessonOrder.last,
     router,
-    urlNextLesson
-  ])
+    urlNextLesson,
+  ]);
 
   useEffect(() => {
     handleCheckCompletedCourse();
@@ -328,7 +328,7 @@ const CourseDetail = () => {
                 <div className="flex items-center flex-wrap gap-2">
                   {isLogin && registered && courseDetail?.assigment_id ? (
                     <>
-                      {courseDetail?.is_completed === 0 ? (
+                      {courseDetail?.is_completed_assignment === 0 ? (
                         <Button
                           className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
                           disabled={isNotCompletedLesson}
@@ -341,37 +341,31 @@ const CourseDetail = () => {
                             Complete Quiz
                           </span>
                         </Button>
-                      ) : (
-                        // <Link
-                        //   href={`/result/${courseDetail?.assigment_id}`}
-                        //   className="w-full md:w-auto inline-block"
-                        // >
-                        <>
-                          {!isNotCompletedLesson ? (
-                            <Button
-                              onClick={() => {
-                                dispatch(setIsViewResultInCourse(true));
-                                router.push(
-                                  `/result/${courseDetail?.assigment_id}`
-                                );
-                              }}
-                              className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                            >
-                              <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                                View result Quiz
-                              </span>
-                            </Button>
-                          ) : null}
-                        </>
-                      )}
-                      {!isNotCompletedLesson ? (
+                      ) : !isNotCompletedLesson &&
+                        courseDetail?.is_completed_assignment === 1 ? (
+                        <Button
+                          onClick={() => {
+                            dispatch(setIsViewResultInCourse(true));
+                            router.push(
+                              `/result/${courseDetail?.assigment_id}`
+                            );
+                          }}
+                          className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                        >
+                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                            Quiz Result
+                          </span>
+                        </Button>
+                      ) : null}
+                      {!isNotCompletedLesson &&
+                      courseDetail?.is_completed_assignment === 1 ? (
                         <Link
                           href={`/reward/${courseId}`}
                           className="w-full md:w-auto inline-block"
                         >
                           <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
                             <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                              Reward
+                              My Certificate
                             </span>
                           </Button>
                         </Link>
@@ -460,8 +454,8 @@ const CourseDetail = () => {
                                 <Button
                                   className="!px-6 w-auto"
                                   onClick={() => {
-                                    const url = getPrevLessonUrl()
-                                    router.push(url)
+                                    const url = getPrevLessonUrl();
+                                    router.push(url);
                                   }}
                                 >
                                   Previous Lesson
@@ -478,27 +472,61 @@ const CourseDetail = () => {
                                     )
                                   }
                                   onClick={() => {
-                                    const url = getNextLessonUrl()
-                                    router.push(url)
+                                    const url = getNextLessonUrl();
+                                    router.push(url);
                                   }}
                                 >
                                   Next Lesson
                                 </Button>
                               ) : (
-                                <Button
-                                  className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
-                                  disabled={isNotCompletedLesson}
-                                  onClick={() => {
-                                    if (isNotCompletedLesson) return
-                                    router.push(
-                                      `/quiz/${courseDetail?.assigment_id}`
-                                    )
-                                  }}
-                                >
-                                  <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                                    Complete Quiz
-                                  </span>
-                                </Button>
+                                <>
+                                  {!registered ? (
+                                    <Button
+                                      onClick={handleApplyCourse}
+                                      className="md:w-auto inline-block !px-6 group w-full ml-auto"
+                                    >
+                                      Apply Course
+                                      {loading && (
+                                        <Loader3
+                                          className="animate-spin ml-2"
+                                          width={25}
+                                          height={25}
+                                        />
+                                      )}
+                                    </Button>
+                                  ) : !isNotCompletedLesson &&
+                                    courseDetail?.is_completed_assignment ===
+                                      1 ? (
+                                    <Button
+                                      onClick={() => {
+                                        dispatch(setIsViewResultInCourse(true));
+                                        router.push(
+                                          `/result/${courseDetail?.assigment_id}`
+                                        );
+                                      }}
+                                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
+                                    >
+                                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                                        Quiz Result
+                                      </span>
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
+                                      disabled={isNotCompletedLesson}
+                                      onClick={() => {
+                                        if (isNotCompletedLesson) return;
+                                        router.push(
+                                          `/quiz/${courseDetail?.assigment_id}`
+                                        );
+                                      }}
+                                    >
+                                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                                        Complete Quiz
+                                      </span>
+                                    </Button>
+                                  )}
+                                </>
                               )}
                             </div>
                           </>
