@@ -484,7 +484,7 @@ const CourseDetail = () => {
                                 >
                                   Next Lesson
                                 </Button>
-                              ) : (
+                              ) : isLogin && registered ? (
                                 <Button
                                   className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
                                   disabled={isNotCompletedLesson}
@@ -499,7 +499,7 @@ const CourseDetail = () => {
                                     Complete Quiz
                                   </span>
                                 </Button>
-                              )}
+                              ) : null}
                             </div>
                           </>
                         )
