@@ -142,7 +142,6 @@ const TestDetail = () => {
   };
 
   const handleChange = (event: any) => {
-    console.log("event", event);
     if (!quesDetail) return;
     const answerItem = quesDetail?.answer_list?.find(
       (i) => i.id === Number(event.target.value)
@@ -222,7 +221,6 @@ const TestDetail = () => {
   };
 
   const handleGoToQues = (order: number) => {
-    console.log("value", value);
     dispatch(setQuesDetail(listQues[order - 1]));
     const initValue = userAnswer.find((i) => i.order === order);
     setValue(initValue?.value || "");
