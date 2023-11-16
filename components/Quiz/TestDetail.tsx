@@ -364,13 +364,11 @@ const TestDetail = () => {
             </Typography> */}
 
             <Card
-              // name="quiz"
               sx={{
                 display: "flex",
                 gap: "40px",
                 flexDirection: { xs: "column-reverse", lg: "row" },
                 justifyContent: "between",
-                // alignItems: { lg: "start" },
               }}
             >
               <Box
@@ -380,8 +378,6 @@ const TestDetail = () => {
                   backgroundColor: "#F5F8FF",
                   borderRadius: "8px",
                   p: "24px",
-                  // minWidth: { lg: "556px" },
-                  // maxWidth: { lg: "556px" },
                 }}
               >
                 {/* FillinQuiz */}
@@ -389,7 +385,7 @@ const TestDetail = () => {
                   <CardContent
                     sx={{
                       flex: "1 0 auto",
-                      width: { lg: "100%" },
+                      width: '{ lg: "100%" }',
                       p: "0 !important",
                     }}
                   >
