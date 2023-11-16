@@ -19,8 +19,8 @@ export const getListRewards = createAsyncThunk(
   "reward/get-list-reward",
   async () => {
     try {
-      const { data: reward } = await api.get(`/api/v10/list-reward-by-user`);
-      return reward;
+      const { data: rewards } = await api.get(`/api/v10/list-reward-by-user`);
+      return rewards;
     } catch (error) {
       return null;
     }
