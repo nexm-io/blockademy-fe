@@ -160,7 +160,7 @@ const Header = () => {
                       <li className=" px-4 ">
                         <Link
                           className="hover:text-blue-100 "
-                          href="/my-courses"
+                          href="/my-learning"
                         >
                           My Learning
                         </Link>
