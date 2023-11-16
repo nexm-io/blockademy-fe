@@ -63,21 +63,30 @@ const CourseDetail = () => {
     });
   };
 
-  const isLastLesson = useMemo(() => {
-    const lessonData = courseDetail?.lesson_data || [];
+  const lesson = useMemo(
+    () =>
+      courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
+    [courseDetail?.lesson_data, lessonId]
+  )
+
+  const lessonOrder = useMemo(() => {
+    const lessonData = courseDetail?.lesson_data || []
     const currIndex =
       lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0;
-    const lessonLength = lessonData.length - 1;
-    return currIndex >= lessonLength;
-  }, [courseDetail?.lesson_data, lessonId]);
+      0
+    const lessonLength = lessonData.length - 1
+    return {
+      first: lessonData?.[0]?.lesson_id === +lessonId,
+      last: currIndex >= lessonLength
+    }
+  }, [courseDetail?.lesson_data, lessonId])
 
   const isNotCompletedLesson = useMemo(() => {
     return isCompletedQuiz ||
-      (isLastLesson && completedLesson.includes(+lessonId))
+      (lessonOrder.last && completedLesson.includes(+lessonId))
       ? false
-      : true;
-  }, [completedLesson, isCompletedQuiz, isLastLesson, lessonId]);
+      : true
+  }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId])
 
   const getNextLessonUrl = useCallback(() => {
     const lessonData = courseDetail?.lesson_data || [];
@@ -158,12 +167,16 @@ const CourseDetail = () => {
   }, [courseDetail]);
 
   const handleScroll = useCallback(() => {
-    const bottom =
-      document.body.getBoundingClientRect().bottom <= window.innerHeight;
-    if (bottom && stepCompleted.length < 2 && !stepCompleted.includes("read")) {
-      setStepCompleted([...stepCompleted, "read"]);
+    const bodyBottom = document.body.getBoundingClientRect().bottom
+    const bottom = Math.round(bodyBottom) <= window.innerHeight
+    if (
+      bottom &&
+      !completedLesson.includes(+lessonId) &&
+      !stepCompleted.includes('read')
+    ) {
+      setStepCompleted([...stepCompleted, 'read'])
     }
-  }, [stepCompleted]);
+  }, [completedLesson, lessonId, stepCompleted]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
@@ -172,18 +185,29 @@ const CourseDetail = () => {
     };
   }, [handleScroll]);
 
+  const isCompletedStep = useMemo(() => {
+    if (!lesson?.lesson_description) {
+      return stepCompleted.includes('video')
+    }
+    if (!lesson?.lesson_link) {
+      return stepCompleted.includes('read')
+    }
+    return stepCompleted.length >= 2
+  }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted])
+
   const handleCheckCompletedCourse = useCallback(async () => {
-    if (stepCompleted.length < 2) return;
-    if (!isAuthenticated || !token) return;
+    if (!isCompletedStep) return
+    if (completedLesson.includes(+lessonId)) return
+    if (!isAuthenticated || !token) return
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
       );
       if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId]);
-        setStepCompleted([]);
-        if (isNextLesson && !isLastLesson) {
-          router.push(urlNextLesson);
+        setCompletedLesson([...completedLesson, +lessonId])
+        setStepCompleted([])
+        if (isNextLesson && !lessonOrder.last) {
+          router.push(urlNextLesson)
         }
       }
     } catch (error) {
@@ -192,17 +216,17 @@ const CourseDetail = () => {
       setIsNextLesson(false);
     }
   }, [
-    stepCompleted,
+    isCompletedStep,
     isAuthenticated,
     token,
     courseId,
     lessonId,
     completedLesson,
     isNextLesson,
+    lessonOrder.last,
     router,
-    urlNextLesson,
-    isLastLesson,
-  ]);
+    urlNextLesson
+  ])
 
   useEffect(() => {
     handleCheckCompletedCourse();
@@ -431,33 +455,52 @@ const CourseDetail = () => {
                                 }}
                               />
                             </div>
-                            {isLastLesson ? (
-                              <Button
-                                className="!px-6 w-auto"
-                                onClick={() => {
-                                  const url = getPrevLessonUrl();
-                                  router.push(url);
-                                }}
-                              >
-                                Previous Lesson
-                              </Button>
-                            ) : (
-                              <Button
-                                className="!px-6 w-auto"
-                                disabled={
-                                  !(
-                                    completedLesson.includes(+lessonId) ||
-                                    lesson.is_complete === 1
-                                  )
-                                }
-                                onClick={() => {
-                                  const url = getNextLessonUrl();
-                                  router.push(url);
-                                }}
-                              >
-                                Next Lesson
-                              </Button>
-                            )}
+                            <div className="w-full flex items-center justify-between">
+                              {!lessonOrder.first ? (
+                                <Button
+                                  className="!px-6 w-auto"
+                                  onClick={() => {
+                                    const url = getPrevLessonUrl()
+                                    router.push(url)
+                                  }}
+                                >
+                                  Previous Lesson
+                                </Button>
+                              ) : null}
+
+                              {!lessonOrder.last ? (
+                                <Button
+                                  className="!px-6 w-auto ml-auto"
+                                  disabled={
+                                    !(
+                                      completedLesson.includes(+lessonId) ||
+                                      lesson.is_complete === 1
+                                    )
+                                  }
+                                  onClick={() => {
+                                    const url = getNextLessonUrl()
+                                    router.push(url)
+                                  }}
+                                >
+                                  Next Lesson
+                                </Button>
+                              ) : (
+                                <Button
+                                  className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
+                                  disabled={isNotCompletedLesson}
+                                  onClick={() => {
+                                    if (isNotCompletedLesson) return
+                                    router.push(
+                                      `/quiz/${courseDetail?.assigment_id}`
+                                    )
+                                  }}
+                                >
+                                  <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                                    Complete Quiz
+                                  </span>
+                                </Button>
+                              )}
+                            </div>
                           </>
                         )
                     )

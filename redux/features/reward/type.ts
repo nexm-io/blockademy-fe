@@ -11,6 +11,8 @@ export type RewardDetails = {
   assigment_id: number;
   is_claimed: number;
   claim_at: string;
+  certificate_image_url?: string;
+  certificate_pdf_url?: string;
 };
 
 export type RewardReducerType = {

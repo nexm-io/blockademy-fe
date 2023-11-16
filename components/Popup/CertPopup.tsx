@@ -2,8 +2,35 @@ import { Close } from "@styled-icons/remix-line";
 import React from "react";
 import Button from "../Common/Button";
 import Image from "next/image";
+import slugifyText from "@/utils/slugifyText";
 
-const CertPopup = ({ onClose }: { onClose: () => void }) => {
+const CertPopup = ({
+  onClose,
+  assets,
+}: {
+  onClose: () => void;
+  assets: {
+    image: string;
+    pdf: string;
+    firstName: string;
+    lastName: string;
+    courseName: string;
+  } | null;
+}) => {
+  const exportPDF = () => {
+    const filename = slugifyText(
+      `${assets?.firstName} ${assets?.lastName} ${assets?.courseName}`
+    );
+    if (!assets) return;
+    fetch(assets?.pdf).then(function (t) {
+      return t.blob().then((b) => {
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(b);
+        a.setAttribute("download", `${filename}.pdf`);
+        a.click();
+      });
+    });
+  };
   return (
     <>
       <div
@@ -23,9 +50,10 @@ const CertPopup = ({ onClose }: { onClose: () => void }) => {
           <h2 className="text-blue-100 text-2xl font-bold md:mt-7 mt-4">
             Certificate
           </h2>
+
           <div>
             <Image
-              src="/images/cert-example.jpg"
+              src={assets ? assets?.image : ""}
               alt="cert"
               width={1440}
               height={946}
@@ -33,14 +61,19 @@ const CertPopup = ({ onClose }: { onClose: () => void }) => {
             />
           </div>
           <div className="flex justify-center flex-col md:flex-row mb-6 gap-2">
-            <Button className="!py-2 !px-5 w-[200px]" kind="secondary" onClick={() => {}}>
+            <Button
+              className="!py-2 !px-5 w-[200px]"
+              kind="secondary"
+              onClick={() => {
+                exportPDF();
+              }}
+            >
               Export PDF
             </Button>
             <Button className="!py-2 !bg-[#E6C6FF] hover:opacity-75 w-[200px]">
               <span className="text-[#7C0BA4] font-bold">Issue NFT</span>
             </Button>
           </div>
-
         </div>
       </div>
     </>
