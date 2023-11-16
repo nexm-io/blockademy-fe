@@ -93,7 +93,7 @@ const FormForgot: React.FC<FormRegisterProps> = ({ setFormState }) => {
 
         <div className="w-full text-center mt-3 mb-[40px]">
           <p className="text-sm font-light text-gray-600">
-            Dont&apos;t have an account?{" "}
+          {"Don't have an account?"}
             <Link
               href="/register"
               className="text-blue-100 hover:underline cursor-pointer inline-block"
