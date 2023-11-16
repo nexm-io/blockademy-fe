@@ -279,11 +279,14 @@ export default function ResultQuiz() {
 
                 <div className="grid gap-3">
                   <p className="text-[24px] leading-[32px] text-[#1E2329]">
-                    Congratulations! You passed!
+                    {listResultData?.result === RESULT_QUIZ_PASS
+                      ? "Congratulations! You passed!"
+                      : "Sorry! You failed!"}
                   </p>
                   <p className="text-[18px] leading-[26px] text-[#616161]">
-                    We believe in your ability to overcome challenges. Keep
-                    striving for excellence!
+                    {listResultData?.result === RESULT_QUIZ_PASS
+                      ? "We believe in your ability to overcome challenges. Keep striving for excellence!"
+                      : "Review the material and try again."}
                   </p>
                 </div>
               </div>
