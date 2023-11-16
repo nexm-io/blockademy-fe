@@ -171,12 +171,12 @@ const CourseDetail = () => {
     const bottom = Math.round(bodyBottom) <= window.innerHeight
     if (
       bottom &&
-      stepCompleted.length <= 0 &&
+      !completedLesson.includes(+lessonId) &&
       !stepCompleted.includes('read')
     ) {
       setStepCompleted([...stepCompleted, 'read'])
     }
-  }, [stepCompleted]);
+  }, [completedLesson, lessonId, stepCompleted]);
 
   useEffect(() => {
     document.addEventListener("scroll", handleScroll);
@@ -192,7 +192,7 @@ const CourseDetail = () => {
     if (!lesson?.lesson_link) {
       return stepCompleted.includes('read')
     }
-    return stepCompleted.length < 2
+    return stepCompleted.length >= 2
   }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted])
 
   const handleCheckCompletedCourse = useCallback(async () => {
