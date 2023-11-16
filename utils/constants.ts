@@ -121,11 +121,12 @@ export const RESULT_QUESTION = {
 };
 
 export const COURSE_STATUS = {
-  INPROGRESS: 'inprogress',
-  COMPLETED: 'completed'
-}
+  INPROGRESS: "inprogress",
+  COMPLETED: "completed",
+};
 
 export const TAB_STATUS = {
-  PROGRESS: 'progress',
-  COMPLETED: 'completed'
-}
+  PROGRESS: "progress",
+  COMPLETED: "completed",
+};
+

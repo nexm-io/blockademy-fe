@@ -28,10 +28,16 @@ import {
   Typography,
   Skeleton,
   Stack,
+  FormControl,
+  RadioGroup,
+  Grid,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import { soleil } from "@/utils/constants";
 import Link from "next/link";
 import CertPopup from "../Popup/CertPopup";
+import cn from "@/services/cn";
 
 const CertButton = ({ courseId }: { courseId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -163,517 +169,303 @@ export default function ResultQuiz() {
         </Stack>
       ) : (
         <Box sx={{ py: 10, m: "auto" }}>
-          <nav className="w-full rounded-md">
-            <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
-              <li className="leading-[23px] hover:underline cursor-pointer">
-                <Link href="/">
+          <div className="container">
+            <nav className="w-full rounded-md">
+              <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+                <li className="leading-[23px] hover:underline cursor-pointer">
+                  <Link href="/">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Home
+                    </span>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link href="/courses">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Courses
+                    </span>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link
+                    href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
+                  >
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      {listResultData?.quiz}
+                    </span>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px]">
                   <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                    Home
+                    Result
                   </span>
-                </Link>
-              </li>
-              <li className="leading-[23px]">
-                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-              </li>
-              <li className="leading-[23px] hover:underline">
-                <Link href="/courses">
-                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                    Courses
-                  </span>
-                </Link>
-              </li>
-              <li className="leading-[23px]">
-                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-              </li>
-              <li className="leading-[23px] hover:underline">
-                <Link
-                  href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
+                </li>
+              </ol>
+            </nav>
+            <div className="flex flex-col md:flex-row justify-between mt-[52px]">
+              {/* <div className="mt-2 mb-"> */}
+              <div className="text-[#1E2329] text-[36px] leading-[40px] font-bold">
+                Result
+              </div>
+              {/* </div> */}
+              <div className="flex flex-col md:flex-row gap-4">
+                {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
+
+                <Button
+                  className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-[184px] px-2"
+                  onClick={() => router.push(`/quiz/${id}`)}
                 >
-                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                    {listResultData?.quiz}
+                  <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
+                    Keep Learning
                   </span>
-                </Link>
-              </li>
-              <li className="leading-[23px]">
-                <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-              </li>
-              <li className="leading-[23px]">
-                <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                  Result
-                </span>
-              </li>
-            </ol>
-          </nav>
-          <div className="flex flex-col md:flex-row justify-between">
-            {/* <div className="mt-2 mb-"> */}
-            <Typography
-              sx={{
-                color: "var(--primary-black)",
-                fontSize: "24px",
-                fontWeight: 500,
-                lineHeight: "32px",
-              }}
-            >
-              Result
-            </Typography>
-            {/* </div> */}
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
-              <Button
-                onClick={() => router.push(`/quiz/${id}`)}
-                className="!px-6 !py-2 w-full sm:w-auto !bg-[#e01a59] hover:!bg-[#a31e1e]"
-              >
-                Try Again
-              </Button>
-              {/* )} */}
-              {/* <Button
-                onClick={() =>
-                  router.push(
-                    `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
-                  )
-                }
-                className="!px-6 !py-2 w-full sm:w-auto"
-              >
-                Back to course
-              </Button> */}
-              {listResultData?.result === RESULT_QUIZ_PASS ? (
-                <CertButton courseId={listResultData.course_id} />
-              ) : null}
+                </Button>
+
+                {listResultData?.result === RESULT_QUIZ_PASS ? (
+                  <CertButton courseId={listResultData.course_id} />
+                ) : null}
+              </div>
             </div>
           </div>
 
-          <Box
-            sx={{ maxWidth: "650px", py: 4, m: "auto" }}
-            onCopy={(e) => {
-              e.preventDefault();
+          <div
+            className="mt-6"
+            style={{
+              background:
+                listResultData?.result === RESULT_QUIZ_PASS
+                  ? `rgba(2, 231, 85, 0.05)`
+                  : `rgba(255, 51, 51, 0.05)`,
             }}
           >
-            <Typography
-              sx={{
-                color: "var(--primary-black)",
-                fontSize: "24px",
-                fontWeight: 500,
-                lineHeight: "32px",
-              }}
-            >
-              {listResultData?.quiz}
-            </Typography>
-            <Typography
-              sx={{
-                color: "var(--primary-color-100)",
-                fontSize: "20px",
-                fontWeight: 500,
-                lineHeight: "32px",
-                mt: 2,
-                mb: "20px",
-              }}
-            >
-              {removeWhiteSpace(listResultData?.description)}
-            </Typography>
-            <Box
-              sx={{
-                backgroundColor: "var(--primary-color-800)",
-                color: "white",
-                fontWeight: 500,
-                p: "40px",
-                borderRadius: "20px",
-                display: "flex",
-                gap: "40px",
-                flexWrap: "wrap",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "inline-block",
-                  textAlign: "center",
-                  userSelect: "none",
-                }}
-              >
-                <Typography sx={{ mb: "13px" }}>You Scored</Typography>
-                <Box
-                  sx={{ position: "relative", width: "110px", height: "110px" }}
-                >
-                  <Image
-                    src="/images/quiz/ellipse.png"
-                    alt="ellipse"
-                    width={110}
-                    height={110}
-                  />
-                  <Typography
-                    sx={{
-                      position: "absolute",
-                      top: "36%",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      color: "var(--blue-color-100)",
-                      zIndex: 4,
-                      fontSize: "24px",
-                      fontWeight: 500,
-                      lineHeight: "32px",
-                    }}
+            <div className="container py-6 flex flex-col md:flex-row gap-3 items-center justify-between">
+              <div className="flex gap-3">
+                {listResultData?.result === RESULT_QUIZ_PASS ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
                   >
-                    <span>{listResultData?.score}</span>/100
-                  </Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "inline-block",
-                  textAlign: "center",
-                  userSelect: "none",
-                }}
-              >
-                <Typography sx={{ mb: "13px" }}>True</Typography>
-                <Box
-                  sx={{ position: "relative", width: "110px", height: "110px" }}
-                >
-                  <Image
-                    src="/images/quiz/ellipse.png"
-                    alt="ellipse"
-                    width={110}
-                    height={110}
-                  />
-                  <Typography
-                    sx={{
-                      position: "absolute",
-                      top: "36%",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      color: "var(--blue-color-100)",
-                      zIndex: 4,
-                      fontSize: "24px",
-                      fontWeight: 500,
-                      lineHeight: "32px",
-                    }}
+                    <path
+                      d="M14.9998 26.95L8.04977 20L5.68311 22.35L14.9998 31.6667L34.9998 11.6667L32.6498 9.31665L14.9998 26.95Z"
+                      fill="#02E755"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
                   >
-                    {listResultData?.total_correct_answer}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "inline-block",
-                  textAlign: "center",
-                  userSelect: "none",
-                }}
-              >
-                <Typography sx={{ mb: "13px" }}>False</Typography>
-                <Box
-                  sx={{ position: "relative", width: "110px", height: "110px" }}
-                >
-                  <Image
-                    src="/images/quiz/ellipse-yellow.png"
-                    alt="ellipse"
-                    width={110}
-                    height={110}
-                  />
-                  <Typography
-                    sx={{
-                      position: "absolute",
-                      top: "36%",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      color: "var(--yellow-color-100)",
-                      zIndex: 4,
-                      fontSize: "24px",
-                      fontWeight: 500,
-                      lineHeight: "32px",
-                    }}
-                  >
-                    {listResultData?.total_incorrect_answer}
-                  </Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: "inline-block",
-                  textAlign: "center",
-                  userSelect: "none",
-                }}
-              >
-                <Typography sx={{ mb: "13px" }}>Result</Typography>
-                <Box
-                  sx={{ position: "relative", width: "110px", height: "110px" }}
-                >
-                  <Image
-                    src={checkImage}
-                    alt="ellipse"
-                    width={110}
-                    height={110}
-                  />
-                  <Typography
-                    sx={{
-                      position: "absolute",
-                      top: "36%",
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      color: `${checkColor}`,
-                      zIndex: 4,
-                      fontSize: "24px",
-                      fontWeight: 500,
-                      lineHeight: "32px",
-                    }}
-                  >
-                    {listResultData?.result === RESULT_QUIZ_PASS
-                      ? "Pass"
-                      : "Fail"}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                fontSize: "14px",
-                lineHeight: "20px",
-                backgroundColor: "#F9F9F9",
-                p: "30px",
-                borderRadius: "20px",
-                mt: "30px",
-              }}
-            >
-              {listResultData?.list_question_answer?.map((item, index) => (
-                <Box key={index} sx={{ mb: 2 }}>
-                  <Box
-                    sx={{
-                      color: "var(--primary-black)",
-                      textDecoration: "underline",
-                      display: "flex",
-                      alignItems: "center",
-                      fontSize: "16px",
-                    }}
-                  >
-                    <Typography sx={{ fontWeight: 600 }}>
-                      Question {item?.order}:
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      color: "#121230",
-                      fontSize: "16px",
-                      lineHeight: "25px",
-                      mb: 1,
-                      userSelect: "none",
-                    }}
-                  >
-                    {item?.question_title}
-                  </Typography>
-                  {item?.question_description &&
-                    !checkWhiteSpace(item?.question_description) && (
-                      <Box sx={{ ml: 4, overflow: "auto" }}>
-                        <Box
-                          sx={{
-                            color: "#71738B",
-                            lineHeight: "25px",
-                            userSelect: "none",
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: item?.question_description,
-                          }}
-                        />
-                      </Box>
-                    )}
-                  {item?.question_image && (
-                    <Box sx={{ maxWidth: "300px", my: 2, userSelect: "none" }}>
-                      <Image
-                        src={item?.question_image?.original_image}
-                        alt="question-image"
-                        width={100}
-                        height={150}
-                        layout="responsive"
-                      />
-                    </Box>
-                  )}
-                  {item?.question_type === TYPE_QUIZ.ESSAY ? (
-                    <Box>
-                      <div
-                        className={`flex items-center gap-[9px] ${
-                          !item?.user_answer ? "mb-1" : ""
-                        }`}
-                        // sx={{
-                        //   display: "flex",
-                        //   alignItems: "center",
-                        //   gap: "9px",
-                        //   mb: !item?.user_answer && 1,
-                        //   userSelect: "none",
-                        // }}
-                      >
-                        <Image
-                          src="/images/quiz/answer.svg"
-                          alt="answer"
-                          width={20}
-                          height={20}
-                        />
-                        <Typography>Your Answer:</Typography>
-                      </div>
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
+                      fill="#FF3333"
+                    />
+                  </svg>
+                )}
 
-                      {item?.user_answer && (
-                        <Box
-                          className="scrollable"
-                          sx={{
-                            color: "var(--primary-color-300)",
-                            ml: "30px",
-                            maxHeight: "300px",
-                            overflowY: "scroll",
-                          }}
+                <div className="grid gap-3">
+                  <p className="text-[24px] leading-[32px] text-[#1E2329]">
+                    Congratulations! You passed!
+                  </p>
+                  <p className="text-[18px] leading-[26px] text-[#616161]">
+                    We believe in your ability to overcome challenges. Keep
+                    striving for excellence!
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-10 md:border-l md:border-[#EDEDED] md:pl-10">
+                <div className="w-[80px]">
+                  <p className="text-[#1E2329] text-[18px] leading-[26px] text-center">
+                    Score
+                  </p>
+                  <p
+                    className={cn(`text-[28px] leading-[40px] text-center`, {
+                      "text-[#02E755]":
+                        listResultData?.result === RESULT_QUIZ_PASS,
+                      "text-[#F33]":
+                        listResultData?.result === RESULT_QUIZ_FAIL,
+                    })}
+                  >
+                    {listResultData?.score}%
+                  </p>
+                </div>
+                <div className="w-[80px]">
+                  <p className="text-[#1E2329] text-[18px] leading-[26px] text-center">
+                    True
+                  </p>
+                  <p className="text-[28px] leading-[40px] text-[#02E755] text-center">
+                    {listResultData?.total_correct_answer}
+                  </p>
+                </div>
+                <div className="w-[80px]">
+                  <p className="text-[#1E2329] text-[18px] leading-[26px] text-center">
+                    False
+                  </p>
+                  <p className="text-[28px] leading-[40px] text-[#F33] text-center">
+                    {listResultData?.total_incorrect_answer}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container mt-10">
+            <h3 className="text-[#1E2329] text-[28px] leading-[40px] font-normal mt-6">
+              {listResultData?.quiz}
+            </h3>
+            <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
+              {listResultData?.list_question_answer?.map((z, i) => (
+                <div key={i}>
+                  <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
+                    Question {z?.order}
+                  </p>
+                  <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
+                    {z?.question_title}
+                  </p>
+
+                  <div className="mt-8">
+                    {z?.list_answer?.length > 0 ? (
+                      <FormControl component="fieldset" sx={{ width: "100%" }}>
+                        <RadioGroup
+                          aria-labelledby="demo-controlled-radio-buttons-group"
+                          name="controlled-radio-buttons-group"
+                          value={z.user_answer.id}
                         >
-                          {/* <SyntaxHighlighter
-                          language="javascript"
-                          style={tomorrow}
-                        > */}
-                          {item?.user_answer.answer_text}
-                          {/* </SyntaxHighlighter> */}
-                        </Box>
-                      )}
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "9px",
-                        }}
-                      >
-                        <Image
-                          src="/images/quiz/answer.svg"
-                          alt="answer"
-                          width={20}
-                          height={20}
-                        />
-                        <Typography>Suggest Answer:</Typography>
-                      </Box>
-                      {item?.suggest_answer && (
-                        <Box
-                          className="scrollable"
-                          sx={{
-                            color: "var(--primary-color-300)",
-                            ml: "30px",
-                            maxHeight: "300px",
-                            overflowY: "scroll",
-                          }}
-                        >
-                          {/* <SyntaxHighlighter
-                          language="javascript"
-                          style={tomorrow}
-                        > */}
-                          {item?.suggest_answer?.answer_text}
-                          {/* </SyntaxHighlighter> */}
-                        </Box>
-                      )}
-                      {item?.user_score && (
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "9px",
-                            ml: "-5px",
-                            mt: 1,
-                            userSelect: "none",
-                          }}
-                        >
-                          <Image
-                            src="/images/quiz/result.svg"
-                            alt="result"
-                            width={27}
-                            height={27}
-                          />
-                          <Typography
-                            sx={{
-                              fontWeight: 500,
-                              textAlign: "center",
-                            }}
-                          >
-                            Result: <span>{item?.user_score}</span>
-                          </Typography>
-                        </Box>
-                      )}
-                    </Box>
-                  ) : (
-                    <Box>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "9px",
-                          pb: 1,
-                          userSelect: "none",
-                        }}
-                      >
-                        <Image
-                          src="/images/quiz/answer.svg"
-                          alt="answer"
-                          width={20}
-                          height={20}
-                        />
-                        <Typography
-                          sx={{
-                            color: "var(--primary-black)",
-                            alignContent: "center",
-                          }}
-                        >
-                          Your Answer:{" "}
-                          <span style={{ fontWeight: "600" }}>
-                            {item?.user_answer?.answer_text}
-                          </span>
-                        </Typography>
-                      </Box>
-                      {/* <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "9px",
-                        my: 1,
-                      }}
-                    >
-                      <Image
-                        src="/images/icons/answer.svg"
-                        alt="answer"
-                        width={20}
-                        height={20}
-                      />
-                      <Typography sx={{ color: "var(--primary-color-100)" }}>
-                        Correct Answer:{" "}
-                        <span style={{ display: "inline-block", pl: "4px", fontWeight: '600' }}>
-                          {item?.correct_answer?.answer_text}
-                        </span>
-                      </Typography>
-                    </Box> */}
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "9px",
-                          ml: "-5px",
-                          userSelect: "none",
-                        }}
-                      >
-                        <Image
-                          src="/images/quiz/result.svg"
-                          alt="result"
-                          width={27}
-                          height={27}
-                        />
-                        <Typography
-                          sx={{
-                            color:
-                              item?.result_answer === RESULT_QUESTION_CORRECT
-                                ? "var(--green-color-100) !important"
-                                : "#CF1818",
-                            fontWeight: 500,
-                            textAlign: "center",
-                          }}
-                        >
-                          Result:{" "}
-                          <span style={{ fontWeight: "600" }}>
-                            {item?.result_answer === RESULT_QUESTION_CORRECT
-                              ? "Correct"
-                              : "Incorrect"}
-                          </span>
-                        </Typography>
-                      </Box>
-                    </Box>
-                  )}
-                </Box>
+                          <div className={cn(`grid gap-2`, {})}>
+                            {z?.list_answer?.map((item: any, index: number) => (
+                              <div
+                                key={index}
+                                className={cn(
+                                  `p-2 flex justify-between items-center`,
+                                  {
+                                    "bg-[#02E755]/5":
+                                      item.id === z.correct_answer.id,
+                                    "bg-[#FF3333]/5":
+                                      !z.result_answer &&
+                                      item.id === z.user_answer.id,
+                                  }
+                                )}
+                              >
+                                <FormControlLabel
+                                  value={item?.id}
+                                  control={
+                                    <Radio
+                                      icon={
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                        >
+                                          <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="11.5"
+                                            fill="white"
+                                            stroke="#89939E"
+                                          />
+                                        </svg>
+                                      }
+                                      checkedIcon={
+                                        <svg
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                        >
+                                          <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="11.5"
+                                            stroke="#1F37B3"
+                                          />
+                                          <circle
+                                            cx="12"
+                                            cy="12"
+                                            r="6"
+                                            fill="#1F37B3"
+                                          />
+                                        </svg>
+                                      }
+                                      name="checkbox"
+                                      sx={{
+                                        "&:hover": { bgcolor: "transparent" },
+                                      }}
+                                      disableRipple
+                                    />
+                                  }
+                                  label={item.answer_text}
+                                  sx={{
+                                    ":hover": {
+                                      backgroundColor: "unset",
+                                    },
+                                    fontSize: "20px",
+                                    lineHeight: "29px",
+                                    color: "#1E1E3A",
+                                    minWidth: "170px",
+                                    wordBreak: "break-word",
+                                    userSelect: "none",
+                                  }}
+                                />
+                                {item.id === z.correct_answer.id ? (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 40 40"
+                                    fill="none"
+                                  >
+                                    <path
+                                      d="M15.0003 26.95L8.05026 20L5.68359 22.35L15.0003 31.6667L35.0003 11.6667L32.6503 9.31665L15.0003 26.95Z"
+                                      fill="#02E755"
+                                    />
+                                  </svg>
+                                ) : null}
+                                {!z.result_answer &&
+                                item.id === z.user_answer.id ? (
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="40"
+                                    height="40"
+                                    viewBox="0 0 40 40"
+                                    fill="none"
+                                  >
+                                    <path
+                                      fill-rule="evenodd"
+                                      clip-rule="evenodd"
+                                      d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
+                                      fill="#FF3333"
+                                    />
+                                  </svg>
+                                ) : null}
+                              </div>
+                            ))}
+                          </div>
+                        </RadioGroup>
+                      </FormControl>
+                    ) : null}
+                  </div>
+                </div>
               ))}
-            </Box>
-          </Box>
+            </div>
+          </div>
         </Box>
       )}
     </>

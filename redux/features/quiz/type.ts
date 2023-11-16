@@ -188,6 +188,7 @@ export type QuestionAnswerType = {
   result_answer: number;
   suggest_answer?: ResultUserAnswerType;
   user_score?: string;
+  list_answer: any[];
 };
 
 export type ResultUserAnswerType = {

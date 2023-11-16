@@ -220,10 +220,10 @@ const PreviewQuiz: React.FC<
         </div>
         <div className="mt-10 flex justify-center items-center gap-6">
           <Button
-            className="bg-[#C6EAFF] group hover:bg-[#C6EAFF]/50 !rounded-[4px] w-[184px] px-2"
+            className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-[184px] px-2"
             onClick={onClose}
           >
-            <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">Back to Assignment</span>
+            <span className="!text-[#0B76A4] !group-hover:text-[#0B76A4]/80 text-base">Back to Assignment</span>
           </Button>
           <Button
             className="!bg-[#0068b5] hover:!bg-[#004070] !rounded-[4px] w-[184px] px-2"
