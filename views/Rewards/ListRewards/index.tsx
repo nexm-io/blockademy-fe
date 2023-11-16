@@ -19,13 +19,14 @@ export default function ListRewards() {
   const token = useSelector((state: RootState) => state.auth.token);
 
   useEffect(() => {
+    if (!isAuthenticated || !token) {
+      router.push("/");
+    }
+  }, [isAuthenticated, token]);
+
+  useEffect(() => {
     dispatch(getListRewards());
   }, [dispatch]);
-
-  if (!isAuthenticated || !token) {
-    router.push("/");
-    return;
-  }
 
   return (
     <div className="container mt-24 sm:mt-32 min-h-[64vh]">
