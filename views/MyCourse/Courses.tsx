@@ -18,7 +18,7 @@ const Courses:React.FC<Props> = ({ courses, loading }) => {
         <CourseLoading />
       ) : courses.length !== 0 ? (
         courses.map((course) => (
-          <CourseItem course={course} key={course.id} />
+          <CourseItem course={course} key={course.course_id} />
         ))
       ) : (
         <div className="text-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">

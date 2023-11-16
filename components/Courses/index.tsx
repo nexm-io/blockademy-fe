@@ -13,7 +13,7 @@ const Courses = ({ courses }: { courses: CoursesType }) => {
         <CourseLoading />
       ) : courses.data.length !== 0 ? (
         courses.data.map((course) => (
-          <CourseItem course={course} key={course.id} />
+          <CourseItem course={course} key={course.course_id} />
         ))
       ) : (
         <div className="text-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4 text-4xl">
