@@ -197,8 +197,14 @@ const CourseDetail = () => {
 
   const handleCheckCompletedCourse = useCallback(async () => {
     if (!isCompletedStep) return;
-    if (completedLesson.includes(+lessonId)) return;
-    if (!isAuthenticated || !token) return;
+    if (completedLesson.includes(+lessonId)) return
+    if (!isAuthenticated || !token) {
+      if (isNextLesson && !lessonOrder.last) {
+        router.push(urlNextLesson);
+        setIsNextLesson(false);
+      }
+      return
+    };
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
@@ -469,7 +475,7 @@ const CourseDetail = () => {
                                     !(
                                       completedLesson.includes(+lessonId) ||
                                       lesson.is_complete === 1
-                                    )
+                                    )  && isAuthenticated
                                   }
                                   onClick={() => {
                                     const url = getNextLessonUrl();
