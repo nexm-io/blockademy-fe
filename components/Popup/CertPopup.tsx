@@ -3,6 +3,8 @@ import React from "react";
 import Button from "../Common/Button";
 import Image from "next/image";
 import slugifyText from "@/utils/slugifyText";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const CertPopup = ({
   onClose,
@@ -17,10 +19,14 @@ const CertPopup = ({
     courseName: string;
   } | null;
 }) => {
+  const userData = useSelector((state: RootState) => state.auth.user);
   const exportPDF = () => {
-    const filename = slugifyText(
-      `${assets?.firstName} ${assets?.lastName} ${assets?.courseName}`
-    );
+    const filename =
+      assets?.firstName && assets.lastName
+        ? slugifyText(
+            `${assets?.firstName} ${assets?.lastName} ${assets?.courseName}`
+          )
+        : slugifyText(`${userData?.email.split("@")[0]} ${assets?.courseName}`);
     if (!assets) return;
     fetch(assets?.pdf).then(function (t) {
       return t.blob().then((b) => {

@@ -38,68 +38,7 @@ import { soleil } from "@/utils/constants";
 import Link from "next/link";
 import CertPopup from "../Popup/CertPopup";
 import cn from "@/services/cn";
-
-const CertButton = ({ courseId }: { courseId: string }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [certAssets, setCertAssets] = useState<null | any>(null);
-  const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
-  const { rewardDetailLoading, rewardDetails } = useAppSelector(selectReward);
-  const dispatch = useAppDispatch();
-
-  const onViewCert = async () => {
-    if (rewardDetails.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
-      if (!rewardDetails.is_claimed) {
-        setIsLoading(true);
-        try {
-          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
-          setCertAssets({
-            image: data.data.certificate_image_url,
-            pdf: data.data.certificate_pdf_url,
-            courseName: data.data.course_title,
-            firstName: data.data.first_name,
-            lastName: data.data.last_name,
-          });
-          await dispatch(getRewardDetail(courseId))
-        } catch (error) {
-          toast.warning("Something wrong...");
-          return null;
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setCertAssets({
-          image: rewardDetails.certificate_image_url,
-          pdf: rewardDetails.certificate_pdf_url,
-          courseName: rewardDetails.title,
-          firstName: rewardDetails.first_name,
-          lastName: rewardDetails.last_name,
-        });
-      }
-
-      setIsOpenPopup(true);
-    }
-  };
-
-  useEffect(() => {
-    dispatch(getRewardDetail(courseId));
-  }, [dispatch, courseId]);
-
-  return (
-    <div>
-      <Button
-        loading={rewardDetailLoading || isLoading}
-        disabled={rewardDetailLoading || isLoading}
-        onClick={onViewCert}
-        className="w-[184px]"
-      >
-        Certificate
-      </Button>
-      {isOpenPopup ? (
-        <CertPopup onClose={() => setIsOpenPopup(false)} assets={certAssets} />
-      ) : null}
-    </div>
-  );
-};
+import MyCertificate from "@/components/MyCertificate";
 
 export default function ResultQuiz() {
   const { listResultData, loadingListResult, isViewResultInCourse } =
@@ -286,7 +225,9 @@ export default function ResultQuiz() {
                 </Button>
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <CertButton courseId={listResultData.course_id} />
+                  <div className="w-[184px]">
+                    <MyCertificate courseId={listResultData.course_id} />
+                  </div>
                 ) : null}
               </div>
             </div>

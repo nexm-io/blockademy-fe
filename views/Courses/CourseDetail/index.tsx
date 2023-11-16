@@ -21,6 +21,7 @@ import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
 import BackToTop from "@/components/BackToTop";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
+import MyCertificate from "@/components/MyCertificate";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -197,14 +198,14 @@ const CourseDetail = () => {
 
   const handleCheckCompletedCourse = useCallback(async () => {
     if (!isCompletedStep) return;
-    if (completedLesson.includes(+lessonId)) return
+    if (completedLesson.includes(+lessonId)) return;
     if (!isAuthenticated || !token) {
       if (isNextLesson && !lessonOrder.last) {
         router.push(urlNextLesson);
         setIsNextLesson(false);
       }
-      return
-    };
+      return;
+    }
     try {
       const response = await api.post(
         `/api/v10/course/${courseId}/lesson/${lessonId}`
@@ -365,16 +366,9 @@ const CourseDetail = () => {
                       ) : null}
                       {!isNotCompletedLesson &&
                       courseDetail?.is_completed_assignment === 1 ? (
-                        <Link
-                          href={`/reward/${courseId}`}
-                          className="w-full md:w-auto inline-block"
-                        >
-                          <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
-                            <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                              My Certificate
-                            </span>
-                          </Button>
-                        </Link>
+                        <div className="w-[160px]">
+                          <MyCertificate courseId={courseDetail.id} />
+                        </div>
                       ) : null}
 
                       {/* <Link
@@ -475,7 +469,7 @@ const CourseDetail = () => {
                                     !(
                                       completedLesson.includes(+lessonId) ||
                                       lesson.is_complete === 1
-                                    )  && isAuthenticated
+                                    ) && isAuthenticated
                                   }
                                   onClick={() => {
                                     const url = getNextLessonUrl();
