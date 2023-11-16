@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    // enterFullScreen();
+    enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -282,7 +282,7 @@ const TestDetail = () => {
     if (isSubmitInButton) return;
     const handleKeyPress = async (event: any) => {
       if (!document.fullscreenElement) {
-        // await handleSendQuiz();
+        await handleSendQuiz();
       }
     };
 
@@ -664,7 +664,7 @@ const TestDetail = () => {
                     </FormControl>
                   </CardContent>
                 )}
-                <div className="flex items-center  justify-between flex-col sm:flex-row">
+                <div className="flex items-center  justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                   <Button
                     className={` !bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
                       quesDetail?.order === 1 ? "" : "hover:!bg-[#B7E5FF]"
