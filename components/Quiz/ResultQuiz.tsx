@@ -59,7 +59,7 @@ const CertButton = ({ courseId }: { courseId: string }) => {
             firstName: data.data.first_name,
             lastName: data.data.last_name,
           });
-          toast.success("Claim certificate is success");
+          await dispatch(getRewardDetail(courseId))
         } catch (error) {
           toast.warning("Something wrong...");
           return null;
