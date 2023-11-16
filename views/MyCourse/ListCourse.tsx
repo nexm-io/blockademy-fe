@@ -14,11 +14,11 @@ const ListCourse: React.FC = () => {
   return (
     <div className="w-full relative px-8 pt-[80px]">
       <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
-        My Courses
+        My Learning
       </h2>
       <div className='flex gap-[40px] mt-[40px]'>
         <Link
-          href="/my-courses?tab=progress"
+          href="/my-learning?tab=progress"
           className={`course-status ${
             search !== TAB_STATUS.COMPLETED ? "active" : ""
           }`}
@@ -26,7 +26,7 @@ const ListCourse: React.FC = () => {
           In Progress
         </Link>
         <Link
-          href="/my-courses?tab=completed"
+          href="/my-learning?tab=completed"
           className={`course-status ${
             search === TAB_STATUS.COMPLETED ? "active" : ""
           }`}
