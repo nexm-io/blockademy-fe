@@ -11,16 +11,16 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import slugifyText from "@/utils/slugifyText";
-import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
-import { setIsViewResultInCourse } from "@/redux/features/quiz/action";
 import BackToTop from "@/components/BackToTop";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
+import { toast } from "react-toastify";
+import { Share } from "@/components/Icon";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -140,6 +140,7 @@ const CourseDetail = () => {
   const handleApplyCourse = async () => {
     if (!isLogin) {
       router.push("/login");
+      toast.info("Please login to continue");
       return;
     }
     setLoading(true);
@@ -331,79 +332,6 @@ const CourseDetail = () => {
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
                 </h1>
-                <div className="flex items-center flex-wrap gap-2">
-                  {isLogin && registered && courseDetail?.assigment_id ? (
-                    <>
-                      {courseDetail?.is_completed_assignment === 0 ? (
-                        <Button
-                          className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                          disabled={isNotCompletedLesson}
-                          onClick={() => {
-                            if (isNotCompletedLesson) return;
-                            router.push(`/quiz/${courseDetail?.assigment_id}`);
-                          }}
-                        >
-                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                            Complete Quiz
-                          </span>
-                        </Button>
-                      ) : !isNotCompletedLesson &&
-                        courseDetail?.is_completed_assignment === 1 ? (
-                        <Button
-                          onClick={() => {
-                            dispatch(setIsViewResultInCourse(true));
-                            router.push(
-                              `/result/${courseDetail?.assigment_id}`
-                            );
-                          }}
-                          className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                        >
-                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                            Quiz Result
-                          </span>
-                        </Button>
-                      ) : null}
-                      {!isNotCompletedLesson &&
-                      courseDetail?.is_completed_assignment === 1 ? (
-                        <Link
-                          href={`/reward/${courseId}`}
-                          className="w-full md:w-auto inline-block"
-                        >
-                          <Button className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full">
-                            <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
-                              My Certificate
-                            </span>
-                          </Button>
-                        </Link>
-                      ) : null}
-
-                      {/* <Link
-                        href="/courses/leaderboard?id=1"
-                        className="w-full md:w-auto inline-block"
-                      >
-                        <Button className="!px-6 bg-green-300 group hover:bg-green-300/50 w-full">
-                          <span className="text-green-200 group-hover:text-green-200/80 font-bold transition-all">
-                            Leaderboard
-                          </span>
-                        </Button>
-                      </Link> */}
-                    </>
-                  ) : (
-                    <Button
-                      onClick={handleApplyCourse}
-                      className="!px-6 w-full"
-                    >
-                      Apply Course
-                      {loading && (
-                        <Loader3
-                          className="animate-spin ml-2"
-                          width={25}
-                          height={25}
-                        />
-                      )}
-                    </Button>
-                  )}
-                </div>
               </div>
               {isLogin ? null : (
                 <div className="bg-blue-200 py-3 px-4 flex gap-2">
@@ -415,8 +343,36 @@ const CourseDetail = () => {
                 </div>
               )}
             </div>
+
+            {/* PASSED CASE */}
+            {isLogin && courseDetail?.is_registered === 1 && courseDetail?.is_completed === 1 && courseDetail?.is_completed_assignment === 1 && <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
+              <div>
+                <Image src="/images/cert-example.jpg" height={381} width={580} alt="demo certificate" />
+              </div>
+              <div className="h-fit flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                  <p className="text-2xl font-bold text-blue-100">Congratulations on getting your certificate!</p>
+                  <p className="text-xl text-grey-700">You completed this course on Nov 15, 2023</p>
+                  <p className="text-xl text-grey-700">Grade Achieved: 80%</p>
+                </div>
+                <div className="flex items-center flex-wrap gap-4">
+                  <Button className="min-w-[184px]">
+                    Issue NFT
+                  </Button>
+                  <Button className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group">
+                    <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                      Download Certificate
+                    </span>
+                  </Button>
+                  <div className="cursor-pointer">
+                    <Share />
+                  </div>
+                </div>
+              </div>
+            </div>}
+
             <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
+              <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
                 <div className="w-full">
                   {courseDetail ? (
                     courseDetail.lesson_data.map(
@@ -455,86 +411,20 @@ const CourseDetail = () => {
                                 }}
                               />
                             </div>
-                            <div className="w-full flex items-center justify-between">
-                              {!lessonOrder.first ? (
-                                <Button
-                                  className="!px-6 w-auto"
-                                  onClick={() => {
-                                    const url = getPrevLessonUrl();
-                                    router.push(url);
-                                  }}
-                                >
-                                  Previous Lesson
-                                </Button>
-                              ) : null}
-
-                              {!lessonOrder.last ? (
-                                <Button
-                                  className="!px-6 w-auto ml-auto"
-                                  disabled={
-                                    !(
-                                      completedLesson.includes(+lessonId) ||
-                                      lesson.is_complete === 1
-                                    )  && isAuthenticated
-                                  }
-                                  onClick={() => {
-                                    const url = getNextLessonUrl();
-                                    router.push(url);
-                                  }}
-                                >
-                                  Next Lesson
-                                </Button>
-                              ) : (
-                                <>
-                                  {!registered ? (
-                                    <Button
-                                      onClick={handleApplyCourse}
-                                      className="md:w-auto inline-block !px-6 group w-full ml-auto"
-                                    >
-                                      Apply Course
-                                      {loading && (
-                                        <Loader3
-                                          className="animate-spin ml-2"
-                                          width={25}
-                                          height={25}
-                                        />
-                                      )}
-                                    </Button>
-                                  ) : !isNotCompletedLesson &&
-                                    courseDetail?.is_completed_assignment ===
-                                      1 ? (
-                                    <Button
-                                      onClick={() => {
-                                        dispatch(setIsViewResultInCourse(true));
-                                        router.push(
-                                          `/result/${courseDetail?.assigment_id}`
-                                        );
-                                      }}
-                                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
-                                    >
-                                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                                        Quiz Result
-                                      </span>
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
-                                      disabled={isNotCompletedLesson}
-                                      onClick={() => {
-                                        if (isNotCompletedLesson) return;
-                                        router.push(
-                                          `/quiz/${courseDetail?.assigment_id}`
-                                        );
-                                      }}
-                                    >
-                                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                                        Complete Quiz
-                                      </span>
-                                    </Button>
-                                  )}
-                                </>
-                              )}
-                            </div>
+                            {courseDetail?.is_completed_assignment === 1 && <Button
+                              className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto"
+                              disabled={isNotCompletedLesson}
+                              onClick={() => {
+                                if (isNotCompletedLesson) return;
+                                router.push(
+                                  `/quiz/${courseDetail?.assigment_id}`
+                                );
+                              }}
+                            >
+                              <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                                Learn Again
+                              </span>
+                            </Button>}
                           </>
                         )
                     )
@@ -544,8 +434,85 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <div className="h-full w-full sticky top-[100px]">
-                <div className="flex flex-col gap-4 md:px-0 ">
+              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last">
+                <div className="flex flex-col gap-5 md:px-0">
+                  {!isLogin && (
+                    <div className="flex justify-end">
+                      <Button
+                        onClick={handleApplyCourse}
+                        className="!px-6 min-w-[184px]"
+                      >
+                        Apply Course
+                        {loading && (
+                          <Loader3
+                            className="animate-spin ml-2"
+                            width={25}
+                            height={25}
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* APPLY COURSE */}
+                  {isLogin && !registered && courseDetail?.is_registered === 0 && (
+                    <div className="flex justify-end">
+                      <Button
+                        onClick={handleApplyCourse}
+                        className="!px-6 min-w-[184px]"
+                      >
+                        Apply Course
+                        {loading && (
+                          <Loader3
+                            className="animate-spin ml-2"
+                            width={25}
+                            height={25}
+                          />
+                        )}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* TRY AGAIN */}
+                  {isLogin && courseDetail?.is_registered === 1 && courseDetail?.is_completed === 1 && courseDetail?.is_completed_assignment === 0 && (
+                    <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between gap-2 flex-1">
+                      <div className="text-center">
+                        <p className="text-lg">Your Score</p>
+                        <p className="text-[28px] leading-10 text-red-100">20%</p>
+                      </div>
+                      <div className="flex items-center">
+                        <Button
+                          className="!px-6 min-w-[184px]"
+                          disabled={isNotCompletedLesson}
+                          onClick={() => {
+                            if (isNotCompletedLesson) return;
+                            router.push(`/quiz/${courseDetail?.assigment_id}`);
+                          }}
+                        >
+                          Try Again
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* COMPLETE QUIZ */}
+                  {isLogin && courseDetail?.assignment_status.slug !== ASSIGNMENT_STATUS.FAILED && courseDetail?.is_completed_assignment === 0 && registered && (
+                    <div className="flex justify-end">
+                      <Button
+                        className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 min-w-[184px]"
+                        disabled={isNotCompletedLesson}
+                        onClick={() => {
+                          if (isNotCompletedLesson) return;
+                          router.push(`/quiz/${courseDetail?.assigment_id}`);
+                        }}
+                      >
+                        <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                          Complete Quiz
+                        </span>
+                      </Button>
+                    </div>
+                  )}
+
                   {courseDetail?.lesson_data.length !== 0 &&
                     !isLoading &&
                     courseDetail?.lesson_data.map((lesson, index) => (
