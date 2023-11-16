@@ -153,20 +153,56 @@ export default function ResultQuiz() {
   return (
     <>
       {loadingListResult ? (
-        <Stack sx={{ maxWidth: "650px", py: 10, m: "auto" }}>
-          <Skeleton variant="text" sx={{ maxWidth: "250px" }} height={50} />
-          <Skeleton variant="text" sx={{ maxWidth: "300px" }} height={50} />
-          <Skeleton
-            variant="rounded"
-            height={227}
-            sx={{ borderRadius: "20px", mb: "30px" }}
-          />
-          <Skeleton
-            variant="rounded"
-            height={227}
-            sx={{ borderRadius: "20px" }}
-          />
-        </Stack>
+        <Box sx={{ py: 10, m: "auto" }}>
+          <div className="container">
+            <Skeleton
+              variant="rounded"
+              sx={{ maxWidth: "300px" }}
+              height={24}
+            />
+            <div className="flex flex-col md:flex-row justify-between mt-[52px]">
+              <div className="text-[#1E2329] text-[36px] leading-[40px] font-bold">
+                Result
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Skeleton variant="rectangular" height={118} />
+          </div>
+
+          <div className="container mt-10">
+            <Skeleton
+              variant="rounded"
+              sx={{ maxWidth: "300px" }}
+              height={40}
+            />
+            <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
+              {Array(4)
+                .fill(0)
+                .map((z, i) => (
+                  <div key={i}>
+                    <Skeleton
+                      variant="rounded"
+                      sx={{ maxWidth: "100px" }}
+                      height={28}
+                    />
+                    <Skeleton
+                      variant="rounded"
+                      sx={{ maxWidth: "500px", marginTop: "12px" }}
+                      height={32}
+                    />
+                    <div className="mt-8 grid gap-2">
+                      <Skeleton variant="rectangular" height={58} />
+                      <Skeleton variant="rectangular" height={58} />
+                      <Skeleton variant="rectangular" height={58} />
+                      <Skeleton variant="rectangular" height={58} />
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </Box>
       ) : (
         <Box sx={{ py: 10, m: "auto" }}>
           <div className="container">
@@ -246,7 +282,7 @@ export default function ResultQuiz() {
             }}
           >
             <div className="container py-6 flex flex-col md:flex-row gap-3 items-center justify-between">
-              <div className="flex gap-3">
+              <div className="flex gap-3 md:flex-row flex-col items-center md:items-start">
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -278,12 +314,12 @@ export default function ResultQuiz() {
                 )}
 
                 <div className="grid gap-3">
-                  <p className="text-[24px] leading-[32px] text-[#1E2329]">
+                  <p className="text-[24px] leading-[32px] text-[#1E2329] text-center md:text-left">
                     {listResultData?.result === RESULT_QUIZ_PASS
                       ? "Congratulations! You passed!"
                       : "Sorry! You failed!"}
                   </p>
-                  <p className="text-[18px] leading-[26px] text-[#616161]">
+                  <p className="text-[18px] leading-[26px] text-[#616161] text-center md:text-left">
                     {listResultData?.result === RESULT_QUIZ_PASS
                       ? "We believe in your ability to overcome challenges. Keep striving for excellence!"
                       : "Review the material and try again."}
