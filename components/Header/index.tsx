@@ -157,17 +157,20 @@ const Header = () => {
                           My Courses
                         </Link>
                       </li> */}
-                       <li className=" px-4 ">
-                        <Link className="hover:text-blue-100 " href="/my-courses">
-                          My Courses
+                      <li className=" px-4 ">
+                        <Link
+                          className="hover:text-blue-100 "
+                          href="/my-courses"
+                        >
+                          My Learning
                         </Link>
                       </li>
                       <li className=" px-4 ">
                         <Link
                           className="hover:text-blue-100 "
-                          href="/my-rewards"
+                          href="/accomplishments"
                         >
-                          My Accomplishments
+                          Accomplishments
                         </Link>
                       </li>
                       <li className="px-4">

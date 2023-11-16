@@ -14,3 +14,15 @@ export const getRewardDetail = createAsyncThunk(
     }
   }
 );
+
+export const getListRewards = createAsyncThunk(
+  "reward/get-list-reward",
+  async () => {
+    try {
+      const { data: reward } = await api.get(`/api/v10/list-reward-by-user`);
+      return reward;
+    } catch (error) {
+      return null;
+    }
+  }
+);
