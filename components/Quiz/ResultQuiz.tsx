@@ -41,6 +41,7 @@ import cn from "@/services/cn";
 
 const CertButton = ({ courseId }: { courseId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [certAssets, setCertAssets] = useState<null | any>(null);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
   const { rewardDetailLoading, rewardDetails } = useAppSelector(selectReward);
   const dispatch = useAppDispatch();
@@ -50,8 +51,14 @@ const CertButton = ({ courseId }: { courseId: string }) => {
       if (!rewardDetails.is_claimed) {
         setIsLoading(true);
         try {
-          await api.get(`/api/v10/claim-reward/${courseId}`);
-          dispatch(getRewardDetail(courseId as string));
+          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
+          setCertAssets({
+            image: data.data.certificate_image_url,
+            pdf: data.data.certificate_pdf_url,
+            courseName: data.data.course_title,
+            firstName: data.data.first_name,
+            lastName: data.data.last_name,
+          });
           toast.success("Claim certificate is success");
         } catch (error) {
           toast.warning("Something wrong...");
@@ -59,11 +66,17 @@ const CertButton = ({ courseId }: { courseId: string }) => {
         } finally {
           setIsLoading(false);
         }
+      } else {
+        setCertAssets({
+          image: rewardDetails.certificate_image_url,
+          pdf: rewardDetails.certificate_pdf_url,
+          courseName: rewardDetails.title,
+          firstName: rewardDetails.first_name,
+          lastName: rewardDetails.last_name,
+        });
       }
+
       setIsOpenPopup(true);
-      // TODO: show cert
-    } else {
-      // TODO: show message
     }
   };
 
@@ -72,12 +85,19 @@ const CertButton = ({ courseId }: { courseId: string }) => {
   }, [dispatch, courseId]);
 
   return (
-    <>
-      <Button loading={rewardDetailLoading || isLoading} onClick={onViewCert}>
+    <div>
+      <Button
+        loading={rewardDetailLoading || isLoading}
+        disabled={rewardDetailLoading || isLoading}
+        onClick={onViewCert}
+        className="w-[184px]"
+      >
         Certificate
       </Button>
-      {isOpenPopup ? <CertPopup onClose={() => setIsOpenPopup(false)} /> : null}
-    </>
+      {isOpenPopup ? (
+        <CertPopup onClose={() => setIsOpenPopup(false)} assets={certAssets} />
+      ) : null}
+    </div>
   );
 };
 
