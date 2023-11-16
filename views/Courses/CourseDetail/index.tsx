@@ -353,7 +353,7 @@ const CourseDetail = () => {
                 <div className="flex flex-col gap-2">
                   <p className="text-2xl font-bold text-blue-100">Congratulations on getting your certificate!</p>
                   <p className="text-xl text-grey-700">You completed this course on Nov 15, 2023</p>
-                  <p className="text-xl text-grey-700">Grade Achieved: 80%</p>
+                  <p className="text-xl text-grey-700">Grade Achieved: {courseDetail?.aissignment_grade || "--"}%</p>
                 </div>
                 <div className="flex items-center flex-wrap gap-4">
                   <Button className="min-w-[184px]">
