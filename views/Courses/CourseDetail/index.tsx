@@ -366,7 +366,7 @@ const CourseDetail = () => {
                       ) : null}
                       {!isNotCompletedLesson &&
                       courseDetail?.is_completed_assignment === 1 ? (
-                        <div className="w-[160px]">
+                        <div className="w-[184px]">
                           <MyCertificate courseId={courseDetail.id} />
                         </div>
                       ) : null}
