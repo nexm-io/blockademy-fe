@@ -12,7 +12,7 @@ const ListCourse: React.FC = () => {
   const search = searchParams.get('tab')
 
   return (
-    <div className="w-full relative px-8 pt-[80px]">
+    <div className="w-full relative pt-[80px]">
       <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
         My Learning
       </h2>
@@ -35,7 +35,7 @@ const ListCourse: React.FC = () => {
         </Link>
       </div>
 
-      {search === TAB_STATUS.COMPLETED ? <CompletedTab/> :  <InProgressTab />}
+      {search === TAB_STATUS.COMPLETED ? <CompletedTab /> :  <InProgressTab />}
     </div>
   )
 }

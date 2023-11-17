@@ -15,7 +15,7 @@ type Props = {
 
 const Courses: React.FC<Props> = ({ courses, loading }) => {
   return (
-    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7`)}>
+    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7`)}>
       {loading ? (
         <CoursesLoadingV2 />
       ) : courses.length !== 0 ? (

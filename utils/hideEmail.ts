@@ -4,7 +4,7 @@ export function hideEmail(email: string): string {
     if (atIndex !== -1) {
       const username = email.substring(0, atIndex);
       const maskedUsername =
-        username.length > 3 ? username.substring(0, 3) + "*".repeat(username.length - 3) : username;
+        username.length > 3 ? username.substring(0, 3) + "*" : username;
       return maskedUsername + email.substring(atIndex);
     }
     return email;

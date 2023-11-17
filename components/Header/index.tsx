@@ -99,7 +99,7 @@ const Header = () => {
           }
         )}
       >
-        <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center gap-[105px]">
+        <div className="md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] flex items-center gap-[105px] flex-1 md:flex-[unset] justify-center md:justify-start">
           <Link href="/">
             <Image alt="logo" src={logo} width={164} height={49}></Image>
           </Link>
@@ -117,7 +117,7 @@ const Header = () => {
             ))}
           </div>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
+        <div className="flex gap-2 w-auto prose md:justify-normal justify-end">
           {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
@@ -146,7 +146,7 @@ const Header = () => {
                         height={50}
                         className="w-[50px] h-[50px] rounded-full select-none object-cover"
                       />
-                      <Link href="/my-account" className="font-bold ml-[8px]">
+                      <Link href="/my-account" className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden">
                         {email}
                       </Link>
                     </div>
@@ -208,18 +208,20 @@ const Header = () => {
           )}
         </div>
         <div
-          className="hambuger block md:hidden"
+          className="-order-2 hambuger block md:hidden"
           onClick={() => setShowMenu((prev) => !prev)}
         >
           <span></span>
         </div>
         <div
           className={cn(
-            "fixed top-[72px] bg-white-100 transition-all duration-[0.6s] ease-in-out left-0 right-0 bottom-0 translate-x-full",
-            { "!translate-x-0": isShowMenu }
+            "fixed top-[72px] left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible",
+            { "!visible": isShowMenu }
           )}
         >
-          <div className="flex flex-col items-center justify-center gap-6 text-base font-normal text-black-100 mt-10">
+
+          <div className={cn("absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out", { "!visible opacity-100": isShowMenu })}></div>
+          <div className={cn("flex flex-col items-center h-full gap-6 text-base font-normal text-black-100  max-w-[320px] bg-white-100 relative z-[10] pt-10 transition-all duration-[0.6s] ease-in-out left-0 right-0 bottom-0 -translate-x-full", { "!translate-x-0": isShowMenu })}>
             {MENU.map((z) => (
               <Link
                 href={z.pathname}
