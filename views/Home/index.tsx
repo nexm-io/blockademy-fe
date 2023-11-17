@@ -12,7 +12,6 @@ import BackToTop from "@/components/BackToTop";
 const HomeView = () => {
   return (
     <>
-      <TopBanner />
       <MainSection />
       <TopCourses />
       <MasterSection />

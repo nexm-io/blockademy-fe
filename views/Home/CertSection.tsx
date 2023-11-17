@@ -1,5 +1,6 @@
 import Button from "@/components/Common/Button";
 import Image from "next/image";
+import Link from "next/link";
 
 const CertSection = () => {
   return (
@@ -29,11 +30,13 @@ const CertSection = () => {
               <p>3. View On-chain Proof</p>
             </div>
             <div>
-              <Button className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50">
-                <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80">
-                  Learn for Free
-                </span>
-              </Button>
+              <Link href="/courses">
+                <Button className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50">
+                  <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80">
+                    Learn for Free
+                  </span>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

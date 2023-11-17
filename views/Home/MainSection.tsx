@@ -6,6 +6,7 @@ import api from "@/services/axios";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
+import TopBanner from "./TopBanner";
 
 const MainSection = () => {
   const [course, setCourse] = useState<any>(null);
@@ -28,6 +29,16 @@ const MainSection = () => {
 
   return (
     <section>
+      <Link
+        href={
+          course
+            ? `/courses/${course?.course_id}?lesson_id=${course?.lesson_first?.lesson_id}`
+            : "/"
+        }
+      >
+        <TopBanner />
+      </Link>
+
       <div className="container grid grid-cols-1 lg:grid-cols-2 lg:gap-10 pb-[60px]">
         <div className="grid gap-6 pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
           <h3 className="text-black-400 text-[56px] leading-[64px] font-bold">
@@ -37,7 +48,9 @@ const MainSection = () => {
             Make blockchain learning become easy, engaging, and gamified.
           </p>
           <div>
-            <Button>Learn for Free</Button>
+            <Link href="/courses">
+              <Button>Learn for Free</Button>
+            </Link>
           </div>
         </div>
         <div className="relative">
@@ -48,7 +61,7 @@ const MainSection = () => {
               <div className="skeleton bg-gray-400/20 h-[293px] w-full rounded"></div>
               <div className="skeleton mt-4 bg-gray-400/20 h-[28px] w-2/3 rounded"></div>
               <div className="text-base text-[#616161] flex items-center gap-[25px] mt-4">
-              <div className="skeleton bg-gray-400/20 h-[24px] w-[70px] rounded"></div>
+                <div className="skeleton bg-gray-400/20 h-[24px] w-[70px] rounded"></div>
                 <div className="flex gap-1 items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
