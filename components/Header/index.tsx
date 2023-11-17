@@ -70,7 +70,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (data !== null) setEmail(data.email);
+    if (data !== null) setEmail(hideEmail(data.email));
   }, [data]);
   useEffect(() => {
     setImage(userAccount?.image);
@@ -183,15 +183,14 @@ const Header = () => {
                         </Link>
                       </li>
                       <li className="w-full pt-6">
-                        <Button
-                          size="small"
-                          className="bg-red-200/10 leading-normal w-full hover:bg-red-200 hover:text-white-100 py-[13px] text-red-200"
+                        <button
+                          className="bg-red-200/10 leading-normal w-full hover:bg-red-200 hover:text-white-100 py-[13px] text-red-200 flex items-center justify-center rounded-[4px] transition-all duration-200 ease-linear"
                           onClick={handleLogout}
                         >
                           <span className="block text-base leading-6">
                             Logout
                           </span>
-                        </Button>
+                        </button>
                       </li>
                     </ul>
                   </ul>
