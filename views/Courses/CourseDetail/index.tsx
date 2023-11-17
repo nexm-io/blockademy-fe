@@ -40,6 +40,7 @@ const CourseDetail = () => {
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
+  const [cerImage, setCerImage] = useState("");
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -206,6 +207,10 @@ const CourseDetail = () => {
     const tweetUrl = `https://twitter.com/intent/tweet?url=${courseDetail?.certificate_image_url}&text=`;
     window.open(tweetUrl, "_blank");
   };
+
+  useEffect(() => {
+    setCerImage(courseDetail?.certificate_image_url || "");
+  }, [courseDetail]);
 
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
@@ -400,11 +405,14 @@ const CourseDetail = () => {
                 <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
                   <div>
                     <Image
-                      src={courseDetail?.certificate_image_url}
+                      src={cerImage}
+                      onError={() =>
+                        setCerImage("/images/default-certificate.jpg")
+                      }
                       height={381}
                       blurDataURL={PLACEHOLDER_BASE64}
                       width={580}
-                      alt="demo certificate"
+                      alt="blockademy-certificate"
                     />
                   </div>
                   <div className="h-fit flex flex-col gap-8">
@@ -425,12 +433,13 @@ const CourseDetail = () => {
                       </p>
                     </div>
                     <div className="flex items-center flex-wrap gap-4">
-                      <Button className="min-w-[184px]">Issue NFT</Button>
+                      <Button className="min-w-[184px] !px-3">Get Certificate</Button>
+                      {/* <Button className="min-w-[184px]">Issue NFT</Button> */}
                       <Button
-                        className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group"
+                        className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                         onClick={exportPDF}
                       >
-                        <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                        <span className="text-blue-700 group-hover:text-blue-700/80transition-all">
                           Download Certificate
                         </span>
                       </Button>
@@ -556,14 +565,14 @@ const CourseDetail = () => {
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
-                      <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between gap-2 flex-1">
+                      <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
                         <div className="text-center">
-                          <p className="text-lg">Your Score</p>
+                          <p className="text-lg">Your Highest Score</p>
                           <p className="text-[28px] leading-10 text-red-100">
                             {courseDetail?.aissignment_grade}%
                           </p>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center justify-center">
                           <Button
                             className="!px-6 min-w-[184px]"
                             disabled={isNotCompletedLesson}

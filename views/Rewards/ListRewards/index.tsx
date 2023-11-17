@@ -65,7 +65,6 @@ export default function ListRewards() {
               <RewardItem
                 key={reward.course_id}
                 data={reward}
-                rewardDetailLoading={rewardRx.listRewardLoading}
               />
             ))
         )}

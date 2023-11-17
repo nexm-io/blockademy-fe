@@ -1,4 +1,5 @@
 export type RewardDetails = {
+  aissignment_grade: number;
   course_id: string;
   title: string;
   first_name: string | null;
@@ -25,6 +26,7 @@ export type RewardReducerType = {
 export const defaultRewardReducer: RewardReducerType = {
   rewardDetailLoading: true,
   rewardDetails: {
+    aissignment_grade: 0,
     course_id: "",
     title: "",
     first_name: "",
