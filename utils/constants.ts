@@ -27,7 +27,7 @@ export const soleil = localFont({
     },
     {
       path: "../public/fonts/SoleilBook.otf",
-      weight: "normal",
+      weight: "400",
     },
     {
       path: "../public/fonts/SoleilBold.otf",
