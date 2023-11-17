@@ -433,7 +433,8 @@ const CourseDetail = () => {
                       </p>
                     </div>
                     <div className="flex items-center flex-wrap gap-4">
-                      <Button className="min-w-[184px]">Issue NFT</Button>
+                      <Button className="min-w-[184px] !px-3">Get Certificate</Button>
+                      {/* <Button className="min-w-[184px]">Issue NFT</Button> */}
                       <Button
                         className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                         onClick={exportPDF}

@@ -23,29 +23,27 @@ const RewardItem = ({
   }, [certificate_image_url]);
 
   return (
-    <div className="px-6 py-4 flex items-start gap-[30px] w-full hover:bg-gray-900 rounded-lg transition-all duration-300 ease-linear border border-grey-100">
+    <div className="px-8 py-6 flex flex-col md:flex-row items-start gap-[30px] w-full hover:bg-gray-900 rounded-lg transition-all duration-300 ease-linear border border-grey-100">
       <Image
         src={cerImage}
         height={381}
         onError={() => setCerImage("/images/default-certificate.jpg")}
         blurDataURL={PLACEHOLDER_BASE64}
         width={580}
-        className="w-[130px]"
+        className="w-full md:w-[130px]"
         alt="blockademy-certificate"
       />
-      <div className="flex-1 flex flex-col justify-between h-full">
-        <div className="flex flex-col gap-2">
-          <div>
+      <div className="flex-1 flex flex-col lg:justify-between h-full w-full">
+        <div className="flex lg:justify-between md:items-end flex-col md:flex-row gap-6 w-full">
+          <div className="flex-1 flex flex-col gap-2">
             <h5 className="text-2xl line-clamp-2">{title}</h5>
             <p className="text-[14px] capitalize text-green-400">
               {assignment_status.name}
             </p>
+            <p className="text-grey-700 text-xl">
+              Grade Achieved: {aissignment_grade || "--"}%
+            </p>
           </div>
-          <p className="text-grey-700 text-xl">
-            Grade Achieved: {aissignment_grade || "--"}%
-          </p>
-        </div>
-        <div className="flex justify-end">
           <div className="w-[184px]">
             <MyCertificate
               btnClass="!bg-blue-100 !group hover:bg-blue-100/50"
