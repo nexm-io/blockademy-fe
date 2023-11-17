@@ -131,6 +131,7 @@ const PreviewQuiz: React.FC<
                               sx={{ mb: "10px" }}
                             >
                               <FormControlLabel
+                                disabled
                                 value={item?.id}
                                 control={
                                   <Radio
