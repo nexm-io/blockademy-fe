@@ -1,7 +1,7 @@
 import Image from "next/image";
 const TopBanner = () => {
   return (
-    <div className="relative flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 bg-blue-200 py-6 px-10">
+    <div className="relative w-full flex flex-col md:flex-row items-center justify-center gap-1 md:gap-4 bg-blue-200 py-6 px-10">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="31"
