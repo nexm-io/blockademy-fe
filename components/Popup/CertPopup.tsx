@@ -76,8 +76,8 @@ const CertPopup = ({
             >
               Export PDF
             </Button>
-            <Button className="!py-2 !bg-[#E6C6FF] hover:opacity-75 w-[200px]">
-              <span className="text-[#7C0BA4] font-bold">Issue NFT</span>
+            <Button className="!py-2 w-[200px]">
+              <span className="font-bold">Issue NFT</span>
             </Button>
           </div>
         </div>
