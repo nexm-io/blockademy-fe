@@ -89,6 +89,8 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  aissignment_grade: number;
+  assignment_status: any;
   campaign_id: string;
   campaign_slug: string;
   reward_id: number;

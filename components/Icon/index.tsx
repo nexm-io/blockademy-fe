@@ -107,3 +107,9 @@ export const Medal = ({ className = "" }: { className?: string }) => (
     <path d="M13.9326 20.1501L16.7596 25.4584L17.0022 24.9541L18.071 22.7577L21.0555 23.0236L18.6662 18.4985C17.2485 19.4305 15.6224 19.9979 13.9326 20.1501Z" fill="currentColor" />
   </svg>
 )
+
+export const Share = ({ className = "" }: { className?: string }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className={className} width="32" height="32" viewBox="0 0 32 32" fill="none">
+    <path d="M5 17V25C5 25.5304 5.21071 26.0391 5.58579 26.4142C5.96086 26.7893 6.46957 27 7 27H25C25.5304 27 26.0391 26.7893 26.4142 26.4142C26.7893 26.0391 27 25.5304 27 25V17M16 20V3.5M22 9L16 3L10 9" stroke="#1F37B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+)
