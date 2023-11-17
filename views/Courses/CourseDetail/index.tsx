@@ -24,6 +24,7 @@ import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import slugifyText from "@/utils/slugifyText";
 import { format, parseISO } from "date-fns";
+import cn from "@/services/cn";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -36,6 +37,7 @@ const CourseDetail = () => {
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [viewCertificate, setViewCertificate] = useState<boolean>(false);
   const [stepCompleted, setStepCompleted] = useState<string[]>([]);
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
@@ -403,7 +405,10 @@ const CourseDetail = () => {
               courseDetail?.is_completed === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
-                  <div>
+                  <div
+                    className="relative group cursor-pointer"
+                    onClick={() => setViewCertificate(true)}
+                  >
                     <Image
                       src={cerImage}
                       onError={() =>
@@ -414,6 +419,22 @@ const CourseDetail = () => {
                       width={580}
                       alt="blockademy-certificate"
                     />
+                    <div
+                      className="group-hover:visible group-hover:opacity-100 invisible opacity-0 transition-all duration-500 ease-in-out absolute inset-0 flex justify-center items-center bg-gradient-to-br from-grey-200 to-black-300/50"
+                      style={{
+                        background:
+                          "linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%) / cover no-repeat",
+                      }}
+                    >
+                      <span className="bg-grey-300 p-[10px] rounded">
+                        <Image
+                          src="/icons/expand.svg"
+                          width={40}
+                          height={40}
+                          alt="expand icon"
+                        />
+                      </span>
+                    </div>
                   </div>
                   <div className="h-fit flex flex-col gap-8">
                     <div className="flex flex-col gap-2">
@@ -433,7 +454,9 @@ const CourseDetail = () => {
                       </p>
                     </div>
                     <div className="flex items-center flex-wrap gap-4">
-                      <Button className="min-w-[184px] !px-3">Get Certificate</Button>
+                      <Button className="min-w-[184px] !px-3">
+                        Get Certificate
+                      </Button>
                       {/* <Button className="min-w-[184px]">Issue NFT</Button> */}
                       <Button
                         className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
@@ -521,22 +544,6 @@ const CourseDetail = () => {
                         )}
                       </Button>
                     </div>
-                  )}
-
-                  {/* LEARN AGAIN */}
-                  {courseDetail?.is_completed_assignment === 1 && (
-                    <Button
-                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto min-w-[184px]"
-                      disabled={isNotCompletedLesson}
-                      onClick={() => {
-                        if (isNotCompletedLesson) return;
-                        router.push(`/quiz/${courseDetail?.assigment_id}`);
-                      }}
-                    >
-                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                        Learn Again
-                      </span>
-                    </Button>
                   )}
 
                   {/* APPLY COURSE */}
@@ -630,12 +637,51 @@ const CourseDetail = () => {
                         />
                       </div>
                     ))}
+
+                  {/* LEARN AGAIN */}
+                  {courseDetail?.is_completed_assignment === 1 && (
+                    <Button
+                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                      disabled={isNotCompletedLesson}
+                      onClick={() => {
+                        if (isNotCompletedLesson) return;
+                        router.push(`/quiz/${courseDetail?.assigment_id}`);
+                      }}
+                    >
+                      <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                        Learn Again
+                      </span>
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </section>
         </>
       )}
+
+      <div
+        className={cn({
+          block: viewCertificate,
+          hidden: !viewCertificate,
+        })}
+      >
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black-100 opacity-50 z-[998]"
+          onClick={() => setViewCertificate(false)}
+        ></div>
+        <div
+          className={`border border-gray-400 fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+        >
+          <Image
+            src={cerImage}
+            width={948}
+            height={625}
+            onError={() => setCerImage("/images/default-certificate.jpg")}
+            alt="blockademy certificate"
+          />
+        </div>
+      </div>
 
       {showSharePopup && (
         <InfoPopup
