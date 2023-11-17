@@ -827,8 +827,8 @@ const TestDetail = () => {
             <Box
               sx={{
                 position: "absolute",
-                top: "10px",
-                right: "10px",
+                top: "18px",
+                right: "18px",
                 cursor: "pointer",
               }}
               onClick={handleCloseModal}
@@ -842,7 +842,12 @@ const TestDetail = () => {
             </Box>
             <Grid container columns={12} gap={1}>
               {filterListView?.map((item, index) => (
-                <Grid key={index} xs={12} md={5} sx={{ mr: 4 }}>
+                <Grid
+                  key={index}
+                  xs={12}
+                  md={5}
+                  sx={{ mr: 4, pl: { xs: "30px", md: "4px" } }}
+                >
                   <Box
                     sx={{
                       fontSize: "14px",
