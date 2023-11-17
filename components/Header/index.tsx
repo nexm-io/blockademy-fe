@@ -135,7 +135,7 @@ const Header = () => {
 
                 {isOpen && (
                   <ul
-                    className="absolute -right-[40px] w-[280px] sm:w-[400px] top-[70px] sm:right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
+                    className="absolute w-[280px] sm:w-[400px] top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
                     <div className="flex items-center pb-[24px]">
