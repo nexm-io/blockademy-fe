@@ -450,6 +450,8 @@ const CourseDetail = () => {
 
                   {/* TRY AGAIN */}
                   {isLogin &&
+                    courseDetail?.assignment_status.slug ===
+                      ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
