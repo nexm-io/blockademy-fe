@@ -74,7 +74,7 @@ const TimeUpModal: React.FC<
             component="h2"
             variant="h5"
             sx={{
-              color: "#CF1818",
+              color: "#1F37B3",
               fontSize: "18px",
               fontWeight: 500,
               marginTop: "51px",
@@ -86,14 +86,14 @@ const TimeUpModal: React.FC<
           <DialogContent sx={{ textAlign: "center", px: "40px" }}>
             <DialogContentText
               id="alert-dialog-description"
-              sx={{ maxWidth: "340px", color: "#CF1818", fontWeight: 500 }}
+              sx={{ maxWidth: "340px", color: "#616161", fontWeight: 500 }}
             >
               Please click submit to get your result!
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button
-              className="flex justify-center items-center w-[160px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+              className="flex justify-center items-center w-[184px] h-[50px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
               size="small"
               onClick={handleSendQuiz}
             >

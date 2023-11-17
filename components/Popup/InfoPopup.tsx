@@ -1,5 +1,5 @@
 import { Close } from "@styled-icons/remix-line";
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import Button from "../Common/Button";
 import cn from "@/services/cn";
 
@@ -11,7 +11,7 @@ const InfoPopup = ({
   className = "",
 }: {
   title: string;
-  desc: string;
+  desc: ReactNode;
   onClose: () => void;
   children: ReactElement;
   className?: string;
@@ -38,7 +38,7 @@ const InfoPopup = ({
           )}
         >
           <h2 className="text-blue-100 text-xl">{title}</h2>
-          <p className="text-gr7y-700 text-center mb-4">{desc}</p>
+          {desc}
           {children}
         </div>
       </div>
