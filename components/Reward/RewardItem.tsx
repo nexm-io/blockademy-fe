@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { RewardDetails } from "@/redux/features/reward/type";
 import MyCertificate from "../MyCertificate";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
+import Button from "../Common/Button";
 
 const RewardItem = ({
   data: {
@@ -44,13 +45,8 @@ const RewardItem = ({
               Grade Achieved: {aissignment_grade || "--"}%
             </p>
           </div>
-          <div className="w-[184px]">
-            <MyCertificate
-              btnClass="!bg-blue-100 group hover:!bg-blue-100/50"
-              txtClass="text-white-100 group-hover:text-white-100/80"
-              loadingClass="text-white-100"
-              courseId={course_id}
-            />
+          <div>
+            <Button className="!px-0 min-w-[184px]">View Certificate</Button>
           </div>
         </div>
       </div>
