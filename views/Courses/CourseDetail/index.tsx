@@ -392,7 +392,7 @@ const CourseDetail = () => {
                             <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                               <div
                                 id="content"
-                                className="flex flex-col gap-3 text-xs course-content md:text-base"
+                                className="flex flex-col gap-3 course-content text-base"
                                 dangerouslySetInnerHTML={{
                                   __html: lesson.lesson_description,
                                 }}
@@ -450,6 +450,8 @@ const CourseDetail = () => {
 
                   {/* TRY AGAIN */}
                   {isLogin &&
+                    courseDetail?.assignment_status.slug ===
+                      ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
