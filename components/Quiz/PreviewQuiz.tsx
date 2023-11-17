@@ -10,7 +10,6 @@ import {
   RadioGroup,
   Grid,
 } from "@mui/material";
-import { setListView, setQuizAnswer } from "@/redux/features/quiz/action";
 
 const PreviewQuiz: React.FC<
   PropsWithChildren<{
@@ -21,7 +20,6 @@ const PreviewQuiz: React.FC<
 > = ({ isShowPreview, onClose, handleSubmit }) => {
   const { listView, userAnswer } = useAppSelector((state) => state.quiz);
 
-  const dispatch = useAppDispatch();
   const filterListView = listView?.map((item) => {
     const x = userAnswer.find((i) => i.order === item.order);
     if (x)
@@ -77,33 +75,6 @@ const PreviewQuiz: React.FC<
 
         <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
           {filterListView?.map((item, index) => {
-            const handleChange = (event: any) => {
-              if (!item) return;
-              const answerItem = item?.answer_list?.find(
-                (i) => i.id === Number(event.target.value)
-              );
-              if (!answerItem) return;
-              dispatch(
-                setListView([
-                  {
-                    ...item,
-                    complete: true,
-                    value: answerItem?.answer_text,
-                  },
-                ])
-              );
-              dispatch(
-                setQuizAnswer({
-                  question_id: item?.id,
-                  answer_id: event.target.value,
-                  question_type: item?.question_type,
-                  order: item?.order,
-                  value: event.target.value,
-                  valueAnswer: answerItem?.answer_text,
-                })
-              );
-            };
-
             return (
               <div key={index}>
                 <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
@@ -149,7 +120,6 @@ const PreviewQuiz: React.FC<
                         aria-labelledby="demo-controlled-radio-buttons-group"
                         name="controlled-radio-buttons-group"
                         value={item.answer_id}
-                        onChange={handleChange}
                       >
                         <Grid container columns={12}>
                           {item?.answer_list?.map((item, index) => (
@@ -256,7 +226,7 @@ const PreviewQuiz: React.FC<
             </span>
           </Button>
           <Button
-            className="!bg-[#0068b5] hover:!bg-[#004070] !rounded-[4px] w-[184px] px-2"
+            className="!bg-[#1F37B3] hover:!bg-[#004070] !rounded-[4px] w-[184px] px-2"
             onClick={handleSubmit}
           >
             <span className="text-base">Submit</span>
