@@ -1,31 +1,48 @@
 "use client";
 
 import React from "react";
-import CourseItem from "@/components/Courses/CourseItem";
-import CourseLoading from "@/components/Courses/CoursesLoading";
+import CourseItemV2 from "@/components/Courses/CourseItemV2";
+import CoursesLoadingV2 from "@/components/Courses/CoursesLoadingV2";
 import { CourseTypes } from "@/redux/features/new-courses/type";
 import cn from "@/services/cn";
+import Image from "next/image";
+import Button from "@/components/Common/Button";
 
 type Props = {
   courses: Array<CourseTypes>;
   loading: boolean
 }
 
-const Courses:React.FC<Props> = ({ courses, loading }) => {
+const Courses: React.FC<Props> = ({ courses, loading }) => {
   return (
-    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7`)}>
+    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-7`)}>
       {loading ? (
-        <CourseLoading />
+        <CoursesLoadingV2 />
       ) : courses.length !== 0 ? (
         courses.map((course) => (
-          <CourseItem course={course} key={course.course_id} />
+          <CourseItemV2 course={course} key={course.course_id} />
         ))
       ) : (
-        <div className="text-center col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-4">
-          There are currently no available courses
+        <div className="flex flex-col pt-[40px] items-center justify-center w-full col-span-1 sm:col-span-2 md:col-span-3">
+          <Image
+            alt="folder"
+            src="/images/graphic-folder.svg"
+            width={100}
+            height={100}
+            className="w-[100] h-[100] select-none object-cover"
+          />
+          <div className="flex flex-col items-center my-[40px]">
+            <h3 className="text-2xl text-center font-normal">
+              You don’t have any courses
+            </h3>
+            <p className="text-xl text-center font-light mt-[14px] text-grey-700">
+              Join in the exciting courses of Blockademy now
+            </p>
+          </div>
+          <Button className="!py-[13px] rounded">Discover Now!</Button>
         </div>
       )}
-    </div >
+    </div>
   );
 };
 

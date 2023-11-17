@@ -18,6 +18,9 @@ export interface CourseTypes {
   total_candidate: number;
   total_hit: number;
   lesson_first: any;
+  is_completed_assignment?: number;
+  is_completed?: number;
+  total_lesson_completed?: number;
 }
 
 export interface MetaCoursesType {
