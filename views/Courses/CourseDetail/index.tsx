@@ -217,42 +217,36 @@ const CourseDetail = () => {
   };
 
   const handleGetCertificate = async () => {
-    if (courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
-      if (!certAssets.isClaimed) {
-        setGetCerLoading(true);
-        try {
-          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
-          console.log(data);
-          setCertAssets({
-            image: data.data.certificate_image_url,
-            pdf: data.data.certificate_pdf_url,
-            isClaimed: 1,
-          });
-        } catch (error) {
-          toast.warning("Something wrong...");
-          return null;
-        } finally {
-          setGetCerLoading(false);
-        }
-      } else {
+    if (
+      courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED &&
+      !certAssets.isClaimed
+    ) {
+      setGetCerLoading(true);
+      try {
+        const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
+        console.log(data);
         setCertAssets({
-          image: courseDetail?.certificate_image_url,
-          pdf: courseDetail?.certificate_pdf_url,
-          isClaimed: courseDetail?.is_claimed,
+          image: data.data.certificate_image_url,
+          pdf: data.data.certificate_pdf_url,
+          isClaimed: 1,
         });
+      } catch (error) {
+        toast.warning("Something wrong...");
+        return null;
+      } finally {
+        setGetCerLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    setCertAssets({
-      image: courseDetail?.certificate_image_url,
-      is_claimed: courseDetail?.is_claimed,
-      pdf: courseDetail?.certificate_pdf_url,
-    });
+    if (courseDetail)
+      setCertAssets({
+        image: courseDetail?.certificate_image_url,
+        isClaimed: courseDetail?.is_claimed,
+        pdf: courseDetail?.certificate_pdf_url,
+      });
   }, [courseDetail]);
-
-  console.log(certAssets);
 
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
@@ -636,7 +630,7 @@ const CourseDetail = () => {
                     courseDetail?.is_completed_assignment === 0 && (
                       <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
                         <div className="text-center">
-                          <p className="text-lg">Your Highest Score</p>
+                          <p className="text-sm">Your Highest Score</p>
                           <p className="text-[28px] leading-10 text-red-100">
                             {courseDetail?.aissignment_grade}%
                           </p>
