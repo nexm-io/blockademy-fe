@@ -11,7 +11,6 @@ export const metadata: Metadata = {
 const MyCourse: React.FC = () => {
   return (
     <div className="mt-[74px]">
-       <CourseBanner />
       <PageContainer>
         <ListCourse />
       </PageContainer>
