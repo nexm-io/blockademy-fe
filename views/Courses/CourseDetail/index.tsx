@@ -404,7 +404,7 @@ const CourseDetail = () => {
                       height={381}
                       blurDataURL={PLACEHOLDER_BASE64}
                       width={580}
-                      alt="demo certificate"
+                      alt="blockademy-certificate"
                     />
                   </div>
                   <div className="h-fit flex flex-col gap-8">

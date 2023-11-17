@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import Button from "../Common/Button";
 import api from "@/services/axios";
@@ -7,8 +6,19 @@ import { toast } from "react-toastify";
 import CertPopup from "../Popup/CertPopup";
 import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { RewardDetails } from "@/redux/features/reward/type";
+import cn from "@/services/cn";
 
-const MyCertificate = ({ courseId }: { courseId: string }) => {
+const MyCertificate = ({
+  courseId,
+  btnClass = "",
+  loadingClass = "",
+  txtClass = "",
+}: {
+  courseId: string;
+  btnClass?: string;
+  loadingClass?: string;
+  txtClass?: string;
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [certAssets, setCertAssets] = useState<null | any>(null);
   const [isOpenPopup, setIsOpenPopup] = useState<boolean>(false);
@@ -55,15 +65,15 @@ const MyCertificate = ({ courseId }: { courseId: string }) => {
   };
 
   const getRewardDetail = useCallback(async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const { data: reward } = await api.get(
         `/api/v10/detail-reward-by-user/${courseId}`
       );
       setRewardDetails(reward.data);
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       setRewardDetails(null);
     }
   }, [courseId]);
@@ -77,12 +87,23 @@ const MyCertificate = ({ courseId }: { courseId: string }) => {
       <Button
         disabled={isLoading}
         onClick={onViewCert}
-        className="!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full"
+        className={cn(
+          `!px-6 bg-orange-100 group hover:bg-orange-100/50 w-full`,
+          btnClass
+        )}
       >
         {isLoading ? (
-          <SpinnerIos className={`animate-spin text-orange-200`} size={20} />
+          <SpinnerIos
+            className={cn(`animate-spin text-orange-200`, loadingClass)}
+            size={20}
+          />
         ) : (
-          <span className="text-orange-200 group-hover:text-orange-200/80 font-bold transition-all">
+          <span
+            className={cn(
+              `text-orange-200 group-hover:text-orange-200/80 font-bold transition-all`,
+              txtClass
+            )}
+          >
             View Certificate
           </span>
         )}
