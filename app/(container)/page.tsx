@@ -7,10 +7,8 @@ export const metadata: Metadata = {
 };
 export default function HomePage() {
   return (
-    <PageContainer>
-      <main className="flex flex-col items-center justify-center">
-        <HomeView />
-      </main>
-    </PageContainer>
+    <main className="mt-[82.27px]">
+      <HomeView />
+    </main>
   );
 }
