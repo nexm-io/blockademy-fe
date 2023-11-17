@@ -41,7 +41,7 @@ const TopBody: React.FC<TopBodyProps> = () => {
         <div className="m-6 text-black-100">
           <h3 className="text-[12px] font-bold uppercase mb-2">Hot Course</h3>
           <Image
-            src="/images/hutech-banner.jpg"
+            src="/images/hutech-banner.png"
             alt="hutech banner"
             width={521 * 1.2}
             height={293 * 1.2}
