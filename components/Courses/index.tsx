@@ -8,7 +8,7 @@ import cn from "@/services/cn";
 
 const Courses = ({ courses }: { courses: CoursesType }) => {
   return (
-    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7`)}>
+    <div className={cn(`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-[66px]`)}>
       {courses.coursesLoading ? (
         <CourseLoading />
       ) : courses.data.length !== 0 ? (

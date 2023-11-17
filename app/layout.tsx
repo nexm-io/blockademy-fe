@@ -5,6 +5,16 @@ import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "@mui/material/styles";
 import "react-toastify/dist/ReactToastify.css";
 import muiTheme from "@/themes/muiTheme";
+import Script from "next/script";
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
+
 export const metadata: Metadata = {
   title: {
     template: "%s | Blockademy",
@@ -40,6 +50,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Script
+        src="https://chat-api.spartez-software.com/chat-widget.js"
+        defer
+      />
+      <chat-widget
+        jira-id="0191cdbc-70cf-3d52-91cf-9c3a49b689f2"
+        service-desk-id="1"
+      ></chat-widget>
       <body>
         <Providers>
           <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>

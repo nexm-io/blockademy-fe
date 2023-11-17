@@ -121,27 +121,36 @@ const Header = () => {
           {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
-                className="w-[40px] h-[40px] relative not-prose cursor-pointer select-none"
+                className="w-[50px] h-[50px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
                 <Image
                   alt="avatar-user"
                   src={image || userDefault}
-                  width={40}
-                  height={40}
-                  className="w-[40px] h-[40px] rounded-full select-none"
+                  width={50}
+                  height={50}
+                  className="w-[50px] h-[50px] rounded-full select-none object-cover"
                   onClick={handleUserIconClick}
                 ></Image>
 
                 {isOpen && (
                   <ul
-                    className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"
+                    className="absolute -right-[40px] w-[280px] sm:w-[400px] top-[70px] sm:right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
-                    <Link href="/my-account" className="font-bold mx-4">
-                      {email}
-                    </Link>
-                    <ul className="capitalize flex flex-col gap-2 mt-3 ">
+                    <div className="flex items-center pb-[24px]">
+                      <Image
+                        alt="avatar-user"
+                        src={image || userDefault}
+                        width={50}
+                        height={50}
+                        className="w-[50px] h-[50px] rounded-full select-none object-cover"
+                      />
+                      <Link href="/my-account" className="font-bold ml-[8px]">
+                        {email}
+                      </Link>
+                    </div>
+                    <ul className="capitalize flex flex-col border-t border-solid border-[#EDEDED]">
                       {/* <li className=" px-4 ">
                         <Link className="hover:text-blue-100 " href="/my-account">
                           My Account
@@ -157,7 +166,7 @@ const Header = () => {
                           My Courses
                         </Link>
                       </li> */}
-                      <li className=" px-4 ">
+                      <li className="pt-[16px]">
                         <Link
                           className="hover:text-blue-100 "
                           href="/my-learning"
@@ -165,7 +174,7 @@ const Header = () => {
                           My Learning
                         </Link>
                       </li>
-                      <li className=" px-4 ">
+                      <li className="pt-[16px]">
                         <Link
                           className="hover:text-blue-100 "
                           href="/accomplishments"
@@ -173,14 +182,15 @@ const Header = () => {
                           Accomplishments
                         </Link>
                       </li>
-                      <li className="px-4">
-                        <Button
-                          size="small"
-                          className="bg-red-600 hover:bg-red-800"
+                      <li className="w-full pt-6">
+                        <button
+                          className="bg-red-200/10 leading-normal w-full hover:bg-red-200 hover:text-white-100 py-[13px] text-red-200 flex items-center justify-center rounded-[4px] transition-all duration-200 ease-linear"
                           onClick={handleLogout}
                         >
-                          Logout
-                        </Button>
+                          <span className="block text-base leading-6">
+                            Logout
+                          </span>
+                        </button>
                       </li>
                     </ul>
                   </ul>
