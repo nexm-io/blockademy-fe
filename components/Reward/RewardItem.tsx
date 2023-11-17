@@ -37,7 +37,7 @@ const RewardItem = ({
         <div className="flex lg:justify-between md:items-end flex-col md:flex-row gap-6 w-full">
           <div className="flex-1 flex flex-col gap-2">
             <h5 className="text-2xl line-clamp-2">{title}</h5>
-            <p className="text-[14px] capitalize text-green-400">
+            <p className="text-[14px] font-light capitalize text-green-400">
               {assignment_status.name}
             </p>
             <p className="text-grey-700 text-xl">
