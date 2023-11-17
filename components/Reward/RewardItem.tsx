@@ -46,7 +46,7 @@ const RewardItem = ({
           </div>
           <div className="w-[184px]">
             <MyCertificate
-              btnClass="!bg-blue-100 !group hover:bg-blue-100/50"
+              btnClass="!bg-blue-100 group hover:!bg-blue-100/50"
               txtClass="text-white-100 group-hover:text-white-100/80"
               loadingClass="text-white-100"
               courseId={course_id}
