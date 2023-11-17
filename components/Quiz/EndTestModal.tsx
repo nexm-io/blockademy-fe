@@ -91,7 +91,7 @@ export default function EndTestModal(props: {
             component="h2"
             variant="h5"
             sx={{
-              color: "#1F37B3",
+              color: "#F33",
               fontSize: "18px",
               fontWeight: 500,
               marginTop: "51px",
@@ -124,9 +124,8 @@ export default function EndTestModal(props: {
                 color: "#616161",
               }}
             >
-              After click{" "}
-              <span className=" font-semibold text-blue-100">{"'Submit'"}</span>
-              , all your answer will be saved
+              After click <span className=" text-blue-100">{"'Submit'"}</span>,
+              all your answer will be saved
             </DialogContentText>
             <DialogContentText
               id="alert-dialog-description"
@@ -141,7 +140,7 @@ export default function EndTestModal(props: {
           </DialogContent>
           <DialogActions>
             <Button
-              className="flex justify-center items-center w-[184px] h-[50px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+              className="flex font-normal justify-center items-center w-[184px] h-[50px] m-auto mb-[32px] !bg-[#1F37B3] hover:!bg-[#004070]"
               size="small"
               onClick={handleSendQuiz}
               loading={loadingSendQuiz}

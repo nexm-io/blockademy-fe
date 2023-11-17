@@ -27,6 +27,7 @@ export default function BeginTestModal(props: {
 
   const handleGoBack = () => {
     router.back();
+    props.onCloseModalBeginTest();
   };
 
   return (
@@ -85,7 +86,7 @@ export default function BeginTestModal(props: {
             </DialogContentText>
           </DialogContent>
           <Button
-            className="flex justify-center items-center w-[184px] h-[50px] m-auto mb-[32px] !bg-[#0068b5] hover:!bg-[#004070]"
+            className="flex font-normal justify-center items-center w-[184px] h-[50px] m-auto mb-[32px] !bg-[#1F37B3] hover:!bg-[#004070]"
             size="small"
             onClick={props.handleStartQuiz}
           >
