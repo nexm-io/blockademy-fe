@@ -556,14 +556,14 @@ const CourseDetail = () => {
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
-                      <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between gap-2 flex-1">
+                      <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
                         <div className="text-center">
-                          <p className="text-lg">Your Score</p>
+                          <p className="text-lg">Your Highest Score</p>
                           <p className="text-[28px] leading-10 text-red-100">
                             {courseDetail?.aissignment_grade}%
                           </p>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center justify-center">
                           <Button
                             className="!px-6 min-w-[184px]"
                             disabled={isNotCompletedLesson}
