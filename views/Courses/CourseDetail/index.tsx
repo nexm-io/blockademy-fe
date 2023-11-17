@@ -560,7 +560,7 @@ const CourseDetail = () => {
                         <div className="text-center">
                           <p className="text-lg">Your Score</p>
                           <p className="text-[28px] leading-10 text-red-100">
-                            20%
+                            {courseDetail?.aissignment_grade}%
                           </p>
                         </div>
                         <div className="flex items-center">
