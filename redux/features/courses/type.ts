@@ -89,6 +89,7 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  is_claimed: number;
   complete_assignment_at: string;
   certificate_pdf_url: string;
   certificate_image_url: string;
