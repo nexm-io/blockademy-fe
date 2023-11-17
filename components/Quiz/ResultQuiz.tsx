@@ -354,6 +354,7 @@ export default function ResultQuiz() {
                                   `p-2 flex justify-between items-center`,
                                   {
                                     "bg-[#02E755]/5":
+                                      z.result_answer &&
                                       item.id === z.correct_answer.id,
                                     "bg-[#FF3333]/5":
                                       !z.result_answer &&
@@ -424,7 +425,8 @@ export default function ResultQuiz() {
                                     userSelect: "none",
                                   }}
                                 />
-                                {item.id === z.correct_answer.id ? (
+                                {z.result_answer &&
+                                item.id === z.correct_answer.id ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="40"
