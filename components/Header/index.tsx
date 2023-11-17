@@ -121,7 +121,7 @@ const Header = () => {
           {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
-                className="w-[50px] h-[50px] relative not-prose cursor-pointer select-none"
+                className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
                 <Image
@@ -129,13 +129,13 @@ const Header = () => {
                   src={image || userDefault}
                   width={50}
                   height={50}
-                  className="w-[50px] h-[50px] rounded-full select-none object-cover"
+                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                   onClick={handleUserIconClick}
                 ></Image>
 
                 {isOpen && (
                   <ul
-                    className="absolute w-[280px] sm:w-[400px] top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
+                    className="absolute w-[280px] sm:w-[400px] top-[50px] sm:top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
                     <div className="flex items-center pb-[24px]">
@@ -144,7 +144,7 @@ const Header = () => {
                         src={image || userDefault}
                         width={50}
                         height={50}
-                        className="w-[50px] h-[50px] rounded-full select-none object-cover"
+                        className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                       />
                       <Link href="/my-account" className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden">
                         {email}
