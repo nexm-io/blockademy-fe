@@ -671,7 +671,7 @@ const TestDetail = () => {
                     disabled={quesDetail?.order === 1}
                     onClick={handlePrevQuestion}
                   >
-                    <span>Previous question</span>
+                    <span>Previous Question</span>
                   </Button>
                   <Button
                     className=" !bg-[#1F37B3] hover:!bg-[#1530BC] !rounded-[4px] w-[180px] flex items-center !px-4 "
@@ -681,7 +681,7 @@ const TestDetail = () => {
                     {quesDetail?.order === listQues?.length ? (
                       <span>Finish test</span>
                     ) : (
-                      <span>Next question</span>
+                      <span>Next Question</span>
                     )}
                   </Button>
                 </div>
@@ -763,19 +763,19 @@ const TestDetail = () => {
                       View Details
                     </Typography> */}
                   </Box>
-                  <div className="flex items-center flex-col gap-2 w-full">
+                  <Button
+                    onClick={() => setIsShowPreview(true)}
+                    disabled={checkDisabledFinishTest()}
+                    className={` !bg-[#1F37B3] text-white  !rounded-[4px] !w-full flex items-center !px-4`}
+                  >
+                    <span>Finish Test</span>
+                  </Button>
+                  <div className="flex items-center flex-col gap-2 w-full mt-2">
                     <Button
-                      className={` !bg-[#1F37B3] text-white  !rounded-[4px] !w-full flex items-center !px-4`}
+                      className=" !bg-[#C6EAFF] !text-[#0B76A4] hover:!bg-[#B7E5FF] !rounded-[4px] !w-full flex items-center !px-4 "
                       onClick={handeViewDetail}
                     >
-                      <span>Review Answers</span>
-                    </Button>
-                    <Button
-                      onClick={() => setIsShowPreview(true)}
-                      disabled={checkDisabledFinishTest()}
-                      className=" !bg-[#C6EAFF] !text-[#0B76A4] hover:!bg-[#B7E5FF] !rounded-[4px] !w-full flex items-center !px-4 "
-                    >
-                      <span>Finish Test</span>
+                      <span>Review Test</span>
                     </Button>
                   </div>
                 </Box>
