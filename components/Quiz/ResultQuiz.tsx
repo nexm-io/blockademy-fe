@@ -225,9 +225,10 @@ export default function ResultQuiz() {
                 </Button>
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <div className="w-[184px]">
-                    <MyCertificate courseId={listResultData.course_id} />
-                  </div>
+                  <>
+                    <Button className="min-w-[184px] !px-0" onClick={() => router.push("/accomplishments")}>Accomplishments</Button>
+                    {/* <MyCertificate courseId={listResultData.course_id} /> */}
+                  </>
                 ) : null}
               </div>
             </div>
@@ -426,7 +427,7 @@ export default function ResultQuiz() {
                                   }}
                                 />
                                 {z.result_answer &&
-                                item.id === z.correct_answer.id ? (
+                                  item.id === z.correct_answer.id ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="40"
@@ -441,7 +442,7 @@ export default function ResultQuiz() {
                                   </svg>
                                 ) : null}
                                 {!z.result_answer &&
-                                item.id === z.user_answer?.id ? (
+                                  item.id === z.user_answer?.id ? (
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="40"

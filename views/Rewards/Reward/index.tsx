@@ -50,10 +50,12 @@ const Reward = () => {
                 <li className="leading-[23px]">
                   <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
                 </li>
-                <li className="leading-[23px]">
-                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                    Accomplishments
-                  </span>
+                <li className="leading-[23px] hover:underline cursor-pointer">
+                  <Link href="/accomplishments">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Accomplishments
+                    </span>
+                  </Link>
                 </li>
                 <li className="leading-[23px]">
                   <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
