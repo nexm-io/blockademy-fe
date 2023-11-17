@@ -1,4 +1,4 @@
-import { useAppSelector } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import Image from "next/image";
 import React, { PropsWithChildren, useEffect } from "react";
 import Button from "../Common/Button";
@@ -10,6 +10,7 @@ import {
   RadioGroup,
   Grid,
 } from "@mui/material";
+import { setListView, setQuizAnswer } from "@/redux/features/quiz/action";
 
 const PreviewQuiz: React.FC<
   PropsWithChildren<{
@@ -20,6 +21,7 @@ const PreviewQuiz: React.FC<
 > = ({ isShowPreview, onClose, handleSubmit }) => {
   const { listView, userAnswer } = useAppSelector((state) => state.quiz);
 
+  const dispatch = useAppDispatch();
   const filterListView = listView?.map((item) => {
     const x = userAnswer.find((i) => i.order === item.order);
     if (x)
@@ -74,145 +76,176 @@ const PreviewQuiz: React.FC<
         </h3>
 
         <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
-          {filterListView?.map((item, index) => (
-            <div key={index}>
-              <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
-                Question {item?.order}
-              </p>
-              <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
-                {item?.question}
-              </p>
+          {filterListView?.map((item, index) => {
+            const handleChange = (event: any) => {
+              console.log("event", event.target.value);
+              if (!item) return;
+              const answerItem = item?.answer_list?.find(
+                (i) => i.id === Number(event.target.value)
+              );
+              if (!answerItem) return;
+              dispatch(
+                setListView([
+                  {
+                    ...item,
+                    complete: true,
+                    value: answerItem?.answer_text,
+                  },
+                ])
+              );
+              dispatch(
+                setQuizAnswer({
+                  question_id: item?.id,
+                  answer_id: event.target.value,
+                  question_type: item?.question_type,
+                  order: item?.order,
+                  value: event.target.value,
+                  valueAnswer: answerItem?.answer_text,
+                })
+              );
+            };
 
-              {/* NOTE: only text */}
-              {/* {item?.question_description &&
-                  !checkWhiteSpace(item?.question_description) && (
-                    <Box sx={{ ml: 4, overflow: "auto" }}>
-                      <Box
-                        sx={{
-                          color: "#71738B",
-                          lineHeight: "25px",
-                          userSelect: "none",
-                        }}
-                        dangerouslySetInnerHTML={{
-                          __html: item?.question_description,
-                        }}
+            return (
+              <div key={index}>
+                <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
+                  Question {item?.order}
+                </p>
+                <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
+                  {item?.question}
+                </p>
+
+                {/* NOTE: only text */}
+                {/* {item?.question_description &&
+                    !checkWhiteSpace(item?.question_description) && (
+                      <Box sx={{ ml: 4, overflow: "auto" }}>
+                        <Box
+                          sx={{
+                            color: "#71738B",
+                            lineHeight: "25px",
+                            userSelect: "none",
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html: item?.question_description,
+                          }}
+                        />
+                      </Box>
+                    )}
+                  {item?.image && (
+                    <Box sx={{ maxWidth: "300px", userSelect: "none" }}>
+                      <Image
+                        src={item?.image?.original_image}
+                        // src={item?.image}
+                        alt="question-image"
+                        width={100}
+                        height={150}
+                        layout="responsive"
                       />
                     </Box>
-                  )}
-                {item?.image && (
-                  <Box sx={{ maxWidth: "300px", userSelect: "none" }}>
-                    <Image
-                      src={item?.image?.original_image}
-                      // src={item?.image}
-                      alt="question-image"
-                      width={100}
-                      height={150}
-                      layout="responsive"
-                    />
-                  </Box>
-                )} */}
+                  )} */}
 
-              <div className="mt-8">
-                {item?.answer_list?.length > 0 ? (
-                  <FormControl component="fieldset" sx={{ width: "100%" }}>
-                    <RadioGroup
-                      aria-labelledby="demo-controlled-radio-buttons-group"
-                      name="controlled-radio-buttons-group"
-                      value={item.answer_id}
-                    >
-                      <Grid container columns={12}>
-                        {item?.answer_list?.map((item, index) => (
-                          <Grid
-                            key={index}
-                            item
-                            xs={12}
-                            sm={12}
-                            sx={{ mb: "10px" }}
-                          >
-                            <FormControlLabel
-                              value={item?.id}
-                              control={
-                                <Radio
-                                  icon={
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                    >
-                                      <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="11.5"
-                                        fill="white"
-                                        stroke="#89939E"
-                                      />
-                                    </svg>
-                                  }
-                                  checkedIcon={
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                    >
-                                      <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="11.5"
-                                        stroke="#1F37B3"
-                                      />
-                                      <circle
-                                        cx="12"
-                                        cy="12"
-                                        r="6"
-                                        fill="#1F37B3"
-                                      />
-                                    </svg>
-                                  }
-                                  name="checkbox"
-                                  sx={{
-                                    "&:hover": { bgcolor: "transparent" },
-                                  }}
-                                  disableRipple
-                                />
-                              }
-                              label={item.answer_text}
-                              sx={{
-                                ":hover": {
-                                  backgroundColor: "unset",
-                                },
-                                fontSize: "20px",
-                                lineHeight: "29px",
-                                color: "#1E1E3A",
-                                minWidth: "170px",
-                                wordBreak: "break-word",
-                                userSelect: "none",
-                              }}
-                            />
-                            {item?.image && (
-                              <Box sx={{ maxWidth: "200px", width: "95%" }}>
-                                <Image
-                                  // src={item?.image}
-                                  src={item?.image?.original_image}
-                                  alt="question-image"
-                                  width={100}
-                                  height={150}
-                                  layout="responsive"
-                                />
-                              </Box>
-                            )}
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </RadioGroup>
-                  </FormControl>
-                ) : null}
+                <div className="mt-8">
+                  {item?.answer_list?.length > 0 ? (
+                    <FormControl component="fieldset" sx={{ width: "100%" }}>
+                      <RadioGroup
+                        aria-labelledby="demo-controlled-radio-buttons-group"
+                        name="controlled-radio-buttons-group"
+                        value={item.answer_id}
+                        onChange={handleChange}
+                      >
+                        <Grid container columns={12}>
+                          {item?.answer_list?.map((item, index) => (
+                            <Grid
+                              key={index}
+                              item
+                              xs={12}
+                              sm={12}
+                              sx={{ mb: "10px" }}
+                            >
+                              <FormControlLabel
+                                value={item?.id}
+                                control={
+                                  <Radio
+                                    icon={
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="11.5"
+                                          fill="white"
+                                          stroke="#89939E"
+                                        />
+                                      </svg>
+                                    }
+                                    checkedIcon={
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                      >
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="11.5"
+                                          stroke="#1F37B3"
+                                        />
+                                        <circle
+                                          cx="12"
+                                          cy="12"
+                                          r="6"
+                                          fill="#1F37B3"
+                                        />
+                                      </svg>
+                                    }
+                                    name="checkbox"
+                                    sx={{
+                                      "&:hover": { bgcolor: "transparent" },
+                                    }}
+                                    disableRipple
+                                  />
+                                }
+                                label={item.answer_text}
+                                sx={{
+                                  ":hover": {
+                                    backgroundColor: "unset",
+                                  },
+                                  fontSize: "20px",
+                                  lineHeight: "29px",
+                                  color: "#1E1E3A",
+                                  minWidth: "170px",
+                                  wordBreak: "break-word",
+                                  userSelect: "none",
+                                }}
+                              />
+                              {item?.image && (
+                                <Box sx={{ maxWidth: "200px", width: "95%" }}>
+                                  <Image
+                                    // src={item?.image}
+                                    src={item?.image?.original_image}
+                                    alt="question-image"
+                                    width={100}
+                                    height={150}
+                                    layout="responsive"
+                                  />
+                                </Box>
+                              )}
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </RadioGroup>
+                    </FormControl>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-6">
           <Button
