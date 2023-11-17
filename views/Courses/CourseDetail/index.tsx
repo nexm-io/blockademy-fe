@@ -420,7 +420,7 @@ const CourseDetail = () => {
                       alt="blockademy-certificate"
                     />
                     <div
-                      className="group-hover:visible group-hover:opacity-100 invisible opacity-0 transition-all duration-500 ease-in-out absolute inset-0 flex justify-center items-center bg-gradient-to-br from-grey-200 to-black-300/50"
+                      className="group-hover:visible group-hover:opacity-100 invisible opacity-0 transition-all duration-500 ease-in-out absolute inset-0 flex justify-center items-center bg-black-300/50"
                       style={{
                         background:
                           "linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%) / cover no-repeat",
@@ -526,7 +526,7 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last">
+              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
                   {!isLogin && (
                     <div className="flex justify-end">
@@ -638,6 +638,20 @@ const CourseDetail = () => {
                       </div>
                     ))}
 
+                  {isLogin &&
+                    courseDetail?.assignment_status.slug !==
+                      ASSIGNMENT_STATUS.FAILED &&
+                    courseDetail?.is_completed_assignment === 0 &&
+                    registered && (
+                      <p className="text-grey-700">
+                        <span className="text-red-200">Note:</span>
+                        <span>
+                          {" "}
+                          Please review all course materials before attempting
+                          the quiz.
+                        </span>
+                      </p>
+                    )}
                   {/* LEARN AGAIN */}
                   {courseDetail?.is_completed_assignment === 1 && (
                     <Button
