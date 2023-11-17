@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import RewardEmpty from "@/components/Reward/RewardEmpty";
 
 export default function ListRewards() {
   const rewardRx = useAppSelector(selectReward);
@@ -58,14 +59,13 @@ export default function ListRewards() {
       <div className="flex flex-col gap-6">
         {rewardRx.listRewardLoading ? (
           <RewardLoading row={3} />
+        ) : rewardRx.rewards.length === 0 ? (
+          <RewardEmpty />
         ) : (
           rewardRx.rewards
             .filter((z) => z.is_completed_assignment)
             .map((reward) => (
-              <RewardItem
-                key={reward.course_id}
-                data={reward}
-              />
+              <RewardItem key={reward.course_id} data={reward} />
             ))
         )}
       </div>
