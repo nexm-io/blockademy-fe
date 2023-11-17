@@ -78,7 +78,6 @@ const PreviewQuiz: React.FC<
         <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
           {filterListView?.map((item, index) => {
             const handleChange = (event: any) => {
-              console.log("event", event.target.value);
               if (!item) return;
               const answerItem = item?.answer_list?.find(
                 (i) => i.id === Number(event.target.value)
