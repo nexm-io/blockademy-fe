@@ -1,27 +1,24 @@
 "use client";
 
-import TopBody from "@/views/Home/TopBody";
-import JourneyAcademy from "@/views/Home/JourneyAcademy";
-import SpecialContent from "@/views/Home/SpecialContent";
-import Topics from "@/views/Home/Topics";
-import MasterConcepts from "@/views/Home/MasterConcepts";
-import TopCourses from "@/views/Home/TopCourses";
-
-import Blogs from "@/components/Blogs";
+import TopBanner from "./TopBanner";
+import MainSection from "./MainSection";
+import TopCourses from "./TopCourses";
+import MasterSection from "./MasterSection";
+import CertSection from "./CertSection";
+import ArticlesSection from "./ArticlesSection";
+import NoSignal from "@/components/NoSignal";
 import BackToTop from "@/components/BackToTop";
 
 const HomeView = () => {
   return (
     <>
-      <TopBody />
-      <Topics />
+      <TopBanner />
+      <MainSection />
       <TopCourses />
-      <MasterConcepts />
-      <JourneyAcademy />
-      {/* <Divider /> */}
-      {/* <GuidedCourses /> */}
-      <SpecialContent />
-      <Blogs />
+      <MasterSection />
+      <CertSection />
+      <ArticlesSection />
+      <NoSignal />
       <BackToTop />
     </>
   );

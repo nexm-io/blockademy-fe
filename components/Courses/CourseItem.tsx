@@ -8,6 +8,7 @@ import Link from "next/link";
 import { CourseTypes } from "@/redux/features/new-courses/type";
 import cn from "@/services/cn";
 import slugifyText from "@/utils/slugifyText";
+import ChipV2 from "../ChipV2";
 
 const LEVEL_COLORS = {
   1: { bgColor: "bg-green-100/30", dotColor: "bg-green-100" },
@@ -42,60 +43,62 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
   }, [course.level?.id]);
 
   return (
-    <Link href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`} className="group mb-10 shadow-sm shadow-gray-400">
-      <div className="rounded overflow-hidden">
-        <Image
-          className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"
-          height={189}
-          width={280}
-          onError={() => setSrcCourse("/images/course/default-img.png")}
-          src={srcCourse}
-          alt={course.title}
-        />
-      </div>
-      <div className="px-2 pb-2">
-        <div className="flex items-center gap-2 mt-6">
-          <div className="flex items-center gap-[2px]">{renderRating()}</div>
-          <div className="text-xs leading-3 -mb-[2px] font-normal">
-            {course.rating_view}
-          </div>
+    <Link
+      href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`}
+      className="h-full"
+    >
+      <div className="group border border-[#F5F5F5] rounded-lg overflow-hidden h-full flex flex-col">
+        <div className="overflow-hidden">
+          <Image
+            className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"
+            height={189}
+            width={280}
+            onError={() => setSrcCourse("/images/course/default-img.png")}
+            src={srcCourse}
+            alt={course.title}
+          />
         </div>
-        <p className="text-xs mt-[10px]">
-          {course.category?.category_name || "--"}
-        </p>
-        <p className="text-lg font-bold line-clamp-2 min-h-[56px]">
-          {course.title}
-        </p>
-        <div className="mt-6 flex items-center justify-between bg-[#F0F0F0] py-3 px-[14px]">
-          <div className="flex items-center gap-2">
-            <Image src={IconUser} width={15} height={10} alt="user" />
-            <p className="text-xs leading-3 -mb-[2px] font-normal">
-              {course.total_candidate}
+        <div className="px-2 pt-[20px] pb-4 flex flex-col justify-between flex-1">
+          <div>
+            <div className="flex items-center gap-[9px]">
+              <div className="flex items-center gap-[2px]">
+                {renderRating()}
+              </div>
+              <div className="text-[12px] leading-[20px] font-light">
+                {course.rating_view}
+              </div>
+            </div>
+            <p className="text-[12px] leading-[20px] mt-2 text-black-400 font-light">
+              {course.category?.category_name || "--"}
+            </p>
+            <p className="text-xl font-normal mt-1 line-clamp-2">
+              {course.title}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <Image src={IconVisor} width={15} height={11} alt="visor" />
-            <p className="text-xs leading-3 -mb-[2px] font-normal">
-              {course.total_hit}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between mt-[18px] px-2">
-          <div
-            className={`flex items-center gap-2 rounded-[30px] p-2 ${levelStyle.bgColor}`}
-          >
-            <span
-              className={`w-[6px] h-[6px] rounded-full inline-block ${levelStyle.dotColor}`}
-            ></span>
-            <p className="text-xs leading-3 -mb-[2px] font-normal">
-              {course.level?.name || "--"}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <Image src={IconDotList} width={15} height={11} alt="dot" />
-            <p className="text-xs leading-3 -mb-[2px] font-normal">
-              {course.total_Lecture} Lectures
-            </p>
+          <div>
+            <div className="mt-3 flex items-center justify-between bg-[#F5F5F5] py-[10px] px-[20px]">
+              <div className="flex items-center gap-2">
+                <Image src={IconUser} width={15} height={10} alt="user" />
+                <p className="text-[14px] leading-[24px] font-light">
+                  {course.total_candidate}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Image src={IconVisor} width={15} height={11} alt="visor" />
+                <p className="text-[14px] leading-[24px] font-light">
+                  {course.total_hit}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center justify-between mt-[20px]">
+              <ChipV2 label="Beginner" />
+              <div className="flex items-center gap-2">
+                <Image src={IconDotList} width={15} height={11} alt="dot" />
+                <p className="text-[14px] leading-[24px] font-light">
+                  {course.total_Lecture} Lectures
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
