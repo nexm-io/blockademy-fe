@@ -742,7 +742,7 @@ const CourseDetail = () => {
           onClick={() => setViewCertificate(false)}
         ></div>
         <div
-          className={`border border-gray-400 fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+          className={`border border-gray-400 w-[90%] lg:w-[948px] fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
         >
           <Image
             src={certAssets.image}
@@ -752,6 +752,7 @@ const CourseDetail = () => {
                 image: "/images/default-certificate.jpg",
               })
             }
+            className="w-[90%] lg:w-[948px]"
             width={948}
             height={625}
             alt="blockademy certificate"
