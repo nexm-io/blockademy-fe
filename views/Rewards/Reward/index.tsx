@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Link from "next/link";
 
 const Reward = () => {
   const params = useParams();
@@ -23,7 +24,6 @@ const Reward = () => {
       router.push("/");
     }
   }, [isLogin, token]);
-
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
   }, []);
@@ -38,6 +38,33 @@ const Reward = () => {
       ) : (
         coursesRx.details && (
           <>
+            <nav className="w-full rounded-md  mb-[52px]">
+              <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+                <li className="leading-[23px] hover:underline cursor-pointer">
+                  <Link href="/">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Home
+                    </span>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    Accomplishments
+                  </span>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    {coursesRx.details?.title}
+                  </span>
+                </li>
+              </ol>
+            </nav>
             <h3 className="text-4xl font-bold">{coursesRx.details?.title}</h3>
             <RewardDetail courseDetail={coursesRx.details} />
           </>
