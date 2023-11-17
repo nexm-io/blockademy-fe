@@ -15,8 +15,8 @@ const CourseAllPage = () => {
       <CourseBanner />
       <PageContainer>
         <CoursesView />
-        <NoSignal />
       </PageContainer>
+      <NoSignal />
     </div>
   );
 };
