@@ -46,7 +46,7 @@ const CourseDetail = () => {
   const [certAssets, setCertAssets] = useState<any>({
     image: "",
     pdf: "",
-    isClaimed: false,
+    isClaimed: 0,
   });
   const [getCerLoading, setGetCerLoading] = useState<boolean>(false);
 
@@ -217,36 +217,35 @@ const CourseDetail = () => {
   };
 
   const handleGetCertificate = async () => {
-    if (courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
-      if (!courseDetail?.is_claimed) {
-        setGetCerLoading(true);
-        try {
-          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
-          setCertAssets({
-            image: data.data.certificate_image_url,
-            pdf: data.data.certificate_pdf_url,
-            isClaimed: true,
-          });
-        } catch (error) {
-          toast.warning("Something wrong...");
-          return null;
-        } finally {
-          setGetCerLoading(false);
-        }
-      } else {
+    if (
+      courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED &&
+      !certAssets.isClaimed
+    ) {
+      setGetCerLoading(true);
+      try {
+        const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
+        console.log(data);
         setCertAssets({
-          image: courseDetail?.certificate_image_url,
-          pdf: courseDetail?.certificate_pdf_url,
+          image: data.data.certificate_image_url,
+          pdf: data.data.certificate_pdf_url,
+          isClaimed: 1,
         });
+      } catch (error) {
+        toast.warning("Something wrong...");
+        return null;
+      } finally {
+        setGetCerLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    setCertAssets({
-      ...certAssets,
-      image: courseDetail?.certificate_image_url,
-    });
+    if (courseDetail)
+      setCertAssets({
+        image: courseDetail?.certificate_image_url,
+        isClaimed: courseDetail?.is_claimed,
+        pdf: courseDetail?.certificate_pdf_url,
+      });
   }, [courseDetail]);
 
   useEffect(() => {
@@ -492,7 +491,7 @@ const CourseDetail = () => {
                       </p>
                     </div>
                     <div className="flex items-center flex-wrap gap-4">
-                      {certAssets.isClaimed ? (
+                      {certAssets.isClaimed && certAssets.isClaimed === 1 ? (
                         <Button className="min-w-[184px]">Issue NFT</Button>
                       ) : (
                         <Button
@@ -510,7 +509,7 @@ const CourseDetail = () => {
                         </Button>
                       )}
                       <Button
-                        disabled={!certAssets.isClaimed}
+                        disabled={certAssets.isClaimed === 0}
                         className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                         onClick={exportPDF}
                       >
@@ -519,11 +518,11 @@ const CourseDetail = () => {
                         </span>
                       </Button>
                       <button
-                        disabled={!certAssets.isClaimed}
+                        disabled={certAssets.isClaimed === 0}
                         className={cn({
-                          "cursor-pointer": certAssets.isClaimed,
+                          "cursor-pointer": certAssets.isClaimed === 1,
                           "cursor-not-allowed opacity-50":
-                            !certAssets.isClaimed,
+                            certAssets.isClaimed === 0,
                         })}
                         onClick={() => setShowSharePopup(true)}
                       >
@@ -631,7 +630,7 @@ const CourseDetail = () => {
                     courseDetail?.is_completed_assignment === 0 && (
                       <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
                         <div className="text-center">
-                          <p className="text-lg">Your Highest Score</p>
+                          <p className="text-sm">Your Highest Score</p>
                           <p className="text-[28px] leading-10 text-red-100">
                             {courseDetail?.aissignment_grade}%
                           </p>
