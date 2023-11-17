@@ -807,15 +807,21 @@ const CourseDetail = () => {
       {showPopup && (
         <InfoPopup
           title="Congratulations!"
-          desc="Thanks for joining the course. Please enjoy your journey, complete
-          quiz and get certificate."
+          desc={
+            <div className="text-gray-700 text-center mb-4">
+              <p>Thanks for joining the course.</p>
+              <p>
+                Please enjoy your journey, complete quiz and get certificate.
+              </p>
+            </div>
+          }
           onClose={() => setShowPopup(false)}
           className="md:max-w-[359px]"
         >
           <Button
             type="button"
             onClick={() => setShowPopup(false)}
-            className="mt-2"
+            className="mt-2 w-[184px]"
           >
             Yap, sure
           </Button>
