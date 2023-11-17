@@ -89,6 +89,9 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  complete_assignment_at: string;
+  certificate_pdf_url: string;
+  certificate_image_url: string;
   aissignment_grade: number;
   assignment_status: any;
   campaign_id: string;

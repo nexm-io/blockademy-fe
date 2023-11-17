@@ -1,15 +1,20 @@
 import { Close } from "@styled-icons/remix-line";
-import React from "react";
+import React, { ReactElement } from "react";
 import Button from "../Common/Button";
+import cn from "@/services/cn";
 
 const InfoPopup = ({
   title,
   desc,
   onClose,
+  children,
+  className = "",
 }: {
   title: string;
   desc: string;
   onClose: () => void;
+  children: ReactElement;
+  className?: string;
 }) => {
   return (
     <>
@@ -26,16 +31,15 @@ const InfoPopup = ({
         >
           <Close className="text-blue-100 w-6 h-6 hover:text-blue-300" />
         </div>
-        <div className="flex flex-col gap-4 items-center justify-center md:max-w-[359px]">
-          <h2 className="text-blue-100 text-xl">
-            {title}
-          </h2>
-          <p className="text-gr7y-700 text-center mb-4">
-            {desc}
-          </p>
-          <Button type="button" onClick={onClose} className="mt-2">
-            Yap, sure
-          </Button>
+        <div
+          className={cn(
+            `flex flex-col gap-4 items-center justify-center`,
+            className
+          )}
+        >
+          <h2 className="text-blue-100 text-xl">{title}</h2>
+          <p className="text-gr7y-700 text-center mb-4">{desc}</p>
+          {children}
         </div>
       </div>
     </>
