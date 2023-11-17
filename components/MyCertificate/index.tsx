@@ -100,7 +100,7 @@ const MyCertificate = ({
         ) : (
           <span
             className={cn(
-              `text-orange-200 group-hover:text-orange-200/80 font-bold transition-all`,
+              `text-orange-200 group-hover:text-orange-200/80 transition-all`,
               txtClass
             )}
           >

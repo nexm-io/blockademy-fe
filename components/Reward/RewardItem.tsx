@@ -2,8 +2,9 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { RewardDetails } from "@/redux/features/reward/type";
-import MyCertificate from "../MyCertificate";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
+import Button from "../Common/Button";
+import { useRouter } from "next/navigation";
 
 const RewardItem = ({
   data: {
@@ -16,6 +17,7 @@ const RewardItem = ({
 }: {
   data: RewardDetails;
 }) => {
+  const router = useRouter();
   const [cerImage, setCerImage] = useState("");
 
   useEffect(() => {
@@ -44,13 +46,8 @@ const RewardItem = ({
               Grade Achieved: {aissignment_grade || "--"}%
             </p>
           </div>
-          <div className="w-[184px]">
-            <MyCertificate
-              btnClass="!bg-blue-100 !group hover:bg-blue-100/50"
-              txtClass="text-white-100 group-hover:text-white-100/80"
-              loadingClass="text-white-100"
-              courseId={course_id}
-            />
+          <div>
+            <Button className="!px-0 min-w-[184px]" onClick={()=> router.push(`/accomplishments/${course_id}`)}>View Certificate</Button>
           </div>
         </div>
       </div>
