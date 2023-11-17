@@ -166,27 +166,7 @@ export default function ResultQuiz() {
         <Box sx={{ py: 10, m: "auto" }}>
           <div className="container">
             <nav className="w-full rounded-md">
-              <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
-                <li className="leading-[23px] hover:underline cursor-pointer">
-                  <Link href="/">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      Home
-                    </span>
-                  </Link>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-                </li>
-                <li className="leading-[23px] hover:underline">
-                  <Link href="/courses">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      Courses
-                    </span>
-                  </Link>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-                </li>
+              <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                 <li className="leading-[23px] hover:underline">
                   <Link
                     href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
