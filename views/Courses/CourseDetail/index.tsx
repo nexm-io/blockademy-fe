@@ -24,6 +24,8 @@ import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import slugifyText from "@/utils/slugifyText";
 import { format, parseISO } from "date-fns";
+import cn from "@/services/cn";
+import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -36,11 +38,17 @@ const CourseDetail = () => {
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [viewCertificate, setViewCertificate] = useState<boolean>(false);
   const [stepCompleted, setStepCompleted] = useState<string[]>([]);
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
-  const [cerImage, setCerImage] = useState("");
+  const [certAssets, setCertAssets] = useState<any>({
+    image: "",
+    pdf: "",
+    isClaimed: false,
+  });
+  const [getCerLoading, setGetCerLoading] = useState<boolean>(false);
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -174,7 +182,7 @@ const CourseDetail = () => {
           )
         : slugifyText(`${assets?.email.split("@")[0]} ${courseDetail?.title}`);
     if (!assets) return;
-    fetch(courseDetail?.certificate_pdf_url || "").then(function (t) {
+    fetch(certAssets.pdf).then(function (t) {
       return t.blob().then((b) => {
         var a = document.createElement("a");
         a.href = URL.createObjectURL(b);
@@ -187,7 +195,7 @@ const CourseDetail = () => {
   const shareFacebook = () => {
     window.open(
       "http://www.facebook.com/sharer.php?u=" +
-        encodeURIComponent(courseDetail?.certificate_image_url || "") +
+        encodeURIComponent(certAssets.image) +
         "&t=" +
         encodeURIComponent(
           accountRx.data?.first_name && accountRx.data?.last_name
@@ -204,12 +212,41 @@ const CourseDetail = () => {
   };
 
   const shareTwitter = () => {
-    const tweetUrl = `https://twitter.com/intent/tweet?url=${courseDetail?.certificate_image_url}&text=`;
+    const tweetUrl = `https://twitter.com/intent/tweet?url=${certAssets.image}&text=`;
     window.open(tweetUrl, "_blank");
   };
 
+  const handleGetCertificate = async () => {
+    if (courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
+      if (!courseDetail?.is_claimed) {
+        setGetCerLoading(true);
+        try {
+          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
+          setCertAssets({
+            image: data.data.certificate_image_url,
+            pdf: data.data.certificate_pdf_url,
+            isClaimed: true,
+          });
+        } catch (error) {
+          toast.warning("Something wrong...");
+          return null;
+        } finally {
+          setGetCerLoading(false);
+        }
+      } else {
+        setCertAssets({
+          image: courseDetail?.certificate_image_url,
+          pdf: courseDetail?.certificate_pdf_url,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
-    setCerImage(courseDetail?.certificate_image_url || "");
+    setCertAssets({
+      ...certAssets,
+      image: courseDetail?.certificate_image_url,
+    });
   }, [courseDetail]);
 
   useEffect(() => {
@@ -403,17 +440,39 @@ const CourseDetail = () => {
               courseDetail?.is_completed === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
-                  <div>
+                  <div
+                    className="relative group cursor-pointer"
+                    onClick={() => setViewCertificate(true)}
+                  >
                     <Image
-                      src={cerImage}
+                      src={certAssets.image}
                       onError={() =>
-                        setCerImage("/images/default-certificate.jpg")
+                        setCertAssets({
+                          ...certAssets,
+                          image: "/images/default-certificate.jpg",
+                        })
                       }
                       height={381}
                       blurDataURL={PLACEHOLDER_BASE64}
                       width={580}
                       alt="blockademy-certificate"
                     />
+                    <div
+                      className="group-hover:visible group-hover:opacity-100 invisible opacity-0 transition-all duration-500 ease-in-out absolute inset-0 flex justify-center items-center bg-black-300/50"
+                      style={{
+                        background:
+                          "linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%) / cover no-repeat",
+                      }}
+                    >
+                      <span className="bg-grey-300 p-[10px] rounded">
+                        <Image
+                          src="/icons/expand.svg"
+                          width={40}
+                          height={40}
+                          alt="expand icon"
+                        />
+                      </span>
+                    </div>
                   </div>
                   <div className="h-fit flex flex-col gap-8">
                     <div className="flex flex-col gap-2">
@@ -433,9 +492,25 @@ const CourseDetail = () => {
                       </p>
                     </div>
                     <div className="flex items-center flex-wrap gap-4">
-                      <Button className="min-w-[184px] !px-3">Get Certificate</Button>
-                      {/* <Button className="min-w-[184px]">Issue NFT</Button> */}
+                      {certAssets.isClaimed ? (
+                        <Button className="min-w-[184px]">Issue NFT</Button>
+                      ) : (
+                        <Button
+                          className="min-w-[184px] !px-3"
+                          onClick={handleGetCertificate}
+                        >
+                          {getCerLoading ? (
+                            <SpinnerIos
+                              className="animate-spin text-white-100"
+                              size={20}
+                            />
+                          ) : (
+                            <span>Get Certificate</span>
+                          )}
+                        </Button>
+                      )}
                       <Button
+                        disabled={!certAssets.isClaimed}
                         className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                         onClick={exportPDF}
                       >
@@ -443,12 +518,17 @@ const CourseDetail = () => {
                           Download Certificate
                         </span>
                       </Button>
-                      <div
-                        className="cursor-pointer"
+                      <button
+                        disabled={!certAssets.isClaimed}
+                        className={cn({
+                          "cursor-pointer": certAssets.isClaimed,
+                          "cursor-not-allowed opacity-50":
+                            !certAssets.isClaimed,
+                        })}
                         onClick={() => setShowSharePopup(true)}
                       >
                         <Share />
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -503,7 +583,7 @@ const CourseDetail = () => {
                 </div>
               </div>
 
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last">
+              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
                   {!isLogin && (
                     <div className="flex justify-end">
@@ -521,22 +601,6 @@ const CourseDetail = () => {
                         )}
                       </Button>
                     </div>
-                  )}
-
-                  {/* LEARN AGAIN */}
-                  {courseDetail?.is_completed_assignment === 1 && (
-                    <Button
-                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full ml-auto min-w-[184px]"
-                      disabled={isNotCompletedLesson}
-                      onClick={() => {
-                        if (isNotCompletedLesson) return;
-                        router.push(`/quiz/${courseDetail?.assigment_id}`);
-                      }}
-                    >
-                      <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                        Learn Again
-                      </span>
-                    </Button>
                   )}
 
                   {/* APPLY COURSE */}
@@ -630,12 +694,71 @@ const CourseDetail = () => {
                         />
                       </div>
                     ))}
+
+                  {isLogin &&
+                    courseDetail?.assignment_status.slug !==
+                      ASSIGNMENT_STATUS.FAILED &&
+                    courseDetail?.is_completed_assignment === 0 &&
+                    registered && (
+                      <p className="text-grey-700">
+                        <span className="text-red-200">Note:</span>
+                        <span>
+                          {" "}
+                          Please review all course materials before attempting
+                          the quiz.
+                        </span>
+                      </p>
+                    )}
+                  {/* LEARN AGAIN */}
+                  {courseDetail?.is_completed_assignment === 1 && (
+                    <Button
+                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                      disabled={isNotCompletedLesson}
+                      onClick={() => {
+                        if (isNotCompletedLesson) return;
+                        router.push(`/quiz/${courseDetail?.assigment_id}`);
+                      }}
+                    >
+                      <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                        Learn Again
+                      </span>
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
           </section>
         </>
       )}
+
+      <div
+        className={cn({
+          block: viewCertificate,
+          hidden: !viewCertificate,
+        })}
+      >
+        <div
+          className="fixed top-0 left-0 w-full h-full bg-black-100 opacity-50 z-[998]"
+          onClick={() => setViewCertificate(false)}
+        ></div>
+        <div
+          className={`border border-gray-400 w-[90%] lg:w-[948px] fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+        >
+          <Image
+            src={certAssets.image}
+            onError={() =>
+              setCertAssets({
+                ...certAssets,
+                image: "/images/default-certificate.jpg",
+              })
+            }
+            className="w-[90%] lg:w-[948px]"
+            width={948}
+            height={625}
+            alt="blockademy certificate"
+          />
+        </div>
+      </div>
 
       {showSharePopup && (
         <InfoPopup

@@ -11,9 +11,9 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "1rem",
+      padding: "40px",
       screens: {
-        xl: "1312px",
+        xl: "1280px",
       },
     },
     extend: {
@@ -40,6 +40,8 @@ module.exports = {
         },
         grey: {
           100: "#EDEDED",
+          200: "#EEEEEE",
+          300: "#E0E0E0",
           700: "#616161",
         },
         gray: {
