@@ -40,6 +40,7 @@ const CourseDetail = () => {
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
+  const [cerImage, setCerImage] = useState("");
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -206,6 +207,10 @@ const CourseDetail = () => {
     const tweetUrl = `https://twitter.com/intent/tweet?url=${courseDetail?.certificate_image_url}&text=`;
     window.open(tweetUrl, "_blank");
   };
+
+  useEffect(() => {
+    setCerImage(courseDetail?.certificate_image_url || "");
+  }, [courseDetail]);
 
   useEffect(() => {
     dispatch(getDetailCourse(courseId as string));
@@ -400,7 +405,10 @@ const CourseDetail = () => {
                 <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
                   <div>
                     <Image
-                      src={courseDetail?.certificate_image_url}
+                      src={cerImage}
+                      onError={() =>
+                        setCerImage("/images/default-certificate.jpg")
+                      }
                       height={381}
                       blurDataURL={PLACEHOLDER_BASE64}
                       width={580}
@@ -427,10 +435,10 @@ const CourseDetail = () => {
                     <div className="flex items-center flex-wrap gap-4">
                       <Button className="min-w-[184px]">Issue NFT</Button>
                       <Button
-                        className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group"
+                        className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                         onClick={exportPDF}
                       >
-                        <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
+                        <span className="text-blue-700 group-hover:text-blue-700/80transition-all">
                           Download Certificate
                         </span>
                       </Button>

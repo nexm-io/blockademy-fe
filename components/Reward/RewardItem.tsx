@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { RewardDetails } from "@/redux/features/reward/type";
 import MyCertificate from "../MyCertificate";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
@@ -16,11 +16,18 @@ const RewardItem = ({
 }: {
   data: RewardDetails;
 }) => {
+  const [cerImage, setCerImage] = useState("");
+
+  useEffect(() => {
+    setCerImage(certificate_image_url || "");
+  }, [certificate_image_url]);
+
   return (
     <div className="px-6 py-4 flex items-start gap-[30px] w-full hover:bg-gray-900 rounded-lg transition-all duration-300 ease-linear border border-grey-100">
       <Image
-        src={certificate_image_url || ""}
+        src={cerImage}
         height={381}
+        onError={() => setCerImage("/images/default-certificate.jpg")}
         blurDataURL={PLACEHOLDER_BASE64}
         width={580}
         className="w-[130px]"
