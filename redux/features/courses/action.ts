@@ -28,6 +28,18 @@ export const getDetailCourse = createAsyncThunk(
   }
 );
 
+export const getDetailCourseWithoutLoading = createAsyncThunk(
+  "courses/detail-course-without-loading",
+  async (courseId: string) => {
+    try {
+      const { data: course } = await api.get(`/api/v10/course/${courseId}`);
+      return course;
+    } catch (error) {
+      return null;
+    }
+  }
+);
+
 export const getAnswerQuiz = createAsyncThunk<
   QuizResponse,
   {

@@ -6,6 +6,7 @@ import {
   getListCourse,
   resetFinish,
   saveAnswerQuiz,
+  getDetailCourseWithoutLoading,
 } from "./action";
 import { CourseResponse } from "./type";
 
@@ -61,6 +62,13 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.isLoading = false;
       state.error = action.payload.data;
     });
+
+  builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    state.isLoading = false;
+    state.details = action.payload.data;
+    state.error = null;
+  });
 
   builder
     .addCase(getAnswerQuiz.pending, (state) => {

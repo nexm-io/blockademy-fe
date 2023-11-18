@@ -14,6 +14,8 @@ import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { format, parseISO } from "date-fns";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import { Share } from "../Icon";
+import { useAppDispatch } from "@/redux/hook";
+import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
 
 const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [certAssets, setCertAssets] = useState<any>({
@@ -27,31 +29,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const accountRx = useSelector((state: RootState) => state.account);
   const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
   const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
-
-  const handleGetCertificate = async () => {
-    if (
-      courseDetail?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED &&
-      !certAssets.isClaimed
-    ) {
-      setGetCerLoading(true);
-      try {
-        const { data } = await api.get(
-          `/api/v10/claim-reward/${courseDetail.id}`
-        );
-        console.log(data);
-        setCertAssets({
-          image: data.data.certificate_image_url,
-          pdf: data.data.certificate_pdf_url,
-          isClaimed: 1,
-        });
-      } catch (error) {
-        toast.warning("Something wrong...");
-        return null;
-      } finally {
-        setGetCerLoading(false);
-      }
-    }
-  };
+  const dispatch = useAppDispatch();
 
   const exportPDF = () => {
     const assets = accountRx.data;
@@ -73,15 +51,19 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   };
 
   const shareFacebook = () => {
-    const href = ''
-    const text = `🎓 ${encodeURIComponent("Excited to share I've earned my [Course Name] Certificate from #Blockademy!")}`;
+    const href = "";
+    const text = `🎓 ${encodeURIComponent(
+      "Excited to share I've earned my [Course Name] Certificate from #Blockademy!"
+    )}`;
     const tags = encodeURIComponent("#Blockademy");
     const link = `http://www.facebook.com/sharer.php?u=https://beta.blockademy.ai&t${text}&hashtag=${tags}&quote=This&text=This&title=This`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
-    const text = `🎓 ${encodeURIComponent(`Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n`)}`;
+    const text = `🎓 ${encodeURIComponent(
+      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n`
+    )}`;
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
     window.open(link, "_blank");
@@ -113,16 +95,24 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     }
   }, [courseDetail]);
 
-  // const issueNFT = async () => {
-  //   setIsIssueLoading(true);
-  //   try {
-  //     const { data } = await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
-  //     console.log(data);
-  //     setIsIssueLoading(false);
-  //   } catch {
-  //     setIsIssueLoading(false);
-  //   }
-  // };
+  const issueNFT = async () => {
+    setIsIssueLoading(true);
+    try {
+      await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
+      await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+      setIsIssueLoading(false);
+    } catch {
+      toast.error("Something wrong!");
+      setIsIssueLoading(false);
+    }
+  };
+
+  const viewNFT = () => {
+    window.open(
+      `https://explorer.solana.com/address/${courseDetail.issue_nft_address}?cluster=devnet`,
+      "_blank"
+    );
+  };
 
   useEffect(() => {
     getCertificate();
@@ -190,9 +180,27 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             </p>
           </div>
           <div className="flex items-center flex-wrap gap-4">
-            <Button className="min-w-[184px]" disabled={isGetCertLoading}>
-              Issue NFT
-            </Button>
+            {courseDetail?.issue_nft_status === "Committed" ? (
+              <Button className="min-w-[184px]" onClick={viewNFT}>
+                View NFT
+              </Button>
+            ) : (
+              <Button
+                className="min-w-[184px]"
+                disabled={
+                  isGetCertLoading ||
+                  isIssueLoading ||
+                  courseDetail.issue_nft_status === "Processing"
+                }
+                onClick={issueNFT}
+              >
+                {isIssueLoading ||
+                courseDetail.issue_nft_status === "Processing"
+                  ? `Processing`
+                  : `Issue NFT`}
+              </Button>
+            )}
+
             <Button
               disabled={certAssets.isClaimed === 0}
               className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
