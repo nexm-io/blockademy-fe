@@ -17,7 +17,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${soleil.variable} font-sans`}>
+    <div className={`${soleil.variable} font-sans overflow-hidden`}>
       <ClientOnly>
         <Header />
       </ClientOnly>
