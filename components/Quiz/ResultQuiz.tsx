@@ -40,7 +40,7 @@ import CertPopup from "../Popup/CertPopup";
 import cn from "@/services/cn";
 import MyCertificate from "@/components/MyCertificate";
 
-const PASSED_QUIZZ_SCORE = 100
+const PASSED_QUIZZ_SCORE = 80
 
 export default function ResultQuiz() {
   const { listResultData, loadingListResult, isViewResultInCourse } =
@@ -196,7 +196,7 @@ export default function ResultQuiz() {
               {/* </div> */}
               <div className="flex flex-col md:flex-row gap-4">
                 {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
-                {listResultData?.score !== PASSED_QUIZZ_SCORE ? (
+                {!(listResultData?.score || 0 >= PASSED_QUIZZ_SCORE) ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-[184px] px-2"
                     onClick={() => router.push(`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`)}
@@ -229,18 +229,7 @@ export default function ResultQuiz() {
             <div className="container py-6 flex flex-col md:flex-row gap-3 items-center justify-between">
               <div className="flex gap-3 md:flex-row flex-col items-center md:items-start">
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="40"
-                    height="40"
-                    viewBox="0 0 40 40"
-                    fill="none"
-                  >
-                    <path
-                      d="M14.9998 26.95L8.04977 20L5.68311 22.35L14.9998 31.6667L34.9998 11.6667L32.6498 9.31665L14.9998 26.95Z"
-                      fill="#02E755"
-                    />
-                  </svg>
+                  <Image alt="trophy" src="/icons/icn-trophy.svg" width={40} height={40} />
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
