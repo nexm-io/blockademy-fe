@@ -72,7 +72,7 @@ const LINKS = [
   },
   {
     label: "Contact us",
-    href: "#",
+    href: "mailto:contact@blockademy.ai",
     target: "_blank",
   },
 ];
@@ -80,17 +80,17 @@ const LINKS = [
 const SOCIALS = [
   {
     name: "facebook",
-    href: "#",
+    href: "https://www.facebook.com/blockademyai",
     icon: <IcnFacebook />,
   },
   {
     name: "twitter",
-    href: "#",
+    href: "https://twitter.com/blockademy_ai",
     icon: <IcnTwitter />,
   },
   {
     name: "linkedin",
-    href: "#",
+    href: "https://www.linkedin.com/blockademy.ai",
     icon: <IcnLinkedin />,
   },
 ];
