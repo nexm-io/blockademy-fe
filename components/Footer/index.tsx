@@ -82,16 +82,19 @@ const SOCIALS = [
     name: "facebook",
     href: "https://www.facebook.com/blockademyai",
     icon: <IcnFacebook />,
+    target: "_blank",
   },
   {
     name: "twitter",
     href: "https://twitter.com/blockademy_ai",
     icon: <IcnTwitter />,
+    target: "_blank",
   },
   {
     name: "linkedin",
     href: "https://www.linkedin.com/blockademy.ai",
     icon: <IcnLinkedin />,
+    target: "_blank",
   },
 ];
 
@@ -128,7 +131,7 @@ const Footer = () => {
           </p>
           <div className="flex gap-6">
             {SOCIALS.map((z, i) => (
-              <Link key={i} href={z.href} className="group">
+              <Link key={i} href={z.href} className="group" target={z.target}>
                 <div className="w-[44px] h-[44px] rounded-full bg-blue-100 group-hover:opacity-90 flex justify-center items-center">
                   {z.icon}
                 </div>

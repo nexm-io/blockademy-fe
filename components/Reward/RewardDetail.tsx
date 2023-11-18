@@ -73,27 +73,18 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   };
 
   const shareFacebook = () => {
-    window.open(
-      "http://www.facebook.com/sharer.php?u=" +
-        encodeURIComponent(certAssets.image) +
-        "&t=" +
-        encodeURIComponent(
-          accountRx.data?.first_name && accountRx.data?.last_name
-            ? slugifyText(
-                `${accountRx.data?.first_name} ${accountRx.data?.last_name} ${courseDetail?.title}`
-              )
-            : slugifyText(
-                `${accountRx.data?.email.split("@")[0]} ${courseDetail?.title}`
-              )
-        ),
-      "sharer",
-      "toolbar=0,status=0,width=626,height=436"
-    );
+    const href = ''
+    const text = `🎓 ${encodeURIComponent("Excited to share I've earned my [Course Name] Certificate from #Blockademy!")}`;
+    const tags = encodeURIComponent("#Blockademy");
+    const link = `http://www.facebook.com/sharer.php?u=https://beta.blockademy.ai&t${text}&hashtag=${tags}&quote=This&text=This&title=This`;
+    window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
-    const tweetUrl = `https://twitter.com/intent/tweet?url=${certAssets.image}&text=`;
-    window.open(tweetUrl, "_blank");
+    const text = `🎓 ${encodeURIComponent(`Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n`)}`;
+    const tags = encodeURIComponent("Blockademy,NFTcertificate");
+    const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
+    window.open(link, "_blank");
   };
 
   const getCertificate = useCallback(async () => {
