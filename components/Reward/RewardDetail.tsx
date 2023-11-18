@@ -4,7 +4,7 @@ import api from "@/services/axios";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import slugifyText from "@/utils/slugifyText";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import InfoPopup from "../Popup/InfoPopup";
@@ -25,6 +25,8 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [getCerLoading, setGetCerLoading] = useState<boolean>(false);
   const [viewCertificate, setViewCertificate] = useState<boolean>(false);
   const accountRx = useSelector((state: RootState) => state.account);
+  const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
+  const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
 
   const handleGetCertificate = async () => {
     if (
@@ -94,14 +96,46 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     window.open(tweetUrl, "_blank");
   };
 
-  useEffect(() => {
-    if (courseDetail)
-      setCertAssets({
-        image: courseDetail?.certificate_image_url,
-        isClaimed: courseDetail?.is_claimed,
-        pdf: courseDetail?.certificate_pdf_url,
-      });
+  const getCertificate = useCallback(async () => {
+    setIsGetCertLoading(true);
+    if (!courseDetail) return;
+    try {
+      if (!courseDetail?.is_claimed) {
+        const { data } = await api.get(
+          `/api/v10/claim-reward/${courseDetail.id}`
+        );
+        setCertAssets({
+          image: data.data.certificate_image_url,
+          pdf: data.data.certificate_pdf_url,
+          isClaimed: 1,
+        });
+      } else {
+        setCertAssets({
+          image: courseDetail?.certificate_image_url,
+          isClaimed: courseDetail?.is_claimed,
+          pdf: courseDetail?.certificate_pdf_url,
+        });
+      }
+      setIsGetCertLoading(false);
+    } catch {
+      setIsGetCertLoading(false);
+    }
   }, [courseDetail]);
+
+  // const issueNFT = async () => {
+  //   setIsIssueLoading(true);
+  //   try {
+  //     const { data } = await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
+  //     console.log(data);
+  //     setIsIssueLoading(false);
+  //   } catch {
+  //     setIsIssueLoading(false);
+  //   }
+  // };
+
+  useEffect(() => {
+    getCertificate();
+  }, [getCertificate]);
 
   return (
     <>
@@ -110,19 +144,24 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           className="relative group cursor-pointer"
           onClick={() => setViewCertificate(true)}
         >
-          <Image
-            src={certAssets.image}
-            onError={() =>
-              setCertAssets({
-                ...certAssets,
-                image: "/images/default-certificate.jpg",
-              })
-            }
-            height={381}
-            blurDataURL={PLACEHOLDER_BASE64}
-            width={580}
-            alt="blockademy-certificate"
-          />
+          {isGetCertLoading ? (
+            <div className="skeleton bg-gray-400/20 h-[381px] w-[580px] max-w-full rounded"></div>
+          ) : (
+            <Image
+              src={certAssets.image}
+              onError={() =>
+                setCertAssets({
+                  ...certAssets,
+                  image: "/images/default-certificate.jpg",
+                })
+              }
+              height={381}
+              blurDataURL={PLACEHOLDER_BASE64}
+              width={580}
+              alt="blockademy-certificate"
+            />
+          )}
+
           <div
             className="group-hover:visible group-hover:opacity-100 invisible opacity-0 transition-all duration-500 ease-in-out absolute inset-0 flex justify-center items-center bg-black-300/50"
             style={{
@@ -145,35 +184,24 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             <p className="text-2xl font-bold text-blue-100">
               Congratulations on getting your certificate!
             </p>
-            <p className="text-xl text-grey-700">
-              You completed this course on{" "}
-              {format(
-                parseISO(courseDetail.complete_assignment_at),
-                "MMM d, yyyy"
-              )}
-            </p>
+            {courseDetail?.complete_assignment_at ? (
+              <p className="text-xl text-grey-700">
+                You completed this course on{" "}
+                {format(
+                  parseISO(courseDetail?.complete_assignment_at),
+                  "MMM d, yyyy"
+                )}
+              </p>
+            ) : null}
+
             <p className="text-xl text-grey-700">
               Grade Achieved: {courseDetail?.aissignment_grade || "--"}%
             </p>
           </div>
           <div className="flex items-center flex-wrap gap-4">
-            {certAssets.isClaimed && certAssets.isClaimed === 1 ? (
-              <Button className="min-w-[184px]">Issue NFT</Button>
-            ) : (
-              <Button
-                className="min-w-[184px] !px-3"
-                onClick={handleGetCertificate}
-              >
-                {getCerLoading ? (
-                  <SpinnerIos
-                    className="animate-spin text-white-100"
-                    size={20}
-                  />
-                ) : (
-                  <span>Get Certificate</span>
-                )}
-              </Button>
-            )}
+            <Button className="min-w-[184px]" disabled={isGetCertLoading}>
+              Issue NFT
+            </Button>
             <Button
               disabled={certAssets.isClaimed === 0}
               className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"

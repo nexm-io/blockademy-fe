@@ -5,6 +5,7 @@ import { RewardDetails } from "@/redux/features/reward/type";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import Button from "../Common/Button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const RewardItem = ({
   data: {
@@ -47,7 +48,9 @@ const RewardItem = ({
             </p>
           </div>
           <div>
-            <Button className="!px-0 min-w-[184px]" onClick={()=> router.push(`/accomplishments/${course_id}`)}>View Certificate</Button>
+            <Link href={`/accomplishments/${course_id}`}>
+              <Button className="!px-0 min-w-[184px]">View Certificate</Button>
+            </Link>
           </div>
         </div>
       </div>
