@@ -139,13 +139,13 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   return (
     <>
-      <div className="p-5 rounded-lg bg-blue-900 flex justify-between lg:flex-row flex-col items-center mt-10 gap-10">
+      <div className="p-5 rounded-lg bg-blue-900 grid grid-cols-1 lg:grid-cols-2 items-center mt-10 gap-10 lg:gap-[60px]">
         <div
-          className="relative group cursor-pointer"
+          className="relative group cursor-pointer w-full"
           onClick={() => setViewCertificate(true)}
         >
           {isGetCertLoading ? (
-            <div className="skeleton bg-gray-400/20 h-[381px] w-[580px] max-w-full rounded"></div>
+            <div className="skeleton bg-gray-400/20 h-[200px] sm:h-[300px] md:h-[381px] w-[580px] max-w-full rounded"></div>
           ) : (
             <Image
               src={certAssets.image}
