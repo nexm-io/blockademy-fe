@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Providers } from "@/redux/provider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Script from "next/script";
 export const metadata: Metadata = {
   title: {
     template: "%s | Blockademy",
@@ -38,6 +39,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=G-XS8QL1EDRD`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-XS8QL1EDRD');
+      `}
+      </Script>
       <body>
         <Providers>{children}</Providers>
         <ToastContainer autoClose={1000} pauseOnHover={false} />
