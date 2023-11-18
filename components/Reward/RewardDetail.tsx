@@ -16,6 +16,7 @@ import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import { Share } from "../Icon";
 import { useAppDispatch } from "@/redux/hook";
 import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
+import { useRouter } from "next/navigation";
 
 const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [certAssets, setCertAssets] = useState<any>({
@@ -30,25 +31,8 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
   const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
-  const exportPDF = () => {
-    const assets = accountRx.data;
-    const filename =
-      assets?.first_name && assets.last_name
-        ? slugifyText(
-            `${assets?.first_name} ${assets?.last_name} ${courseDetail?.title}`
-          )
-        : slugifyText(`${assets?.email.split("@")[0]} ${courseDetail?.title}`);
-    if (!assets) return;
-    fetch(certAssets.pdf).then(function (t) {
-      return t.blob().then((b) => {
-        var a = document.createElement("a");
-        a.href = URL.createObjectURL(b);
-        a.setAttribute("download", `${filename}.pdf`);
-        a.click();
-      });
-    });
-  };
 
   const shareFacebook = () => {
     const href = "";
@@ -111,6 +95,12 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     window.open(
       `https://explorer.solana.com/address/${courseDetail.issue_nft_address}?cluster=devnet`,
       "_blank"
+    );
+  };
+
+  const downloadCertificate = () => {
+    router.push(
+      `/accomplishments/certificate/${courseDetail.issue_nft_address}`
     );
   };
 
@@ -204,7 +194,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             <Button
               disabled={certAssets.isClaimed === 0}
               className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-              onClick={exportPDF}
+              onClick={downloadCertificate}
             >
               <span className="text-blue-700 group-hover:text-blue-700/80transition-all">
                 Download Certificate
