@@ -95,11 +95,11 @@ const MainSection = () => {
               <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">
                 <p className="text-xs font-normal text-dark-400">Hot Course</p>
                 <Image
-                  src={course.image.thumbnail}
+                  src={course.image.original}
                   width={521}
                   height={293}
                   alt="hutech"
-                  className="h-[293px] mt-1 w-full"
+                  className="mt-1 w-full object-cover"
                 />
                 <h3 className="text-black-400 text-xl font-normal mt-4">
                   {course.title}
