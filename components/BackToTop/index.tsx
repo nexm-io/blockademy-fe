@@ -40,7 +40,7 @@ const BackToTop = ({
     showBackToTop && (
       <button
         className={cn(
-          `fixed items-center justify-center right-4 bottom-[60px] sm:right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl z-50`,
+          `fixed items-center justify-center right-4 bottom-[120px] sm:right-[75px] animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl z-50`,
           {
             "flex md:hidden": onlyShowOnMobile,
             flex: !onlyShowOnMobile,
