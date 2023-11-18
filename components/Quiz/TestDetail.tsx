@@ -679,7 +679,7 @@ const TestDetail = () => {
                     disabled={checkDisabledFinishTest()}
                   >
                     {quesDetail?.order === listQues?.length ? (
-                      <span>Finish test</span>
+                      <span>Finish Test</span>
                     ) : (
                       <span>Next Question</span>
                     )}
