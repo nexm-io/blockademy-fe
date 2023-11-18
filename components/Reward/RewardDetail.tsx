@@ -93,14 +93,14 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   const viewNFT = () => {
     window.open(
-      `https://explorer.solana.com/address/${courseDetail.issue_nft_address}?cluster=devnet`,
+      `https://explorer.solana.com/address/${(courseDetail as any)?.issue_nft_address}?cluster=devnet`,
       "_blank"
     );
   };
 
   const downloadCertificate = () => {
     router.push(
-      `/accomplishments/certificate/${courseDetail.issue_nft_address}`
+      `/accomplishments/certificate/${(courseDetail as any)?.issue_nft_address}`
     );
   };
 
@@ -170,7 +170,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             </p>
           </div>
           <div className="flex items-center flex-wrap gap-4">
-            {courseDetail?.issue_nft_status === "Committed" ? (
+            {(courseDetail as any)?.issue_nft_status === "Committed" ? (
               <Button className="min-w-[184px]" onClick={viewNFT}>
                 View NFT
               </Button>
@@ -180,12 +180,12 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                 disabled={
                   isGetCertLoading ||
                   isIssueLoading ||
-                  courseDetail.issue_nft_status === "Processing"
+                  (courseDetail as any)?.issue_nft_status === "Processing"
                 }
                 onClick={issueNFT}
               >
                 {isIssueLoading ||
-                courseDetail.issue_nft_status === "Processing"
+                (courseDetail as any)?.issue_nft_status === "Processing"
                   ? `Processing`
                   : `Issue NFT`}
               </Button>
