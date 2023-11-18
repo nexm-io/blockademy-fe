@@ -7,6 +7,7 @@ import { CourseTypes } from "@/redux/features/new-courses/type";
 import cn from "@/services/cn";
 import Image from "next/image";
 import Button from "@/components/Common/Button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   courses: Array<CourseTypes>;
@@ -14,6 +15,8 @@ type Props = {
 }
 
 const Courses: React.FC<Props> = ({ courses, loading }) => {
+  const router = useRouter();
+
   return (
     <div className={cn(`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7`)}>
       {loading ? (
@@ -39,7 +42,7 @@ const Courses: React.FC<Props> = ({ courses, loading }) => {
               Join in the exciting courses of Blockademy now
             </p>
           </div>
-          <Button className="!py-[13px] rounded">Discover Now!</Button>
+          <Button className="!py-[13px] rounded" onClick={() => router.push('/courses')}>Discover Now!</Button>
         </div>
       )}
     </div>
