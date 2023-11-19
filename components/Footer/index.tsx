@@ -1,7 +1,10 @@
+"use client"
+
 import Image from "next/image";
 import React from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const IcnFacebook = () => {
   return (
@@ -57,18 +60,19 @@ const IcnLinkedin = () => {
 const LINKS = [
   {
     label: "Terms",
-    href: "/pdf/Terms_of_Use.pdf",
+    href: "https://cdn.blockademy.ai/terms-of-use.pdf",
     target: "_blank",
   },
   {
     label: "Privacy Policy",
-    href: "/pdf/Privacy_Policy.pdf",
+    href: "https://cdn.blockademy.ai/privacy-policy.pdf",
     target: "_blank",
   },
   {
     label: "Help & Support",
     href: "#",
-    target: "_blank",
+    target: "_self",
+    comingSoon: true,
   },
   {
     label: "Contact us",
@@ -112,16 +116,28 @@ const Footer = () => {
           ></Image>
         </Link>
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-[60px]">
-          {LINKS.map((z, i) => (
-            <Link
-              href={z.href}
-              target={z.target}
-              key={i}
-              className="text-[#616161] text-xl font-normal text-center"
-            >
-              {z.label}
-            </Link>
-          ))}
+          {LINKS.map((z, i) =>
+            z.comingSoon ? (
+              <p
+                key={i}
+                className="text-[#616161] text-xl font-normal text-center cursor-pointer"
+                onClick={() => {
+                  toast("Coming Soon!", { type: "info" });
+                }}
+              >
+                {z.label}
+              </p>
+            ) : (
+              <Link
+                href={z.href}
+                target={z.target}
+                key={i}
+                className="text-[#616161] text-xl font-normal text-center"
+              >
+                {z.label}
+              </Link>
+            )
+          )}
         </div>
       </div>
       <div className="container">
