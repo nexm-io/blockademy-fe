@@ -57,12 +57,12 @@ const IcnLinkedin = () => {
 const LINKS = [
   {
     label: "Terms",
-    href: "#",
+    href: "/pdf/Terms_of_Use.pdf",
     target: "_blank",
   },
   {
     label: "Privacy Policy",
-    href: "#",
+    href: "/pdf/Privacy_Policy.pdf",
     target: "_blank",
   },
   {
