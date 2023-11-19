@@ -198,7 +198,7 @@ export default function ResultQuiz() {
                 {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
                 {!(listResultData?.score || 0 >= PASSED_QUIZZ_SCORE) ? (
                   <Button
-                    className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-[184px] px-2"
+                    className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
                     onClick={() => router.push(`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`)}
                   >
                     <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
@@ -209,7 +209,7 @@ export default function ResultQuiz() {
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
                   <>
-                    <Button className="min-w-[184px] !px-0" onClick={() => router.push("/accomplishments")}>Accomplishments</Button>
+                    <Button className="w-full md:w-[184px] !px-0" onClick={() => router.push("/accomplishments")}>Accomplishments</Button>
                     {/* <MyCertificate courseId={listResultData.course_id} /> */}
                   </>
                 ) : null}

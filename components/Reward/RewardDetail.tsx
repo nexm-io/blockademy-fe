@@ -110,9 +110,9 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   return (
     <>
-      <div className="p-5 rounded-lg bg-blue-900 grid grid-cols-1 lg:grid-cols-2 items-center mt-10 gap-10 lg:gap-[60px]">
+      <div className="p-5 rounded-lg bg-blue-900 grid grid-cols-1 lg:grid-cols-2 items-center mt-10 gap-10 lg:gap-[60px] justify-items-center">
         <div
-          className="relative group cursor-pointer w-full"
+          className="relative group cursor-pointer"
           onClick={() => setViewCertificate(true)}
         >
           {isGetCertLoading ? (
