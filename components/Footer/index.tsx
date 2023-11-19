@@ -92,7 +92,7 @@ const SOCIALS = [
   },
   {
     name: "linkedin",
-    href: "https://www.linkedin.com/blockademy.ai",
+    href: "https://www.linkedin.com/company/blockademy.ai",
     icon: <IcnLinkedin />,
     target: "_blank",
   },
