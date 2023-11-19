@@ -1,16 +1,11 @@
 import { CourseDetail } from "@/redux/features/courses/type";
-import { RootState } from "@/redux/store";
 import api from "@/services/axios";
-import { ASSIGNMENT_STATUS } from "@/utils/constants";
-import slugifyText from "@/utils/slugifyText";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import InfoPopup from "../Popup/InfoPopup";
 import cn from "@/services/cn";
 import Button from "../Common/Button";
-import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import { format, parseISO } from "date-fns";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import { Share } from "../Icon";
@@ -25,14 +20,11 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     isClaimed: 0,
   });
   const [showSharePopup, setShowSharePopup] = useState(false);
-  const [getCerLoading, setGetCerLoading] = useState<boolean>(false);
   const [viewCertificate, setViewCertificate] = useState<boolean>(false);
-  const accountRx = useSelector((state: RootState) => state.account);
   const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
   const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
 
   const shareFacebook = () => {
     const href = "";
@@ -66,6 +58,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           pdf: data.data.certificate_pdf_url,
           isClaimed: 1,
         });
+        await dispatch(getDetailCourseWithoutLoading(courseDetail?.id));
       } else {
         setCertAssets({
           image: courseDetail?.certificate_image_url,
@@ -77,7 +70,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     } catch {
       setIsGetCertLoading(false);
     }
-  }, [courseDetail]);
+  }, [courseDetail, dispatch]);
 
   const issueNFT = async () => {
     setIsIssueLoading(true);
@@ -93,14 +86,16 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   const viewNFT = () => {
     window.open(
-      `https://explorer.solana.com/address/${(courseDetail as any)?.issue_nft_address}?cluster=devnet`,
+      `https://explorer.solana.com/address/${
+        (courseDetail as any)?.issue_nft_address
+      }?cluster=devnet`,
       "_blank"
     );
   };
 
   const downloadCertificate = () => {
     router.push(
-      `/accomplishments/certificate/${(courseDetail as any)?.issue_nft_address}`
+      `/accomplishments/certificate/${(courseDetail as any)?.certificate_id}`
     );
   };
 
@@ -192,7 +187,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             )}
 
             <Button
-              disabled={certAssets.isClaimed === 0}
+              disabled={certAssets.isClaimed === 0 || isGetCertLoading}
               className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
               onClick={downloadCertificate}
             >
