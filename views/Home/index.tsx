@@ -8,6 +8,7 @@ import CertSection from "./CertSection";
 import ArticlesSection from "./ArticlesSection";
 import NoSignal from "@/components/NoSignal";
 import BackToTop from "@/components/BackToTop";
+import NFTCertSection from "./NFTCertSection";
 
 const HomeView = () => {
   return (
@@ -16,6 +17,7 @@ const HomeView = () => {
       <TopCourses />
       <MasterSection />
       <CertSection />
+      <NFTCertSection />
       <ArticlesSection />
       <NoSignal />
       <BackToTop />
