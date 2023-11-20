@@ -106,7 +106,7 @@ export default function EndTestModal(props: {
               px: { sm: "10px", md: "80px", color: "#616161" },
             }}
           >
-            <DialogContentText
+            {/* <DialogContentText
               id="alert-dialog-description"
               sx={{
                 maxWidth: "340px",
@@ -116,7 +116,7 @@ export default function EndTestModal(props: {
               }}
             >
               Are you sure, you want to submit the Quiz ?
-            </DialogContentText>
+            </DialogContentText> */}
             <DialogContentText
               id="alert-dialog-description"
               sx={{
@@ -124,8 +124,9 @@ export default function EndTestModal(props: {
                 color: "#616161",
               }}
             >
-              After click <span className=" text-blue-100">{"'Submit'"}</span>,
-              all your answer will be saved
+              After clicking{" "}
+              <span className=" text-blue-100">{"'Submit'"}</span>, all your
+              answers will be saved, and modifications will not be permitted!
             </DialogContentText>
             <DialogContentText
               id="alert-dialog-description"
@@ -135,7 +136,8 @@ export default function EndTestModal(props: {
                 // color: "#1F37B3",
               }}
             >
-              Please do not close the pop-up until we have the results.
+              <span className="text-blue-100">Note:</span> Please avoid closing
+              the pop-up until the results are shown.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
