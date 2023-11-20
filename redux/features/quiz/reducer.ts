@@ -78,7 +78,7 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
       }
     })
     .addCase(setListView, (state, action) => {
-      if (action.payload?.length > 1) {
+      if (action.payload?.length > 0) {
         state.listView = action.payload;
       } else {
         state.listView = state.listView?.map((item) =>

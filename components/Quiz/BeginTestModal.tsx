@@ -8,27 +8,43 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Button from "../Common/Button";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { soleil } from "@/utils/constants";
+import { useEffect } from "react";
+import { getListQuesOfQuiz, getListResult } from "@/redux/features/quiz/action";
 
 export default function BeginTestModal(props: {
   isModalBeginTestOpen: boolean;
   onCloseModalBeginTest: () => void;
   handleStartQuiz: () => void;
 }) {
+  const { id } = useParams();
+
+  const { listQues, listResultData } = useAppSelector((state) => state.quiz);
+
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const handleClose = () => {
-    router.back();
+  const handleGoBack = () => {
+    props.onCloseModalBeginTest();
+    if (listResultData) {
+      router.push(
+        `/courses/${listResultData?.course_id}?lesson_id=${listResultData.lesson_first?.lesson_id}`
+      );
+    } else {
+      router.back();
+    }
   };
 
-  const handleGoBack = () => {
-    router.back();
-    props.onCloseModalBeginTest();
-  };
+  useEffect(() => {
+    const loadData = async () => {
+      if (!id || typeof id !== "string") return;
+      const res = await dispatch(getListResult(id));
+    };
+    loadData();
+  }, [id]);
 
   return (
     <>

@@ -862,6 +862,7 @@ const TestDetail = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      minWidth: "300px",
                     }}
                   >
                     <Typography
