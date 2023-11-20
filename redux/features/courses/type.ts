@@ -116,6 +116,7 @@ export interface CourseDetail {
   other_courses: {
     data: Array<ListCourse>;
   };
+  is_opened: number;
 }
 
 export interface CourseDetailResponse {
