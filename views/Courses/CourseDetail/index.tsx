@@ -418,7 +418,8 @@ const CourseDetail = () => {
                   {/* APPLY COURSE */}
                   {isLogin &&
                     !registered &&
-                    courseDetail?.is_registered === 0 && courseDetail.is_opened === 1 && (
+                    courseDetail?.is_registered === 0 &&
+                    courseDetail.is_opened === 1 && (
                       <div className="flex justify-end">
                         <Button
                           onClick={handleApplyCourse}
@@ -525,18 +526,30 @@ const CourseDetail = () => {
                     )}
                   {/* LEARN AGAIN */}
                   {courseDetail?.is_completed_assignment === 1 && (
-                    <Button
-                      className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                      disabled={isNotCompletedLesson}
-                      onClick={() => {
-                        if (isNotCompletedLesson) return;
-                        router.push(`/quiz/${courseDetail?.assigment_id}`);
-                      }}
-                    >
-                      <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                        Learn Again
-                      </span>
-                    </Button>
+                    <>
+                      <Button
+                        className="md:w-auto inline-block !px-6 w-full"
+                        disabled={isNotCompletedLesson}
+                        onClick={() => {
+                          if (isNotCompletedLesson) return;
+                          router.push(`/result/${courseDetail?.assigment_id}`);
+                        }}
+                      >
+                        Review Feedback
+                      </Button>
+                      <Button
+                        className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                        disabled={isNotCompletedLesson}
+                        onClick={() => {
+                          if (isNotCompletedLesson) return;
+                          router.push(`/quiz/${courseDetail?.assigment_id}`);
+                        }}
+                      >
+                        <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                          Learn Again
+                        </span>
+                      </Button>
+                    </>
                   )}
                 </div>
               </div>
