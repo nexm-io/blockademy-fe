@@ -72,22 +72,28 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     }
   }, [courseDetail, dispatch]);
 
-  const issueNFT = async () => {
+  const issueNFT = useCallback(async () => {
     setIsIssueLoading(true);
+    let timeoutId: any;
     try {
       await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
-      await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
-      setIsIssueLoading(false);
+      timeoutId = setTimeout(async () => {
+        if ((courseDetail as any)?.issue_nft_status === "Committed") {
+          clearTimeout(timeoutId);
+          setIsIssueLoading(false);
+          return;
+        }
+        await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+      }, 60000);
     } catch {
       toast.error("Something wrong!");
       setIsIssueLoading(false);
     }
-  };
+  }, [courseDetail, dispatch]);
 
   const viewNFT = () => {
     window.open(
-      `https://explorer.solana.com/address/${
-        (courseDetail as any)?.issue_nft_address
+      `https://explorer.solana.com/address/${(courseDetail as any)?.issue_nft_address
       }?cluster=devnet`,
       "_blank"
     );
@@ -180,7 +186,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                 onClick={issueNFT}
               >
                 {isIssueLoading ||
-                (courseDetail as any)?.issue_nft_status === "Processing"
+                  (courseDetail as any)?.issue_nft_status === "Processing"
                   ? `Processing`
                   : `Issue NFT`}
               </Button>
