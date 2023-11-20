@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    enterFullScreen();
+    // enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -855,7 +855,6 @@ const TestDetail = () => {
                   sx={{
                     mr: 4,
                     pl: { xs: "30px", md: "4px" },
-                    minWidth: "400px",
                   }}
                 >
                   <Box
@@ -865,6 +864,7 @@ const TestDetail = () => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      minWidth: "300px",
                     }}
                   >
                     <Typography
