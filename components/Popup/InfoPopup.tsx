@@ -1,6 +1,5 @@
-import { Close } from "@styled-icons/remix-line";
 import React, { ReactElement, ReactNode } from "react";
-import Button from "../Common/Button";
+import { Close } from "../Icon";
 import cn from "@/services/cn";
 
 const InfoPopup = ({
