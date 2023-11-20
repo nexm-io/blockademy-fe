@@ -15,6 +15,7 @@ import {
   sendMultiQuizResult,
   setIsViewResultInCourse,
   setListView,
+  setListViewInit,
   setQuesDetail,
   setQuizAnswer,
   setShowResult,
@@ -77,14 +78,13 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
         state.userAnswer = [...state.userAnswer, action.payload];
       }
     })
-    .addCase(setListView, (state, action) => {
-      if (action.payload?.length > 0) {
+    .addCase(setListViewInit, (state, action) => {
         state.listView = action.payload;
-      } else {
+    })
+    .addCase(setListView, (state, action) => {
         state.listView = state.listView?.map((item) =>
           item.order !== action.payload[0]?.order ? item : action.payload[0]
         );
-      }
     })
     .addCase(setQuesDetail, (state, action) => {
       state.quesDetail = action.payload;

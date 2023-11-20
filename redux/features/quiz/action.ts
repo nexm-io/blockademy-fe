@@ -60,7 +60,7 @@ export const getListQuesOfQuiz = createAsyncThunk(
         };
       });
 
-      dispatch(setListView(initListView));
+      dispatch(setListViewInit(initListView));
 
       return listQuesRes;
     } catch (error) {
@@ -71,6 +71,10 @@ export const getListQuesOfQuiz = createAsyncThunk(
 
 export const setListView =
   createAction<ItemListViewType[]>("quiz/set-list-view");
+
+export const setListViewInit = createAction<ItemListViewType[]>(
+  "quiz/set-list-view-init"
+);
 
 export const setQuizAnswer = createAction<UserAnswerType>(
   "quiz/set-quiz-answer"
