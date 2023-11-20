@@ -322,7 +322,7 @@ export default function ResultQuiz() {
                           <div className={cn(`grid gap-2`, {})}>
                             {z?.list_answer?.map((item: any, index: number) => (
                               <div
-                                key={index}
+                                key={`${i}-${index}`}
                                 className={cn(
                                   `p-2 flex justify-between items-center`,
                                   {
