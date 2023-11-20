@@ -313,7 +313,7 @@ export default function ResultQuiz() {
 
                   <div className="mt-8">
                     {z?.list_answer?.length > 0 ? (
-                      <FormControl component="fieldset" sx={{ width: "100%" }}>
+                      <div>
                         <RadioGroup
                           aria-labelledby="demo-controlled-radio-buttons-group"
                           name="controlled-radio-buttons-group"
@@ -434,7 +434,7 @@ export default function ResultQuiz() {
                             ))}
                           </div>
                         </RadioGroup>
-                      </FormControl>
+                      </div>
                     ) : null}
                   </div>
                 </div>
