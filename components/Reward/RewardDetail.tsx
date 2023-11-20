@@ -29,15 +29,16 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const router = useRouter();
 
   const shareFacebook = () => {
-    const href = window.location.origin;
+    const href = window.location.hostname;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=${href}&hashtag=${tags}`;
+    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id}&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
+    const href = window.location.hostname;
     const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n`
+      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id} `
     )}`;
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
@@ -213,7 +214,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           title="Share Certificate"
           desc={
             <div className="mt-4 flex flex-col gap-2">
-              <p className="text-grey-700 font-normal">
+              <p className="text-grey-700 font-normal min-w-[230px]">
                 Share this achievement to your favorite social media account
               </p>
               <div className="flex gap-6 justify-center">
