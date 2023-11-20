@@ -27,12 +27,9 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const router = useRouter();
 
   const shareFacebook = () => {
-    const href = "";
-    const text = `🎓 ${encodeURIComponent(
-      "Excited to share I've earned my [Course Name] Certificate from #Blockademy!"
-    )}`;
+    const href = window.location.origin;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=https://beta.blockademy.ai&t${text}&hashtag=${tags}&quote=This&text=This&title=This`;
+    const link = `http://www.facebook.com/sharer.php?u=${href}&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
