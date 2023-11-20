@@ -94,15 +94,16 @@ const NoSignal = () => {
               Subscribe
             </Button>
           </div>
-          <div className="flex gap-4 items-center mt-2">
+          <div className="flex gap-2 items-start sm:items-center mt-2">
             <input
               type="checkbox"
               checked={agreementCheck}
               onChange={() => setAgreementCheck(!agreementCheck)}
+              className="mt-1 md:mt-0 md:mb-1"
             />
             <p className="text-[#616161] text-base font-light">
               {`I have read and agree to Blockademy's`}{" "}
-              <Link href="#" target="_blank" className="text-blue-100">
+              <Link href="https://cdn.blockademy.ai/terms-of-use.pdf" target="_blank" className="text-blue-100">
                 Terms of Service
               </Link>
             </p>

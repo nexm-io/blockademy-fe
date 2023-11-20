@@ -48,16 +48,16 @@ const TopBanner = () => {
           />
         </g>
       </svg>
+      <Image src="/images/cert.png" alt="cert" width={36} height={30} />
+      <p className="text-center text-blue-100 font-normal text-base md:text-xl">
+        This Nov 23, join us on HUTECH Workshop on Blockchain & Smart Contracts
+      </p>
       <Image
         src="/images/hutech-logo.png"
         alt="hutech"
         width={101}
         height={34}
       />
-      <p className="text-center text-blue-100 font-normal text-base md:text-xl">
-        HUTECH Workshop on Blockchain and Smart Contracts
-      </p>
-      <Image src="/images/cert.png" alt="cert" width={36} height={30} />
     </div>
   );
 };
