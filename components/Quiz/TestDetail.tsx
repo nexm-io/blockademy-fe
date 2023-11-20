@@ -122,6 +122,8 @@ const TestDetail = () => {
   };
 
   const handeViewDetail = () => {
+    console.log("filterListView", filterListView);
+    console.log("listView", listView);
     setOpenModal(true);
   };
 
@@ -853,6 +855,7 @@ const TestDetail = () => {
                   sx={{
                     mr: 4,
                     pl: { xs: "30px", md: "4px" },
+                    minWidth: "400px",
                   }}
                 >
                   <Box
