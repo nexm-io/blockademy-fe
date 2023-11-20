@@ -165,12 +165,12 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           </div>
           <div className="flex items-center flex-col md:flex-row gap-4">
             {(courseDetail as any)?.issue_nft_status === "Committed" ? (
-              <Button className="min-w-[184px]" onClick={viewNFT}>
+              <Button className="w-full md:w-auto md:min-w-[184px]" onClick={viewNFT}>
                 View NFT
               </Button>
             ) : (
               <Button
-                className="min-w-[184px]"
+                className="w-full md:w-auto md:min-w-[184px]"
                 disabled={
                   isGetCertLoading ||
                   isIssueLoading ||
@@ -187,7 +187,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
             <Button
               disabled={certAssets.isClaimed === 0 || isGetCertLoading}
-              className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+              className="w-full md:w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
               onClick={downloadCertificate}
             >
               <span className="text-blue-700 group-hover:text-blue-700/80transition-all">
@@ -202,7 +202,8 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               })}
               onClick={() => setShowSharePopup(true)}
             >
-              <Share />
+              <span className="hidden md:block"><Share /></span>
+              <span className="block md:hidden">Share Certificate</span>
             </button>
           </div>
         </div>
