@@ -418,7 +418,7 @@ const CourseDetail = () => {
                   {/* APPLY COURSE */}
                   {isLogin &&
                     !registered &&
-                    courseDetail?.is_registered === 0 && courseDetail.is_opened === 0 && (
+                    courseDetail?.is_registered === 0 && courseDetail.is_opened === 1 && (
                       <div className="flex justify-end">
                         <Button
                           onClick={handleApplyCourse}
