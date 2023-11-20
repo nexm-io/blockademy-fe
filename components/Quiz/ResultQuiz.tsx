@@ -40,7 +40,7 @@ import CertPopup from "../Popup/CertPopup";
 import cn from "@/services/cn";
 import MyCertificate from "@/components/MyCertificate";
 
-const PASSED_QUIZZ_SCORE = 80
+const PASSED_QUIZZ_SCORE = 80;
 
 export default function ResultQuiz() {
   const { listResultData, loadingListResult, isViewResultInCourse } =
@@ -199,7 +199,11 @@ export default function ResultQuiz() {
                 {!(listResultData?.score || 0 >= PASSED_QUIZZ_SCORE) ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
-                    onClick={() => router.push(`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`)}
+                    onClick={() =>
+                      router.push(
+                        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
+                      )
+                    }
                   >
                     <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
                       Keep Learning
@@ -209,7 +213,12 @@ export default function ResultQuiz() {
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
                   <>
-                    <Button className="w-full md:w-[184px] !px-0" onClick={() => router.push("/accomplishments")}>Accomplishments</Button>
+                    <Button
+                      className="w-full md:w-[184px] !px-0"
+                      onClick={() => router.push("/accomplishments")}
+                    >
+                      Accomplishments
+                    </Button>
                     {/* <MyCertificate courseId={listResultData.course_id} /> */}
                   </>
                 ) : null}
@@ -229,7 +238,12 @@ export default function ResultQuiz() {
             <div className="container py-6 flex flex-col md:flex-row gap-3 items-center justify-between">
               <div className="flex gap-3 md:flex-row flex-col items-center md:items-start">
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <Image alt="trophy" src="/icons/icn-trophy.svg" width={40} height={40} />
+                  <Image
+                    alt="trophy"
+                    src="/icons/icn-trophy.svg"
+                    width={40}
+                    height={40}
+                  />
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -297,148 +311,157 @@ export default function ResultQuiz() {
             </div>
           </div>
 
-          <div className="container mt-10">
-            <h3 className="text-[#1E2329] text-[28px] leading-[40px] font-normal mt-6">
-              {listResultData?.quiz}
-            </h3>
-            <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
-              {listResultData?.list_question_answer?.map((z, i) => (
-                <div key={i}>
-                  <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
-                    Question {z?.order}
-                  </p>
-                  <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
-                    {z?.question_title}
-                  </p>
+          <div className="container">
+            <div className="mt-10">
+              <h3 className="text-[#1E2329] text-[28px] leading-[40px] font-normal mt-6">
+                {listResultData?.quiz}
+              </h3>
+              <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
+                {listResultData?.list_question_answer?.map((z, i) => (
+                  <div key={i}>
+                    <p className="text-[#1F37B3] text-[20px] leading-[28px] font-normal">
+                      Question {z?.order}
+                    </p>
+                    <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
+                      {z?.question_title}
+                    </p>
 
-                  <div className="mt-8">
-                    {z?.list_answer?.length > 0 ? (
-                      <FormControl component="fieldset" sx={{ width: "100%" }}>
-                        <RadioGroup
-                          aria-labelledby="demo-controlled-radio-buttons-group"
-                          name="controlled-radio-buttons-group"
-                          value={z.user_answer ? z.user_answer?.id : null}
+                    <div className="mt-8">
+                      {z?.list_answer?.length > 0 ? (
+                        <FormControl
+                          component="fieldset"
+                          sx={{ width: "100%" }}
                         >
-                          <div className={cn(`grid gap-2`, {})}>
-                            {z?.list_answer?.map((item: any, index: number) => (
-                              <div
-                                key={index}
-                                className={cn(
-                                  `p-2 flex justify-between items-center`,
-                                  {
-                                    "bg-[#02E755]/5":
-                                      z.result_answer &&
-                                      item.id === z.correct_answer.id,
-                                    "bg-[#FF3333]/5":
-                                      !z.result_answer &&
-                                      item.id === z.user_answer?.id,
-                                  }
-                                )}
-                              >
-                                <FormControlLabel
-                                  value={item?.id}
-                                  control={
-                                    <Radio
-                                      icon={
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="24"
-                                          height="24"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                        >
-                                          <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="11.5"
-                                            fill="white"
-                                            stroke="#89939E"
-                                          />
-                                        </svg>
+                          <RadioGroup
+                            aria-labelledby="demo-controlled-radio-buttons-group"
+                            name="controlled-radio-buttons-group"
+                            value={z.user_answer ? z.user_answer?.id : null}
+                          >
+                            <div className={cn(`grid gap-2`, {})}>
+                              {z?.list_answer?.map(
+                                (item: any, index: number) => (
+                                  <div
+                                    key={index}
+                                    className={cn(
+                                      `p-2 flex justify-between items-center`,
+                                      {
+                                        "bg-[#02E755]/5":
+                                          z.result_answer &&
+                                          item.id === z.correct_answer.id,
+                                        "bg-[#FF3333]/5":
+                                          !z.result_answer &&
+                                          item.id === z.user_answer?.id,
                                       }
-                                      checkedIcon={
-                                        <svg
-                                          xmlns="http://www.w3.org/2000/svg"
-                                          width="24"
-                                          height="24"
-                                          viewBox="0 0 24 24"
-                                          fill="none"
-                                        >
-                                          <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="11.5"
-                                            stroke="#1F37B3"
-                                          />
-                                          <circle
-                                            cx="12"
-                                            cy="12"
-                                            r="6"
-                                            fill="#1F37B3"
-                                          />
-                                        </svg>
+                                    )}
+                                  >
+                                    <FormControlLabel
+                                      value={item?.id}
+                                      control={
+                                        <Radio
+                                          icon={
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="24"
+                                              height="24"
+                                              viewBox="0 0 24 24"
+                                              fill="none"
+                                            >
+                                              <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="11.5"
+                                                fill="white"
+                                                stroke="#89939E"
+                                              />
+                                            </svg>
+                                          }
+                                          checkedIcon={
+                                            <svg
+                                              xmlns="http://www.w3.org/2000/svg"
+                                              width="24"
+                                              height="24"
+                                              viewBox="0 0 24 24"
+                                              fill="none"
+                                            >
+                                              <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="11.5"
+                                                stroke="#1F37B3"
+                                              />
+                                              <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="6"
+                                                fill="#1F37B3"
+                                              />
+                                            </svg>
+                                          }
+                                          name="checkbox"
+                                          sx={{
+                                            "&:hover": {
+                                              bgcolor: "transparent",
+                                            },
+                                          }}
+                                          disableRipple
+                                        />
                                       }
-                                      name="checkbox"
+                                      label={item.answer_text}
                                       sx={{
-                                        "&:hover": { bgcolor: "transparent" },
+                                        ":hover": {
+                                          backgroundColor: "unset",
+                                        },
+                                        fontSize: "20px",
+                                        lineHeight: "29px",
+                                        color: "#1E1E3A",
+                                        minWidth: "170px",
+                                        wordBreak: "break-word",
+                                        userSelect: "none",
                                       }}
-                                      disableRipple
                                     />
-                                  }
-                                  label={item.answer_text}
-                                  sx={{
-                                    ":hover": {
-                                      backgroundColor: "unset",
-                                    },
-                                    fontSize: "20px",
-                                    lineHeight: "29px",
-                                    color: "#1E1E3A",
-                                    minWidth: "170px",
-                                    wordBreak: "break-word",
-                                    userSelect: "none",
-                                  }}
-                                />
-                                {z.result_answer &&
-                                  item.id === z.correct_answer.id ? (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="40"
-                                    height="40"
-                                    viewBox="0 0 40 40"
-                                    fill="none"
-                                  >
-                                    <path
-                                      d="M15.0003 26.95L8.05026 20L5.68359 22.35L15.0003 31.6667L35.0003 11.6667L32.6503 9.31665L15.0003 26.95Z"
-                                      fill="#02E755"
-                                    />
-                                  </svg>
-                                ) : null}
-                                {!z.result_answer &&
-                                  item.id === z.user_answer?.id ? (
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="40"
-                                    height="40"
-                                    viewBox="0 0 40 40"
-                                    fill="none"
-                                  >
-                                    <path
-                                      fill-rule="evenodd"
-                                      clip-rule="evenodd"
-                                      d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
-                                      fill="#FF3333"
-                                    />
-                                  </svg>
-                                ) : null}
-                              </div>
-                            ))}
-                          </div>
-                        </RadioGroup>
-                      </FormControl>
-                    ) : null}
+                                    {z.result_answer &&
+                                    item.id === z.correct_answer.id ? (
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="40"
+                                        height="40"
+                                        viewBox="0 0 40 40"
+                                        fill="none"
+                                      >
+                                        <path
+                                          d="M15.0003 26.95L8.05026 20L5.68359 22.35L15.0003 31.6667L35.0003 11.6667L32.6503 9.31665L15.0003 26.95Z"
+                                          fill="#02E755"
+                                        />
+                                      </svg>
+                                    ) : null}
+                                    {!z.result_answer &&
+                                    item.id === z.user_answer?.id ? (
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="40"
+                                        height="40"
+                                        viewBox="0 0 40 40"
+                                        fill="none"
+                                      >
+                                        <path
+                                          fill-rule="evenodd"
+                                          clip-rule="evenodd"
+                                          d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
+                                          fill="#FF3333"
+                                        />
+                                      </svg>
+                                    ) : null}
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </RadioGroup>
+                        </FormControl>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </Box>

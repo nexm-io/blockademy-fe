@@ -839,13 +839,21 @@ const TestDetail = () => {
                 height={13}
               />
             </Box>
-            <Grid container columns={12} gap={1}>
+            <Grid
+              container
+              columns={12}
+              gap={1}
+              sx={{ justifyContent: "center" }}
+            >
               {filterListView?.map((item, index) => (
                 <Grid
                   key={index}
                   xs={12}
                   md={5}
-                  sx={{ mr: 4, pl: { xs: "30px", md: "4px" } }}
+                  sx={{
+                    mr: 4,
+                    pl: { xs: "30px", md: "4px" },
+                  }}
                 >
                   <Box
                     sx={{
@@ -853,6 +861,7 @@ const TestDetail = () => {
                       lineHeight: "20px",
                       display: "flex",
                       alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     <Typography
