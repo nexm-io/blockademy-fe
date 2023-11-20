@@ -144,7 +144,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             </span>
           </div>
         </div>
-        <div className="h-fit flex flex-col gap-8">
+        <div className="h-fit flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-2">
             <p className="text-2xl font-bold text-blue-100">
               Congratulations on getting your certificate!
@@ -163,7 +163,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               Grade Achieved: {courseDetail?.aissignment_grade || "--"}%
             </p>
           </div>
-          <div className="flex items-center flex-wrap gap-4">
+          <div className="flex items-center flex-col md:flex-row gap-4">
             {(courseDetail as any)?.issue_nft_status === "Committed" ? (
               <Button className="min-w-[184px]" onClick={viewNFT}>
                 View NFT
