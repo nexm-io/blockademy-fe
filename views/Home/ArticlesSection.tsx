@@ -5,14 +5,13 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { selectBlogs } from "@/redux/features/blogs/reducer";
 import { loadBlogs } from "@/redux/features/blogs/action";
 import Link from "next/link";
-import Button from "@/components/Common/Button";
 import { BlogDetailType } from "@/redux/features/blogs/type";
 import Image from "next/image";
 import { format, parseISO } from "date-fns";
 
 const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
   return (
-    <div className="h-full flex flex-col group cursor-pointer">
+    <Link href={`/articles/${blog.slug}`} className="h-full flex flex-col group cursor-pointer">
       <div className="rounded overflow-hidden relative">
         <Image
           src={blog.image.original_image}
@@ -44,7 +43,7 @@ const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
           </Link>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -19,13 +19,7 @@ import BackToTop from "@/components/BackToTop";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
-import { Share } from "@/components/Icon";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
-import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
-import slugifyText from "@/utils/slugifyText";
-import { format, parseISO } from "date-fns";
-import cn from "@/services/cn";
-import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 import RewardDetail from "@/components/Reward/RewardDetail";
 
 const CourseDetail = () => {
@@ -61,13 +55,6 @@ const CourseDetail = () => {
       return false;
     return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
   }, [courseDetail?.lesson_data]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   const lesson = useMemo(
     () =>
@@ -166,8 +153,12 @@ const CourseDetail = () => {
   };
 
   useEffect(() => {
-    dispatch(getDetailCourse(courseId as string));
-  }, []);
+    (async () => {
+      const { payload } = await dispatch(getDetailCourse(courseId as string));
+      if (payload?.response?.data?.error)
+        router.push("/not-found");
+    })()
+  }, [courseId]);
 
   useEffect(() => {
     if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
@@ -440,7 +431,7 @@ const CourseDetail = () => {
                   {/* TRY AGAIN */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug ===
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
@@ -471,7 +462,7 @@ const CourseDetail = () => {
                   {/* COMPLETE QUIZ */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <div className="flex justify-end">
@@ -512,7 +503,7 @@ const CourseDetail = () => {
 
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <p className="text-grey-700">

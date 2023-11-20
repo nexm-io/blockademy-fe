@@ -52,9 +52,13 @@ export default function ResultQuiz() {
     const fetchData = async () => {
       if (typeof id !== "string") return;
       if (isViewResultInCourse) {
-        await dispatch(getListHighestResult(id));
+        const { payload } = await dispatch(getListHighestResult(id));
+        if (payload?.response?.data?.error)
+          router.push("/not-found");
       } else {
-        await dispatch(getListResult(id));
+        const { payload } = await dispatch(getListResult(id));
+        if (payload?.response?.data?.error)
+          router.push("/not-found");
       }
     };
     fetchData();
@@ -409,7 +413,7 @@ export default function ResultQuiz() {
                                 }}
                               />
                               {z.result_answer &&
-                              item.id === z.correct_answer.id ? (
+                                item.id === z.correct_answer.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="40"
@@ -424,7 +428,7 @@ export default function ResultQuiz() {
                                 </svg>
                               ) : null}
                               {!z.result_answer &&
-                              item.id === z.user_answer?.id ? (
+                                item.id === z.user_answer?.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="40"
