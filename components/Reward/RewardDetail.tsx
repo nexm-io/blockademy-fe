@@ -12,6 +12,8 @@ import { Share } from "../Icon";
 import { useAppDispatch } from "@/redux/hook";
 import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
 import { useRouter } from "next/navigation";
+import Facebook from "@/public/icons/facebook-fill.svg";
+import Twitter from "@/public/icons/twitter.svg";
 
 const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [certAssets, setCertAssets] = useState<any>({
@@ -208,45 +210,47 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
       {showSharePopup && (
         <InfoPopup
           title="Share Certificate"
-          desc=""
+          desc={
+            <div className="mt-4 flex flex-col gap-2">
+              <p className="text-grey-700 font-normal">
+                Share this achievement to your favorite social media account
+              </p>
+              <div className="flex gap-6 justify-center">
+                <button
+                  type="button"
+                  className="inline-block rounded-full p-[10px] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg text-white-100"
+                  style={{ backgroundColor: "#1877f2" }}
+                  onClick={shareFacebook}
+                >
+                  <Image
+                    src={Facebook}
+                    width={24}
+                    height={24}
+                    alt="Facebook Icon"
+                  />
+                </button>
+                <button
+                  type="button"
+                  className="inline-block rounded-full p-[10px] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg text-white-100 bg-black-100"
+                  onClick={shareTwitter}
+                >
+                  <Image
+                    src={Twitter}
+                    width={24}
+                    height={24}
+                    alt="Twitter Icon"
+                  />
+                </button>
+              </div>
+            </div>
+          }
           onClose={() => setShowSharePopup(false)}
           className="!gap-0"
         >
-          <div className="flex gap-10 min-w-[300px] justify-center">
-            <button
-              type="button"
-              className="inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg text-white-100"
-              style={{ backgroundColor: "#1877f2" }}
-              onClick={shareFacebook}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg text-white-100 bg-black-100"
-              onClick={shareTwitter}
-            >
-              <svg
-                width="15"
-                height="14"
-                viewBox="0 0 15 14"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M14.5 13.9983H14.4175C13.0855 13.9983 11.7532 13.9988 10.4208 13.9999C10.3558 13.9999 10.3169 13.9818 10.2803 13.9296C9.51658 12.8385 8.75183 11.7482 7.98609 10.6585C7.50478 9.97269 7.02316 9.28704 6.54122 8.6016C6.5319 8.58969 6.52196 8.57827 6.51142 8.56738L6.09896 9.03553C5.02398 10.2575 3.94905 11.4795 2.87417 12.7015C2.51143 13.114 2.14947 13.5269 1.78831 13.9404C1.7729 13.9602 1.75271 13.976 1.72955 13.9863C1.70639 13.9967 1.68097 14.0013 1.65555 13.9997C1.27715 13.9969 0.898743 13.9983 0.5 13.9983L5.9651 7.78338L0.503153 0.00724496C0.534687 0.00493275 0.556287 0.00184993 0.578046 0.00184993C1.91823 0.00184993 3.25841 0.00123318 4.59859 0C4.65913 0 4.68688 0.0265135 4.71605 0.0682876C5.14512 0.680254 5.5745 1.29171 6.0042 1.90265C6.71024 2.90769 7.41633 3.91278 8.12248 4.91793C8.17403 4.99146 8.22622 5.06483 8.28314 5.14545C8.39098 5.02352 8.49394 4.90791 8.59611 4.79184L11.9947 0.92689C12.2513 0.634935 12.5071 0.342362 12.7658 0.052102C12.7903 0.0245125 12.8245 0.00700027 12.8617 0.00308314C13.2374 -0.000308107 13.6131 0.000924999 13.989 0.00107915C14.0011 0.00107915 14.0134 0.00292884 14.0401 0.0050869L8.83151 5.92806L14.5 13.9983ZM2.18248 0.911476C2.19825 0.934906 2.2055 0.947392 2.21401 0.959262C2.90586 1.92721 3.59776 2.89495 4.28972 3.86248C5.51701 5.57969 6.74414 7.29684 7.97111 9.01394C8.93815 10.3671 9.90465 11.7204 10.8706 13.0739C10.9022 13.1181 10.9346 13.1312 10.9864 13.1312C11.5645 13.1299 12.1426 13.1299 12.7207 13.1312H12.806C12.7828 13.0969 12.7704 13.0776 12.7571 13.0588C11.9313 11.9038 11.1055 10.7487 10.2797 9.59354C9.44678 8.42726 8.61409 7.26098 7.7816 6.09469C6.94995 4.93088 6.11825 3.76732 5.28649 2.60402C4.89684 2.05936 4.50682 1.51471 4.11644 0.970052C4.09815 0.944618 4.06283 0.914096 4.03524 0.913942C3.42301 0.910705 2.81079 0.911476 2.18248 0.911476Z"
-                  fill="inherit"
-                />
-              </svg>
-            </button>
-          </div>
+          <></>
+          {/* <div className="mt-6 border-t border-t-grey-100 w-full flex flex-col gap-2">
+            <p className="mt-4 text-grey-700 text-center">Or copy link</p>
+          </div> */}
         </InfoPopup>
       )}
       <div

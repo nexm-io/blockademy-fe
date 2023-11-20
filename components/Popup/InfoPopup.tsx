@@ -29,7 +29,7 @@ const InfoPopup = ({
           className="absolute right-5 top-10 cursor-pointer"
           onClick={onClose}
         >
-          <Close className="text-blue-100 w-6 h-6 hover:text-blue-300" />
+          <Close className="text-blue-100" />
         </div>
         <div
           className={cn(
