@@ -13,7 +13,7 @@ const ListCourse: React.FC = () => {
 
   return (
     <div className="w-full relative pt-[80px]">
-      <h2 className="text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
+      <h2 className="md:text-center text-3xl sm:text-[40px] font-bold sm:leading-[52px]">
         My Learning
       </h2>
       <div className='flex gap-[40px] mt-[40px]'>
