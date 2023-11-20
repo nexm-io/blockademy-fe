@@ -196,7 +196,7 @@ export default function ResultQuiz() {
               {/* </div> */}
               <div className="flex flex-col md:flex-row gap-4">
                 {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
-                {!(listResultData?.score || 0 >= PASSED_QUIZZ_SCORE) ? (
+                {Number(listResultData?.score) < PASSED_QUIZZ_SCORE ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
                     onClick={() =>

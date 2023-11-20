@@ -29,15 +29,16 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const router = useRouter();
 
   const shareFacebook = () => {
-    const href = window.location.origin;
+    const href = window.location.hostname;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=${href}&hashtag=${tags}`;
+    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id}&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
+    const href = window.location.hostname;
     const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n`
+      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id} `
     )}`;
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
@@ -144,7 +145,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             </span>
           </div>
         </div>
-        <div className="h-fit flex flex-col gap-8">
+        <div className="h-fit flex flex-col gap-8 w-full">
           <div className="flex flex-col gap-2">
             <p className="text-2xl font-bold text-blue-100">
               Congratulations on getting your certificate!
@@ -163,14 +164,14 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               Grade Achieved: {courseDetail?.aissignment_grade || "--"}%
             </p>
           </div>
-          <div className="flex items-center flex-wrap gap-4">
+          <div className="flex items-center flex-col md:flex-row gap-4">
             {(courseDetail as any)?.issue_nft_status === "Committed" ? (
-              <Button className="min-w-[184px]" onClick={viewNFT}>
+              <Button className="w-full md:w-auto md:min-w-[184px]" onClick={viewNFT}>
                 View NFT
               </Button>
             ) : (
               <Button
-                className="min-w-[184px]"
+                className="w-full md:w-auto md:min-w-[184px]"
                 disabled={
                   isGetCertLoading ||
                   isIssueLoading ||
@@ -187,7 +188,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
             <Button
               disabled={certAssets.isClaimed === 0 || isGetCertLoading}
-              className="min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+              className="w-full md:w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
               onClick={downloadCertificate}
             >
               <span className="text-blue-700 group-hover:text-blue-700/80transition-all">
@@ -202,7 +203,8 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               })}
               onClick={() => setShowSharePopup(true)}
             >
-              <Share />
+              <span className="hidden md:block"><Share /></span>
+              <span className="block md:hidden">Share Certificate</span>
             </button>
           </div>
         </div>
@@ -212,7 +214,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           title="Share Certificate"
           desc={
             <div className="mt-4 flex flex-col gap-2">
-              <p className="text-grey-700 font-normal">
+              <p className="text-grey-700 font-normal min-w-[230px]">
                 Share this achievement to your favorite social media account
               </p>
               <div className="flex gap-6 justify-center">
