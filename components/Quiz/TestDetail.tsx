@@ -818,7 +818,6 @@ const TestDetail = () => {
               px: 2,
               py: 5,
               minWidth: { xs: "unset", lg: "560px" },
-              minHeight: "420px",
             }}
             onCopy={(e) => {
               e.preventDefault();
