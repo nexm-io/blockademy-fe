@@ -319,6 +319,7 @@ const muiTheme = createTheme({
           "&.MuiDialog-paper": {
             borderRadius: "16px !important",
             maxWidth: "630px !important",
+            minWidth: "365px !important",
           },
         },
       },
