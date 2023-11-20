@@ -149,3 +149,21 @@ export const Share = ({ className = "" }: { className?: string }) => (
     />
   </svg>
 );
+
+export const Close = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10.9986 12L3 4.00283L4.00283 3L12 10.9986L19.9972 3L21 4.00283L13.0014 12L21 19.9972L19.9986 20.9986L12 13.0014L4.00283 20.9986L3 19.9972L10.9986 12Z"
+      fill="currentColor"
+    />
+  </svg>
+);
