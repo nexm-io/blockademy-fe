@@ -109,7 +109,7 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    // enterFullScreen();
+    enterFullScreen();
   };
 
   const handleShowImage = () => {
@@ -122,8 +122,6 @@ const TestDetail = () => {
   };
 
   const handeViewDetail = () => {
-    console.log("filterListView", filterListView);
-    console.log("listView", listView);
     setOpenModal(true);
   };
 
