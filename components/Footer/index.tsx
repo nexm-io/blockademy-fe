@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import React from "react";
@@ -20,9 +20,8 @@ const LINKS = [
   },
   {
     label: "Help & Support",
-    href: "#",
+    href: "/help-support",
     target: "_self",
-    comingSoon: true,
   },
   {
     label: "Contact Us",
@@ -74,7 +73,7 @@ const Footer = () => {
           <p className="text-[#616161] text-base">
             Copyright © 2023. All rights reserved.
           </p>
-         <Socials />
+          <Socials />
         </div>
       </div>
     </footer>
