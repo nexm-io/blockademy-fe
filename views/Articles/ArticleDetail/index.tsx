@@ -12,10 +12,8 @@ import { SkeletionCard } from "@/components/Skeleton/SkeletionCard";
 import { toast } from "react-toastify";
 import TagItemSkeleton from "@/components/TagItemSkeleton";
 import Head from "next/head";
-import { UpArrowAlt } from "@styled-icons/boxicons-solid";
-import Image from "next/image";
-import BackToTop from "@/public/icons/backToTop.svg";
 import { useRouter } from "next/navigation";
+import BackToTop from "@/components/BackToTop";
 
 const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const detailArticle = useAppSelector((state) => state.articles.detail);
@@ -23,7 +21,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [bottom, setBottom] = useState(false)
+  const [bottom, setBottom] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,7 +40,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
 
       setShowBackToTop(shouldShowBackToTop);
       if (shouldHideBackToTop) {
-        setBottom(true)
+        setBottom(true);
       } else {
         setBottom(false);
       }
@@ -52,7 +50,6 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -64,8 +61,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
   useEffect(() => {
     const getDetail = async () => {
       const { payload } = await dispatch(getArticleDetail(`${params.slug}`));
-      if ((payload as any)?.response?.data?.error)
-        router.push("/not-found");
+      if ((payload as any)?.response?.data?.error) router.push("/not-found");
     };
     getDetail();
   }, [dispatch, params.slug]);
@@ -144,17 +140,7 @@ const ArticleDetailPage = ({ params }: { params: { slug: string } }) => {
                   </div>
                 </div>
               </div>
-              {showBackToTop && (
-                <div className={`flex justify-end w-full  transition-all duration-200 ease-linear fixed right-[75px]  ${!bottom ? 'bottom-[100px]' : 'bottom-[180px]'}`}>
-                  <button
-                    className={` flex items-center justify-center animate-bounce w-[60px] h-[60px] rounded-lg bg-white-100 hover:brightness-90 shadow-3xl transition-all duration-200 ease-linear`}
-                    onClick={scrollToTop}
-                  >
-                    {/* <UpArrowAlt className="text-white-200 p-1"/> */}
-                    <Image alt="btn" src={BackToTop} width={40} height={40} />
-                  </button>
-                </div>
-              )}
+              {showBackToTop && <BackToTop />}
             </>
           )}
         </>
