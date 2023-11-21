@@ -72,7 +72,7 @@ export const TOPIC_LIST = [
 
 export const MENU = [
   {
-    activePathname: ["/courses/all", "/courses"],
+    activePathname: ["/courses/all", "/courses", "/courses/*"],
     key: "courses",
     label: "Courses",
     pathname: "/courses",

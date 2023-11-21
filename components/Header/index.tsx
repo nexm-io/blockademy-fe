@@ -109,7 +109,7 @@ const Header = () => {
                 href={z.pathname}
                 key={z.key}
                 className={cn(`hover:text-blue-100`, {
-                  "text-blue-100": z.activePathname.includes(pathName),
+                  "text-blue-100": z.activePathname.some(pattern => new RegExp(pattern).test(pathName)),
                 })}
               >
                 {z.label}
