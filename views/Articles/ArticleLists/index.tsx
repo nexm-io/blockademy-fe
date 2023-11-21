@@ -176,7 +176,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
             : status === "menu"
             ? "grid-cols-1 md:gap-6 lg:gap-8"
             : ""
-        } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto pl-4 `}
+        } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto md:pl-4`}
       >
         {type === "Trending" && dataTrending ? (
           dataTrending.map((item, index) => (

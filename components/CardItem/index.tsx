@@ -34,7 +34,7 @@ const CardItem: React.FC<CardItemProps> = ({
   const visibleTags = showAll ? data.tags : data.tags.slice(0, 2);
 
   return (
-    <Link href={`/articles/${data.slug}`}>
+    <Link href={`/articles/${data.slug}`} className="flex md:block justify-center">
       <div
         className={`${
           status === "list"
