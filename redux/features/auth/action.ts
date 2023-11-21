@@ -1,5 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthResponse, ChangePasswordDetail, ResetDetail, User, VerifyDetail } from "./type";
+import {
+  AuthResponse,
+  ChangePasswordDetail,
+  ResetDetail,
+  User,
+  VerifyDetail,
+} from "./type";
 import api from "@/services/axios";
 
 export const loginAuth = createAsyncThunk<
@@ -22,13 +28,23 @@ export const logoutAuth = createAsyncThunk<AuthResponse>(
   }
 );
 
-export const userRegister = createAsyncThunk<
-  AuthResponse,
-  Pick<User, "email" | "password" | "password_confirmation">
->("auth/register", async (userRegister) => {
-  const response = await api.post("/api/v10/signup", userRegister);
-  return response.data;
-});
+export const userRegister = createAsyncThunk(
+  "auth/register",
+  async (userRegister: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    password_confirmation?: string;
+  }) => {
+    try {
+      const response = await api.post("/api/v10/signup", userRegister);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
 
 export const sendOtp = createAsyncThunk<AuthResponse, Pick<User, "email">>(
   "auth/send-otp",
@@ -46,11 +62,15 @@ export const verifyEmail = createAsyncThunk<AuthResponse, VerifyDetail>(
   }
 );
 
-export const forgotAuth = createAsyncThunk<AuthResponse, Pick<User, "email">>(
+export const forgotAuth = createAsyncThunk(
   "auth/forgot-password",
   async (userForgot: Pick<User, "email">) => {
-    const response = await api.post("/api/v10/forgot-password", userForgot);
-    return response.data;
+    try {
+      const response = await api.post("/api/v10/forgot-password", userForgot);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 
@@ -65,23 +85,19 @@ export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
   }
 );
 
-export const changePassword = createAsyncThunk<AuthResponse, ChangePasswordDetail>(
-  "auth/change-password",
-  async (detail) => {
-    
-    try {
-      const response = await api.post(
-        `/api/v10/user/change-password`,
-        detail
-      );
-      if (response.status === 400) {
-        console.error('API returned a 400 error:', response.data);
-        return response.data;
-      } else {
-        return response.data;
-      }
-    } catch (error : any) {
-      return error.response.data
+export const changePassword = createAsyncThunk<
+  AuthResponse,
+  ChangePasswordDetail
+>("auth/change-password", async (detail) => {
+  try {
+    const response = await api.post(`/api/v10/user/change-password`, detail);
+    if (response.status === 400) {
+      console.error("API returned a 400 error:", response.data);
+      return response.data;
+    } else {
+      return response.data;
     }
+  } catch (error: any) {
+    return error.response.data;
   }
-);
+});

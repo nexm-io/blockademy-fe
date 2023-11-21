@@ -1,4 +1,6 @@
 export interface ArticleListResponse {
+  map(arg0: (item: any, index: any) => import("react").JSX.Element): import("react").ReactNode;
+  slice(arg0: number, arg1: number): unknown;
   success: boolean;
   isLoading: boolean;
   isChange: boolean;

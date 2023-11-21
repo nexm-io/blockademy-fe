@@ -1,18 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Button from "@/components/Common/Button";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import Input from "@/components/Common/Input";
-import letterIcon from "@/public/icons/letter.svg";
 import Link from "next/link";
 import InfoGraphic from "../InfoGraphic";
-import { sendOtp } from "@/redux/features/auth/action";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 interface FormRegisterProps {
   setFormState: React.Dispatch<React.SetStateAction<string>>;
   onMailChange: (key: string, value: string) => void;
@@ -25,6 +19,8 @@ const schema = Yup.object({
     .trim()
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
+  first_name: Yup.string().required("Please enter your first name"),
+  last_name: Yup.string().required("Please enter your last name"),
 });
 type FormData = Yup.InferType<typeof schema>;
 
@@ -32,9 +28,6 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
   setFormState,
   onMailChange,
 }) => {
-  const [message, setMessage] = useState("");
-
-  const dispatch = useAppDispatch();
   const {
     register,
     handleSubmit,
@@ -47,16 +40,9 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
 
   const onSubmit = async (e: FormData) => {
     onMailChange("email", e.email);
-
-    try {
-      const res = await dispatch(sendOtp(e)).unwrap();
-      res.success && setFormState("otp");
-    } catch (e) {
-      console.error(e);
-      toast.error("Email is exist!");
-    } finally {
-      reset();
-    }
+    onMailChange("first_name", e.first_name);
+    onMailChange("last_name", e.last_name);
+    setFormState("formRegister");
   };
 
   return (
@@ -69,6 +55,44 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
           <h1 className="text-[30px] leading-10 font-bold mb-2">
             Sign Up with Email
           </h1>
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-2 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5 pl-1">
+              First name
+            </span>
+            <div className="flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="first_name"
+                name="first_name"
+                type="text"
+                className="bg-white-200 rounded-lg"
+                register={register}
+              />
+            </div>
+            {errors?.first_name && (
+              <div className="text-red-500 text-sm mt-1 w-full">
+                {errors.first_name.message}
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col items-center w-full mx-auto mt-4 mb-2 rounded-md ">
+            <span className="text-sm text-black-400 self-start leading-5 pl-1">
+              Last name
+            </span>
+            <div className="flex items-center bg-white-100 border rounded w-full justify-center">
+              <Input
+                id="last_name"
+                name="last_name"
+                type="text"
+                className="bg-white-200 rounded-lg"
+                register={register}
+              />
+            </div>
+            {errors?.last_name && (
+              <div className="text-red-500 text-sm mt-1 w-full">
+                {errors.last_name.message}
+              </div>
+            )}
+          </div>
           <div className="flex flex-col items-center w-full mx-auto mt-4 mb-2 rounded-md ">
             <span className="text-sm text-black-400 self-start leading-5 pl-1">
               Email
@@ -94,9 +118,9 @@ const FormVerifyEmail: React.FC<FormRegisterProps> = ({
               type="submit"
               loading={isSubmitting}
               disabled={isSubmitting}
-              className="!bg-red-500 hover:!bg-red-100 w-full"
+              className="w-full"
             >
-              Send OTP
+              Next
             </Button>
           </div>
 

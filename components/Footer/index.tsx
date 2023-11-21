@@ -1,23 +1,68 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
-
-import logoText from "@/public/icons/logotext.svg";
+import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import Socials from "../Socials";
+
+const LINKS = [
+  {
+    label: "Terms",
+    href: "/terms",
+    target: "_self",
+  },
+  {
+    label: "Privacy Policy",
+    href: "/privacy-policy",
+    target: "_self",
+  },
+  {
+    label: "Help & Support",
+    href: "/help-support",
+    target: "_self",
+  },
+  {
+    label: "Contact Us",
+    href: "mailto:contact@blockademy.ai",
+    target: "_blank",
+  },
+];
 
 const Footer = () => {
   return (
-    <footer>
-      <div className="flex md:flex-row items-center justify-center flex-col gap-3 md:justify-between py-8 px-4 md:px-[73px]">
+    <footer className="py-[28px] grid gap-6 mt-6">
+      <div className="container flex flex-col gap-4 lg:flex-row justify-between items-center">
         <Link href="/">
           <Image
-            alt="logo-footer"
-            src={logoText}
-            className="w-[150px] md:w-auto "
+            alt="logo"
+            width={164}
+            height={49}
+            src={logo}
+            className=""
           ></Image>
         </Link>
-        <span className="text-gray-700 font-normal text-base">
-          Copyright © 2023. All rights reserved.
-        </span>
+        <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-[60px]">
+          {LINKS.map((z, i) => (
+            <Link
+              href={z.href}
+              target={z.target}
+              key={i}
+              className="text-[#616161] text-xl font-normal text-center"
+            >
+              {z.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="container">
+        <div className="border-t border-[#EDEDED] pt-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+          <p className="text-[#616161] text-base">
+            Copyright © 2023. All rights reserved.
+          </p>
+          <Socials />
+        </div>
       </div>
     </footer>
   );

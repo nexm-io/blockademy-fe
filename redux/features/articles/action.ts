@@ -37,7 +37,7 @@ export const getLatestArticle = createAsyncThunk<
   }
 >(
   "articles/latest",
-  async ({ limit = 6, page = 1, params = "created_at", tags = " ", time = " ",levelParam}) => {
+  async ({ limit = 6, page = 1, params = "created_at", tags = " ", time = " ", levelParam }) => {
     const readLevelParam = levelParam ? `&level=${levelParam}` : "";
     const response = await api.get(
       `/api/v10/list-post?limit=${limit}&page=${page}&tags=${tags}${readLevelParam}&read_time=${time}&sort_field=${params}`
@@ -131,8 +131,12 @@ export const getRecommendArticle = createAsyncThunk<
 export const getArticleDetail = createAsyncThunk<ArticleDetailResponse, string>(
   "article/detail-article",
   async (slug) => {
-    const response = await api.get(`/api/v10/detail/${slug}`);
-    return response.data;
+    try {
+      const response = await api.get(`/api/v10/detail/${slug}`);
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 

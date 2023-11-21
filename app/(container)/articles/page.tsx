@@ -1,18 +1,17 @@
-import GiftHeader from "@/components/GiftHeader";
 import ArticlePage from "@/views/Articles/ArticlePage";
 import React from "react";
 import type { Metadata } from "next";
+import PageContainer from "@/components/PageContainer";
 
 export const metadata: Metadata = {
-  title: "Article",
+  title: "Articles",
 };
 
 const Article = () => {
   return (
-    <>
-      <GiftHeader />
+    <PageContainer>
       <ArticlePage />
-    </>
+    </PageContainer>
   );
 };
 

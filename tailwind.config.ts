@@ -9,9 +9,27 @@ module.exports = {
     "./views/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "12px",
+        md: "40px",
+      },
+      screens: {
+        xl: "1280px",
+      },
+    },
+    screens: {
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
-       fontFamily: {
-        sans: ['var(--font-soleil)']
+      fontFamily: {
+        sans: ["var(--font-soleil)"],
       },
       colors: {
         black: {
@@ -27,9 +45,16 @@ module.exports = {
           300: "#EAECEF",
           400: "#707A8A",
           500: "#2B3139",
-          600: "#FAFAFA"
+          600: "#FAFAFA",
+          700: "#F8F8F8",
+          800: "#F0F0F0",
         },
-
+        grey: {
+          100: "#EDEDED",
+          200: "#EEEEEE",
+          300: "#E0E0E0",
+          700: "#616161",
+        },
         gray: {
           100: "#474D57",
           200: "#F5F5F5",
@@ -47,16 +72,28 @@ module.exports = {
           300: "#0D1C68",
           400: "#87E9FF",
           500: "#D7F1FF",
+          600: "#C6EAFF",
+          700: "#0B76A4",
+          800: "#0068b5",
+          900: "#F4F8FF",
         },
         red: {
           100: "#FF1D1D",
+          200: "#FF3333",
         },
         green: {
           100: "#02C0A9",
+          200: "#1EB725",
+          300: "#D8FFE5",
+          400: "#02E755",
           900: "rgba(2, 192, 169, 0.20)",
         },
         purple: {
           100: "#869AFF",
+        },
+        orange: {
+          100: "#FFE2C9",
+          200: "#E56700",
         },
       },
       boxShadow: {

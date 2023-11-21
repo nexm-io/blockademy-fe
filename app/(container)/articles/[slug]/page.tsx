@@ -1,8 +1,6 @@
-import GiftHeader from "@/components/GiftHeader";
 import Link from "next/link";
 import ArticleDetailPage from "@/views/Articles/ArticleDetail";
 import { Metadata } from "next";
-import axios from "axios";
 
 type Props = {
   params: {
@@ -23,8 +21,7 @@ export default function ArticleDetail({
   params: { slug: string };
 }) {
   return (
-    <div className="relative">
-      <GiftHeader />
+    <div className="relative container mt-[82.27px]">
       <ArticleDetailPage params={params} />
       <div className=" full-bleed__footerArticle flex justify-center items-center bg-blue-100  text-white-100 h-[80px]">
         <Link href="/articles">

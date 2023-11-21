@@ -89,23 +89,35 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  is_claimed: number;
+  complete_assignment_at: string;
+  certificate_pdf_url: string;
+  certificate_image_url: string;
+  aissignment_grade: number;
+  assignment_status: any;
   campaign_id: string;
   campaign_slug: string;
   reward_id: number;
   id: string;
   title: string;
   campaign_title: string;
+  lesson_first: any;
   slug: string;
   order: number;
-  lesson_data: Array<Lesson>;
+  lesson_data: Lesson[];
   lesson_type: string;
-  is_complete: number;
+  is_completed: number;
   reward_is_claimed: number;
+  assigment_id: string;
   reward_released_date: number;
   is_finished: number;
+  is_registered: number;
+  is_completed_assignment: number;
   other_courses: {
     data: Array<ListCourse>;
   };
+  is_opened: number;
+  issue_nft_status: string;
 }
 
 export interface CourseDetailResponse {

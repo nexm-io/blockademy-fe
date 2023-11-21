@@ -11,7 +11,7 @@ const BreadCrumb = () => {
   return (
     <>
       <nav className="w-full rounded-md">
-        <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+        <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
           <li
             onClick={() => router.push(`/`)}
             className="leading-[23px] hover:underline cursor-pointer"

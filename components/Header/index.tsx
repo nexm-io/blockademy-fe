@@ -12,24 +12,32 @@ import { toast } from "react-toastify";
 import { hideEmail } from "@/utils/hideEmail";
 import { getAccountDetail } from "@/redux/features/account/action";
 import userDefault from "@/public/images/home/home-iconuser.png";
+import cn from "@/services/cn";
+import { MENU } from "@/utils/constants";
+import { usePathname } from "next/navigation";
+import { PlusLg } from "@styled-icons/bootstrap";
+import { Minus } from "@styled-icons/boxicons-regular";
+import Socials from "../Socials";
 
 const Header = () => {
+  const [isShowMenu, setShowMenu] = useState<boolean>(false);
+  const [isShowAccountMenu, setIsShowAccountMenu] = useState<boolean>(false);
+  const pathName = usePathname();
   const dispatch = useAppDispatch();
   const data = useSelector((state: RootState) => state.auth.user);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const userIconRef = useRef<HTMLDivElement | null>(null);
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const token = useAppSelector((state) => state.auth.token);
-
   const userAccount = useAppSelector((state) => state.account.data);
-  let email = "";
-  if (data !== null) {
-    email = hideEmail(data.email);
-  }
+  const [email, setEmail] = useState<string>();
+  const [image, setImage] = useState<string>();
+
   const [isOpen, setIsOpen] = useState(false);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (
@@ -45,13 +53,16 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
+
   useEffect(() => {
     dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
+
   const handleUserIconClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setIsOpen(!isOpen);
   };
+
   const handleLogout = async () => {
     try {
       const res = await dispatch(logoutAuth()).unwrap();
@@ -61,69 +72,143 @@ const Header = () => {
       localStorage.clear();
     }
   };
+
+  useEffect(() => {
+    if (data !== null) setEmail(hideEmail(data.email));
+  }, [data]);
+  useEffect(() => {
+    setImage(userAccount?.image);
+  }, [userAccount]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      window.innerWidth >= 767 && setShowMenu(false);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <header className="bg-white-100 text-black w-full top-0 fixed z-[997] min-h-[74px]">
+    <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
       {/* Top Header */}
-      <div className="relative lg:mx-[75px] md:mx-6 mx-1 flex items-center justify-between py-4 md:px-0 px-4">
-        <div className="md:w-full w-[40%] flex items-center">
-          <div className="lg:mr-[82px] md:mr-8 mr-[82px] md:w-[20%] lg:w-auto">
-            <Link href="/">
-              <Image alt="logo" src={logo} className=""></Image>
-            </Link>
-          </div>
+      <div
+        className={cn(
+          `container relative flex items-center justify-between py-4`,
+          {
+            active: isShowMenu,
+          }
+        )}
+      >
+        <div className="hidden md:flex md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] items-center gap-[105px] flex-1 md:flex-[unset] justify-center md:justify-start">
+          <Link href="/">
+            <Image alt="logo" src={logo} width={164} height={49}></Image>
+          </Link>
           <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
-            <Link href="/articles" className="hover:text-blue-100">
-              Articles
-            </Link>
-            <Link href="/courses" className="hover:text-blue-100">
-              Courses
-            </Link>
-            <Link href="/learn-and-earn" className="hover:text-blue-100">
-              Learn & Earn
+            {MENU.map((z) => (
+              <Link
+                href={z.pathname}
+                key={z.key}
+                className={cn(`hover:text-blue-100`, {
+                  "text-blue-100": z.activePathname.some(pattern => new RegExp(pattern).test(pathName)),
+                })}
+              >
+                {z.label}
+              </Link>
+            ))}
+            <Link
+              href="mailto:contact@blockademy.ai"
+              className={cn(`hover:text-blue-100`)}
+            >
+              Contact Us
             </Link>
           </div>
         </div>
-        <div className="flex gap-2 md:w-auto w-[40%] prose md:justify-normal justify-end">
+        <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 block md:hidden">
+          <Link href="/">
+            <Image alt="logo" src={logo} width={164} height={49}></Image>
+          </Link>
+        </div>
+        <div className="gap-2 w-auto prose hidden md:flex md:justify-normal justify-end">
           {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
-                className="w-[40px] h-[40px] relative not-prose cursor-pointer select-none"
+                className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] relative not-prose cursor-pointer select-none"
                 ref={userIconRef}
               >
                 <Image
                   alt="avatar-user"
-                  src={userAccount?.image || userDefault}
-                  width={40}
-                  height={40}
-                  className="w-[40px] h-[40px] rounded-full select-none"
+                  src={image || userDefault}
+                  width={50}
+                  height={50}
+                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                   onClick={handleUserIconClick}
                 ></Image>
 
                 {isOpen && (
                   <ul
-                    className="absolute w-max top-[50px] right-0 py-2 bg-white-100 border rounded-md shadow-md"
+                    className="absolute w-[280px] sm:w-[400px] top-[50px] sm:top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
-                    <Link href="/my-account" className="font-bold mx-4">
-                      {email}
-                    </Link>
-                    <ul className="capitalize flex flex-col gap-2 mt-3 ">
-                      <li className=" px-4 ">
-                        <Link
-                          className="hover:text-blue-100 "
-                          href="/my-rewards"
-                        >
-                          my rewards
+                    <div className="flex items-center pb-[24px]">
+                      <Image
+                        alt="avatar-user"
+                        src={image || userDefault}
+                        width={50}
+                        height={50}
+                        className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
+                      />
+                      <Link
+                        href="/my-account"
+                        className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden"
+                      >
+                        {email}
+                      </Link>
+                    </div>
+                    <ul className="capitalize flex flex-col border-t border-solid border-[#EDEDED]">
+                      {/* <li className=" px-4 ">
+                        <Link className="hover:text-blue-100 " href="/my-account">
+                          My Account
                         </Link>
                       </li>
-                      <li className="px-4">
-                        <Button
-                          size="small"
-                          className="bg-red-600 hover:bg-red-800"
+                      <li className=" px-4 ">
+                        <Link className="hover:text-blue-100 " href="/my-courses">
+                          My Courses
+                        </Link>
+                      </li>
+                      {/* <li className=" px-4 ">
+                        <Link className="hover:text-blue-100 " href="/courses">
+                          My Courses
+                        </Link>
+                      </li> */}
+                      <li className="pt-[16px]">
+                        <Link
+                          className="hover:text-blue-100 "
+                          href="/my-learning"
+                        >
+                          My Learning
+                        </Link>
+                      </li>
+                      <li className="pt-[16px]">
+                        <Link
+                          className="hover:text-blue-100 "
+                          href="/accomplishments"
+                        >
+                          Accomplishments
+                        </Link>
+                      </li>
+                      <li className="w-full pt-6">
+                        <button
+                          className="bg-red-200/10 leading-normal w-full hover:bg-red-200 hover:text-white-100 py-[13px] text-red-200 flex items-center justify-center rounded-[4px] transition-all duration-200 ease-linear"
                           onClick={handleLogout}
                         >
-                          Logout
-                        </Button>
+                          <span className="block text-base leading-6">
+                            Logout
+                          </span>
+                        </button>
                       </li>
                     </ul>
                   </ul>
@@ -134,16 +219,149 @@ const Header = () => {
             <>
               <Link href="/login">
                 <Button size="small" outlined className="w-[94px]">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button size="small" className="w-[94px]">
-                  Register
+                  Log in
                 </Button>
               </Link>
             </>
           )}
+        </div>
+        <div
+          className="-order-2 hambuger block md:hidden"
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
+          <span></span>
+        </div>
+        <div
+          className={cn(
+            "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible",
+            { "!visible": isShowMenu }
+          )}
+        >
+          <div
+            className={cn(
+              "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+              { "!visible opacity-100": isShowMenu }
+            )}
+            onClick={() => setShowMenu(false)}
+          ></div>
+          <div
+            className={cn(
+              "h-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100  max-w-[320px] bg-white-100 relative z-[10] pt-12 pb-6 transition-all duration-[0.6s] ease-in-out left-0 right-0 bottom-0 -translate-x-full px-4",
+              { "!translate-x-0": isShowMenu }
+            )}
+          >
+            <div className="w-full">
+              {isAuthenticated && token ? (
+                <div className="">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center py-[24px]">
+                      <Image
+                        alt="avatar-user"
+                        src={image || userDefault}
+                        width={50}
+                        height={50}
+                        className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
+                      />
+                      <Link
+                        href="/my-account"
+                        className="font-light ml-[8px] text-base text-ellipsis max-w-[300px] overflow-hidden"
+                      >
+                        {email}
+                      </Link>
+                    </div>
+                    {isShowAccountMenu ? (
+                      <Minus
+                        size={20}
+                        className="text-[#1E2329] cursor-pointer"
+                        onClick={() => setIsShowAccountMenu(!isShowAccountMenu)}
+                      />
+                    ) : (
+                      <PlusLg
+                        size={20}
+                        className="text-[#1E2329] cursor-pointer"
+                        onClick={() => setIsShowAccountMenu(!isShowAccountMenu)}
+                      />
+                    )}
+                  </div>
+
+                  <div
+                    className={cn(`relative overflow-hidden transition-all`, {
+                      "h-0": !isShowAccountMenu,
+                      "h-[96px]": isShowAccountMenu,
+                    })}
+                  >
+                    <div className="grid gap-6 pb-4 ml-10">
+                      <Link
+                        href="/my-learning"
+                        className="hover:text-blue-100 font-light text-xl text-[#616161]"
+                        onClick={() => setShowMenu(false)}
+                      >
+                        My Learning
+                      </Link>
+                      <Link
+                        href="/accomplishments"
+                        className="hover:text-blue-100 font-light text-xl text-[#616161]"
+                        onClick={() => setShowMenu(false)}
+                      >
+                        Accomplishments
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-[24px]">
+                  <Link href="/login">
+                    <Button
+                      outlined
+                      className="w-full"
+                      onClick={() => setShowMenu(false)}
+                    >
+                      Log in
+                    </Button>
+                  </Link>
+                </div>
+              )}
+
+              <div className="border-t border-[#EDEDED] pt-4 grid gap-6">
+                {MENU.map((z) => (
+                  <Link
+                    href={z.pathname}
+                    key={z.key}
+                    onClick={() => setShowMenu(false)}
+                    className={cn(
+                      `hover:text-blue-100 font-light text-xl text-[#616161]`,
+                      {
+                        "text-blue-100": z.activePathname.includes(pathName),
+                      }
+                    )}
+                  >
+                    {z.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-auto">
+              <p className="font-light text-xl mb-2">Contact</p>
+              <a
+                className="text-base text-[#616161]"
+                href="mailto:contact@blockademy.ai"
+              >
+                contact@blockademy.ai
+              </a>
+              <div className="mt-2 mb-6">
+                <Socials />
+              </div>
+              {isAuthenticated && token ? (
+                <button
+                  className="bg-red-200/10 leading-normal w-full hover:bg-red-200 hover:text-white-100 py-[13px] text-red-200 flex items-center justify-center rounded-[4px] transition-all duration-200 ease-linear"
+                  onClick={handleLogout}
+                >
+                  <span className="block text-base leading-6">Logout</span>
+                </button>
+              ) : null}
+            </div>
+          </div>
         </div>
       </div>
     </header>

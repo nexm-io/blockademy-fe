@@ -6,12 +6,13 @@ import {
   getListCourse,
   resetFinish,
   saveAnswerQuiz,
+  getDetailCourseWithoutLoading,
 } from "./action";
 import { CourseResponse } from "./type";
 
 const initialState: CourseResponse = {
   success: false,
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: null,
   details: null,
@@ -35,6 +36,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(getListCourse.fulfilled, (state, action) => {
+      if (!action.payload) return;
       state.isLoading = false;
       state.data = action.payload.data;
       state.pagination = action.payload.pagination;
@@ -51,6 +53,7 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(getDetailCourse.fulfilled, (state, action) => {
+      if (!action.payload) return;
       state.isLoading = false;
       state.details = action.payload.data;
       state.error = null;
@@ -59,6 +62,13 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.isLoading = false;
       state.error = action.payload.data;
     });
+
+  builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    state.isLoading = false;
+    state.details = action.payload.data;
+    state.error = null;
+  });
 
   builder
     .addCase(getAnswerQuiz.pending, (state) => {

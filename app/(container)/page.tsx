@@ -1,14 +1,14 @@
-
-import MainPage from "@/views/Home/MainPage";
+import PageContainer from "@/components/PageContainer";
+import HomeView from "@/views/Home";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Home",
 };
-export default function Home() {
+export default function HomePage() {
   return (
-    <>
-      <MainPage />
-    </>
+    <main className="mt-[82.27px]">
+      <HomeView />
+    </main>
   );
 }

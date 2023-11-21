@@ -16,15 +16,29 @@ export const getListCourse = createAsyncThunk<
   return response.data;
 });
 
-export const getDetailCourse = createAsyncThunk<
-  CourseDetailResponse,
-  { detail: { campaign_id: string; course_id: string } }
->("courses/detail-course", async ({ detail }) => {
-  const response = await api.get(
-    `/api/v10/campaign/${detail.campaign_id}/course/${detail.course_id}`
-  );
-  return response.data;
-});
+export const getDetailCourse = createAsyncThunk(
+  "courses/detail-course",
+  async (courseId: string) => {
+    try {
+      const { data: course } = await api.get(`/api/v10/course/${courseId}`);
+      return course;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getDetailCourseWithoutLoading = createAsyncThunk(
+  "courses/detail-course-without-loading",
+  async (courseId: string) => {
+    try {
+      const { data: course } = await api.get(`/api/v10/course/${courseId}`);
+      return course;
+    } catch (error) {
+      return null;
+    }
+  }
+);
 
 export const getAnswerQuiz = createAsyncThunk<
   QuizResponse,
