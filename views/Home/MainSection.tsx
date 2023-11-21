@@ -40,7 +40,7 @@ const MainSection = () => {
       </Link>
 
       <div className="container grid grid-cols-1 lg:grid-cols-2 lg:gap-10 pb-[60px]">
-        <div className="grid gap-6 pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
+        <div className="grid gap-6 pt-[45px] md:pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
           <h3 className="text-black-400 text-[56px] leading-[64px] font-bold">
             Unlock the Power <br /> of Blockchain
           </h3>

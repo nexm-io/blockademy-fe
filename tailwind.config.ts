@@ -11,21 +11,23 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "40px",
+      padding: {
+        DEFAULT: "12px",
+        md: "40px",
+      },
       screens: {
         xl: "1280px",
       },
     },
     screens: {
-      'xs': '480px',
-      'sm': '640px',
-      'md': '768px',
-      'lg': '1024px',
-      'xl': '1280px',
-      '2xl': '1536px',
+      xs: "480px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
     },
     extend: {
-
       fontFamily: {
         sans: ["var(--font-soleil)"],
       },
@@ -73,7 +75,7 @@ module.exports = {
           600: "#C6EAFF",
           700: "#0B76A4",
           800: "#0068b5",
-          900: "#F4F8FF"
+          900: "#F4F8FF",
         },
         red: {
           100: "#FF1D1D",
