@@ -6,7 +6,7 @@ import IconMobile from "@/public/icons/mobile.svg";
 import IconGame from "@/public/icons/game.svg";
 import IconQC from "@/public/icons/qc.svg";
 
-export const LIMIT_COURSES = 8;
+export const LIMIT_COURSES = 9;
 export const TYPE_QUIZ = {
   ESSAY: "essay",
   MULTIPLE_CHOICE: "quiz",
@@ -72,7 +72,7 @@ export const TOPIC_LIST = [
 
 export const MENU = [
   {
-    activePathname: ["/courses/all", "/courses"],
+    activePathname: ["/courses/all", "/courses", "/courses/*"],
     key: "courses",
     label: "Courses",
     pathname: "/courses",
