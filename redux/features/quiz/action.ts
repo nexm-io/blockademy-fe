@@ -96,7 +96,7 @@ export const getListResult = createAsyncThunk(
       if (!getResultQuizRes) return;
       return getResultQuizRes.data;
     } catch (error) {
-      return null;
+      return error;
     }
   }
 );
@@ -111,7 +111,7 @@ export const getListHighestResult = createAsyncThunk(
       if (!getResultQuizRes) return;
       return getResultQuizRes.data;
     } catch (error) {
-      return null;
+      return error;
     }
   }
 );

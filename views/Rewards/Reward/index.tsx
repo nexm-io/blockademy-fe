@@ -24,8 +24,13 @@ const Reward = () => {
       router.push("/");
     }
   }, [isLogin, token]);
+  
   useEffect(() => {
-    dispatch(getDetailCourse(courseId as string));
+    (async () => {
+      const { payload } = await dispatch(getDetailCourse(courseId as string));
+      if (payload?.response?.data?.error)
+        router.push("/not-found");
+    })()
   }, []);
 
   return (
