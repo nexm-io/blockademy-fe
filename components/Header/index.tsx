@@ -136,7 +136,7 @@ const Header = () => {
           {isAuthenticated && token ? (
             <div className="flex gap-2 items-center">
               <div
-                className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] relative not-prose cursor-pointer select-none"
+                className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] relative not-prose select-none"
                 ref={userIconRef}
               >
                 <Image
@@ -161,12 +161,11 @@ const Header = () => {
                         height={50}
                         className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                       />
-                      <Link
-                        href="/my-account"
+                      <div
                         className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden"
                       >
                         {email}
-                      </Link>
+                      </div>
                     </div>
                     <ul className="capitalize flex flex-col border-t border-solid border-[#EDEDED]">
                       {/* <li className=" px-4 ">
@@ -262,12 +261,11 @@ const Header = () => {
                         height={50}
                         className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                       />
-                      <Link
-                        href="/my-account"
+                      <div
                         className="font-light ml-[8px] text-base text-ellipsis max-w-[300px] overflow-hidden"
                       >
                         {email}
-                      </Link>
+                      </div>
                     </div>
                     {isShowAccountMenu ? (
                       <Minus
