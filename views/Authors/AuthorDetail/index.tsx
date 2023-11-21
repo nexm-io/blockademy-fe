@@ -241,8 +241,7 @@ const AuthorDetail = () => {
               </div>
               {listAuthor?.map((item) => (
                 <>
-                  <Link
-                    href={`/authors/${item.slug}`}
+                  <div
                     className="flex gap-4 items-center relative other__authors--underline"
                   >
                     <div className="w-[60px] h-[60px] basis-[60px]">
@@ -257,16 +256,16 @@ const AuthorDetail = () => {
                       ></Image>
                     </div>
                     <div className="basis-[200px] flex justify-between">
-                      <Link href={`/authors/${item.slug}`}>
+                      <div>
                         <span className="text-black-100 text-sm leading-6 font-medium">
                           {item.first_name} {item.last_name}
                         </span>
-                      </Link>
+                      </div>
                       <span className="text-gray-300 text-sm leading-6 font-normal">
                         {item.total_post} posts
                       </span>
                     </div>
-                  </Link>
+                  </div>
                 </>
               ))}
 
