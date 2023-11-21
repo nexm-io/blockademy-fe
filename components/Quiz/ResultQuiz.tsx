@@ -164,7 +164,7 @@ export default function ResultQuiz() {
                 </li>
               </ol>
             </nav>
-            <div className="flex flex-col md:flex-row justify-between mt-[52px]">
+            <div className="flex flex-col md:flex-row justify-between mt-[32px]">
               {/* <div className="mt-2 mb-"> */}
               <div className="text-[#1E2329] text-[36px] leading-[40px] font-bold">
                 Result

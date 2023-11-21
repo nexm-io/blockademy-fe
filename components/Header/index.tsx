@@ -119,6 +119,12 @@ const Header = () => {
                 {z.label}
               </Link>
             ))}
+            <Link
+              href="mailto:contact@blockademy.ai"
+              className={cn(`hover:text-blue-100`)}
+            >
+              Contact Us
+            </Link>
           </div>
         </div>
         <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 block md:hidden">

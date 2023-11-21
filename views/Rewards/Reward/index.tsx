@@ -43,8 +43,8 @@ const Reward = () => {
       ) : (
         coursesRx.details && (
           <>
-            <nav className="w-full rounded-md  mb-[52px]">
-              <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+            <nav className="w-full rounded-md  mb-[32px]">
+              <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                 <li className="leading-[23px] hover:underline cursor-pointer">
                   <Link href="/">
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">

@@ -10,13 +10,13 @@ import Socials from "../Socials";
 const LINKS = [
   {
     label: "Terms",
-    href: "https://cdn.blockademy.ai/terms-of-use.pdf",
-    target: "_blank",
+    href: "/terms",
+    target: "_self",
   },
   {
     label: "Privacy Policy",
-    href: "https://cdn.blockademy.ai/privacy-policy.pdf",
-    target: "_blank",
+    href: "/privacy-policy",
+    target: "_self",
   },
   {
     label: "Help & Support",
@@ -25,7 +25,7 @@ const LINKS = [
     comingSoon: true,
   },
   {
-    label: "Contact us",
+    label: "Contact Us",
     href: "mailto:contact@blockademy.ai",
     target: "_blank",
   },

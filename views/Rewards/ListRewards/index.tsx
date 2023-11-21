@@ -33,7 +33,7 @@ export default function ListRewards() {
   return (
     <div className="container mt-24 sm:mt-32 min-h-[64vh]">
       <nav className="w-full rounded-md">
-        <ol className="list-reset flex text-gray-300 items-center pl-4 md:pl-0 flex-wrap">
+        <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
           <li className="leading-[23px] hover:underline cursor-pointer">
             <Link href="/">
               <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
@@ -51,7 +51,7 @@ export default function ListRewards() {
           </li>
         </ol>
       </nav>
-      <div className="flex justify-between items-start flex-wrap gap-4 mb-6 mt-[52px]">
+      <div className="flex justify-between items-start flex-wrap gap-4 mb-6 mt-[32px]">
         <h3 className="text-black-100 font-bold md:text-4xl text-3xl">
           Accomplishments
         </h3>

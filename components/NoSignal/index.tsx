@@ -103,7 +103,7 @@ const NoSignal = () => {
             />
             <p className="text-[#616161] text-base font-light">
               {`I have read and agree to Blockademy's`}{" "}
-              <Link href="https://cdn.blockademy.ai/terms-of-use.pdf" target="_blank" className="text-blue-100">
+              <Link href="/terms" target="_self" className="text-blue-100">
                 Terms of Service
               </Link>
             </p>
