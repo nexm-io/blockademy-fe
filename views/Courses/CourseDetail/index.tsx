@@ -235,18 +235,18 @@ const CourseDetail = () => {
     handleCheckCompletedCourse();
   }, [handleCheckCompletedCourse]);
 
-  useEffect(() => {
-    if (!courseDetail) return;
-    if (courseDetail?.lesson_data && courseDetail.lesson_data.length > 0) {
-      const isLessonIdExists = courseDetail.lesson_data.some(
-        (lesson) => lesson.lesson_id === Number(lessonId)
-      );
+  // useEffect(() => {
+  //   if (!courseDetail) return;
+  //   if (courseDetail?.lesson_data && courseDetail.lesson_data.length > 0) {
+  //     const isLessonIdExists = courseDetail.lesson_data.some(
+  //       (lesson) => lesson.lesson_id === Number(lessonId)
+  //     );
 
-      if (!isLessonIdExists) {
-        router.push("/not-found");
-      }
-    }
-  }, [courseDetail, lessonId]);
+  //     if (!isLessonIdExists) {
+  //       router.push("/not-found");
+  //     }
+  //   }
+  // }, [courseDetail, lessonId]);
 
   return (
     <div className="container mt-36">
