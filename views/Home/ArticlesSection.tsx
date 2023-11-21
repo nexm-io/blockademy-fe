@@ -8,10 +8,15 @@ import Link from "next/link";
 import { BlogDetailType } from "@/redux/features/blogs/type";
 import Image from "next/image";
 import { format, parseISO } from "date-fns";
+import { useRouter } from "next/navigation";
 
 const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
+  const router = useRouter();
   return (
-    <Link href={`/articles/${blog.slug}`} className="h-full flex flex-col group cursor-pointer">
+    <div
+      onClick={() => router.push(`/articles/${blog.slug}`)}
+      className="h-full flex flex-col group cursor-pointer"
+    >
       <div className="rounded overflow-hidden relative">
         <Image
           src={blog.image.original_image}
@@ -36,14 +41,14 @@ const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
             {blog.meta_description}
           </p>
           <Link
-            href="/articles"
+            href={`/articles/${blog.slug}`}
             className="mt-[21px] inline-block text-base font-light text-blue-100"
           >
             {`See more >>`}
           </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

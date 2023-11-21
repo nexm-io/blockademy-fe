@@ -21,7 +21,7 @@ export default function ArticleDetail({
   params: { slug: string };
 }) {
   return (
-    <div className="relative container">
+    <div className="relative container mt-[82.27px]">
       <ArticleDetailPage params={params} />
       <div className=" full-bleed__footerArticle flex justify-center items-center bg-blue-100  text-white-100 h-[80px]">
         <Link href="/articles">
