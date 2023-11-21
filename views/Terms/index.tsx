@@ -119,7 +119,13 @@ const TermsView = () => {
               <li className="flex flex-col gap-2">
                 <p className="text-grey-700">
                   If you have any questions or concerns about our Privacy
-                  Policy, please contact us at contact@blockademy.ai
+                  Policy, please contact us at{" "}
+                  <a
+                    href="mailto:contact@blockademy.ai"
+                    className="text-blue-100"
+                  >
+                    contact@blockademy.ai
+                  </a>.
                 </p>
                 <p className="text-grey-700">Effective Date: Nov 17, 2023</p>
                 <h4 className="text-blue-100 text-xl">
