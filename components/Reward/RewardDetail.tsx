@@ -109,7 +109,6 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log(courseDetail);
       if ((courseDetail as any)?.issue_nft_status === "Processing") {
         dispatch(getDetailCourseWithoutLoading(courseDetail.id));
       } else if ((courseDetail as any)?.issue_nft_status === "Committed") {
@@ -123,7 +122,6 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     };
   }, [statusIssue, courseDetail, dispatch]);
 
-  console.log(courseDetail);
 
   useEffect(() => {
     getCertificate();
