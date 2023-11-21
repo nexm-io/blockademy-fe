@@ -1,7 +1,7 @@
 import { CourseDetail } from "@/redux/features/courses/type";
 import api from "@/services/axios";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import InfoPopup from "../Popup/InfoPopup";
 import cn from "@/services/cn";
@@ -25,6 +25,8 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [viewCertificate, setViewCertificate] = useState<boolean>(false);
   const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
   const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
+  const [statusIssue, setStatusIssue] = useState<boolean>(false);
+  const intervalRef = useRef<any>(0);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -78,15 +80,17 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     }
   }, [courseDetail, dispatch]);
 
-  const issueNFT = async () => {
+  const issueNFT = useCallback(async () => {
     setIsIssueLoading(true);
     try {
       await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
+      dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+      setStatusIssue(true);
     } catch {
       toast.error("Something wrong!");
       setIsIssueLoading(false);
     }
-  };
+  }, [courseDetail, dispatch]);
 
   const viewNFT = () => {
     window.open(
@@ -104,19 +108,26 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   };
 
   useEffect(() => {
-    getCertificate();
-  }, [getCertificate]);
+    const intervalId = setInterval(() => {
+      console.log(courseDetail);
+      if ((courseDetail as any)?.issue_nft_status === "Processing") {
+        dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+      } else if ((courseDetail as any)?.issue_nft_status === "Committed") {
+        setIsIssueLoading(false);
+        clearInterval(intervalId);
+      }
+    }, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [statusIssue, courseDetail, dispatch]);
+
+  console.log(courseDetail);
 
   useEffect(() => {
-    const intervalId = setInterval(async () => {
-      if ((courseDetail as any)?.issue_nft_status === "Committed") {
-        clearInterval(intervalId);
-        setIsIssueLoading(false);
-        return;
-      }
-      await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
-    }, 60000);
-  }, []);
+    getCertificate();
+  }, [getCertificate]);
 
   return (
     <>

@@ -117,6 +117,7 @@ export interface CourseDetail {
     data: Array<ListCourse>;
   };
   is_opened: number;
+  issue_nft_status: string;
 }
 
 export interface CourseDetailResponse {
