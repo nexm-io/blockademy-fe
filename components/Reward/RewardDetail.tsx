@@ -31,14 +31,20 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const shareFacebook = () => {
     const href = window.location.hostname;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id}&hashtag=${tags}`;
+    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${
+      (courseDetail as any)?.certificate_id
+    }&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
     const href = window.location.hostname;
     const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${courseDetail.title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${(courseDetail as any)?.certificate_id} `
+      `Excited to receive my Certificate on "${
+        courseDetail.title
+      }" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${
+        (courseDetail as any)?.certificate_id
+      } `
     )}`;
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
@@ -72,28 +78,20 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     }
   }, [courseDetail, dispatch]);
 
-  const issueNFT = useCallback(async () => {
+  const issueNFT = async () => {
     setIsIssueLoading(true);
-    let timeoutId: any;
     try {
       await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
-      timeoutId = setTimeout(async () => {
-        if ((courseDetail as any)?.issue_nft_status === "Committed") {
-          clearTimeout(timeoutId);
-          setIsIssueLoading(false);
-          return;
-        }
-        await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
-      }, 60000);
     } catch {
       toast.error("Something wrong!");
       setIsIssueLoading(false);
     }
-  }, [courseDetail, dispatch]);
+  };
 
   const viewNFT = () => {
     window.open(
-      `https://explorer.solana.com/address/${(courseDetail as any)?.issue_nft_address
+      `https://explorer.solana.com/address/${
+        (courseDetail as any)?.issue_nft_address
       }?cluster=devnet`,
       "_blank"
     );
@@ -108,6 +106,17 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   useEffect(() => {
     getCertificate();
   }, [getCertificate]);
+
+  useEffect(() => {
+    const intervalId = setInterval(async () => {
+      if ((courseDetail as any)?.issue_nft_status === "Committed") {
+        clearInterval(intervalId);
+        setIsIssueLoading(false);
+        return;
+      }
+      await dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+    }, 60000);
+  }, []);
 
   return (
     <>
@@ -172,7 +181,10 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
           </div>
           <div className="flex items-center flex-col md:flex-row gap-4">
             {(courseDetail as any)?.issue_nft_status === "Committed" ? (
-              <Button className="w-full md:w-auto md:min-w-[184px]" onClick={viewNFT}>
+              <Button
+                className="w-full md:w-auto md:min-w-[184px]"
+                onClick={viewNFT}
+              >
                 View NFT
               </Button>
             ) : (
@@ -186,7 +198,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                 onClick={issueNFT}
               >
                 {isIssueLoading ||
-                  (courseDetail as any)?.issue_nft_status === "Processing"
+                (courseDetail as any)?.issue_nft_status === "Processing"
                   ? `Processing`
                   : `Issue NFT`}
               </Button>
@@ -209,7 +221,9 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               })}
               onClick={() => setShowSharePopup(true)}
             >
-              <span className="hidden md:block"><Share /></span>
+              <span className="hidden md:block">
+                <Share />
+              </span>
               <span className="block md:hidden">Share Certificate</span>
             </button>
           </div>
@@ -274,19 +288,21 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
         <div
           className={`border border-gray-400 w-[90%] lg:w-[948px] fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
         >
-          <Image
-            src={certAssets.image}
-            onError={() =>
-              setCertAssets({
-                ...certAssets,
-                image: "/images/default-certificate.jpg",
-              })
-            }
-            className="w-[90%] lg:w-[948px]"
-            width={948}
-            height={625}
-            alt="blockademy certificate"
-          />
+          {certAssets.image && (
+            <Image
+              src={certAssets.image}
+              onError={() =>
+                setCertAssets({
+                  ...certAssets,
+                  image: "/images/default-certificate.jpg",
+                })
+              }
+              className="w-[90%] lg:w-[948px]"
+              width={948}
+              height={625}
+              alt="blockademy certificate"
+            />
+          )}
         </div>
       </div>
     </>
