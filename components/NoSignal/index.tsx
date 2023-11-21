@@ -69,10 +69,7 @@ const NoSignal = () => {
         ></Image>
         <div className="lg:col-start-2 lg:col-end-4">
           <p className="font-bold text-[56px] leading-[64px] text-black-400">
-            No noise. Just signal.
-          </p>
-          <p className="text-[24px] leading-[32px] text-[#616161] font-normal mt-[14px]">
-            Stay Updated with the Latest Courses, Article Updates, and More
+            Knowledge Unleashed: Join the Learning Signal
           </p>
           <div className="mt-[24px] flex flex-col md:flex-row gap-2">
             <div className="flex-1">
