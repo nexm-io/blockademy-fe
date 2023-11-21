@@ -39,7 +39,7 @@ const MainSection = () => {
         <TopBanner />
       </Link>
 
-      <div className="container grid grid-cols-1 lg:grid-cols-2 lg:gap-10 pb-[60px]">
+      <div className="container grid lg:gap-10 pb-[60px] hot-course-container">
         <div className="grid gap-6 pt-[45px] md:pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
           <h3 className="text-black-400 text-[56px] leading-[64px] font-bold">
             Unlock the Power <br /> of Blockchain
@@ -58,7 +58,7 @@ const MainSection = () => {
           {isLoading || !course ? (
             <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">
               <p className="text-xs font-normal text-dark-400">Hot Course</p>
-              <div className="skeleton bg-gray-400/20 h-[293px] w-full rounded"></div>
+              <div className="skeleton bg-gray-400/20 h-[336px] w-full rounded"></div>
               <div className="skeleton mt-4 bg-gray-400/20 h-[28px] w-2/3 rounded"></div>
               <div className="text-base text-[#616161] flex items-center gap-[25px] mt-4">
                 <div className="skeleton bg-gray-400/20 h-[24px] w-[70px] rounded"></div>
@@ -96,8 +96,8 @@ const MainSection = () => {
                 <p className="text-xs font-normal text-dark-400">Hot Course</p>
                 <Image
                   src={course.image.original}
-                  width={521}
-                  height={293}
+                  width={603}
+                  height={336}
                   alt="hutech"
                   className="mt-1 w-full object-cover"
                 />
