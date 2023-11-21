@@ -24,6 +24,7 @@ const Reward = () => {
       router.push("/");
     }
   }, [isLogin, token]);
+  
   useEffect(() => {
     (async () => {
       const { payload } = await dispatch(getDetailCourse(courseId as string));

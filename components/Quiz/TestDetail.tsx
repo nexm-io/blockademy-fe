@@ -102,7 +102,8 @@ const TestDetail = () => {
       dispatch(setTimeStart(Date.now()));
     }
     setIsModalBeginTestOpen(false);
-    await dispatch(getListQuesOfQuiz(id));
+    const { payload } = await dispatch(getListQuesOfQuiz(id));
+    if (payload?.data.length <= 0) router.push("/not-found");
     await dispatch(getStartTime(id));
     setIsModalBeginTestOpen(false);
     window.history.pushState(null, "", window.location.href);

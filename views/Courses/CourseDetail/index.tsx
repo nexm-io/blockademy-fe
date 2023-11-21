@@ -155,10 +155,9 @@ const CourseDetail = () => {
   useEffect(() => {
     (async () => {
       const { payload } = await dispatch(getDetailCourse(courseId as string));
-      if (payload?.response?.data?.error)
-        router.push("/not-found");
-    })()
-  }, [courseId]);
+      if (payload?.response?.data?.error) router.push("/not-found");
+    })();
+  }, []);
 
   useEffect(() => {
     if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
@@ -431,7 +430,7 @@ const CourseDetail = () => {
                   {/* TRY AGAIN */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug ===
-                    ASSIGNMENT_STATUS.FAILED &&
+                      ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
@@ -462,7 +461,7 @@ const CourseDetail = () => {
                   {/* COMPLETE QUIZ */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                    ASSIGNMENT_STATUS.FAILED &&
+                      ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <div className="flex justify-end">
@@ -503,7 +502,7 @@ const CourseDetail = () => {
 
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                    ASSIGNMENT_STATUS.FAILED &&
+                      ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <p className="text-grey-700">

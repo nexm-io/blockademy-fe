@@ -3,42 +3,16 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, useRouter } from "next/navigation";
-import {
-  ASSIGNMENT_STATUS,
-  RESULT_QUESTION_CORRECT,
-  RESULT_QUIZ_FAIL,
-  RESULT_QUIZ_PASS,
-  TYPE_QUIZ,
-} from "@/utils/constants";
+import { RESULT_QUIZ_FAIL, RESULT_QUIZ_PASS } from "@/utils/constants";
 import {
   getListHighestResult,
   getListResult,
 } from "@/redux/features/quiz/action";
 import Image from "next/image";
 import Button from "../Common/Button";
-import { selectReward } from "@/redux/features/reward/reducer";
-import { getRewardDetail } from "@/redux/features/reward/action";
-import api from "@/services/axios";
-import { toast } from "react-toastify";
-import {
-  Box,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  Typography,
-  Skeleton,
-  Stack,
-  FormControl,
-  RadioGroup,
-  Grid,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
-import { soleil } from "@/utils/constants";
+import { Box, Skeleton, FormControlLabel, Radio } from "@mui/material";
 import Link from "next/link";
-import CertPopup from "../Popup/CertPopup";
 import cn from "@/services/cn";
-import MyCertificate from "@/components/MyCertificate";
 
 const PASSED_QUIZZ_SCORE = 80;
 
@@ -53,12 +27,10 @@ export default function ResultQuiz() {
       if (typeof id !== "string") return;
       if (isViewResultInCourse) {
         const { payload } = await dispatch(getListHighestResult(id));
-        if (payload?.response?.data?.error)
-          router.push("/not-found");
+        if (!payload?.course_id) router.push("/not-found");
       } else {
         const { payload } = await dispatch(getListResult(id));
-        if (payload?.response?.data?.error)
-          router.push("/not-found");
+        if (!payload?.course_id) router.push("/not-found");
       }
     };
     fetchData();
@@ -350,7 +322,11 @@ export default function ResultQuiz() {
                             >
                               <FormControlLabel
                                 value={item?.id}
-                                checked={z.user_answer ? z.user_answer?.id === item?.id : false}
+                                checked={
+                                  z.user_answer
+                                    ? z.user_answer?.id === item?.id
+                                    : false
+                                }
                                 control={
                                   <Radio
                                     icon={
@@ -413,7 +389,7 @@ export default function ResultQuiz() {
                                 }}
                               />
                               {z.result_answer &&
-                                item.id === z.correct_answer.id ? (
+                              item.id === z.correct_answer.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="40"
@@ -428,7 +404,7 @@ export default function ResultQuiz() {
                                 </svg>
                               ) : null}
                               {!z.result_answer &&
-                                item.id === z.user_answer?.id ? (
+                              item.id === z.user_answer?.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   width="40"

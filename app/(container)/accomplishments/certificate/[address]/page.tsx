@@ -1,7 +1,7 @@
 "use client";
 
 import api from "@/services/axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { SpinnerIos } from "@styled-icons/fluentui-system-regular";
 
@@ -9,6 +9,7 @@ const CertificateDetailPage = () => {
   const param = useParams();
   const [isloading, setIsLoading] = useState<boolean>(true);
   const [pdf, setPdf] = useState<string>("");
+  const router = useRouter();
 
   const getCertificate = useCallback(async () => {
     setIsLoading(true);
@@ -18,7 +19,8 @@ const CertificateDetailPage = () => {
       );
       setPdf(data.data.certificate_pdf_url);
       setIsLoading(false);
-    } catch {
+    } catch (error: any) {
+      if (error?.response?.data?.data.length <= 0) router.push("/not-found");
       setIsLoading(false);
     }
   }, [param.address]);
