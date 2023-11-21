@@ -12,21 +12,25 @@ const LINKS = [
     label: "Terms",
     href: "/terms",
     target: "_self",
+    isContact: false,
   },
   {
     label: "Privacy Policy",
     href: "/privacy-policy",
     target: "_self",
+    isContact: false,
   },
   {
     label: "Help & Support",
     href: "/help-support",
     target: "_self",
+    isContact: false,
   },
   {
     label: "Contact Us",
     href: "mailto:contact@blockademy.ai",
     target: "_blank",
+    isContact: true,
   },
 ];
 
@@ -44,16 +48,26 @@ const Footer = () => {
           ></Image>
         </Link>
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-[60px]">
-          {LINKS.map((z, i) => (
-            <Link
-              href={z.href}
-              target={z.target}
-              key={i}
-              className="text-[#616161] text-xl font-normal text-center"
-            >
-              {z.label}
-            </Link>
-          ))}
+          {LINKS.map((z, i) =>
+            z.isContact ? (
+              <a
+                href={z.href}
+                key={i}
+                className="text-[#616161] text-xl font-normal text-center"
+              >
+                {z.label}
+              </a>
+            ) : (
+              <Link
+                href={z.href}
+                target={z.target}
+                key={i}
+                className="text-[#616161] text-xl font-normal text-center"
+              >
+                {z.label}
+              </Link>
+            )
+          )}
         </div>
       </div>
       <div className="container">
