@@ -42,7 +42,7 @@ const MainSection = () => {
       <div className="container grid lg:gap-10 pb-[60px] hot-course-container">
         <div className="grid gap-6 pt-[45px] md:pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
           <h3 className="text-black-400 text-[56px] leading-[64px] font-bold">
-            Unlock the Power <br /> of Blockchain
+            Unlock the Power <br className="hidden lg:block" /> of Blockchain
           </h3>
           <p className="text-xl text-[#616161] font-normal max-w-[477px]">
             Make blockchain learning become easy, engaging, and gamified.
