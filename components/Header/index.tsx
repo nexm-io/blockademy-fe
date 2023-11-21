@@ -16,6 +16,7 @@ import cn from "@/services/cn";
 import { MENU } from "@/utils/constants";
 import { usePathname } from "next/navigation";
 import { PlusLg } from "@styled-icons/bootstrap";
+import { Minus } from "@styled-icons/boxicons-regular";
 import Socials from "../Socials";
 
 const Header = () => {
@@ -262,11 +263,19 @@ const Header = () => {
                         {email}
                       </Link>
                     </div>
-                    <PlusLg
-                      size={20}
-                      className="text-[#1E2329] cursor-pointer"
-                      onClick={() => setIsShowAccountMenu(!isShowAccountMenu)}
-                    />
+                    {isShowAccountMenu ? (
+                      <Minus
+                        size={20}
+                        className="text-[#1E2329] cursor-pointer"
+                        onClick={() => setIsShowAccountMenu(!isShowAccountMenu)}
+                      />
+                    ) : (
+                      <PlusLg
+                        size={20}
+                        className="text-[#1E2329] cursor-pointer"
+                        onClick={() => setIsShowAccountMenu(!isShowAccountMenu)}
+                      />
+                    )}
                   </div>
 
                   <div
