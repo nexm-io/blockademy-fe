@@ -11,7 +11,7 @@ import { format, parseISO } from "date-fns";
 
 const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
   return (
-    <Link href={`/articles/${blog.slug}`} className="h-full flex flex-col group cursor-pointer">
+    <div className="h-full flex flex-col group cursor-pointer">
       <div className="rounded overflow-hidden relative">
         <Image
           src={blog.image.original_image}
@@ -36,14 +36,14 @@ const BlogItem = ({ blog }: { blog: BlogDetailType }) => {
             {blog.meta_description}
           </p>
           <Link
-            href="/articles"
+            href={`/articles/${blog.slug}`}
             className="mt-[21px] inline-block text-base font-light text-blue-100"
           >
             {`See more >>`}
           </Link>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
