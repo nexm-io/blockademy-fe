@@ -30,8 +30,6 @@ export default function ListRewards() {
     dispatch(getListRewards());
   }, [dispatch]);
 
-  console.log(rewardRx.rewards);
-
   return (
     <div className="container mt-24 sm:mt-32 min-h-[64vh]">
       <nav className="w-full rounded-md">
