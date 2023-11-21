@@ -23,7 +23,7 @@ export const getDetailCourse = createAsyncThunk(
       const { data: course } = await api.get(`/api/v10/course/${courseId}`);
       return course;
     } catch (error) {
-      return null;
+      return error;
     }
   }
 );

@@ -1,15 +1,26 @@
 "use client";
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import InProgressTab from './InProgressTab';
 import CompletedTab from './CompletedTab';
 import { TAB_STATUS } from '@/utils/constants';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { useAppSelector } from '@/redux/hook';
 
 
 const ListCourse: React.FC = () => {
   const searchParams = useSearchParams()
   const search = searchParams.get('tab')
+  const isLogin = useAppSelector((state: RootState) => state.auth.isAuthenticated);
+  const token = useSelector((state: RootState) => state.auth.token);
+  const router = useRouter();
+  useEffect(() => {
+    if (!isLogin || !token) {
+      router.push("/");
+    }
+  }, [isLogin, token]);
 
   return (
     <div className="w-full relative pt-[80px]">
@@ -19,23 +30,21 @@ const ListCourse: React.FC = () => {
       <div className='flex gap-[40px] mt-[40px]'>
         <Link
           href="/my-learning?tab=progress"
-          className={`course-status ${
-            search !== TAB_STATUS.COMPLETED ? "active" : ""
-          }`}
+          className={`course-status ${search !== TAB_STATUS.COMPLETED ? "active" : ""
+            }`}
         >
           In Progress
         </Link>
         <Link
           href="/my-learning?tab=completed"
-          className={`course-status ${
-            search === TAB_STATUS.COMPLETED ? "active" : ""
-          }`}
+          className={`course-status ${search === TAB_STATUS.COMPLETED ? "active" : ""
+            }`}
         >
           Completed
         </Link>
       </div>
 
-      {search === TAB_STATUS.COMPLETED ? <CompletedTab /> :  <InProgressTab />}
+      {search === TAB_STATUS.COMPLETED ? <CompletedTab /> : <InProgressTab />}
     </div>
   )
 }
