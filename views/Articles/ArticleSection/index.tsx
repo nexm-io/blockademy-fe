@@ -24,12 +24,11 @@ export default function ArticlesSection({
       />
       <div className="flex gap-2 text-base mt-6">
         <h2 className="font-semibold">
-          <Link
-            href={`/authors/${author?.slug}`}
+          <div
             className="text-black-100 font-semibold "
           >
             {author?.first_name} {author?.last_name}
-          </Link>
+          </div>
         </h2>
         <p className="text-gray-500"> - {formatDateSlash(date)}</p>
       </div>
