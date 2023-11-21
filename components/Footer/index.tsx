@@ -44,28 +44,16 @@ const Footer = () => {
           ></Image>
         </Link>
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-[60px]">
-          {LINKS.map((z, i) =>
-            z.comingSoon ? (
-              <p
-                key={i}
-                className="text-[#616161] text-xl font-normal text-center cursor-pointer"
-                onClick={() => {
-                  toast("Coming Soon!", { type: "info" });
-                }}
-              >
-                {z.label}
-              </p>
-            ) : (
-              <Link
-                href={z.href}
-                target={z.target}
-                key={i}
-                className="text-[#616161] text-xl font-normal text-center"
-              >
-                {z.label}
-              </Link>
-            )
-          )}
+          {LINKS.map((z, i) => (
+            <Link
+              href={z.href}
+              target={z.target}
+              key={i}
+              className="text-[#616161] text-xl font-normal text-center"
+            >
+              {z.label}
+            </Link>
+          ))}
         </div>
       </div>
       <div className="container">
