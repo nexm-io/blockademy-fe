@@ -62,6 +62,7 @@ export default function RootLayout({
         src={`https://www.googletagmanager.com/gtag/js?id=G-XS8QL1EDRD`}
         strategy="afterInteractive"
       />
+      */}
       <Script id="gtag-init" strategy="afterInteractive">
         {`
         window.dataLayer = window.dataLayer || [];
@@ -70,7 +71,7 @@ export default function RootLayout({
 
         gtag('config', 'G-XS8QL1EDRD');
       `}
-      </Script> */}
+      </Script>
       <body>
         <Providers>
           <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>
