@@ -9,7 +9,7 @@ import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import { completedCourse, getDetailCourse, registerCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
@@ -138,13 +138,9 @@ const CourseDetail = () => {
     }
     setLoading(true);
     try {
-      const response = await api.get(
-        `/api/v10/register-course?course_id=${courseId}`
-      );
-      if (response.status === 200) {
-        setRegistered(true);
-        setShowPopup(true);
-      }
+      await dispatch(registerCourse(courseId as string));
+      setRegistered(true);
+      setShowPopup(true);
     } catch (error) {
       return null;
     } finally {
@@ -203,15 +199,11 @@ const CourseDetail = () => {
       return;
     }
     try {
-      const response = await api.post(
-        `/api/v10/course/${courseId}/lesson/${lessonId}`
-      );
-      if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId]);
-        setStepCompleted([]);
-        if (isNextLesson && !lessonOrder.last) {
-          router.push(urlNextLesson);
-        }
+      await dispatch(completedCourse({ courseId: courseId as string, lessonId: lessonId as string }));
+      setCompletedLesson([...completedLesson, +lessonId]);
+      setStepCompleted([]);
+      if (isNextLesson && !lessonOrder.last) {
+        router.push(urlNextLesson);
       }
     } catch (error) {
       return null;
@@ -443,7 +435,7 @@ const CourseDetail = () => {
                   {/* TRY AGAIN */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug ===
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
                     courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
@@ -474,7 +466,7 @@ const CourseDetail = () => {
                   {/* COMPLETE QUIZ */}
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <div className="flex justify-end">
@@ -515,7 +507,7 @@ const CourseDetail = () => {
 
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
+                    ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
                     registered && (
                       <p className="text-grey-700">

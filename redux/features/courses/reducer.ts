@@ -7,8 +7,11 @@ import {
   resetFinish,
   saveAnswerQuiz,
   getDetailCourseWithoutLoading,
+  loadHotCourse,
+  registerCourse,
 } from "./action";
 import { CourseResponse } from "./type";
+import { RootState } from "@/redux/store";
 
 const initialState: CourseResponse = {
   success: false,
@@ -27,6 +30,9 @@ const initialState: CourseResponse = {
     current_page: 0,
     total_pages: 0,
   },
+  hotCourseLoading: true,
+  hotCourse: {},
+  registerCourseLoading: false,
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -110,6 +116,30 @@ const courseReducer = createReducer(initialState, (builder) => {
   builder.addCase(resetFinish, (state, action) => {
     state.quiz = { ...state.quiz, is_finished: action.payload };
   });
+
+  builder
+    .addCase(loadHotCourse.pending, (state) => {
+      state.hotCourseLoading = true;
+    })
+    .addCase(loadHotCourse.fulfilled, (state, action) => {
+      state.hotCourseLoading = false;
+      if (!action.payload) return;
+      state.hotCourse = action.payload;
+    })
+    .addCase(loadHotCourse.rejected, (state) => {
+      state.hotCourseLoading = false;
+    })
+    .addCase(registerCourse.pending, (state) => {
+      state.registerCourseLoading = true;
+    })
+    .addCase(registerCourse.fulfilled, (state, action) => {
+      state.registerCourseLoading = false;
+    })
+    .addCase(registerCourse.rejected, (state) => {
+      state.registerCourseLoading = false;
+    })
 });
+
+export const selectCourse = (state: RootState) => state.courses;
 
 export { courseReducer };
