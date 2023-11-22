@@ -1,21 +1,30 @@
 import Image from "next/image";
 import Button from "@/components/Common/Button";
 import ChipV2 from "@/components/ChipV2";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import api from "@/services/axios";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
 import TopBanner from "./TopBanner";
-import { loadHotCourse } from "@/redux/features/courses/action";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { selectCourse } from "@/redux/features/courses/reducer";
 
 const MainSection = () => {
-  const { hotCourse: course, hotCourseLoading } = useAppSelector(selectCourse);
-  const dispatch = useAppDispatch();
+  const [course, setCourse] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const loadHotCourse = async () => {
+    try {
+      const { data } = await api.get(`/api/v10/hot-course`);
+      setCourse(data.data);
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+      setCourse(null);
+    }
+  };
 
   useEffect(() => {
-    dispatch(loadHotCourse());
+    loadHotCourse();
   }, []);
 
   return (
@@ -46,7 +55,7 @@ const MainSection = () => {
         </div>
         <div className="relative">
           <div className="bg-[#F5F5F5] h-full absolute left-0 top-0 hot-course-bg"></div>
-          {hotCourseLoading || !course ? (
+          {isLoading || !course ? (
             <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">
               <p className="text-xs font-normal text-dark-400">Hot Course</p>
               <div className="skeleton bg-gray-400/20 h-[336px] w-full rounded"></div>
