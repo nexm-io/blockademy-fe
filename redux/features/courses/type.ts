@@ -26,6 +26,8 @@ export interface CourseResponse {
   details: CourseDetail | null;
   quiz: QuizDataResponse;
   message?: string;
+  hotCourseLoading: boolean;
+  hotCourse: any;
 }
 
 export interface ListCourse {
