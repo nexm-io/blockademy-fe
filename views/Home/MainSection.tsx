@@ -130,7 +130,7 @@ const MainSection = () => {
                   </div>
                 </div>
                 <div className="mt-6">
-                  <ChipV2 label={course.level.name} />
+                  <ChipV2 label={course.level.name} type={course.level.slug} />
                 </div>
               </div>
             </Link>
