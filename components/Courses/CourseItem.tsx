@@ -42,8 +42,6 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
     setLevelStyle(LEVEL_COLORS[levelId]);
   }, [course.level?.id]);
 
-  console.log(course.level);
-
   return (
     <Link
       href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`}
