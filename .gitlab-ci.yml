@@ -5,8 +5,7 @@ stages:
 
 variables:
   APP_REGISTRY: fe_blockademy
-  APP_TAG_LATEST: $APPSCYCLONE_REGISTRY/$APP_REGISTRY:$CI_COMMIT_REF_NAME-latest
-  APP_TAG_COMMIT: $APPSCYCLONE_REGISTRY/$APP_REGISTRY:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+  APP_TAG_COMMIT: $APPSCYCLONE_REGISTRY/$APP_REGISTRY:$CI_COMMIT_SHORT_SHA
 
 build_docker_dev: &build
   stage: build
@@ -15,70 +14,36 @@ build_docker_dev: &build
     - docker:dind
   variables:
     env: $ENV_DEV
+    APP_TAG_LATEST: $APPSCYCLONE_REGISTRY/$APP_REGISTRY:beta-latest
   only:
     - develop
+    - devops/k8s
   script:
-    # define .env
     - cat $env > .env
-
-    # login docker registry
     - docker login -u $DOCKER_USER -p $DOCKER_PASS $APPSCYCLONE_REGISTRY
     - docker build -t $APP_TAG_LATEST -t $APP_TAG_COMMIT .
-
     - docker push $APP_TAG_LATEST
     - docker push $APP_TAG_COMMIT
-
     - docker rmi -f $APP_TAG_LATEST $APP_TAG_COMMIT
-
-# build_docker_staging:
-#   <<: *build
-#   variables:
-#     env: $ENV_STAGING
-#   only:
-#     - staging
 
 build_docker_prod:
   <<: *build
   variables:
     env: $ENV_PROD
+    APP_TAG_LATEST: $APPSCYCLONE_REGISTRY/$APP_REGISTRY:latest
   only:
     - master
 
-deploy_dev: &deploy
+deploy:
   stage: deploy
-  image: alpine:3.15
-  variables:
-    USER: $USER_DEV
-    KEY: $KEY_DEV
-    IP_SERVER: $SERVER_DEV
-
   only:
     - develop
+    - devops/k8s
+  image:
+    name: alpine/k8s:1.25.16
+    entrypoint: ['']
+  before_script:
+    - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
   script:
-    #ssh to server
-    - apk add --no-cache openssh-client
-    - mkdir -p ~/.ssh
-    - chmod -R 700 ~/.ssh/
-    - (umask  077 ; echo $KEY | base64 -d > ~/.ssh/block-deploy)
-    - chmod 600 ~/.ssh/block-deploy
-    - ssh-keyscan -t rsa $IP_SERVER > ~/.ssh/known_hosts
-    - ssh -i ~/.ssh/block-deploy -o StrictHostKeyChecking=no $USER@$IP_SERVER "cd blockademy/frontend;docker compose pull;docker compose up -d "
+    - kubectl rollout restart -n blockademy-beta deploy blockademy-web
 
-
-# deploy_staging:
-#   <<: *deploy
-#   variables:
-#     USER: $USER_STAGING
-#      KEY: $KEY_STAGING
-#      IP_SERVER: $SERVER_STAGING
-#   only:
-#     - staging
-
-deploy_prod:
-  <<: *deploy
-  variables:
-    USER: $USER_PROD
-    KEY: $KEY_PROD
-    IP_SERVER: $SERVER_PROD
-  only:
-    - master
