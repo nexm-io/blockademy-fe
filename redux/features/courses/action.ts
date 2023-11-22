@@ -2,18 +2,6 @@ import api from "@/services/axios";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { CourseResponse, QuizResponse } from "./type";
 
-export const registerCourse = createAsyncThunk(
-  "courses/register-course",
-  async (courseId: string) => {
-    try {
-      const { data } = await api.get(
-        `/api/v10/register-course?course_id=${courseId}`
-      );
-      return data.data
-    } catch (error) {
-      return error;
-    }
-  });
 export const loadHotCourse = createAsyncThunk(
   "courses/load-hot-course",
   async () => {

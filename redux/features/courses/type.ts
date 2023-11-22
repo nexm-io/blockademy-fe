@@ -28,7 +28,6 @@ export interface CourseResponse {
   message?: string;
   hotCourseLoading: boolean;
   hotCourse: any;
-  registerCourseLoading: boolean;
 }
 
 export interface ListCourse {
