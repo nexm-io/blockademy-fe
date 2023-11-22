@@ -19,7 +19,7 @@ export default function FormAccount() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     dispatch(getAccountDetail({ userId: userId }));
@@ -34,11 +34,10 @@ export default function FormAccount() {
     }
   };
   return (
-    <>
-      {/*  */}
-      {isAuthenticated ? (
+    <div className="container">
+      {isLogin ? (
         <>
-          <h1 className="font-semibold md:text-4xl text-3xl md:pt-[60px] pt-4">
+          <h1 className="font-semibold md:text-4xl text-3xl">
             Account Settings
           </h1>
           <Avatar show={show} setShow={setShow} />
@@ -92,6 +91,6 @@ export default function FormAccount() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
