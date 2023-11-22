@@ -55,7 +55,8 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
+    if (userId)
+      dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
 
   const handleUserIconClick = (event: React.MouseEvent) => {
@@ -144,7 +145,7 @@ const Header = () => {
                   src={image || userDefault}
                   width={50}
                   height={50}
-                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
+                  className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover cursor-pointer"
                   onClick={handleUserIconClick}
                 ></Image>
 
