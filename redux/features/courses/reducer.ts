@@ -8,6 +8,7 @@ import {
   saveAnswerQuiz,
   getDetailCourseWithoutLoading,
   loadHotCourse,
+  registerCourse,
 } from "./action";
 import { CourseResponse } from "./type";
 import { RootState } from "@/redux/store";
@@ -30,7 +31,8 @@ const initialState: CourseResponse = {
     total_pages: 0,
   },
   hotCourseLoading: true,
-  hotCourse: {}
+  hotCourse: {},
+  registerCourseLoading: false,
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -126,6 +128,15 @@ const courseReducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadHotCourse.rejected, (state) => {
       state.hotCourseLoading = false;
+    })
+    .addCase(registerCourse.pending, (state) => {
+      state.registerCourseLoading = true;
+    })
+    .addCase(registerCourse.fulfilled, (state, action) => {
+      state.registerCourseLoading = false;
+    })
+    .addCase(registerCourse.rejected, (state) => {
+      state.registerCourseLoading = false;
     })
 });
 
