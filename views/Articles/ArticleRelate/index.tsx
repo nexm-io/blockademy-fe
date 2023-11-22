@@ -28,7 +28,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
       {(!isLoading && relateList) ? (
         relateList.map((post, index: number) => (
           <Link href={`/articles/${post.slug}`} key={index}>
-            <div className="flex flex-col md:max-w-[250px]">
+            <div className="flex flex-col">
               <Image
                 alt="img-post"
                 width={250}
@@ -40,11 +40,11 @@ const ArticleRelate = ({ id }: { id: number }) => {
                     ? defaultImg
                     : defaultImg
                 }
-                className="rounded-2xl mb-2 w-[250px] h-[130px]"
+                className="rounded-2xl mb-2 w-full"
                 placeholder="blur"
                 blurDataURL={PLACEHOLDER_BASE64}
               />
-              <span className="text-black-100 leading-6 font-semibold">
+              <span className="text-black-100 leading-6 w-full font-semibold">
                 {post.title}
               </span>
             </div>
@@ -55,8 +55,8 @@ const ArticleRelate = ({ id }: { id: number }) => {
           {Array.from({ length: 3 }, (_, index) => (
             <>
               <div className="flex flex-col gap-2">
-                <SkeletionCard width="250px" height="140px" radius="16px" />
-                <SkeletionCard width="250px" height="30px" radius="16px" />
+                <SkeletionCard width="284px" height="149px" radius="16px" />
+                <SkeletionCard width="284px" height="30px" radius="16px" />
               </div>
             </>
           ))}
