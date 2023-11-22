@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAccountDetail } from "@/redux/features/account/action";
 import userDefault from "@/public/images/home/home-iconuser.png";
 import avatarIcon from "@/public/icons/avataricon.svg";
+import Button from "@/components/Common/Button";
 
 interface AvatarProps {
   show: boolean;
@@ -24,23 +25,17 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
   };
   return (
     /* Avatar */
-    <div>
-      <div className="flex items-center gap-2 md:mb-[40px] mb-6 md:mt-[60px] mt-8">
+    <div className="md:mt-[60px] mt-8 flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-2">
         <h2 className="font-semibold text-2xl ">Avatar</h2>
-        <div className="flex gap-1 items-center">
-          <Image
-            alt="edit-icon"
-            src={editIcon}
-            className="w-4 h-4 cursor-pointer select-none"
-            onClick={handleShowAvatar}
-          ></Image>
-          <span
-            onClick={handleShowAvatar}
-            className="text-blue-100 text-base font-normal cursor-pointer hover:underline select-none"
-          >
-            Edit
+        <Button
+          className="w-[106px] !py-[6px] bg-blue-600 group hover:bg-blue-600/50 group"
+          onClick={handleShowAvatar}
+        >
+          <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+            Change
           </span>
-        </div>
+        </Button>
       </div>
       <div className="flex justify-between items-center md:flex-row flex-col">
         <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start">
