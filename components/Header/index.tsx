@@ -55,7 +55,8 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
+    if (userId)
+      dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
 
   const handleUserIconClick = (event: React.MouseEvent) => {
