@@ -9,7 +9,7 @@ import Quiz from "@/components/Quiz";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { completedCourse, getDetailCourse, registerCourse } from "@/redux/features/courses/action";
+import { getDetailCourse, registerCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
@@ -199,11 +199,15 @@ const CourseDetail = () => {
       return;
     }
     try {
-      await dispatch(completedCourse({ courseId: courseId as string, lessonId: lessonId as string }));
-      setCompletedLesson([...completedLesson, +lessonId]);
-      setStepCompleted([]);
-      if (isNextLesson && !lessonOrder.last) {
-        router.push(urlNextLesson);
+      const response = await api.post(
+        `/api/v10/course/${courseId}/lesson/${lessonId}`
+      );
+      if (response.status === 200) {
+        setCompletedLesson([...completedLesson, +lessonId]);
+        setStepCompleted([]);
+        if (isNextLesson && !lessonOrder.last) {
+          router.push(urlNextLesson);
+        }
       }
     } catch (error) {
       return null;
