@@ -50,7 +50,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Script
+      {/* <Script
         src="https://chat-api.spartez-software.com/chat-widget.js"
         defer
       />
@@ -70,7 +70,7 @@ export default function RootLayout({
 
         gtag('config', 'G-XS8QL1EDRD');
       `}
-      </Script>
+      </Script> */}
       <body>
         <Providers>
           <ThemeProvider theme={muiTheme}>{children}</ThemeProvider>
