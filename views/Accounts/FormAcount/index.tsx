@@ -37,27 +37,29 @@ export default function FormAccount() {
     <div className="container">
       {isLogin ? (
         <>
-          <h1 className="font-semibold md:text-4xl text-3xl">
+          <h1 className="font-bold md:text-4xl text-3xl mb-10">
             Account Settings
           </h1>
-          <Avatar show={show} setShow={setShow} />
-          <GeneralAccount />
-          <ChangePassword />
-          <WalletComponent />
-          <div className="flex flex-col gap-4 md:mt-[60px] mt-8 md:mb-[120px] mb-8">
-            <Link
-              href="#"
-              className="text-base text-blue-100 font-semibold hover:brightness-50"
-            >
-              Give us your feedback
-            </Link>
-            <Link
-              href="#"
-              className="text-base text-blue-100 font-semibold hover:brightness-50"
-              onClick={handleLogout}
-            >
-              Log out
-            </Link>
+          <div className="flex flex-col gap-6">
+            <Avatar show={show} setShow={setShow} />
+            <GeneralAccount />
+            <ChangePassword />
+            <WalletComponent />
+            <div className="flex flex-col gap-4">
+              <Link
+                href="#"
+                className="text-base text-blue-100 hover:brightness-50 inline-block"
+              >
+                Give us your feedback
+              </Link>
+              <Link
+                href="#"
+                className="text-base text-red-200 hover:brightness-50 inline-block"
+                onClick={handleLogout}
+              >
+                Log out
+              </Link>
+            </div>
           </div>
           {show && (
             <Popup
