@@ -58,11 +58,11 @@ export default function RootLayout({
         jira-id="0191cdbc-70cf-3d52-91cf-9c3a49b689f2"
         service-desk-id="1"
       ></chat-widget>
-       <Script
+    */}
+      <Script
         src={`https://www.googletagmanager.com/gtag/js?id=G-XS8QL1EDRD`}
         strategy="afterInteractive"
       />
-      */}
       <Script id="gtag-init" strategy="afterInteractive">
         {`
         window.dataLayer = window.dataLayer || [];
