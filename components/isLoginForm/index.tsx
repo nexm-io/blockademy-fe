@@ -23,7 +23,7 @@ const IsLoginForm = () => {
 
         <div className="flex px-5 bg-white-200 justify-between items-center w-full rounded-md mb-7">
           <label
-            className="inline-block pl-[0.15rem] text-center hover:cursor-pointer text-sm max-w-[300px]"
+            className="inline-block pl-[0.15rem] text-center text-sm max-w-[300px]"
             htmlFor="flexSwitchCheckDefault"
           >
             Put your knowledge into practice by opening a Blockademy account
