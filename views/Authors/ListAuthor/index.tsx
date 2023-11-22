@@ -38,7 +38,7 @@ const AuthorList = () => {
 
   return (
     <div className="md:mt-10 mt-4 min-h-screen flex flex-col justify-between">
-      {(is_loading) ? (
+      {is_loading ? (
         <div className="mt-2 ">
           <SkeletionCard
             height="40px"
@@ -80,39 +80,37 @@ const AuthorList = () => {
           </div>
 
           <div className="grid grid-cols-4 gap-5">
-            {(listAuthor && listAuthor.length > 0 && !is_loading) ? (
+            {listAuthor && listAuthor.length > 0 && !is_loading ? (
               listAuthor.map((author, index) => (
                 <>
                   <div
                     key={index}
                     className="flex flex-col items-center justify-between h-[300px] gap-3 pb-4 pt-8 bg-white-100 shadow-lg hover:shadow-3xl rounded-lg border border-gray-200 mb-4"
                   >
-                    <Link href={`/authors/${author.slug}`}>
-                      <div className="flex flex-col items-center justify-between gap-3">
-                        <div className="w-[120px] h-[120px] rounded-full border border-[#D9D9D9]">
-                          <Image
-                            alt="author"
-                            src={author.image.original_image || img}
-                            width={120}
-                            height={120}
-                            className="flex rounded-full w-full h-full object-fill"
-                          />
-                        </div>
-                        <div className="flex flex-col items-center justify-center">
-                          <p className="text-[24px] font-semibold truncate max-w-[240px]">
-                            {author.first_name + " " + author.last_name}
-                          </p>
-                          <div className="flex gap-4">
-                            <span className="text-xs text-[#727A88] leading-[18px]">
-                              Total posts:{" "}
-                              <span className="text-black-300">
-                                {author.total_post}
-                              </span>
+                    <div className="flex flex-col items-center justify-between gap-3">
+                      <div className="w-[120px] h-[120px] rounded-full border border-[#D9D9D9]">
+                        <Image
+                          alt="author"
+                          src={author.image.original_image || img}
+                          width={120}
+                          height={120}
+                          className="flex rounded-full w-full h-full object-fill"
+                        />
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <p className="text-[24px] font-semibold truncate max-w-[240px]">
+                          {author.first_name + " " + author.last_name}
+                        </p>
+                        <div className="flex gap-4">
+                          <span className="text-xs text-[#727A88] leading-[18px]">
+                            Total posts:{" "}
+                            <span className="text-black-300">
+                              {author.total_post}
                             </span>
-                          </div>
+                          </span>
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </div>
                 </>
               ))

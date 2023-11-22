@@ -240,9 +240,6 @@ const Register = () => {
                   </p>
                 </div>
               </div>
-              <div className="hidden lg:block">
-                <InfoGraphic />
-              </div>
             </div>
           </form>
         )}
