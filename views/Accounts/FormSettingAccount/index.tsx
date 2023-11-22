@@ -6,12 +6,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import keyIcon from "@/public/icons/keypassword.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useEffect } from "react";
-import {
-  getAccountDetail,
-  updateAccountDetail,
-} from "@/redux/features/account/action";
+import { getAccountDetail } from "@/redux/features/account/action";
 import { changePassword, logoutAuth } from "@/redux/features/auth/action";
-import { ChangePasswordDetail } from "@/redux/features/auth/type";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,8 +19,6 @@ const FormSettingAccount = ({
 }) => {
   const dispatch = useAppDispatch();
   const user_id = useAppSelector((state) => state.auth.user);
-  const accountDetail = useAppSelector((state) => state.account.data);
-
   const schema = Yup.object({
     old_password: Yup.string().required("Please enter your password").trim(),
     password: Yup.string()
@@ -41,9 +35,6 @@ const FormSettingAccount = ({
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -57,8 +48,6 @@ const FormSettingAccount = ({
       dispatch(getAccountDetail({ userId: user_id.id }));
     }
   }, [dispatch]);
-
-  const message = useAppSelector((state) => state.auth.message);
 
   const onChangePassword: SubmitHandler<FormData> = async (data) => {
     const detailChange = {
@@ -84,15 +73,14 @@ const FormSettingAccount = ({
       >
         <div className="flex flex-col w-full">
           <div className="flex gap-2">
-            {" "}
             <Image
               alt=""
               src={keyIcon}
               className="md:w-6 md:h-6 w-8 h-8"
             ></Image>
-            <h3 className="font-semibold text-base mb-[35px]">
+            <h2 className="text-2xl">
               Change password
-            </h3>
+            </h2>
           </div>
           <div className="flex flex-col w-full">
             <div className="flex gap-5 w-full mb-6">
@@ -102,9 +90,8 @@ const FormSettingAccount = ({
                   Current Password
                 </label>
                 <div
-                  className={`${
-                    errors?.old_password ? "border border-red-500" : " "
-                  } rounded-md`}
+                  className={`${errors?.old_password ? "border border-red-500" : " "
+                    } rounded-md`}
                 >
                   <Input
                     id="old_password"
@@ -130,9 +117,8 @@ const FormSettingAccount = ({
                 New Password
               </label>
               <div
-                className={`${
-                  errors?.password ? "border border-red-500" : " "
-                } rounded-md`}
+                className={`${errors?.password ? "border border-red-500" : " "
+                  } rounded-md`}
               >
                 <Input
                   id="password"
@@ -155,9 +141,8 @@ const FormSettingAccount = ({
                 Confirm Password
               </label>
               <div
-                className={`${
-                  errors?.password_confirmation ? "border border-red-500" : " "
-                } rounded-md`}
+                className={`${errors?.password_confirmation ? "border border-red-500" : " "
+                  } rounded-md`}
               >
                 <Input
                   id="password_confirmation"

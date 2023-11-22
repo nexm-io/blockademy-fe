@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import editIcon from "@/public/icons/edit.svg";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAccountDetail } from "@/redux/features/account/action";
 import userDefault from "@/public/images/home/home-iconuser.png";
@@ -24,10 +23,9 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
     setShow(true);
   };
   return (
-    /* Avatar */
-    <div className="md:mt-[60px] mt-8 flex flex-col gap-6">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="font-semibold text-2xl ">Avatar</h2>
+    <div className="rounded-lg border border-grey-200 p-4 bg-gray-900">
+      <div className="flex items-center justify-between gap-2 mb-6">
+        <h2 className="text-2xl">Avatar</h2>
         <Button
           className="w-[106px] !py-[6px] bg-blue-600 group hover:bg-blue-600/50 group"
           onClick={handleShowAvatar}
@@ -38,14 +36,14 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
         </Button>
       </div>
       <div className="flex justify-between items-center md:flex-row flex-col">
-        <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start">
+        <div className="flex gap-6 items-center">
           <Image
             alt=""
             src={avatarIcon}
             className="md:w-6 md:h-6 w-8 h-8 select-none"
           ></Image>
-          <div className="flex flex-col ">
-            <h3 className="font-semibold text-base">Avatar</h3>
+          <div className="flex flex-col gap-[2px]">
+            <h3 className="text-base">Avatar</h3>
             <p className="text-base font-normal text-gray-300">
               Select an avatar to personalize your account
             </p>
