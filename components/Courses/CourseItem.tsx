@@ -42,6 +42,8 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
     setLevelStyle(LEVEL_COLORS[levelId]);
   }, [course.level?.id]);
 
+  console.log(course.level);
+
   return (
     <Link
       href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`}
@@ -91,7 +93,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
               </div>
             </div>
             <div className="flex items-center justify-between mt-[20px]">
-              <ChipV2 label="Beginner" />
+              <ChipV2 label={course.level.name} type={course.level.slug} />
               <div className="flex items-center gap-2">
                 <Image src={IconDotList} width={15} height={11} alt="dot" />
                 <p className="text-[14px] leading-[24px] font-light">
