@@ -18,12 +18,14 @@ import { usePathname } from "next/navigation";
 import { PlusLg } from "@styled-icons/bootstrap";
 import { Minus } from "@styled-icons/boxicons-regular";
 import Socials from "../Socials";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isShowAccountMenu, setIsShowAccountMenu] = useState<boolean>(false);
   const pathName = usePathname();
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const data = useSelector((state: RootState) => state.auth.user);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const userIconRef = useRef<HTMLDivElement | null>(null);
@@ -154,7 +156,7 @@ const Header = () => {
                     className="absolute w-[280px] sm:w-[400px] top-[50px] sm:top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
-                    <div className="flex items-center pb-[24px]">
+                    <div className="flex items-center pb-[24px] cursor-pointer" onClick={() => router.push("/account-setting")}>
                       <Image
                         alt="avatar-user"
                         src={image || userDefault}
