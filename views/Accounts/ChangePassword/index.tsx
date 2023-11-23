@@ -29,7 +29,7 @@ const ChangePassword = () => {
         <FormSettingAccount onToggle={handleToggle} />
       ) : (
         <div className="flex justify-between items-center md:flex-row flex-col">
-          <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start self-start">
+          <div className="flex gap-4 items-center">
             <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
               <Image
                 alt="avatar icon"
