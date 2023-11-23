@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = ({
       value={value}
       {...register(name)}
       placeholder={placeholder}
-      className={`outline-none border-none rounded-md bg-white-100 min-h-[48px] text-black pl-[10px] pr-3 w-full ${className}`}
+      className={`outline-none border-none rounded placeholder-[#9E9E9E] p-2 text-black w-full ${className}`}
     />
   );
 };

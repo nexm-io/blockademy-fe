@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import GeneralAccount from "../GeneralAccount";
 import Avatar from "../Avatar";
 import ChangePassword from "../ChangePassword";
-import WalletComponent from "../Wallet";
 import InfoGraphic from "@/views/Register/InfoGraphic";
 import { logoutAuth } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
@@ -21,18 +20,20 @@ export default function FormAccount() {
   const userAccount = useAppSelector((state) => state.account.data);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
 
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
   const handleLogout = async () => {
     try {
-      const res = await dispatch(logoutAuth()).unwrap();
+      await dispatch(logoutAuth()).unwrap();
       toast.success("Logout Successfully");
     } catch (error) {
       toast.error("Logout Failed");
       localStorage.clear();
     }
   };
+
+  useEffect(() => {
+    dispatch(getAccountDetail({ userId: userId }));
+  }, [dispatch, userId]);
+
   return (
     <div className="container">
       {isLogin ? (
@@ -44,11 +45,8 @@ export default function FormAccount() {
             <Avatar show={show} setShow={setShow} />
             <GeneralAccount />
             <ChangePassword />
-            {/* <WalletComponent /> */}
             <div className="flex flex-col gap-4">
-              <div
-                className="text-base text-blue-100 hover:brightness-50 cursor-pointer w-fit"
-              >
+              <div className="text-base text-blue-100 hover:brightness-50 cursor-pointer w-fit">
                 Give us your feedback
               </div>
               <div
