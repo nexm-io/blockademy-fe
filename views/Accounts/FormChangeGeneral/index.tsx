@@ -99,7 +99,7 @@ export default function FormChangeGeneral({
               <h3>Your name</h3>
             </div>
 
-            <div className="flex gap-5 w-full">
+            <div className="flex flex-col sm:flex-row gap-5 w-full">
               <div className="flex flex-col gap-2 w-full">
                 <label htmlFor="first_name" className="text-grey-700 font-light">
                   First Name
@@ -219,7 +219,7 @@ export default function FormChangeGeneral({
             </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex sm:flex-row flex-col gap-4">
             <Button
               type="submit"
               className="min-w-[184px] !px-0"

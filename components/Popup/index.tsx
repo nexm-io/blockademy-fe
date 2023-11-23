@@ -75,12 +75,12 @@ const Popup: React.FC<PopupProps> = ({
         className={`border border-gray-400 rounded-2xl py-10 px-20 fixed z-[999] bg-white-100 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
       >
         <div
-          className="absolute md:right-5 md:top-10 cursor-pointer"
+          className="absolute right-5 top-10 cursor-pointer"
           onClick={onClose}
         >
           <Image src={closeIcon} width={24} height={24} alt="close icon" />
         </div>
-        <div className="flex flex-col items-center justify-center min-w-[446px]">
+        <div className="flex flex-col items-center justify-center sm:min-w-[446px]">
           <div className="flex flex-col gap-4 items-center">
             <h2 className="text-blue-100 text-xl">{title || "Title"}</h2>
             <p className="text-gray-100 font-normal text-center md:text-base text-sm">
@@ -96,7 +96,7 @@ const Popup: React.FC<PopupProps> = ({
                   src={getImage || userImage || avatarDefault}
                   width={242}
                   height={242}
-                  className="md:w-[242px] md:h-[242px] w-[200px] h-[200px] select-none rounded"
+                  className="sm:w-[242px] w-[200px] select-none rounded"
                 />
               </div>
               <form
