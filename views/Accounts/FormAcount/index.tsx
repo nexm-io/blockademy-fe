@@ -40,7 +40,7 @@ export default function FormAccount() {
         <>
           <h1 className="font-bold md:text-4xl text-3xl mb-10">
             Account Settings
-          </h1>
+          </h1> 
           <div className="flex flex-col gap-6">
             <Avatar show={show} setShow={setShow} />
             <GeneralAccount />
