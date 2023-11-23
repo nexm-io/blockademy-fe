@@ -3,8 +3,8 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAccountDetail } from "@/redux/features/account/action";
-import userDefault from "@/public/images/home/home-iconuser.png";
-import avatarIcon from "@/public/icons/avataricon.svg";
+import avatarDefault from "@/public/icons/avatar.svg";
+import avatarIcon from "@/public/icons/avatar-icon.svg";
 import Button from "@/components/Common/Button";
 
 interface AvatarProps {
@@ -37,14 +37,18 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
       </div>
       <div className="flex justify-between items-center md:flex-row flex-col">
         <div className="flex gap-6 items-center">
-          <Image
-            alt=""
-            src={avatarIcon}
-            className="md:w-6 md:h-6 w-8 h-8 select-none"
-          ></Image>
+          <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+            <Image
+              alt="avatar icon"
+              src={avatarIcon}
+              width={24}
+              height={24}
+              className="select-none"
+            />
+          </div>
           <div className="flex flex-col gap-[2px]">
-            <h3 className="text-base">Avatar</h3>
-            <p className="text-base font-normal text-gray-300">
+            <h3>Avatar</h3>
+            <p className="font-light text-gray-300">
               Select an avatar to personalize your account
             </p>
           </div>
@@ -52,11 +56,10 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
         <div className="md: my-6 md:my-0">
           <Image
             alt="avatar-user"
-            src={userAccount?.image || userDefault}
-            width={150}
-            height={150}
-            className="md:w-[50px] md:h-[50px] w-[150px] h-[150px] rounded-full select-none"
-          ></Image>
+            src={userAccount?.image || avatarDefault}
+            width={40}
+            height={40}
+          />
         </div>
       </div>
     </div>

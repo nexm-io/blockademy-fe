@@ -44,27 +44,25 @@ export default function FormAccount() {
             <Avatar show={show} setShow={setShow} />
             <GeneralAccount />
             <ChangePassword />
-            <WalletComponent />
+            {/* <WalletComponent /> */}
             <div className="flex flex-col gap-4">
-              <Link
-                href="#"
-                className="text-base text-blue-100 hover:brightness-50 inline-block"
+              <div
+                className="text-base text-blue-100 hover:brightness-50 cursor-pointer w-fit"
               >
                 Give us your feedback
-              </Link>
-              <Link
-                href="#"
-                className="text-base text-red-200 hover:brightness-50 inline-block"
+              </div>
+              <div
+                className="text-base text-red-200 hover:brightness-50 cursor-pointer w-fit"
                 onClick={handleLogout}
               >
                 Log out
-              </Link>
+              </div>
             </div>
           </div>
           {show && (
             <Popup
               title="Edit Avatar"
-              description="Select an avatar to personalize your account"
+              description="Select an avatar to personalize your account."
               onClose={() => setShow(false)}
               avatar
               userImage={userAccount?.image || ""}

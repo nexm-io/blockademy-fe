@@ -1,15 +1,17 @@
 "use client";
 import Image from "next/image";
 import React, { useState } from "react";
-import keyIcon from "@/public/icons/keypassword.svg";
+import keyIcon from "@/public/icons/key-fill.svg";
 import FormSettingAccount from "../FormSettingAccount";
 import Button from "@/components/Common/Button";
+
 const ChangePassword = () => {
   const [toggle, setToggle] = useState<boolean>(false);
 
   const handleToggle = (status: boolean) => {
     setToggle(status);
   };
+
   return (
     <div className="rounded-lg border border-grey-200 p-4 bg-gray-900">
       <div className="flex items-center justify-between gap-2 mb-6">
@@ -28,21 +30,25 @@ const ChangePassword = () => {
       ) : (
         <div className="flex justify-between items-center md:flex-row flex-col">
           <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start self-start">
-            <Image
-              alt=""
-              src={keyIcon}
-              className="md:w-6 md:h-6 w-8 h-8"
-            ></Image>
-            <div className="flex flex-col ">
-              <h3 className="font-semibold text-base">Password</h3>
-              <p className="text-base font-normal text-gray-300">
+            <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+              <Image
+                alt="avatar icon"
+                src={keyIcon}
+                width={24}
+                height={24}
+                className="select-none"
+              />
+            </div>
+            <div className="flex flex-col">
+              <h3>Password</h3>
+              <p className="font-light text-gray-300">
                 Change the password for your account
               </p>
             </div>
           </div>
           <div className=" my-4 md:my-0">
-            <span className="text-blue-100 text-base font-semibold">
-              ******{" "}
+            <span className="text-blue-100">
+              ******
             </span>
           </div>
         </div>

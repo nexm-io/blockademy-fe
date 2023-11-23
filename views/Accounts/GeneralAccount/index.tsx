@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import emailIcon from "@/public/icons/email.svg";
-import phoneIcon from "@/public/icons/telephone.svg";
-import { User } from "@styled-icons/fa-solid";
+import emailIcon from "@/public/icons/mail-filled.svg";
+import phoneIcon from "@/public/icons/phone-bold.svg";
+import profileIcon from "@/public/icons/profile-fill.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAccountDetail } from "@/redux/features/account/action";
 import FormChangeGeneral from "../FormChangeGeneral";
@@ -39,58 +39,72 @@ const GeneralAccount = () => {
         <div className="flex flex-col gap-6">
           <div className="flex justify-between items-center md:flex-row flex-col">
             <div className="flex gap-6 items-center">
-              <User className="md:w-6 md:h-6 w-8 h-8" />
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={profileIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
               <div className="flex flex-col ">
-                <h3 className="font-semibold text-base">Your name</h3>
-                <p className="text-base font-normal text-gray-300">
+                <h3>Your name</h3>
+                <p className="font-light text-gray-300">
                   Set a customized name for your profile
                 </p>
               </div>
             </div>
             <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+              <span className="text-blue-100">
                 {userAccount?.first_name} {userAccount?.last_name}
               </span>
             </div>
           </div>
           <div className="flex justify-between items-center md:flex-row flex-col">
             <div className="flex gap-6 items-center">
-              <Image
-                alt="email-icon"
-                src={emailIcon}
-                className="md:w-6 md:h-6 w-8 h-8 select-none"
-              ></Image>
-
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={emailIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
               <div className="flex flex-col">
-                <h3 className="font-semibold text-base">Email</h3>
-                <p className="text-base font-normal text-gray-300">
+                <h3>Email</h3>
+                <p className="font-light text-gray-300">
                   Edit your email
                 </p>
               </div>
             </div>
             <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+              <span className="text-blue-100">
                 {userAccount?.email}
               </span>
             </div>
           </div>
           <div className="flex justify-between items-center md:flex-row flex-col">
             <div className="flex gap-6 items-center">
-              <Image
-                alt="phone-icon"
-                src={phoneIcon}
-                className="md:w-6 md:h-6 w-8 h-8 select-none"
-              ></Image>
-
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={phoneIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
               <div className="flex flex-col">
-                <h3 className="font-semibold text-base">Phone</h3>
-                <p className="text-base font-normal text-gray-300">
+                <h3>Phone</h3>
+                <p className="font-light text-gray-300">
                   Edit your phone number
                 </p>
               </div>
             </div>
             <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+              <span className="text-blue-100">
                 {userAccount?.phone}
               </span>
             </div>
