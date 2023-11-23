@@ -361,7 +361,6 @@ const CourseDetail = () => {
             {/* PASSED CASE */}
             {isLogin &&
               courseDetail?.is_registered === 1 &&
-              courseDetail?.is_completed === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <RewardDetail courseDetail={courseDetail} />
               )}
