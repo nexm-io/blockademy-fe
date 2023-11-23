@@ -336,11 +336,11 @@ const CourseDetail = () => {
                   "HUTECH Workshop on Blockchain and Smart Contracts (Intro)"
                 ) && (
                   <div className="bg-blue-200 py-3 px-4 flex flex-col gap-2">
-                    <p className="text-blue-100 italic capitalize">
+                    <p className="text-blue-100 italic">
                       Explore fundamental concepts and gain an overview of
                       blockchain.
                     </p>
-                    <p className="text-blue-100 italic capitalize">
+                    <p className="text-blue-100 italic">
                       Earn NFT Certificate on Solana chain as you complete the
                       course.
                     </p>
