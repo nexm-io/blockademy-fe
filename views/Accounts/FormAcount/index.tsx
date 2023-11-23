@@ -18,6 +18,7 @@ export default function FormAccount() {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
+  const isLoading = useAppSelector((state) => state.account.isLoading);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
 
   const handleLogout = async () => {
@@ -31,16 +32,29 @@ export default function FormAccount() {
   };
 
   useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
+    dispatch(getAccountDetail({ userId }));
+  }, [userId]);
 
   return (
     <div className="container">
-      {isLogin ? (
+      {isLoading ? (
+        <>
+          <div className="skeleton h-10 mb-10"></div>
+          <div className="flex flex-col gap-6">
+            <div className="skeleton h-[145px]"></div>
+            <div className="skeleton h-[293px]"></div>
+            <div className="skeleton h-[145px]"></div>
+            <div className="flex flex-col gap-4">
+              <div className="skeleton h-6"></div>
+              <div className="skeleton h-6"></div>
+            </div>
+          </div>
+        </>
+      ) : isLogin ? (
         <>
           <h1 className="font-bold md:text-4xl text-3xl mb-10">
             Account Settings
-          </h1> 
+          </h1>
           <div className="flex flex-col gap-6">
             <Avatar show={show} setShow={setShow} />
             <GeneralAccount />

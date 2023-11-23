@@ -10,13 +10,8 @@ import FormChangeGeneral from "../FormChangeGeneral";
 import Button from "@/components/Common/Button";
 
 const GeneralAccount = () => {
-  const dispatch = useAppDispatch();
   const [toggle, setToggle] = useState<boolean>(true);
-  const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
 
   const handleToggle = (status: boolean) => {
     setToggle(!status);

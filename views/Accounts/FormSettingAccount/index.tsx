@@ -43,12 +43,6 @@ const FormSettingAccount = ({
   });
   type FormData = Yup.InferType<typeof schema>;
 
-  useEffect(() => {
-    if (user_id) {
-      dispatch(getAccountDetail({ userId: user_id.id }));
-    }
-  }, [dispatch]);
-
   const onChangePassword: SubmitHandler<FormData> = async (data) => {
     const detailChange = {
       old_password: data.old_password,
