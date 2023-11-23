@@ -330,11 +330,12 @@ const CourseDetail = () => {
                   {courseDetail?.title}
                 </h1>
               </div>
+
               {courseDetail?.title &&
                 courseDetail?.title.includes(
                   "HUTECH Workshop on Blockchain and Smart Contracts (Intro)"
                 ) && (
-                  <div>
+                  <div className="bg-blue-200 py-3 px-4 flex flex-col gap-2">
                     <p className="text-blue-100 italic capitalize">
                       Explore fundamental concepts and gain an overview of
                       blockchain.
@@ -346,7 +347,7 @@ const CourseDetail = () => {
                   </div>
                 )}
               {isLogin ? null : (
-                <div className="bg-blue-200 py-3 px-4 flex gap-2">
+                <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
                   <Image alt="gift-icon" src={gift}></Image>
                   <span className="md:text-base text-[13px] font-normal text-black-100 ">
                     Log into your Blockademy account to register courses, track
