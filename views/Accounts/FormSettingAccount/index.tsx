@@ -84,7 +84,7 @@ const FormSettingAccount = ({
             </div>
             <h3>Password</h3>
           </div>
-          <div className="flex flex-col gap-2 w-[50%]">
+          <div className="flex flex-col gap-2 sm:w-[50%]">
             <label htmlFor="old_password" className="text-grey-700 font-light">
               Current Password
             </label>
@@ -108,7 +108,7 @@ const FormSettingAccount = ({
               </div>
             )}
           </div>
-          <div className="flex gap-5 w-full">
+          <div className="flex sm:flex-row flex-col gap-4 w-full">
             <div className="flex flex-col gap-2 w-full">
               <label htmlFor="password" className="text-grey-700 font-light">
                 New Password
@@ -162,7 +162,7 @@ const FormSettingAccount = ({
             </div>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex sm:flex-row flex-col gap-4">
           <Button
             type="submit"
             className="min-w-[184px] !px-0"

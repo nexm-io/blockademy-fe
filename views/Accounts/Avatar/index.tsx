@@ -16,12 +16,15 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
   const dispatch = useAppDispatch();
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
+
   const handleShowAvatar = () => {
     setShow(true);
   };
+
+  useEffect(() => {
+    dispatch(getAccountDetail({ userId: userId }));
+  }, [dispatch, userId]);
+
   return (
     <div className="rounded-lg border border-grey-200 p-4 bg-gray-900">
       <div className="flex items-center justify-between gap-2 mb-6">
@@ -35,7 +38,7 @@ const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
           </span>
         </Button>
       </div>
-      <div className="flex justify-between items-center md:flex-row flex-col">
+      <div className="flex justify-between items-start sm:flex-row flex-col">
         <div className="flex gap-6 items-center">
           <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
             <Image
