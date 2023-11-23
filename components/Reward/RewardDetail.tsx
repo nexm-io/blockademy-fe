@@ -115,7 +115,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
         setIsIssueLoading(false);
         clearInterval(intervalId);
       }
-    }, 60000);
+    }, 15000);
 
     return () => {
       clearInterval(intervalId);
