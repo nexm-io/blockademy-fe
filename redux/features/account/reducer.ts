@@ -9,7 +9,7 @@ import { AccountSettingResponse } from "./type";
 export const initialState: AccountSettingResponse = {
   error: null,
   success: false,
-  isLoading: false,
+  isLoading: true,
   message: "",
   data: null,
 };
@@ -17,10 +17,10 @@ export const initialState: AccountSettingResponse = {
 const accountReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(getAccountDetail.pending, (state) => {
-      state.isLoading = false;
+      state.isLoading = true;
     })
     .addCase(getAccountDetail.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.data = action.payload.data;
     })
     .addCase(getAccountDetail.rejected, (state) => {
@@ -29,7 +29,7 @@ const accountReducer = createReducer(initialState, (builder) => {
 
   builder
     .addCase(updateAccountDetail.pending, (state) => {
-      state.isLoading = false;
+      state.isLoading = true;
     })
     .addCase(updateAccountDetail.fulfilled, (state, action) => {
       state.isLoading = true;
@@ -40,10 +40,10 @@ const accountReducer = createReducer(initialState, (builder) => {
 
   builder
     .addCase(updateImageAccount.pending, (state) => {
-      state.isLoading = false;
+      state.isLoading = true;
     })
     .addCase(updateImageAccount.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
     })
     .addCase(updateImageAccount.rejected, (state) => {
       state.isLoading = false;

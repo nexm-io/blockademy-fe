@@ -13,17 +13,11 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ show, setShow }) => {
-  const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
 
   const handleShowAvatar = () => {
     setShow(true);
   };
-
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
 
   return (
     <div className="rounded-lg border border-grey-200 p-4 bg-gray-900">
