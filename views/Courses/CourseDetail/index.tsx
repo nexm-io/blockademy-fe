@@ -75,6 +75,7 @@ const CourseDetail = () => {
   }, [courseDetail?.lesson_data, lessonId]);
 
   const isNotCompletedLesson = useMemo(() => {
+    return false
     return isCompletedQuiz ||
       (lessonOrder.last && completedLesson.includes(+lessonId))
       ? false
