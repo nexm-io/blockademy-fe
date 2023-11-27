@@ -115,7 +115,7 @@ export default function FormChangeGeneral({
                     register={register}
                     name="first_name"
                     defaultValue={accountDetail?.first_name}
-                    placeholder="Text"
+                    placeholder="First Name"
                     className="bg-grey-200 rounded font-light"
                   />
                 </div>
@@ -140,7 +140,7 @@ export default function FormChangeGeneral({
                     register={register}
                     name="last_name"
                     defaultValue={accountDetail?.last_name}
-                    placeholder="Text"
+                    placeholder="Last Name"
                     className="bg-grey-200 rounded font-light"
                   />
                 </div>
@@ -195,7 +195,7 @@ export default function FormChangeGeneral({
 
             <div className="flex flex-col gap-2">
               <label htmlFor="phone" className="text-grey-700 font-light">
-                Phone number
+                Phone Number
               </label>
               <div
                 className={`${
@@ -207,7 +207,7 @@ export default function FormChangeGeneral({
                   register={register}
                   defaultValue={accountDetail?.phone}
                   name="phone"
-                  placeholder="0909 786 765"
+                  placeholder="Phone Number"
                   className="bg-grey-200 rounded font-light"
                 />
               </div>
