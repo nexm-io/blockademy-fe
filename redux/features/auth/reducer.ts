@@ -7,6 +7,7 @@ import {
   sendOtp,
   logoutAuth,
   changePassword,
+  setRefUrl,
 } from "./action";
 import { initialState } from "./type";
 import { RootState } from "@/redux/store";
@@ -113,6 +114,10 @@ const authReducer = createReducer(initialState, (builder) => {
       state.error = action.payload.error;
       state.message = action.payload.message;
     });
+
+  builder.addCase(setRefUrl, (state, action) => {
+    state.urlRef = action.payload;
+  });
 });
 
 export const selectAuth = (state: RootState) => state.auth;

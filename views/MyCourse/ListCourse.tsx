@@ -16,6 +16,7 @@ const ListCourse: React.FC = () => {
   const isLogin = useAppSelector((state: RootState) => state.auth.isAuthenticated);
   const token = useSelector((state: RootState) => state.auth.token);
   const router = useRouter();
+  
   useEffect(() => {
     if (!isLogin || !token) {
       router.push("/");
