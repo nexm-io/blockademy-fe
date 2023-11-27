@@ -4,13 +4,14 @@ import Image from "next/image";
 import Input from "@/components/Common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useEffect } from "react";
-import { getAccountDetail } from "@/redux/features/account/action";
+import eyeCloseIcon from "@/public/icons/eyeclose.svg";
+import eyeIcon from "@/public/icons/eye.svg";
 import { changePassword, logoutAuth } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import keyIcon from "@/public/icons/key-fill.svg";
+import { useState } from "react";
 
 const FormSettingAccount = ({
   onToggle,
@@ -18,7 +19,9 @@ const FormSettingAccount = ({
   onToggle: (status: boolean) => void;
 }) => {
   const dispatch = useAppDispatch();
-  const user_id = useAppSelector((state) => state.auth.user);
+  const [toggleCurrPassword, setToggleCurrPassword] = useState<boolean>(false);
+  const [toggleNewPassword, setToggleNewPassword] = useState<boolean>(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState<boolean>(false);
   const schema = Yup.object({
     old_password: Yup.string().required("Please enter your password").trim(),
     password: Yup.string()
@@ -60,7 +63,7 @@ const FormSettingAccount = ({
   };
 
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex justify-between items-center">
       <form
         onSubmit={handleSubmit(onChangePassword)}
         className="flex flex-col gap-6 w-full"
@@ -78,23 +81,38 @@ const FormSettingAccount = ({
             </div>
             <h3>Password</h3>
           </div>
-          <div className="flex flex-col gap-2 sm:w-[50%]">
+          <div className="flex flex-col gap-2 sm:w-[50%] md:pr-2">
             <label htmlFor="old_password" className="text-grey-700 font-light">
               Current Password
             </label>
             <div
               className={`${
                 errors?.old_password ? "border border-red-500" : " "
-              } rounded-md`}
+              } rounded-md relative`}
             >
               <Input
                 id="old_password"
                 register={register}
-                type="password"
+                type={toggleCurrPassword ? "text" : "password"}
                 name="old_password"
                 placeholder="Current Password"
                 className="bg-grey-200 rounded font-light"
               />
+              {!toggleCurrPassword ? (
+                  <Image
+                    src={eyeCloseIcon}
+                    onClick={() => setToggleCurrPassword(true)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                ) : (
+                  <Image
+                    src={eyeIcon}
+                    onClick={() => setToggleCurrPassword(false)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                )}
             </div>
             {errors?.old_password && (
               <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -110,16 +128,31 @@ const FormSettingAccount = ({
               <div
                 className={`${
                   errors?.password ? "border border-red-500" : " "
-                } rounded-md`}
+                } rounded-md relative`}
               >
                 <Input
                   id="password"
                   register={register}
                   name="password"
-                  type="password"
+                  type={toggleNewPassword ? "text" : "password"}
                   placeholder="New Password"
                   className="bg-grey-200 rounded font-light"
                 />
+                {!toggleNewPassword ? (
+                  <Image
+                    src={eyeCloseIcon}
+                    onClick={() => setToggleNewPassword(true)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                ) : (
+                  <Image
+                    src={eyeIcon}
+                    onClick={() => setToggleNewPassword(false)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                )}
               </div>
               {errors?.password && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -137,16 +170,31 @@ const FormSettingAccount = ({
               <div
                 className={`${
                   errors?.password_confirmation ? "border border-red-500" : " "
-                } rounded-md`}
+                } rounded-md relative`}
               >
                 <Input
                   id="password_confirmation"
                   register={register}
-                  type="password"
+                  type={toggleConfirmPassword ? "text" : "password"}
                   name="password_confirmation"
                   placeholder="Confirm Password"
                   className="bg-grey-200 rounded font-light"
                 />
+                 {!toggleConfirmPassword ? (
+                  <Image
+                    src={eyeCloseIcon}
+                    onClick={() => setToggleConfirmPassword(true)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                ) : (
+                  <Image
+                    src={eyeIcon}
+                    onClick={() => setToggleConfirmPassword(false)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                )}
               </div>
               {errors?.password_confirmation && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
