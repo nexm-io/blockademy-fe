@@ -92,7 +92,7 @@ const FormSettingAccount = ({
                 register={register}
                 type="password"
                 name="old_password"
-                placeholder="Text"
+                placeholder="Current Password"
                 className="bg-grey-200 rounded font-light"
               />
             </div>
@@ -117,7 +117,7 @@ const FormSettingAccount = ({
                   register={register}
                   name="password"
                   type="password"
-                  placeholder="Text"
+                  placeholder="New Password"
                   className="bg-grey-200 rounded font-light"
                 />
               </div>
@@ -144,7 +144,7 @@ const FormSettingAccount = ({
                   register={register}
                   type="password"
                   name="password_confirmation"
-                  placeholder="Text"
+                  placeholder="Confirm Password"
                   className="bg-grey-200 rounded font-light"
                 />
               </div>
