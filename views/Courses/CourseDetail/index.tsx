@@ -354,7 +354,6 @@ const CourseDetail = () => {
             {/* PASSED CASE */}
             {isLogin &&
               courseDetail?.is_registered === 1 &&
-              courseDetail?.is_completed === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <RewardDetail courseDetail={courseDetail} />
               )}
@@ -455,7 +454,6 @@ const CourseDetail = () => {
                     courseDetail?.assignment_status.slug ===
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
-                    courseDetail?.is_completed === 1 &&
                     courseDetail?.is_completed_assignment === 0 && (
                       <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
                         <div className="text-center">
