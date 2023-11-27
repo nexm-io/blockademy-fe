@@ -15,9 +15,12 @@ import InfoPopup from "@/components/Popup/InfoPopup";
 import Button from "@/components/Common/Button";
 import Image from "next/image";
 import emailIcon from "@/public/icons/email-color.svg";
+import { useRouter } from "next/navigation";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 const maxCharacters = 200;
 export default function FormAccount() {
+  const router = useRouter();
   const [show, setShow] = useState(false);
   const [showPopupSubmit, setShowPopupSubmit] = useState(false);
   const [showAwesomePopup, setShowAwesomePopup] = useState(false);
@@ -26,8 +29,8 @@ export default function FormAccount() {
   const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
   const isLoading = useAppSelector((state) => state.account.isLoading);
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
-  const [feedback, setFeedback] = useState('');
+  const { isAuthenticated, token } = useAppSelector(selectAuth);
+  const [feedback, setFeedback] = useState("");
 
   const handleLogout = async () => {
     try {
@@ -38,12 +41,18 @@ export default function FormAccount() {
       localStorage.clear();
     }
   };
-  const handleTextareaChange = (event: { target: { value: any; }; }) => {
+  const handleTextareaChange = (event: { target: { value: any } }) => {
     const inputText = event.target.value;
     if (inputText.length <= maxCharacters) {
       setFeedback(inputText);
     }
   };
+
+  useEffect(() => {
+    if (!isAuthenticated && !token) {
+      router.push("/");
+    }
+  }, [isAuthenticated, token]);
 
   useEffect(() => {
     dispatch(getAccountDetail({ userId }));
@@ -60,12 +69,12 @@ export default function FormAccount() {
               <div className="skeleton h-[293px]"></div>
               <div className="skeleton h-[145px]"></div>
               <div className="flex flex-col gap-4">
-                <div className="skeleton h-6"></div>
+                {/* <div className="skeleton h-6"></div> */}
                 <div className="skeleton h-6"></div>
               </div>
             </div>
           </>
-        ) : isLogin ? (
+        ) : (
           <>
             <h1 className="font-bold md:text-4xl text-3xl mb-10">
               Account Settings
@@ -75,9 +84,9 @@ export default function FormAccount() {
               <GeneralAccount />
               <ChangePassword />
               <div className="flex flex-col gap-4">
-                <div className="text-base text-blue-100 hover:brightness-50 cursor-pointer w-fit" onClick={() => setShowPopupSubmit(true)}>
+                {/* <div className="text-base text-blue-100 hover:brightness-50 cursor-pointer w-fit" onClick={() => setShowPopupSubmit(true)}>
                   Give us your feedback
-                </div>
+                </div> */}
                 <div
                   className="text-base text-red-200 hover:brightness-50 cursor-pointer w-fit"
                   onClick={handleLogout}
@@ -99,24 +108,6 @@ export default function FormAccount() {
               />
             )}
           </>
-        ) : (
-          <div className="bg-white-100 flex justify-center items-center ">
-            <div className="flex flex-col justify-center items-center">
-              <h1 className="font-semibold md:text-4xl text-3xl mb-8 md:pt-[60px] pt-4">
-                You have to Login
-              </h1>
-              <InfoGraphic
-                description="Sorry! The page you’re looking for have to be login. Please login here."
-                color_text="text-black-100"
-              />
-              <Link
-                href="/login"
-                className="text-center rounded-lg text-white-100 bg-blue-100 px-6 py-3 hover:bg-transparent border border-transparent hover:border-blue-100 hover:text-blue-100 mb-20"
-              >
-                Go to Login
-              </Link>
-            </div>
-          </div>
         )}
       </div>
       {showPopupSubmit && (
@@ -132,8 +123,16 @@ export default function FormAccount() {
         >
           <>
             <div className="flex flex-col gap-2">
-              <textarea className="text-[#9E9E9E] bg-grey-200 min-w-[390px] min-h-[116px] px-2 py-4 font-light rounded outline-none" placeholder="Type your feedback" defaultValue={""} onChange={handleTextareaChange} maxLength={maxCharacters} />
-              <p className="text-end text-[#9E9E9E] text-[12px] font-light leading-5">{feedback.length}/{maxCharacters}</p>
+              <textarea
+                className="text-[#9E9E9E] bg-grey-200 min-w-[390px] min-h-[116px] px-2 py-4 font-light rounded outline-none"
+                placeholder="Type your feedback"
+                defaultValue={""}
+                onChange={handleTextareaChange}
+                maxLength={maxCharacters}
+              />
+              <p className="text-end text-[#9E9E9E] text-[12px] font-light leading-5">
+                {feedback.length}/{maxCharacters}
+              </p>
             </div>
             <Button
               type="button"
@@ -155,7 +154,9 @@ export default function FormAccount() {
           desc={
             <div className="flex flex-col items-center gap-4">
               <Image src={emailIcon} width={80} height={80} alt="email icon" />
-              <p className="text-grey-700 text-center">Thanks for your feedback!</p>
+              <p className="text-grey-700 text-center">
+                Thanks for your feedback!
+              </p>
             </div>
           }
           onClose={() => setShowAwesomePopup(false)}

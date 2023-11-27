@@ -52,10 +52,12 @@ const Popup: React.FC<PopupProps> = ({
     setImageState(file);
     setGetImage(URL.createObjectURL(file));
   };
+  
   const imageSlug = new FormData();
   if (userAccount && imageState) {
     imageSlug.append("image", imageState);
   }
+
   const onSubmit = async () => {
     const res = await dispatch(updateImageAccount(imageSlug)).unwrap();
     if (res.success) {
@@ -65,6 +67,7 @@ const Popup: React.FC<PopupProps> = ({
     }
     res.error && toast.error(res.message);
   };
+
   return (
     <>
       <div
@@ -123,7 +126,7 @@ const Popup: React.FC<PopupProps> = ({
                       onChange={handleFileChange}
                     />
                   </div>
-                  <div className="flex gap-2 items-center">
+                  {/* <div className="flex gap-2 items-center">
                     <Image
                       alt="camera-icon"
                       src={cameraIcon}
@@ -132,13 +135,13 @@ const Popup: React.FC<PopupProps> = ({
                     <span className="text-black-100 text-base font-normal cursor-pointer">
                       Take a photo
                     </span>
-                  </div>
+                  </div> */}
                 </div>
                 <Button
                   type="submit"
                   className="w-[182px] h-[42px] mb-6"
-                  loading={!isLoading}
-                  disabled={!isLoading}
+                  loading={isLoading}
+                  disabled={isLoading}
                 >
                   Save
                 </Button>
