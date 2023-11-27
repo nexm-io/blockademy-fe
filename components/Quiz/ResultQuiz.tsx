@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, useRouter } from "next/navigation";
 import { RESULT_QUIZ_FAIL, RESULT_QUIZ_PASS } from "@/utils/constants";
@@ -13,15 +13,25 @@ import Button from "../Common/Button";
 import { Box, Skeleton, FormControlLabel, Radio } from "@mui/material";
 import Link from "next/link";
 import cn from "@/services/cn";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 const PASSED_QUIZZ_SCORE = 80;
 
 export default function ResultQuiz() {
-  const { listResultData, loadingListResult, isViewResultInCourse } =
-    useAppSelector((state) => state.quiz);
-  const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams();
+  const { listResultData, loadingListResult, isViewResultInCourse } =
+    useAppSelector((state) => state.quiz);
+  const { isAuthenticated, token } = useAppSelector(selectAuth);
+  const dispatch = useAppDispatch();
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
@@ -35,30 +45,6 @@ export default function ResultQuiz() {
     };
     fetchData();
   }, [dispatch, id]);
-
-  const checkColor =
-    listResultData?.result === RESULT_QUIZ_PASS
-      ? "var(--yellow-color-100)"
-      : "var(--yellow-color-100)";
-  const checkImage =
-    listResultData?.result === RESULT_QUIZ_PASS
-      ? "/images/quiz/ellipse-yellow.png"
-      : "/images/quiz/ellipse-yellow.png";
-
-  const checkWhiteSpace = (item?: string) => {
-    if (!item) return "";
-    const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
-    if (isWhitespace) {
-      return true;
-    }
-    return false;
-  };
-
-  const removeWhiteSpace = (str?: string) => {
-    if (!str) return "";
-    const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
-    return trimmedStr;
-  };
 
   useEffect(() => {
     scrollToTop();
@@ -80,12 +66,15 @@ export default function ResultQuiz() {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+
+  useEffect(() => {
+    if (!listResultData) return;
+    if (!isAuthenticated || !token) {
+      router.push(
+        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
+      );
+    }
+  }, [listResultData, isAuthenticated, token]);
 
   return (
     <>
@@ -165,13 +154,10 @@ export default function ResultQuiz() {
               </ol>
             </nav>
             <div className="flex flex-col md:flex-row justify-between mt-[32px]">
-              {/* <div className="mt-2 mb-"> */}
               <div className="text-[#1E2329] text-[36px] leading-[40px] font-bold">
                 Result
               </div>
-              {/* </div> */}
               <div className="flex flex-col md:flex-row gap-4">
-                {/* {listResultData?.result === RESULT_QUIZ_FAIL && ( */}
                 {Number(listResultData?.score) < PASSED_QUIZZ_SCORE ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
@@ -188,15 +174,12 @@ export default function ResultQuiz() {
                 ) : null}
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <>
-                    <Button
-                      className="w-full md:w-[184px] !px-0"
-                      onClick={() => router.push("/accomplishments")}
-                    >
-                      Accomplishments
-                    </Button>
-                    {/* <MyCertificate courseId={listResultData.course_id} /> */}
-                  </>
+                  <Button
+                    className="w-full md:w-[184px] !px-0"
+                    onClick={() => router.push("/accomplishments")}
+                  >
+                    Accomplishments
+                  </Button>
                 ) : null}
               </div>
             </div>
