@@ -1,7 +1,7 @@
 import { CourseDetail } from "@/redux/features/courses/type";
 import api from "@/services/axios";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import InfoPopup from "../Popup/InfoPopup";
 import cn from "@/services/cn";
@@ -33,41 +33,33 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const certificateLink = useMemo(() => {
+    const certificateId = (courseDetail as any)?.certificate_id;
+    const baseUrl = window.location.hostname;
+    return `${baseUrl}/accomplishments/certificate/${certificateId}`;
+  }, [courseDetail]);
+
+  const getCertificateText = () => {
+    const title = courseDetail.title;
+    return `🎓 Excited to receive my Certificate on "${title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${certificateLink}`;
+  };
+
   const shareFacebook = () => {
-    const href = window.location.hostname;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${
-      (courseDetail as any)?.certificate_id
-    }&hashtag=${tags}`;
+    const link = `http://www.facebook.com/sharer.php?u=${certificateLink}&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
-    const href = window.location.hostname;
-    const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${
-        courseDetail.title
-      }" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${
-        (courseDetail as any)?.certificate_id
-      } `
-    )}`;
+    const text = encodeURIComponent(getCertificateText());
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
     window.open(link, "_blank");
   };
 
   const shareLinked = () => {
-    const href = window.location.hostname;
-    const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${
-        courseDetail.title
-      }" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${
-        (courseDetail as any)?.certificate_id
-      } `
-    )}`;
-    const link = `http://www.linkedin.com/shareArticle?mini=true&url=${href}/accomplishments/certificate/${
-      (courseDetail as any)?.certificate_id
-    }&title=${text}`;
+    const text = encodeURIComponent(getCertificateText());
+    const link = `http://www.linkedin.com/shareArticle?mini=true&url=${certificateLink}&title=${text}`;
     window.open(link, "_blank");
   };
 
@@ -315,21 +307,19 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                 toast("Copied!", { type: "success" });
                 setIsCopied(true);
               }}
-              text={`${window.location.hostname}/accomplishments/certificate/${
-                (courseDetail as any)?.certificate_id
-              }`}
+              text={certificateLink}
             >
-              <div className="flex flex-col md:flex-row items-center gap-2">
-                <div className="px-4 cursor-pointer border border-grey-100 rounded h-[50px] flex items-center gap-2 w-full md:w-auto">
+              <div className="flex flex-col lg:flex-row items-center gap-2">
+                <div className="px-4 cursor-pointer border border-grey-100 rounded h-[50px] flex items-center gap-2 w-full">
                   <Image
                     src={OcticonLink}
                     width={16}
                     height={16}
                     alt="octicon-link-icon"
                   />
-                  <p className="font-light">blockademy.ai/certificate</p>
+                  <p className="font-light">{window.location.hostname}/certificate</p>
                 </div>
-                <Button className="w-full md:w-[184px] !px-0">
+                <Button className="w-full lg:max-w-[184px] !px-0">
                   {isCopied ? "Copied" : "Copy"}
                 </Button>
               </div>
