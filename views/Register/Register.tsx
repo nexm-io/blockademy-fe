@@ -11,7 +11,6 @@ import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "@/components/Common/Button";
-import InfoGraphic from "./InfoGraphic";
 import { toast } from "react-toastify";
 import { userRegister } from "@/redux/features/auth/action";
 

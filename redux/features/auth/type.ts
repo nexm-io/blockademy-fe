@@ -50,6 +50,7 @@ export interface AuthState {
   error: boolean;
   token: string | null;
   data: any;
+  urlRef: string;
 }
 
 export const initialState: AuthState = {
@@ -61,16 +62,17 @@ export const initialState: AuthState = {
   error: false,
   token: null,
   data: {},
+  urlRef: "/",
 };
 
 export interface ResetDetail {
-  data: Pick<User, "password" | "password_confirmation">
-  email: string | null,
-  code: string | null,
+  data: Pick<User, "password" | "password_confirmation">;
+  email: string | null;
+  code: string | null;
 }
 
 export interface ChangePasswordDetail {
-  old_password: string,
-  password: string,
-  password_confirmation: string,
+  old_password: string;
+  password: string;
+  password_confirmation: string;
 }

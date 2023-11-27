@@ -7,7 +7,7 @@ import Button from "../Common/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { logoutAuth } from "@/redux/features/auth/action";
+import { logoutAuth, setRefUrl } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
 import { hideEmail } from "@/utils/hideEmail";
 import { getAccountDetail } from "@/redux/features/account/action";
@@ -68,7 +68,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await dispatch(logoutAuth()).unwrap();
+      await dispatch(logoutAuth()).unwrap();
       toast.success("Logout Successfully");
     } catch (error) {
       toast.error("Logout Failed");
@@ -97,7 +97,6 @@ const Header = () => {
 
   return (
     <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
-      {/* Top Header */}
       <div
         className={cn(
           `container relative flex items-center justify-between py-4`,
@@ -220,7 +219,7 @@ const Header = () => {
           ) : (
             <>
               <Link href="/login">
-                <Button size="small" outlined className="w-[94px]">
+                <Button size="small" onClick={()=> dispatch(setRefUrl(pathName))} outlined className="w-[94px]">
                   Log in
                 </Button>
               </Link>

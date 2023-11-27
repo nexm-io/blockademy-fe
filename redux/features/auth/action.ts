@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   AuthResponse,
   ChangePasswordDetail,
@@ -101,3 +101,5 @@ export const changePassword = createAsyncThunk<
     return error.response.data;
   }
 });
+
+export const setRefUrl = createAction<string>("auth/set-ref-url");

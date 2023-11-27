@@ -75,7 +75,7 @@ const CourseDetail = () => {
   }, [courseDetail?.lesson_data, lessonId]);
 
   const isNotCompletedLesson = useMemo(() => {
-    return false
+    return false;
     return isCompletedQuiz ||
       (lessonOrder.last && completedLesson.includes(+lessonId))
       ? false
@@ -236,18 +236,13 @@ const CourseDetail = () => {
     handleCheckCompletedCourse();
   }, [handleCheckCompletedCourse]);
 
-  // useEffect(() => {
-  //   if (!courseDetail) return;
-  //   if (courseDetail?.lesson_data && courseDetail.lesson_data.length > 0) {
-  //     const isLessonIdExists = courseDetail.lesson_data.some(
-  //       (lesson) => lesson.lesson_id === Number(lessonId)
-  //     );
-
-  //     if (!isLessonIdExists) {
-  //       router.push("/not-found");
-  //     }
-  //   }
-  // }, [courseDetail, lessonId]);
+  useEffect(() => {
+    if (!courseDetail) return;
+    if (!lessonId)
+      router.push(
+        `/courses/${courseId}?lesson_id=${courseDetail?.lesson_first.lesson_id}`
+      );
+  }, [courseDetail, lessonId]);
 
   return (
     <div className="container mt-36">
