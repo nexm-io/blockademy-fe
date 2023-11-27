@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import GeneralAccount from "../GeneralAccount";
 import Avatar from "../Avatar";
 import ChangePassword from "../ChangePassword";
-import InfoGraphic from "@/views/Register/InfoGraphic";
 import { logoutAuth } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
 import InfoPopup from "@/components/Popup/InfoPopup";
@@ -41,6 +40,7 @@ export default function FormAccount() {
       localStorage.clear();
     }
   };
+
   const handleTextareaChange = (event: { target: { value: any } }) => {
     const inputText = event.target.value;
     if (inputText.length <= maxCharacters) {
@@ -49,14 +49,14 @@ export default function FormAccount() {
   };
 
   useEffect(() => {
+    dispatch(getAccountDetail({ userId }));
+  }, [userId]);
+
+  useEffect(() => {
     if (!isAuthenticated && !token) {
       router.push("/");
     }
   }, [isAuthenticated, token]);
-
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId }));
-  }, [userId]);
 
   return (
     <>
