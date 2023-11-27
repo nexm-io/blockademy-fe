@@ -1,6 +1,7 @@
 import { PayloadAction, createReducer } from "@reduxjs/toolkit";
 import {
   getAccountDetail,
+  getAccountDetailWithoutLoading,
   updateAccountDetail,
   updateImageAccount,
 } from "./action";
@@ -9,7 +10,7 @@ import { AccountSettingResponse } from "./type";
 export const initialState: AccountSettingResponse = {
   error: null,
   success: false,
-  isLoading: true,
+  isLoading: false,
   message: "",
   data: null,
 };
@@ -25,28 +26,11 @@ const accountReducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAccountDetail.rejected, (state) => {
       state.isLoading = false;
-    });
-
-  builder
-    .addCase(updateAccountDetail.pending, (state) => {
-      state.isLoading = true;
     })
-    .addCase(updateAccountDetail.fulfilled, (state, action) => {
-      state.isLoading = true;
-    })
-    .addCase(updateAccountDetail.rejected, (state) => {
+    .addCase(getAccountDetailWithoutLoading.fulfilled, (state, action) => {
+      if (!action.payload) return;
       state.isLoading = false;
-    });
-
-  builder
-    .addCase(updateImageAccount.pending, (state) => {
-      state.isLoading = true;
-    })
-    .addCase(updateImageAccount.fulfilled, (state, action) => {
-      state.isLoading = false;
-    })
-    .addCase(updateImageAccount.rejected, (state) => {
-      state.isLoading = false;
+      state.data = action.payload.data;
     });
 });
 
