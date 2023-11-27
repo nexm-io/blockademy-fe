@@ -7,16 +7,12 @@ import * as Yup from "yup";
 import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { loginAuth } from "@/redux/features/auth/action";
-
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
-
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { selectAuth } from "@/redux/features/auth/reducer";
 
 const schema = Yup.object({
@@ -35,7 +31,7 @@ const schema = Yup.object({
 type FormLogin = Yup.InferType<typeof schema>;
 
 const Login = () => {
-  const { token, isAuthenticated, urlRef } = useSelector(selectAuth);
+  const { token, isAuthenticated, urlRef } = useAppSelector(selectAuth);
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
