@@ -12,16 +12,19 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import keyIcon from "@/public/icons/key-fill.svg";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSettingAccount = ({
   onToggle,
 }: {
   onToggle: (status: boolean) => void;
 }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const [toggleCurrPassword, setToggleCurrPassword] = useState<boolean>(false);
   const [toggleNewPassword, setToggleNewPassword] = useState<boolean>(false);
-  const [toggleConfirmPassword, setToggleConfirmPassword] = useState<boolean>(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] =
+    useState<boolean>(false);
   const schema = Yup.object({
     old_password: Yup.string().required("Please enter your password").trim(),
     password: Yup.string()
@@ -99,20 +102,20 @@ const FormSettingAccount = ({
                 className="bg-grey-200 rounded font-light"
               />
               {!toggleCurrPassword ? (
-                  <Image
-                    src={eyeCloseIcon}
-                    onClick={() => setToggleCurrPassword(true)}
-                    alt="eye-show"
-                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
-                  />
-                ) : (
-                  <Image
-                    src={eyeIcon}
-                    onClick={() => setToggleCurrPassword(false)}
-                    alt="eye-show"
-                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
-                  />
-                )}
+                <Image
+                  src={eyeCloseIcon}
+                  onClick={() => setToggleCurrPassword(true)}
+                  alt="eye-show"
+                  className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                />
+              ) : (
+                <Image
+                  src={eyeIcon}
+                  onClick={() => setToggleCurrPassword(false)}
+                  alt="eye-show"
+                  className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                />
+              )}
             </div>
             {errors?.old_password && (
               <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -180,7 +183,7 @@ const FormSettingAccount = ({
                   placeholder="Confirm Password"
                   className="bg-grey-200 rounded font-light"
                 />
-                 {!toggleConfirmPassword ? (
+                {!toggleConfirmPassword ? (
                   <Image
                     src={eyeCloseIcon}
                     onClick={() => setToggleConfirmPassword(true)}

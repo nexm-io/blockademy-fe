@@ -4,7 +4,6 @@ import Button from "../Common/Button";
 import closeIcon from "@/public/icons/close.svg";
 import Image from "next/image";
 import avatarDefault from "@/public/icons/avatar.svg";
-import cameraIcon from "@/public/icons/camera.svg";
 import uploadIcon from "@/public/icons/upload.svg";
 import {
   FieldValues,
@@ -16,7 +15,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { toast } from "react-toastify";
 import {
-  getAccountDetail,
+  getAccountDetailWithoutLoading,
   updateImageAccount,
 } from "@/redux/features/account/action";
 interface PopupProps {
@@ -40,6 +39,7 @@ const Popup: React.FC<PopupProps> = ({
   userImage,
 }) => {
   const [imageState, setImageState] = useState<File | null>(null);
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [getImage, setGetImage] = useState("");
   const { handleSubmit, register } = useForm();
   const isLoading = useAppSelector((state) => state.account.isLoading);
@@ -52,20 +52,22 @@ const Popup: React.FC<PopupProps> = ({
     setImageState(file);
     setGetImage(URL.createObjectURL(file));
   };
-  
+
   const imageSlug = new FormData();
   if (userAccount && imageState) {
     imageSlug.append("image", imageState);
   }
 
   const onSubmit = async () => {
+    setSaveLoading(true);
     const res = await dispatch(updateImageAccount(imageSlug)).unwrap();
     if (res.success) {
-      dispatch(getAccountDetail({ userId: userId }));
-      toast.success("Update image successfully");
+      dispatch(getAccountDetailWithoutLoading({ userId: userId }));
       onClose();
+      toast.success("Update image successfully");
     }
     res.error && toast.error(res.message);
+    setSaveLoading(false);
   };
 
   return (
@@ -140,8 +142,8 @@ const Popup: React.FC<PopupProps> = ({
                 <Button
                   type="submit"
                   className="w-[182px] h-[42px] mb-6"
-                  loading={isLoading}
-                  disabled={isLoading}
+                  loading={saveLoading || isLoading}
+                  disabled={saveLoading || isLoading}
                 >
                   Save
                 </Button>

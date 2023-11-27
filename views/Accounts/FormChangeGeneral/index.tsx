@@ -3,7 +3,7 @@ import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import Image from "next/image";
 import {
-  getAccountDetail,
+  getAccountDetailWithoutLoading,
   updateAccountDetail,
 } from "@/redux/features/account/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -64,7 +64,7 @@ export default function FormChangeGeneral({
     const res = await dispatch(updateAccountDetail(detail)).unwrap();
     if (res.success) {
       toast.success("Change Infomation success");
-      dispatch(getAccountDetail({ userId: userId }));
+      dispatch(getAccountDetailWithoutLoading({ userId: userId }));
       res.success && onToggle(false);
     }
     res.error && toast.error(res.message);

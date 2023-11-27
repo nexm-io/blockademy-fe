@@ -15,6 +15,21 @@ export const getAccountDetail = createAsyncThunk<
   return response.data;
 });
 
+
+export const getAccountDetailWithoutLoading = createAsyncThunk<
+  AccountSettingResponse,
+  {
+    userId: number;
+  }
+>("account/getAccountDetailWithoutLoading", async ({ userId }: { userId?: number }) => {
+  const response = await api.get(
+    `/api/v10/user/user-details-by-id?id=${userId}`
+  );
+
+  return response.data;
+});
+
+
 export const updateAccountDetail = createAsyncThunk<
   AccountSettingResponse,
   any
