@@ -1,20 +1,20 @@
 "use client";
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
+import Image from "next/image";
 import {
-  getAccountDetail,
+  getAccountDetailWithoutLoading,
   updateAccountDetail,
 } from "@/redux/features/account/action";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { Envelope, TelephoneFill } from "@styled-icons/bootstrap";
-import { User } from "@styled-icons/fa-solid";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import phoneIcon from "@/public/icons/phone-bold.svg";
+import profileIcon from "@/public/icons/profile-fill.svg";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import emailIcon from "@/public/icons/email.svg";
-import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import emailIcon from "@/public/icons/mail-filled.svg";
+import * as Yup from "yup";
 
 export default function FormChangeGeneral({
   onToggle,
@@ -36,14 +36,11 @@ export default function FormChangeGeneral({
       .min(10, "Length should be at least 10 characters"),
   });
 
-  type FormData = Yup.InferType<typeof schema>;
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
     getValues,
-    reset,
 
     formState: { errors, isSubmitting },
   } = useForm({
@@ -51,14 +48,7 @@ export default function FormChangeGeneral({
     mode: "onChange",
   });
 
-  useEffect(() => {
-    if (accountDetail) {
-      setValue("first_name", accountDetail?.first_name);
-      setValue("last_name", accountDetail?.last_name);
-      setValue("phone", accountDetail?.phone);
-    }
-  }, []);
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<any> = async () => {
     const firstName = getValues("first_name");
     const lastName = getValues("last_name");
     const phone = getValues("phone");
@@ -74,33 +64,44 @@ export default function FormChangeGeneral({
     const res = await dispatch(updateAccountDetail(detail)).unwrap();
     if (res.success) {
       toast.success("Change Infomation success");
-      dispatch(getAccountDetail({ userId: userId }));
+      dispatch(getAccountDetailWithoutLoading({ userId: userId }));
       res.success && onToggle(false);
     }
     res.error && toast.error(res.message);
   };
+
+  useEffect(() => {
+    if (accountDetail) {
+      setValue("first_name", accountDetail?.first_name);
+      setValue("last_name", accountDetail?.last_name);
+      setValue("phone", accountDetail?.phone);
+    }
+  }, []);
+
   return (
     <div>
-      {/* Line 1 */}
       <div className="flex justify-between items-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-6 w-full"
         >
-          <div className="flex flex-col w-full">
-            <div className="flex gap-2">
-              {" "}
-              <User className="w-6 h-6" />
-              <h3 className="font-semibold text-base mb-[30px]">Your name</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-6 items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={profileIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <h3>Your name</h3>
             </div>
 
-            <div className="flex gap-5 w-full">
-              <div className="w-full">
-                <label
-                  htmlFor=""
-                  className="pl-1 first-name text-gray-300 mb-[5px]"
-                >
-                  {" "}
+            <div className="flex flex-col sm:flex-row gap-5 w-full">
+              <div className="flex flex-col gap-2 w-full">
+                <label htmlFor="first_name" className="text-grey-700 font-light">
                   First Name
                 </label>
 
@@ -114,8 +115,8 @@ export default function FormChangeGeneral({
                     register={register}
                     name="first_name"
                     defaultValue={accountDetail?.first_name}
-                    placeholder="First name..."
-                    className="bg-white-600 "
+                    placeholder="First Name"
+                    className="bg-grey-200 rounded font-light"
                   />
                 </div>
                 {errors?.first_name && (
@@ -125,12 +126,8 @@ export default function FormChangeGeneral({
                 )}
               </div>
 
-              <div className="w-full">
-                <label
-                  htmlFor=""
-                  className="pl-1 first-name text-gray-300 mb-[5px]"
-                >
-                  {" "}
+              <div className="flex flex-col gap-2 w-full">
+                <label htmlFor="last_name" className="text-grey-700 font-light">
                   Last Name
                 </label>
                 <div
@@ -143,8 +140,8 @@ export default function FormChangeGeneral({
                     register={register}
                     name="last_name"
                     defaultValue={accountDetail?.last_name}
-                    placeholder="Last name..."
-                    className="bg-white-600"
+                    placeholder="Last Name"
+                    className="bg-grey-200 rounded font-light"
                   />
                 </div>
                 {errors?.last_name && (
@@ -156,89 +153,76 @@ export default function FormChangeGeneral({
             </div>
           </div>
 
-          <hr className="w-full  border border-b-none border-black-300/20"></hr>
+          <hr className="w-full h-[1px] bg-grey-100"></hr>
 
-          <div className="flex flex-col w-full">
-            <div className="flex gap-2">
-              {" "}
-              <Image
-                alt="email-icon"
-                src={emailIcon}
-                className="md:w-6 md:h-6 w-8 h-8"
-              ></Image>
-              <h3 className="font-semibold text-base mb-[30px]">Email</h3>
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-6 items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={emailIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <h3>Email</h3>
             </div>
 
-            <div className="flex gap-5 w-full">
-              <div className="w-full flex flex-col">
-                <label
-                  htmlFor=""
-                  className="pl-1 first-name text-gray-300 mb-[5px]"
-                >
-                  {" "}
-                  Email address
-                </label>
+            <div className="flex flex-col gap-4">
+              <div className="text-grey-700 font-light">Email address</div>
+              <span className="bg-grey-200 rounded font-light p-2">
+                {accountDetail?.email}
+              </span>
+            </div>
+          </div>
 
-                {/* <Input
-                  id="email"
+          <hr className="w-full h-[1px] bg-grey-100"></hr>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-6 items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={phoneIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <h3>Phone</h3>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="phone" className="text-grey-700 font-light">
+                Phone Number
+              </label>
+              <div
+                className={`${
+                  errors?.phone ? "border border-red-500" : " "
+                } rounded-md`}
+              >
+                <Input
+                  id="phone"
                   register={register}
-                  name="email"
-                  value={accountDetail?.email}
-                  placeholder="Email..."
-                  className="bg-white-600"
-                /> */}
-                <span className="bg-white-600 h-12 pl-[10px] flex items-center">
-                  {accountDetail?.email}
-                </span>
+                  defaultValue={accountDetail?.phone}
+                  name="phone"
+                  placeholder="Phone Number"
+                  className="bg-grey-200 rounded font-light"
+                />
               </div>
-            </div>
-          </div>
-
-          <hr className="w-full  border border-b-none border-black-300/20"></hr>
-
-          <div className="flex flex-col w-full">
-            <div className="flex gap-2">
-              {" "}
-              <TelephoneFill className="w-6 h-6" />
-              <h3 className="font-semibold text-base mb-[30px]">Phone</h3>
-            </div>
-
-            <div className="flex gap-5 w-full">
-              <div className="w-full">
-                <label
-                  htmlFor=""
-                  className="pl-1 first-name text-gray-300 mb-[5px]"
-                >
-                  {" "}
-                  Phone number
-                </label>
-                <div
-                  className={`${
-                    errors?.phone ? "border border-red-500" : " "
-                  } rounded-md`}
-                >
-                  <Input
-                    id="phone"
-                    register={register}
-                    defaultValue={accountDetail?.phone}
-                    name="phone"
-                    placeholder="Phone number..."
-                    className="bg-white-600"
-                  />
+              {errors?.phone && (
+                <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                  {errors.phone.message}
                 </div>
-                {errors?.phone && (
-                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                    {errors.phone.message}
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
 
-          <div className="flex gap-5 mt-12">
+          <div className="flex sm:flex-row flex-col gap-4">
             <Button
               type="submit"
-              className="w-[214px]"
+              className="min-w-[184px] !px-0"
               size="normal"
               loading={isSubmitting}
               disabled={isSubmitting}
@@ -248,7 +232,7 @@ export default function FormChangeGeneral({
 
             <Button
               onClick={() => onToggle(false)}
-              className="w-[214px]"
+              className="min-w-[184px] !px-0"
               size="normal"
               outlined
             >

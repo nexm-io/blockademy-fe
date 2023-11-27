@@ -3,28 +3,28 @@ import Button from "@/components/Common/Button";
 import Image from "next/image";
 import Input from "@/components/Common/Input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import keyIcon from "@/public/icons/keypassword.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useEffect } from "react";
-import {
-  getAccountDetail,
-  updateAccountDetail,
-} from "@/redux/features/account/action";
+import eyeCloseIcon from "@/public/icons/eyeclose.svg";
+import eyeIcon from "@/public/icons/eye.svg";
 import { changePassword, logoutAuth } from "@/redux/features/auth/action";
-import { ChangePasswordDetail } from "@/redux/features/auth/type";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import keyIcon from "@/public/icons/key-fill.svg";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSettingAccount = ({
   onToggle,
 }: {
   onToggle: (status: boolean) => void;
 }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
-  const user_id = useAppSelector((state) => state.auth.user);
-  const accountDetail = useAppSelector((state) => state.account.data);
-
+  const [toggleCurrPassword, setToggleCurrPassword] = useState<boolean>(false);
+  const [toggleNewPassword, setToggleNewPassword] = useState<boolean>(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] =
+    useState<boolean>(false);
   const schema = Yup.object({
     old_password: Yup.string().required("Please enter your password").trim(),
     password: Yup.string()
@@ -41,9 +41,6 @@ const FormSettingAccount = ({
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -51,14 +48,6 @@ const FormSettingAccount = ({
     mode: "onChange",
   });
   type FormData = Yup.InferType<typeof schema>;
-
-  useEffect(() => {
-    if (user_id) {
-      dispatch(getAccountDetail({ userId: user_id.id }));
-    }
-  }, [dispatch]);
-
-  const message = useAppSelector((state) => state.auth.message);
 
   const onChangePassword: SubmitHandler<FormData> = async (data) => {
     const detailChange = {
@@ -77,71 +66,96 @@ const FormSettingAccount = ({
   };
 
   return (
-    <div className="flex justify-between items-center ">
+    <div className="flex justify-between items-center">
       <form
         onSubmit={handleSubmit(onChangePassword)}
         className="flex flex-col gap-6 w-full"
       >
-        <div className="flex flex-col w-full">
-          <div className="flex gap-2">
-            {" "}
-            <Image
-              alt=""
-              src={keyIcon}
-              className="md:w-6 md:h-6 w-8 h-8"
-            ></Image>
-            <h3 className="font-semibold text-base mb-[35px]">
-              Change password
-            </h3>
-          </div>
-          <div className="flex flex-col w-full">
-            <div className="flex gap-5 w-full mb-6">
-              <div className="w-[50%]">
-                <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
-                  {" "}
-                  Current Password
-                </label>
-                <div
-                  className={`${
-                    errors?.old_password ? "border border-red-500" : " "
-                  } rounded-md`}
-                >
-                  <Input
-                    id="old_password"
-                    register={register}
-                    type="password"
-                    name="old_password"
-                    placeholder="Current Password"
-                    className="bg-white-600"
-                  />
-                </div>
-                {errors?.old_password && (
-                  <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
-                    {errors.old_password.message}
-                  </div>
-                )}
-              </div>
+        <div className="flex flex-col w-full gap-6">
+          <div className="flex gap-4 items-center">
+            <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+              <Image
+                alt="avatar icon"
+                src={keyIcon}
+                width={24}
+                height={24}
+                className="select-none"
+              />
             </div>
+            <h3>Password</h3>
           </div>
-          <div className="flex gap-5 w-full">
-            <div className="w-full">
-              <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
-                {" "}
+          <div className="flex flex-col gap-2 sm:w-[50%] md:pr-2">
+            <label htmlFor="old_password" className="text-grey-700 font-light">
+              Current Password
+            </label>
+            <div
+              className={`${
+                errors?.old_password ? "border border-red-500" : " "
+              } rounded-md relative`}
+            >
+              <Input
+                id="old_password"
+                register={register}
+                type={toggleCurrPassword ? "text" : "password"}
+                name="old_password"
+                placeholder="Current Password"
+                className="bg-grey-200 rounded font-light"
+              />
+              {!toggleCurrPassword ? (
+                <Image
+                  src={eyeCloseIcon}
+                  onClick={() => setToggleCurrPassword(true)}
+                  alt="eye-show"
+                  className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                />
+              ) : (
+                <Image
+                  src={eyeIcon}
+                  onClick={() => setToggleCurrPassword(false)}
+                  alt="eye-show"
+                  className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                />
+              )}
+            </div>
+            {errors?.old_password && (
+              <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
+                {errors.old_password.message}
+              </div>
+            )}
+          </div>
+          <div className="flex sm:flex-row flex-col gap-4 w-full">
+            <div className="flex flex-col gap-2 w-full">
+              <label htmlFor="password" className="text-grey-700 font-light">
                 New Password
               </label>
               <div
                 className={`${
                   errors?.password ? "border border-red-500" : " "
-                } rounded-md`}
+                } rounded-md relative`}
               >
                 <Input
                   id="password"
                   register={register}
                   name="password"
-                  type="password"
+                  type={toggleNewPassword ? "text" : "password"}
                   placeholder="New Password"
-                  className="bg-white-600"
+                  className="bg-grey-200 rounded font-light"
                 />
+                {!toggleNewPassword ? (
+                  <Image
+                    src={eyeCloseIcon}
+                    onClick={() => setToggleNewPassword(true)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                ) : (
+                  <Image
+                    src={eyeIcon}
+                    onClick={() => setToggleNewPassword(false)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                )}
               </div>
               {errors?.password && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -149,24 +163,41 @@ const FormSettingAccount = ({
                 </div>
               )}
             </div>
-            <div className="w-full">
-              <label htmlFor="" className="pl-1 text-gray-300 mb-[5px]">
-                {" "}
+            <div className="flex flex-col gap-2 w-full">
+              <label
+                htmlFor="password_confirmation"
+                className="text-grey-700 font-light"
+              >
                 Confirm Password
               </label>
               <div
                 className={`${
                   errors?.password_confirmation ? "border border-red-500" : " "
-                } rounded-md`}
+                } rounded-md relative`}
               >
                 <Input
                   id="password_confirmation"
                   register={register}
-                  type="password"
+                  type={toggleConfirmPassword ? "text" : "password"}
                   name="password_confirmation"
                   placeholder="Confirm Password"
-                  className="bg-white-600"
+                  className="bg-grey-200 rounded font-light"
                 />
+                {!toggleConfirmPassword ? (
+                  <Image
+                    src={eyeCloseIcon}
+                    onClick={() => setToggleConfirmPassword(true)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                ) : (
+                  <Image
+                    src={eyeIcon}
+                    onClick={() => setToggleConfirmPassword(false)}
+                    alt="eye-show"
+                    className="w-4 h-4 py-3 px-4 box-content cursor-pointer absolute top-1/2 -translate-y-1/2 right-0"
+                  />
+                )}
               </div>
               {errors?.password_confirmation && (
                 <div className="text-red-500 text-sm mt-1 w-full max-w-[384px]">
@@ -176,10 +207,10 @@ const FormSettingAccount = ({
             </div>
           </div>
         </div>
-        <div className="flex gap-5 mt-12">
+        <div className="flex sm:flex-row flex-col gap-4">
           <Button
             type="submit"
-            className="w-[214px]"
+            className="min-w-[184px] !px-0"
             size="normal"
             loading={isSubmitting}
             disabled={isSubmitting}
@@ -188,7 +219,7 @@ const FormSettingAccount = ({
           </Button>
           <Button
             onClick={() => onToggle(false)}
-            className="w-[214px]"
+            className="min-w-[184px] !px-0"
             size="normal"
             outlined
           >

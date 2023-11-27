@@ -1,110 +1,131 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import emailIcon from "@/public/icons/email.svg";
-import phoneIcon from "@/public/icons/telephone.svg";
-import { User } from "@styled-icons/fa-solid";
-import editIcon from "@/public/icons/edit.svg";
+import emailIcon from "@/public/icons/mail-filled.svg";
+import phoneIcon from "@/public/icons/phone-bold.svg";
+import profileIcon from "@/public/icons/profile-fill.svg";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getAccountDetail } from "@/redux/features/account/action";
 import FormChangeGeneral from "../FormChangeGeneral";
+import Button from "@/components/Common/Button";
 
 const GeneralAccount = () => {
-  const dispatch = useAppDispatch();
   const [toggle, setToggle] = useState<boolean>(true);
-  const userId = useAppSelector((state) => state.auth.user?.id || 0);
   const userAccount = useAppSelector((state) => state.account.data);
-  useEffect(() => {
-    dispatch(getAccountDetail({ userId: userId }));
-  }, [dispatch, userId]);
 
   const handleToggle = (status: boolean) => {
     setToggle(!status);
   };
 
   return (
-    /* General Account */
-    <div>
-      <div className="flex items-center gap-2 md:mb-[40px] mb-6 md:mt-[60px] mt-8">
-        <h2 className="font-semibold text-2xl ">General Account</h2>
-        <div
+    <div className="rounded-lg border border-grey-200 p-4 bg-gray-900">
+      <div className="hidden sm:flex items-center justify-between gap-2 mb-6">
+        <h2 className="text-2xl">General Account</h2>
+        <Button
+          className="w-[106px] !py-[6px] bg-blue-600 group hover:bg-blue-600/50 group"
           onClick={() => setToggle(!toggle)}
-          className="flex gap-1 items-center"
         >
-          <Image
-            alt="edit-icon"
-            src={editIcon}
-            className="w-4 h-4 cursor-pointer select-none"
-          ></Image>
-          <span className="text-blue-100 text-base font-normal cursor-pointer hover:underline select-none">
-            Edit
+          <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+            Change
           </span>
-        </div>
+        </Button>
       </div>
       {toggle ? (
-        <>
-          {/* Line 1 */}
-          <div className="flex justify-between items-center md:mb-[40px] mb-6 md:flex-row flex-col">
-            <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start self-start">
-              <User className="md:w-6 md:h-6 w-8 h-8" />
-              <div className="flex flex-col ">
-                <h3 className="font-semibold text-base">Your name</h3>
-                <p className="text-base font-normal text-gray-300">
+        <div className="flex flex-col gap-6">
+          <div className="flex justify-between sm:items-center md:flex-row flex-col">
+            <div className="flex gap-6 items-start sm:items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={profileIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <div className="flex flex-col gap-2 sm:gap-[2px]">
+                <h3>Your name</h3>
+                <p className="font-light text-gray-300">
                   Set a customized name for your profile
                 </p>
+                <div className="flex md:hidden sm:block justify-start w-full sm:w-auto">
+                  <span className="text-blue-100">
+                    {userAccount?.first_name} {userAccount?.last_name}
+                  </span>
+                </div>
               </div>
             </div>
-            <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+            <div className="my-4 md:my-0 hidden md:flex sm:block justify-start w-full sm:w-auto">
+              <span className="text-blue-100">
                 {userAccount?.first_name} {userAccount?.last_name}
               </span>
             </div>
           </div>
-          {/* Line 2 */}
-          <div className="flex justify-between items-center md:mb-[40px] mb-6 md:flex-row flex-col">
-            <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start self-start">
-              <Image
-                alt="email-icon"
-                src={emailIcon}
-                className="md:w-6 md:h-6 w-8 h-8 select-none"
-              ></Image>
-
-              <div className="flex flex-col">
-                <h3 className="font-semibold text-base">Email</h3>
-                <p className="text-base font-normal text-gray-300">
-                  Edit your email 
+          <div className="flex justify-between items-start sm:items-center md:flex-row flex-col">
+            <div className="flex gap-6 items-start sm:items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={emailIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <div className="flex flex-col gap-2 sm:gap-[2px]">
+                <h3>Email</h3>
+                <p className="font-light text-gray-300">
+                  Edit your email
                 </p>
+                <div className="block md:hidden text-blue-100">
+                  {userAccount?.email}
+                </div>
               </div>
             </div>
-            <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+            <div className="hidden md:block my-4 md:my-0">
+              <span className="text-blue-100">
                 {userAccount?.email}
               </span>
             </div>
           </div>
-          {/* Line 3 */}
-          <div className="flex justify-between items-center md:mb-[40px] mb-6 md:flex-row flex-col">
-            <div className="flex gap-4 md:basis-[450px] basis-auto items-center md:items-start self-start">
-              <Image
-                alt="phone-icon"
-                src={phoneIcon}
-                className="md:w-6 md:h-6 w-8 h-8 select-none"
-              ></Image>
-
-              <div className="flex flex-col">
-                <h3 className="font-semibold text-base">Phone</h3>
-                <p className="text-base font-normal text-gray-300">
-                  Edit your phone number 
+          <div className="flex justify-between items-start sm:items-center md:flex-row flex-col">
+            <div className="flex gap-6 items-start sm:items-center">
+              <div className="w-10 h-10 rounded-full bg-[#DDE8FF] flex justify-center items-center">
+                <Image
+                  alt="avatar icon"
+                  src={phoneIcon}
+                  width={24}
+                  height={24}
+                  className="select-none"
+                />
+              </div>
+              <div className="flex flex-col gap-2 sm:gap-[2px]">
+                <h3>Phone</h3>
+                <p className="font-light text-gray-300">
+                  Edit your phone number
                 </p>
+                <div className="block md:hidden text-blue-100">
+                  {userAccount?.phone}
+                </div>
               </div>
             </div>
-            <div className=" my-4 md:my-0">
-              <span className="text-blue-100 text-base font-semibold">
+            <div className="hidden md:block my-4 md:my-0">
+              <span className="text-blue-100">
                 {userAccount?.phone}
               </span>
             </div>
           </div>
-        </>
+          <div className="flex sm:hidden justify-end">
+            <Button
+              className="w-[106px] !py-[6px] bg-blue-600 group hover:bg-blue-600/50 group"
+              onClick={() => setToggle(!toggle)}
+            >
+              <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                Change
+              </span>
+            </Button>
+          </div>
+        </div>
       ) : (
         <FormChangeGeneral onToggle={handleToggle} />
       )}
