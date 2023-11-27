@@ -57,8 +57,7 @@ const Header = () => {
   }, []);
 
   useEffect(() => {
-    if (userId)
-      dispatch(getAccountDetail({ userId: userId }));
+    if (userId) dispatch(getAccountDetail({ userId: userId }));
   }, [dispatch, userId]);
 
   const handleUserIconClick = (event: React.MouseEvent) => {
@@ -115,7 +114,9 @@ const Header = () => {
                 href={z.pathname}
                 key={z.key}
                 className={cn(`hover:text-blue-100`, {
-                  "text-blue-100": z.activePathname.some(pattern => new RegExp(pattern).test(pathName)),
+                  "text-blue-100": z.activePathname.some((pattern) =>
+                    new RegExp(pattern).test(pathName)
+                  ),
                 })}
               >
                 {z.label}
@@ -155,7 +156,10 @@ const Header = () => {
                     className="absolute w-[280px] sm:w-[400px] top-[50px] sm:top-[70px] right-0 py-[40px] px-[20px] bg-white-100 border rounded-lg shadow-[0_4px_20px_0_rgba(0,0,0,0.15)]"
                     ref={dropdownRef}
                   >
-                    <div className="flex items-center pb-[24px] cursor-pointer" onClick={() => router.push("/account-setting")}>
+                    <div
+                      className="flex items-center pb-[24px] cursor-pointer"
+                      onClick={() => router.push("/account-setting")}
+                    >
                       <Image
                         alt="avatar-user"
                         src={image || userDefault}
@@ -163,9 +167,7 @@ const Header = () => {
                         height={50}
                         className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                       />
-                      <div
-                        className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden"
-                      >
+                      <div className="font-bold ml-[8px] text-ellipsis max-w-[300px] overflow-hidden">
                         {email}
                       </div>
                     </div>
@@ -219,7 +221,12 @@ const Header = () => {
           ) : (
             <>
               <Link href="/login">
-                <Button size="small" onClick={()=> dispatch(setRefUrl(pathName))} outlined className="w-[94px]">
+                <Button
+                  size="small"
+                  onClick={() => dispatch(setRefUrl(pathName))}
+                  outlined
+                  className="w-[94px]"
+                >
                   Log in
                 </Button>
               </Link>
@@ -263,9 +270,7 @@ const Header = () => {
                         height={50}
                         className="w-[35px] h-[35px] sm:w-[50px] sm:h-[50px] rounded-full select-none object-cover"
                       />
-                      <div
-                        className="font-light ml-[8px] text-base text-ellipsis max-w-[300px] overflow-hidden"
-                      >
+                      <div className="font-light ml-[8px] text-base text-ellipsis max-w-[300px] overflow-hidden">
                         {email}
                       </div>
                     </div>
@@ -314,7 +319,10 @@ const Header = () => {
                     <Button
                       outlined
                       className="w-full"
-                      onClick={() => setShowMenu(false)}
+                      onClick={() => {
+                        dispatch(setRefUrl(pathName));
+                        setShowMenu(false);
+                      }}
                     >
                       Log in
                     </Button>
