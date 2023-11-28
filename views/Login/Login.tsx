@@ -14,6 +14,7 @@ import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import { selectAuth } from "@/redux/features/auth/reducer";
+import { Google } from "@/components/Icon";
 
 const schema = Yup.object({
   email: Yup.string()
@@ -139,14 +140,28 @@ const Login = () => {
               )}
             </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            >
-              Log in
-            </Button>
+            <div>
+              <Button
+                type="submit"
+                fullWidth
+                loading={isSubmitting}
+                disabled={isSubmitting}
+              >
+                Log in
+              </Button>
+              <div className="my-6 h-[1px] bg-grey-300 relative">
+                <span className="text-black-100 bg-white-100 px-6 text-sm font-normal leading-5 absolute -top-2 left-1/2 -translate-x-1/2">
+                  OR
+                </span>
+              </div>
+              <button
+                type="button"
+                className="flex items-center justify-center bg-white-100 border border-grey-300 rounded px-6 py-3 text-sm font-medium text-gray-800 hover:bg-gray-200 transition-all w-full"
+              >
+                <Google className="h-6 w-6 mr-2" />
+                <span>Login with Google</span>
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-3">
