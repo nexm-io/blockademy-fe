@@ -10,7 +10,7 @@ import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
@@ -21,6 +21,7 @@ import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import RewardDetail from "@/components/Reward/RewardDetail";
+import { setRefUrl } from "@/redux/features/auth/action";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -36,6 +37,7 @@ const CourseDetail = () => {
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
+  const pathName = usePathname();
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -131,6 +133,7 @@ const CourseDetail = () => {
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
+      dispatch(setRefUrl(pathName));
       router.push("/login");
       toast.info("Please login to continue");
       return;
@@ -536,7 +539,7 @@ const CourseDetail = () => {
                       </p>
                     )}
                   {/* LEARN AGAIN */}
-                  {courseDetail?.is_completed_assignment === 1 && (
+                  {isLogin && courseDetail?.is_completed_assignment === 1 && (
                     <>
                       <Button
                         className="md:w-auto inline-block !px-6 w-full"
