@@ -67,8 +67,12 @@ const Login = () => {
 
   const login = googleProvider.useGoogleLogin({
     flow: "implicit",
-    onSuccess: (res: any) => dispatch(loginWithGoogle(res.access_token)),
-    onError: () => console.error("Failed to login with google"),
+    onSuccess: async (res: any) => {
+      await dispatch(loginWithGoogle(res.access_token));
+      push(urlRef);
+      toast.success("Login Successfully");
+    },
+    onError: () => toast.error("Failed to login with google"),
   });
 
   useEffect(() => {

@@ -15,8 +15,6 @@ export const loginWithGoogle = createAsyncThunk(
       const response = await api.post(
         `/api/v10/login/google?social_token=${access_token}`
       );
-      console.log(access_token);
-      console.log(response);
       return response.data;
     } catch (error: any) {
       return error.response.data;
