@@ -40,6 +40,7 @@
     "date-fns-tz": "^2.0.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
+    "google-oauth-gsi": "^4.0.0",
     "highlight.js": "^11.8.0",
     "jspdf": "^2.5.1",
     "next": "13.4.19",
