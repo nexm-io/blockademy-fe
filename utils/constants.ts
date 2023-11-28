@@ -6,6 +6,8 @@ import IconMobile from "@/public/icons/mobile.svg";
 import IconGame from "@/public/icons/game.svg";
 import IconQC from "@/public/icons/qc.svg";
 
+export const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
+
 export const LIMIT_COURSES = 9;
 export const TYPE_QUIZ = {
   ESSAY: "essay",

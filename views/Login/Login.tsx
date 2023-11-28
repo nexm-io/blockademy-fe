@@ -67,9 +67,7 @@ const Login = () => {
 
   const login = googleProvider.useGoogleLogin({
     flow: "implicit",
-    onSuccess: ({ access_token }: { access_token: string }) => {
-      dispatch(loginWithGoogle(access_token));
-    },
+    onSuccess: (res: any) => dispatch(loginWithGoogle(res.access_token)),
     onError: () => console.error("Failed to login with google"),
   });
 

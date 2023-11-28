@@ -143,7 +143,7 @@ export const Share = ({ className = "" }: { className?: string }) => (
     <path
       d="M5 17V25C5 25.5304 5.21071 26.0391 5.58579 26.4142C5.96086 26.7893 6.46957 27 7 27H25C25.5304 27 26.0391 26.7893 26.4142 26.4142C26.7893 26.0391 27 25.5304 27 25V17M16 20V3.5M22 9L16 3L10 9"
       stroke="#1F37B3"
-      stroke-width="2"
+      strokeWidth="2"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -177,13 +177,7 @@ export const Google = ({ className = "" }: { className?: string }) => (
     viewBox="-0.5 0 48 48"
     version="1.1"
   >
-    <g
-      id="Icons"
-      stroke="none"
-      stroke-width="1"
-      fill="none"
-      fill-rule="evenodd"
-    >
+    <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g id="Color-" transform="translate(-401.000000, -860.000000)">
         <g id="Google" transform="translate(401.000000, 860.000000)">
           <path
