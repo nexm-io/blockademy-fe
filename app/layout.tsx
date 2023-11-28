@@ -50,15 +50,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* <Script
-        src="https://chat-api.spartez-software.com/chat-widget.js"
-        defer
-      />
-      <chat-widget
-        jira-id="0191cdbc-70cf-3d52-91cf-9c3a49b689f2"
-        service-desk-id="1"
-      ></chat-widget>
-    */}
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=G-XS8QL1EDRD`}
         strategy="afterInteractive"

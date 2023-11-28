@@ -8,11 +8,26 @@ import {
   logoutAuth,
   changePassword,
   setRefUrl,
+  loginWithGoogle,
 } from "./action";
 import { initialState } from "./type";
 import { RootState } from "@/redux/store";
 
 const authReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(loginWithGoogle.pending, (state) => {
+      state.isAuthenticated = false;
+    })
+    .addCase(loginWithGoogle.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+      if (!action.payload) return;
+      state.token = action.payload.data.token;
+      state.user = action.payload.data;
+    })
+    .addCase(loginWithGoogle.rejected, (state) => {
+      state.isAuthenticated = false;
+    });
+
   builder
     .addCase(loginAuth.pending, (state) => {
       state.isAuthenticated = false;

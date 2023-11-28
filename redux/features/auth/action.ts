@@ -8,6 +8,20 @@ import {
 } from "./type";
 import api from "@/services/axios";
 
+export const loginWithGoogle = createAsyncThunk(
+  "auth/login-with-google",
+  async (access_token: string) => {
+    try {
+      const response = await api.post(
+        `/api/v10/login/google?social_token=${access_token}`
+      );
+      return response.data;
+    } catch (error: any) {
+      return error.response.data;
+    }
+  }
+);
+
 export const loginAuth = createAsyncThunk<
   AuthResponse,
   Pick<User, "email" | "password">
