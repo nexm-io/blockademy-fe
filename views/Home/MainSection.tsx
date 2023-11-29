@@ -29,16 +29,6 @@ const MainSection = () => {
 
   return (
     <section>
-      <Link
-        href={
-          course
-            ? `/courses/${course?.course_id}?lesson_id=${course?.lesson_first?.lesson_id}`
-            : "/"
-        }
-      >
-        <TopBanner />
-      </Link>
-
       <div className="container grid lg:gap-10 pb-[60px] hot-course-container">
         <div className="grid gap-6 pt-[45px] md:pt-[73px] pb-[58px] lg:pt-[146px] lg:pb-[117px]">
           <h3 className="text-black-400 text-[56px] leading-[64px] font-bold">
