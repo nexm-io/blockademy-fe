@@ -38,9 +38,9 @@ const CardItem: React.FC<CardItemProps> = ({
       <div
         className={`${
           status === "list"
-            ? "flex-col w-[352px] shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
+            ? "flex-col w-[352px] md:w-full shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
             : status === "menu"
-            ? "w-[352px] md:w-full md:flex-row flex-col gap-4 md:gap-0"
+            ? "md:w-full md:flex-row flex-col gap-4 md:gap-0"
             : ""
         } ${topicBalance ? "h-[100px] !flex-row" : "h-auto"} ${
           topicReverse ? "md:!flex-row-reverse !flex-col" : "flex-row"
@@ -130,7 +130,7 @@ const CardItem: React.FC<CardItemProps> = ({
             }
             ${topic ? "mb-2" : ""} ${
               topicBalance ? "text-white-100 line-clamp-2" : ""
-            } font-bold 
+            } 
          `}
           >
             {data.title}
