@@ -1,5 +1,4 @@
 import React from "react";
-import { FieldValues, UseFormRegister } from "react-hook-form";
 
 interface InputProps {
   id: string;
@@ -32,6 +31,7 @@ const Input: React.FC<InputProps> = ({
       {...register(name)}
       placeholder={placeholder}
       className={`outline-none border-none rounded placeholder-[#9E9E9E] p-2 text-black w-full ${className}`}
+      spellCheck={false}
     />
   );
 };

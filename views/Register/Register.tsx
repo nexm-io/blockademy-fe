@@ -17,7 +17,10 @@ import { userRegister } from "@/redux/features/auth/action";
 const schema = Yup.object({
   email: Yup.string()
     .required("Please enter your email address")
-    .email("Incorrect email format")
+    .matches(
+      /^(?:[a-zA-Z0-9](?:[-._][a-zA-Z0-9]+)*){5,}@[a-zA-Z0-9]+(?:[-._][a-zA-Z0-9]+)*(?:\.[a-zA-Z]{2,})+$/,
+      "Incorrect email format"
+    )
     .trim()
     .min(8, "Length from 8 - 160 characters")
     .max(160, "Length from 8 - 160 characters"),
