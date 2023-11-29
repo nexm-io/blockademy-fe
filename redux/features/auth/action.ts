@@ -91,11 +91,15 @@ export const forgotAuth = createAsyncThunk(
 export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
   "auth/reset-password",
   async (detail) => {
-    const response = await api.post(
-      `/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`,
-      detail.data
-    );
-    return response.data;
+    try {
+      const response = await api.post(
+        `/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`,
+        detail.data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 
