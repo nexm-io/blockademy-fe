@@ -43,7 +43,7 @@ deploy_beta: &deploy
     name: alpine/k8s:1.25.16
     entrypoint: ['']
   before_script:
-    - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
+    - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME --role-arn arn:aws:iam::604313529175:role/EksRoleBlockademy
   script:
     - kubectl rollout restart -n $NAMESPACE deploy blockademy-web
 
