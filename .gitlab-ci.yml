@@ -1,4 +1,3 @@
-
 stages:
   - build
   - deploy
@@ -34,16 +33,24 @@ build_docker_prod:
   only:
     - master
 
-deploy:
+deploy_beta: &deploy
   stage: deploy
+  variables:
+    NAMESPACE: blockademy-beta
   only:
     - develop
-    - devops/k8s
   image:
     name: alpine/k8s:1.25.16
     entrypoint: ['']
   before_script:
     - aws eks --region $AWS_REGION update-kubeconfig --name $CLUSTER_NAME
   script:
-    - kubectl rollout restart -n blockademy-beta deploy blockademy-web
+    - kubectl rollout restart -n $NAMESPACE deploy blockademy-web
+
+deploy_prod:
+  <<: *deploy
+  variables:
+    NAMESPACE: blockademy-prod
+  only:
+    - master
 
