@@ -114,10 +114,10 @@ const CardItem: React.FC<CardItemProps> = ({
           <h2
             className={`${
               topicShort
-                ? "text-lg text-white-100"
+                ? "text-xl text-white-100"
                 : topic
                 ? "text-[30px] text-white-100"
-                : "text-lg text-black-100 leading-7"
+                : "text-xl text-black-100 leading-7"
             } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 "} ${
               topicReverse ? "md:text-right text-left " : ""
             } ${!image ? "line-clamp-none " : "line-clamp-2 "}
