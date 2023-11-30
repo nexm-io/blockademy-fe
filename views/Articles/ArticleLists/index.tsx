@@ -152,7 +152,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     </div>
   ) : (
     <section>
-      <div className="flex justify-between mt-[39px] mb-6 px-4">
+      <div className="flex justify-between mt-[39px] mb-6">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
           Articles {`(${pagination ? pagination?.total : " "})`}
         </h2>
@@ -176,7 +176,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
             : status === "menu"
             ? "grid-cols-1 md:gap-6 lg:gap-8"
             : ""
-        } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto md:pl-4`}
+        } grid lg:gap-10 md:gap-y-8 lg:gap-y-auto`}
       >
         {type === "Trending" && dataTrending ? (
           dataTrending.map((item, index) => (

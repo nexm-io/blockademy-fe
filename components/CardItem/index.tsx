@@ -38,9 +38,9 @@ const CardItem: React.FC<CardItemProps> = ({
       <div
         className={`${
           status === "list"
-            ? "flex-col w-[352px] shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
+            ? "flex-col w-[352px] md:w-full shadow-lg hover:shadow-3xl md:mx-auto lg:mx-0 lg:h-[370px] h-[340px] md:h-[368px]"
             : status === "menu"
-            ? "w-[352px] md:w-full md:flex-row flex-col gap-4 md:gap-0"
+            ? "md:w-full md:flex-row flex-col gap-4 md:gap-0"
             : ""
         } ${topicBalance ? "h-[100px] !flex-row" : "h-auto"} ${
           topicReverse ? "md:!flex-row-reverse !flex-col" : "flex-row"
@@ -114,10 +114,10 @@ const CardItem: React.FC<CardItemProps> = ({
           <h2
             className={`${
               topicShort
-                ? "text-lg text-white-100"
+                ? "text-xl text-white-100"
                 : topic
                 ? "text-[30px] text-white-100"
-                : "text-lg text-black-100 leading-7"
+                : "text-xl text-black-100 leading-7"
             } ${topic || topicShort ? "ml-6" : " mt-2 ml-2 mb-4 "} ${
               topicReverse ? "md:text-right text-left " : ""
             } ${!image ? "line-clamp-none " : "line-clamp-2 "}
@@ -130,7 +130,7 @@ const CardItem: React.FC<CardItemProps> = ({
             }
             ${topic ? "mb-2" : ""} ${
               topicBalance ? "text-white-100 line-clamp-2" : ""
-            } font-bold 
+            } 
          `}
           >
             {data.title}

@@ -1,30 +1,27 @@
 import Button from "@/components/Common/Button";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import account from "@/public/icons/usersuccess.svg";
 import Image from "next/image";
 import { loginAuth } from "@/redux/features/auth/action";
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 type IFormValues = {
-    email: string;
-    password: string;
-} 
+  email: string;
+  password: string;
+};
 
-export default function FormReceiveUpdate({
-  detail,
-}: {
-  detail: IFormValues
-}) {
+export default function FormReceiveUpdate({ detail }: { detail: IFormValues }) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { urlRef } = useAppSelector(selectAuth);
+  
   const {
-    register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<IFormValues>({
     mode: "onChange",
   });
@@ -32,13 +29,14 @@ export default function FormReceiveUpdate({
   const onSubmit: SubmitHandler<typeof detail> = async (e) => {
     try {
       const res = await dispatch(loginAuth(detail)).unwrap();
-      res.success && router.push("/");
+      res.success && router.push(urlRef);
     } catch (e) {
       console.error(e);
     } finally {
       reset();
     }
   };
+
   return (
     <form
       className="space-y-[25px] min-w-[384px] mt-4 relative"

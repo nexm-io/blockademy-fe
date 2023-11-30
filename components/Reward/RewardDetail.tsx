@@ -1,7 +1,7 @@
 import { CourseDetail } from "@/redux/features/courses/type";
 import api from "@/services/axios";
 import Image from "next/image";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import InfoPopup from "../Popup/InfoPopup";
 import cn from "@/services/cn";
@@ -12,8 +12,11 @@ import { Share } from "../Icon";
 import { useAppDispatch } from "@/redux/hook";
 import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
 import { useRouter } from "next/navigation";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import Facebook from "@/public/icons/facebook-fill.svg";
+import Linked from "@/public/icons/linkedin.svg";
 import Twitter from "@/public/icons/twitter.svg";
+import OcticonLink from "@/public/icons/octicon-link.svg";
 
 const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [certAssets, setCertAssets] = useState<any>({
@@ -26,30 +29,37 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const [isGetCertLoading, setIsGetCertLoading] = useState<boolean>(true);
   const [isIssueLoading, setIsIssueLoading] = useState<boolean>(false);
   const [statusIssue, setStatusIssue] = useState<boolean>(false);
-  const intervalRef = useRef<any>(0);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  const certificateLink = useMemo(() => {
+    const certificateId = (courseDetail as any)?.certificate_id;
+    const baseUrl = window.location.hostname;
+    return `${baseUrl}/accomplishments/certificate/${certificateId}`;
+  }, [courseDetail]);
+
+  const getCertificateText = () => {
+    const title = courseDetail.title;
+    return `🎓 Excited to receive my Certificate on "${title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${certificateLink}`;
+  };
+
   const shareFacebook = () => {
-    const href = window.location.hostname;
     const tags = encodeURIComponent("#Blockademy");
-    const link = `http://www.facebook.com/sharer.php?u=${href}/accomplishments/certificate/${
-      (courseDetail as any)?.certificate_id
-    }&hashtag=${tags}`;
+    const link = `http://www.facebook.com/sharer.php?u=${certificateLink}&hashtag=${tags}`;
     window.open(link, "sharer", "toolbar=0,status=0,width=626,height=436");
   };
 
   const shareTwitter = () => {
-    const href = window.location.hostname;
-    const text = `🎓 ${encodeURIComponent(
-      `Excited to receive my Certificate on "${
-        courseDetail.title
-      }" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${href}/accomplishments/certificate/${
-        (courseDetail as any)?.certificate_id
-      } `
-    )}`;
+    const text = encodeURIComponent(getCertificateText());
     const tags = encodeURIComponent("Blockademy,NFTcertificate");
     const link = `https://twitter.com/intent/tweet?text=${text}&hashtags=${tags}`;
+    window.open(link, "_blank");
+  };
+
+  const shareLinked = () => {
+    const text = encodeURIComponent(getCertificateText());
+    const link = `http://www.linkedin.com/shareArticle?mini=true&url=${certificateLink}&title=${text}`;
     window.open(link, "_blank");
   };
 
@@ -121,7 +131,6 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
       clearInterval(intervalId);
     };
   }, [statusIssue, courseDetail, dispatch]);
-
 
   useEffect(() => {
     getCertificate();
@@ -272,16 +281,50 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                     alt="Twitter Icon"
                   />
                 </button>
+                <button
+                  type="button"
+                  className="inline-block rounded-full p-[10px] text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg text-white-100"
+                  style={{ backgroundColor: "#1F37B3" }}
+                  onClick={shareLinked}
+                >
+                  <Image
+                    src={Linked}
+                    width={24}
+                    height={24}
+                    alt="Linked Icon"
+                  />
+                </button>
               </div>
             </div>
           }
           onClose={() => setShowSharePopup(false)}
           className="!gap-0"
         >
-          <></>
-          {/* <div className="mt-6 border-t border-t-grey-100 w-full flex flex-col gap-2">
+          <div className="mt-6 border-t border-t-grey-100 w-full flex flex-col gap-2">
             <p className="mt-4 text-grey-700 text-center">Or copy link</p>
-          </div> */}
+            <CopyToClipboard
+              onCopy={() => {
+                toast("Copied!", { type: "success" });
+                setIsCopied(true);
+              }}
+              text={certificateLink}
+            >
+              <div className="flex flex-col lg:flex-row items-center gap-2">
+                <div className="px-4 cursor-pointer border border-grey-100 rounded h-[50px] flex items-center gap-2 w-full">
+                  <Image
+                    src={OcticonLink}
+                    width={16}
+                    height={16}
+                    alt="octicon-link-icon"
+                  />
+                  <p className="font-light">{window.location.hostname}/certificate</p>
+                </div>
+                <Button className="w-full lg:max-w-[184px] !px-0">
+                  {isCopied ? "Copied" : "Copy"}
+                </Button>
+              </div>
+            </CopyToClipboard>
+          </div>
         </InfoPopup>
       )}
       <div

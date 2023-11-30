@@ -51,11 +51,16 @@ const FormReset = () => {
     const res = await dispatch(resetPassword({ data, email, code })).unwrap();
     if (res.success === true) {
       push("/login");
+      toast.success(
+        "Password reset successful. You can login with new password!"
+      );
     } else {
-      toast.error("Incorrect password or password confirmation does not match");
+      push("/forgot-password");
+      toast.error("Reset password link invalid. Please try again!");
     }
     reset();
   };
+
   return (
     <div className="flex flex-col relative">
       <h2 className="mt-[40px] text-black-100 text-center text-[30px] font-bold ">

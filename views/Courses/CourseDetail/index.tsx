@@ -10,7 +10,7 @@ import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
@@ -21,6 +21,7 @@ import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import RewardDetail from "@/components/Reward/RewardDetail";
+import { setRefUrl } from "@/redux/features/auth/action";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -36,6 +37,7 @@ const CourseDetail = () => {
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
+  const pathName = usePathname();
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -75,7 +77,6 @@ const CourseDetail = () => {
   }, [courseDetail?.lesson_data, lessonId]);
 
   const isNotCompletedLesson = useMemo(() => {
-    return false;
     return isCompletedQuiz ||
       (lessonOrder.last && completedLesson.includes(+lessonId))
       ? false
@@ -121,7 +122,6 @@ const CourseDetail = () => {
         if (stepCompleted.length >= 1) {
           setIsNextLesson(true);
         }
-        // setFormState(`quiz`);
       }
     },
     [getNextLessonUrl, stepCompleted]
@@ -133,6 +133,7 @@ const CourseDetail = () => {
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
+      dispatch(setRefUrl(pathName));
       router.push("/login");
       toast.info("Please login to continue");
       return;
@@ -236,18 +237,13 @@ const CourseDetail = () => {
     handleCheckCompletedCourse();
   }, [handleCheckCompletedCourse]);
 
-  // useEffect(() => {
-  //   if (!courseDetail) return;
-  //   if (courseDetail?.lesson_data && courseDetail.lesson_data.length > 0) {
-  //     const isLessonIdExists = courseDetail.lesson_data.some(
-  //       (lesson) => lesson.lesson_id === Number(lessonId)
-  //     );
-
-  //     if (!isLessonIdExists) {
-  //       router.push("/not-found");
-  //     }
-  //   }
-  // }, [courseDetail, lessonId]);
+  useEffect(() => {
+    if (!courseDetail) return;
+    if (!lessonId)
+      router.push(
+        `/courses/${courseId}?lesson_id=${courseDetail?.lesson_first.lesson_id}`
+      );
+  }, [courseDetail, lessonId]);
 
   return (
     <div className="container mt-36">
@@ -486,28 +482,6 @@ const CourseDetail = () => {
                       </div>
                     )}
 
-                  {/* COMPLETE QUIZ */}
-                  {isLogin &&
-                    courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
-                    courseDetail?.is_completed_assignment === 0 &&
-                    registered && (
-                      <div className="flex justify-end">
-                        <Button
-                          className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 min-w-[184px]"
-                          disabled={isNotCompletedLesson}
-                          onClick={() => {
-                            if (isNotCompletedLesson) return;
-                            router.push(`/quiz/${courseDetail?.assigment_id}`);
-                          }}
-                        >
-                          <span className="text-blue-700 group-hover:text-blue-700/80 font-bold transition-all">
-                            Complete Quiz
-                          </span>
-                        </Button>
-                      </div>
-                    )}
-
                   {courseDetail?.lesson_data.length !== 0 &&
                     !isLoading &&
                     courseDetail?.lesson_data.map((lesson, index) => (
@@ -528,6 +502,28 @@ const CourseDetail = () => {
                       </div>
                     ))}
 
+                  {/* COMPLETE QUIZ */}
+                  {isLogin &&
+                    courseDetail?.assignment_status.slug !==
+                      ASSIGNMENT_STATUS.FAILED &&
+                    courseDetail?.is_completed_assignment === 0 &&
+                    registered && (
+                      <div className="flex justify-end">
+                        <Button
+                          className="inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
+                          disabled={isNotCompletedLesson}
+                          onClick={() => {
+                            if (isNotCompletedLesson) return;
+                            router.push(`/quiz/${courseDetail?.assigment_id}`);
+                          }}
+                        >
+                          <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                            Complete Quiz
+                          </span>
+                        </Button>
+                      </div>
+                    )}
+
                   {isLogin &&
                     courseDetail?.assignment_status.slug !==
                       ASSIGNMENT_STATUS.FAILED &&
@@ -543,7 +539,7 @@ const CourseDetail = () => {
                       </p>
                     )}
                   {/* LEARN AGAIN */}
-                  {courseDetail?.is_completed_assignment === 1 && (
+                  {isLogin && courseDetail?.is_completed_assignment === 1 && (
                     <>
                       <Button
                         className="md:w-auto inline-block !px-6 w-full"

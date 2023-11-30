@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   AuthResponse,
   ChangePasswordDetail,
@@ -7,6 +7,20 @@ import {
   VerifyDetail,
 } from "./type";
 import api from "@/services/axios";
+
+export const loginWithGoogle = createAsyncThunk(
+  "auth/login-with-google",
+  async (access_token: string) => {
+    try {
+      const response = await api.post(
+        `/api/v10/login/google?social_token=${access_token}`
+      );
+      return response.data;
+    } catch (error: any) {
+      return error.response.data;
+    }
+  }
+);
 
 export const loginAuth = createAsyncThunk<
   AuthResponse,
@@ -77,11 +91,15 @@ export const forgotAuth = createAsyncThunk(
 export const resetPassword = createAsyncThunk<AuthResponse, ResetDetail>(
   "auth/reset-password",
   async (detail) => {
-    const response = await api.post(
-      `/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`,
-      detail.data
-    );
-    return response.data;
+    try {
+      const response = await api.post(
+        `/api/v10/reset?email=${detail.email}&activation_code=${detail.code}`,
+        detail.data
+      );
+      return response.data;
+    } catch (error) {
+      return error;
+    }
   }
 );
 
@@ -101,3 +119,5 @@ export const changePassword = createAsyncThunk<
     return error.response.data;
   }
 });
+
+export const setRefUrl = createAction<string>("auth/set-ref-url");

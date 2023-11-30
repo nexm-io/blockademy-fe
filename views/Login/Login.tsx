@@ -7,16 +7,15 @@ import * as Yup from "yup";
 import Input from "@/components/Common/Input";
 import Button from "@/components/Common/Button";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hook";
-import { loginAuth } from "@/redux/features/auth/action";
-
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { loginAuth, loginWithGoogle } from "@/redux/features/auth/action";
 import eyeCloseIcon from "@/public/icons/eyeclose.svg";
 import eyeIcon from "@/public/icons/eye.svg";
 import Image from "next/image";
-
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { selectAuth } from "@/redux/features/auth/reducer";
+import { Google } from "@/components/Icon";
+import { googleProvider } from "@/services/google";
 
 const schema = Yup.object({
   email: Yup.string()
@@ -34,13 +33,11 @@ const schema = Yup.object({
 type FormLogin = Yup.InferType<typeof schema>;
 
 const Login = () => {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const token = useSelector((state: RootState) => state.auth.token);
+  const { token, isAuthenticated, urlRef } = useAppSelector(selectAuth);
   const [togglePassword, setTogglePassword] = useState(false);
   const dispatch = useAppDispatch();
   const { push } = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -50,6 +47,7 @@ const Login = () => {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
+
   const onSubmit = async (data: FormLogin) => {
     const response = await dispatch(
       loginAuth({
@@ -57,7 +55,7 @@ const Login = () => {
       })
     ).unwrap();
     if (response.success) {
-      push("/");
+      push(urlRef);
       toast.success("Login Successfully");
     }
     response.error && toast.error(response.message);
@@ -66,11 +64,23 @@ const Login = () => {
       password: "",
     });
   };
+
+  const login = googleProvider.useGoogleLogin({
+    flow: "implicit",
+    onSuccess: async (res: any) => {
+      await dispatch(loginWithGoogle(res.access_token));
+      push(urlRef);
+      toast.success("Login Successfully");
+    },
+    onError: () => toast.error("Failed to login with google"),
+  });
+
   useEffect(() => {
     if (isAuthenticated && token) {
       push("/");
     }
-  }, [isAuthenticated, push]);
+  }, [isAuthenticated, token]);
+
   return (
     <div className="max-w-[1200px] md:w-[448px] w-[350px] my-[140px] px-6 mx-auto">
       <div className="flex flex-col relative">
@@ -141,14 +151,29 @@ const Login = () => {
               )}
             </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            >
-              Log in
-            </Button>
+            <div>
+              <Button
+                type="submit"
+                fullWidth
+                loading={isSubmitting}
+                disabled={isSubmitting}
+              >
+                Log in
+              </Button>
+              <div className="my-6 h-[1px] bg-grey-300 relative">
+                <span className="text-black-100 bg-white-100 px-6 font-normal leading-5 absolute -top-2 left-1/2 -translate-x-1/2 text-xs">
+                  OR
+                </span>
+              </div>
+              <button
+                onClick={login}
+                type="button"
+                className="flex items-center justify-center bg-white-100 border border-grey-300 rounded px-6 py-3 text-sm font-medium text-gray-800 hover:bg-gray-200 transition-all w-full"
+              >
+                <Google className="h-6 w-6 mr-2" />
+                <span>Login with Google</span>
+              </button>
+            </div>
           </div>
 
           <div className="flex flex-col md:flex-row items-center md:justify-between gap-3">
