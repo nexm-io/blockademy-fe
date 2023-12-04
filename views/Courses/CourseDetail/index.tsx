@@ -10,7 +10,12 @@ import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
@@ -237,16 +242,8 @@ const CourseDetail = () => {
     handleCheckCompletedCourse();
   }, [handleCheckCompletedCourse]);
 
-  useEffect(() => {
-    if (!courseDetail) return;
-    if (!lessonId)
-      router.push(
-        `/courses/${courseId}?lesson_id=${courseDetail?.lesson_first.lesson_id}`
-      );
-  }, [courseDetail, lessonId]);
-
   return (
-    <div className="container mt-36">
+    <div className="container">
       {isLoading ? (
         <div className="md:mt-[56px] mt-8">
           <div className="">
@@ -299,8 +296,8 @@ const CourseDetail = () => {
         </div>
       ) : (
         <>
-          <section className="md:mt-[56px] mt-8">
-            <div className="grid gap-4">
+          <section>
+            <div className="flex flex-col gap-10">
               <nav className="w-full rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
@@ -322,27 +319,12 @@ const CourseDetail = () => {
                   </li>
                 </ol>
               </nav>
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap mt-[36px]">
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
                 </h1>
               </div>
 
-              {courseDetail?.title &&
-                courseDetail?.title.includes(
-                  "HUTECH Workshop on Blockchain and Smart Contracts (Intro)"
-                ) && (
-                  <div className="bg-blue-200 py-3 px-4 flex flex-col gap-2">
-                    <p className="text-blue-100 italic">
-                      Explore fundamental concepts and gain an overview of
-                      blockchain.
-                    </p>
-                    <p className="text-blue-100 italic">
-                      Earn NFT Certificate on Solana chain as you complete the
-                      course.
-                    </p>
-                  </div>
-                )}
               {isLogin ? null : (
                 <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
                   <Image alt="gift-icon" src={gift}></Image>
@@ -431,7 +413,7 @@ const CourseDetail = () => {
                   )}
 
                   {/* APPLY COURSE */}
-                  {isLogin &&
+                  {/* {isLogin &&
                     !registered &&
                     courseDetail?.is_registered === 0 &&
                     courseDetail.is_opened === 1 && (
@@ -450,7 +432,7 @@ const CourseDetail = () => {
                           )}
                         </Button>
                       </div>
-                    )}
+                    )} */}
 
                   {/* TRY AGAIN */}
                   {isLogin &&
@@ -482,25 +464,26 @@ const CourseDetail = () => {
                       </div>
                     )}
 
-                  {courseDetail?.lesson_data.length !== 0 &&
-                    !isLoading &&
-                    courseDetail?.lesson_data.map((lesson, index) => (
-                      <div
-                        key={index}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          router.push(
-                            `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
-                          );
-                        }}
-                      >
-                        <CourseModule
+                  {courseDetail?.lesson_data.length !== 0 && !isLoading && (
+                    <div className="hidden lg:flex flex-col gap-10">
+                      {courseDetail?.lesson_data.map((lesson, index) => (
+                        <div
                           key={index}
-                          lesson={lesson}
-                          completedLesson={completedLesson}
-                        />
-                      </div>
-                    ))}
+                          onClick={() => {
+                            router.push(
+                              `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
+                            );
+                          }}
+                        >
+                          <CourseModule
+                            key={index}
+                            lesson={lesson}
+                            completedLesson={completedLesson}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   {/* COMPLETE QUIZ */}
                   {isLogin &&

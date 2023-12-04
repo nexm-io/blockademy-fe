@@ -4,13 +4,15 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
+import cirlceFill from "@/public/icons/fill-circle.svg";
+import lock from "@/public/icons/lock.svg";
 import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { useSearchParams } from "next/navigation";
-import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import Link from "next/link";
 
 interface CourseModuleProps {
   lesson: Lesson;
@@ -42,33 +44,34 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   }, [completedLesson, lesson.lesson_id]);
 
   return (
-    <div className="w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
-      <div className="flex flex-col">
-        <p className="font-medium text-base">{lesson.lesson_title}</p>
+    <div className="flex flex-col gap-4">
+      <div className="w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-4 rounded-lg">
+        <div className="flex gap-[6px] flex-col">
+          <p>{lesson.lesson_title}</p>
 
-        <div className="flex gap-6">
-          <div className="flex gap-[6px]">
-            <Image
-              alt="clock-icon"
-              className="text-xs leading-5"
-              src={clock}
-            ></Image>
+          <div className="flex gap-6 items-center">
+            <div className="flex items-center gap-[6px]">
+              <Image
+                alt="clock-icon"
+                className="w-[16px] h-[16px]"
+                src={clock}
+              />
 
-            <span className="text-xs leading-5">
-              {secondsToMinutes(lesson.lesson_duration)}&nbsp;minutes
-            </span>
-          </div>
+              <span className="text-sm font-light leading-6">
+                {secondsToMinutes(lesson.lesson_duration)}&nbsp;minutes
+              </span>
+            </div>
 
-          <div className="flex gap-[6px]">
-            <Image alt="quiz-icon" src={quiz}></Image>
-            <span className="text-xs leading-5">
-              {lesson.lesson_type_format === 1 ? "Text" : "Video"}
-            </span>
+            <div className="flex items-center gap-[6px]">
+              <Image alt="quiz-icon" className="w-[16px] h-[16px]" src={quiz} />
+              <span className="text-sm leading-6 font-light">
+                {lesson.lesson_type_format === 1 ? "Text" : "Video"}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {isCompletedLesson ? (
+        {/* {isCompletedLesson ? (
         <div className="w-[18px] h-full flex items-center">
           {Number(lessonId) === lesson.lesson_id ? (
             <BarChartAlt2 className="text-blue-100" />
@@ -84,7 +87,28 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
           )}
         </div>
-      )}
+      )} */}
+      </div>
+      <div className="px-3 flex flex-col">
+        <div className="flex justify-between p-[6px]">
+          <Link href="#" className="font-light">
+            What’s in a Block?
+          </Link>
+          <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+        </div>
+        <div className="flex justify-between p-[6px]">
+          <Link href="#" className="font-light">What’s in a Block?</Link>
+          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
+        </div>
+        <div className="flex justify-between p-[6px]">
+          <div className="font-light text-grey-400">What’s in a Block?</div>
+          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
+        </div>
+        <div className="flex justify-between p-[6px]">
+          <div className="font-light text-grey-400">What’s in a Block?</div>
+          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
+        </div>
+      </div>
     </div>
   );
 };
