@@ -5,15 +5,7 @@ import React, { useEffect, useState } from "react";
 import cup from "@/public/icons/cup.svg";
 import Button from "../Common/Button";
 
-const circumference = 2 * (22 / 7) * 120;
-
-const CircularProgress = ({ currentSkill }: { currentSkill: any }) => {
-  const [dashOffset, setDashOffset] = useState(0);
-
-  useEffect(() => {
-    setDashOffset(circumference - (currentSkill.percent / 100) * circumference);
-  }, [currentSkill]);
-
+const CircularProgress = ({ percent }: { percent: any }) => {
   return (
     <div className="flex justify-normal">
       <div
@@ -33,7 +25,7 @@ const CircularProgress = ({ currentSkill }: { currentSkill: any }) => {
             <circle
               className="text-indigo-500 stroke-current"
               style={{
-                strokeDasharray: "450, 400",
+                strokeDasharray: "400, 400",
                 transition: "stroke-dashoffset 0.35s",
                 transform: "rotate(-90deg)",
                 transformOrigin: "50% 50%",
@@ -44,7 +36,7 @@ const CircularProgress = ({ currentSkill }: { currentSkill: any }) => {
               cy={50}
               r={40}
               fill="transparent"
-              strokeDashoffset="calc(400 - (400 * 45) / 100)"
+              strokeDashoffset="calc(400 - (400 * 31) / 100)"
             />
           </svg>
         </div>
@@ -64,7 +56,7 @@ const CircularProgress = ({ currentSkill }: { currentSkill: any }) => {
 };
 
 export default function CourseInfoFooter() {
-  const [isSticky, setSticky] = useState(false);
+  const [isSticky, setSticky] = useState(true);
 
   useEffect(() => {
     const handleScroll = debounce(() => {
@@ -94,7 +86,7 @@ export default function CourseInfoFooter() {
         <div className="flex flex-col lg:flex-row justify-end items-center gap-4">
           {/* <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
             <div className="flex items-center gap-[18px]">
-              <CircularProgress currentSkill={{ percent: 75 }} />
+              <CircularProgress percent={75} />
               <div className="text-sm leading-[21px]">
                 <p className="font-medium">5% Completed. Keep going!</p>
                 <p className="text-grey-800">594 builders ahead of you.</p>

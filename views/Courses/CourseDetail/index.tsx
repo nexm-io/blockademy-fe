@@ -465,7 +465,7 @@ const CourseDetail = () => {
                     )}
 
                   {courseDetail?.lesson_data.length !== 0 && !isLoading && (
-                    <div className="hidden lg:flex flex-col gap-10">
+                    <div className="hidden lg:flex flex-col gap-10 overflow-y-auto fixed top-32 h-[550px] bg-white-100">
                       {courseDetail?.lesson_data.map((lesson, index) => (
                         <div
                           key={index}
