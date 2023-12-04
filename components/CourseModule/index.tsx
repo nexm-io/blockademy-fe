@@ -1,49 +1,48 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
 import { Lesson } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { BarChartAlt2 } from "@styled-icons/boxicons-solid";
-import api from "@/services/axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 interface CourseModuleProps {
   lesson: Lesson;
-  completedLesson: number[]
+  completedLesson: number[];
 }
 
-const CourseModule: React.FC<CourseModuleProps> = ({ lesson, completedLesson }) => {
+const CourseModule: React.FC<CourseModuleProps> = ({
+  lesson,
+  completedLesson,
+}) => {
   const searchParams = useSearchParams();
-  const params = useParams();
-  const courseId = params.id;
-  const lessonId = searchParams.get("lesson_id") || 0 as number;
-  const [isCompletedLesson, setIsCompletedLesson] = useState(!!lesson.is_complete);
+  const lessonId = searchParams.get("lesson_id") || (0 as number);
+  const [isCompletedLesson, setIsCompletedLesson] = useState(
+    !!lesson.is_complete
+  );
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
   const token = useSelector((state: RootState) => state.auth.token);
-
 
   useEffect(() => {
     if (!isAuthenticated || !token) setIsCompletedLesson(false);
   }, [isAuthenticated, token]);
 
   useEffect(() => {
-    if(completedLesson.length) {
-      setIsCompletedLesson(!!completedLesson?.includes(lesson.lesson_id))
+    if (completedLesson.length) {
+      setIsCompletedLesson(!!completedLesson?.includes(lesson.lesson_id));
     }
-  }, [completedLesson, lesson.lesson_id])
+  }, [completedLesson, lesson.lesson_id]);
 
   return (
-    <div
-      className="w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg"
-    >
+    <div className="w-full md:mx-0 py-3 bg-gray-200 flex justify-between items-center px-[23px] rounded-lg">
       <div className="flex flex-col">
         <p className="font-medium text-base">{lesson.lesson_title}</p>
 
