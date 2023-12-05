@@ -3,7 +3,7 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import CourseModule from "@/components/CourseModule";
+import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -26,7 +26,7 @@ import { useSelector } from "react-redux";
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
-  const courseId = params.id;
+  const courseId = params.courseId;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const pathName = usePathname();
   const [showPopup, setShowPopup] = useState(false);
@@ -248,7 +248,7 @@ const CourseDetail = () => {
     <div className="container">
       {isLoading ? (
         <div className="md:mt-[56px] mt-8">
-          <div className="">
+          <>
             <Skeleton
               variant="rounded"
               sx={{ maxWidth: "300px" }}
@@ -257,7 +257,7 @@ const CourseDetail = () => {
             <div className="flex flex-col md:flex-row justify-between mt-[52px]">
               <Skeleton variant="rounded" sx={{ width: "400px" }} height={50} />
             </div>
-          </div>
+          </>
           <div className="mt-10">
             <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
@@ -365,26 +365,27 @@ const CourseDetail = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
-                        <div className="flex flex-col gap-10">
-                          {courseDetail?.sub_course_data.map((subCourse, index) => (
-                            <div
-                              key={index}
-                              onClick={() => {
-                                router.push(`/courses/${courseId}`);
-                              }}
-                            >
-                              <CourseModule
-                                key={index}
-                                data={subCourse}
-                                courseId={courseDetail.id}
-                                completedLesson={completedLesson}
-                                activeDropdown={index === 0}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      {courseDetail?.sub_course_data.length !== 0 &&
+                        !isLoading && (
+                          <div className="flex flex-col gap-10">
+                            {courseDetail?.sub_course_data.map(
+                              (subCourse, index) => (
+                                <div
+                                  key={index}
+                                  onClick={() => {
+                                    router.push(`/courses/${courseId}`);
+                                  }}
+                                >
+                                  <CourseModule
+                                    key={index}
+                                    data={subCourse}
+                                    activeDropdown={index === 0}
+                                  />
+                                </div>
+                              )
+                            )}
+                          </div>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -523,20 +524,11 @@ const CourseDetail = () => {
                   {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
                       {courseDetail?.sub_course_data.map((subCourse, index) => (
-                        <div
+                        <CourseModule
                           key={index}
-                          onClick={() => {
-                            router.push(`/courses/${courseId}`);
-                          }}
-                        >
-                          <CourseModule
-                            key={index}
-                            data={subCourse}
-                            courseId={courseDetail.id}
-                            completedLesson={completedLesson}
-                            activeDropdown={index === 0}
-                          />
-                        </div>
+                          data={subCourse}
+                          activeDropdown={index === 0}
+                        />
                       ))}
                     </div>
                   )}

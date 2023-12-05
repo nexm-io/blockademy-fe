@@ -86,4 +86,38 @@ export const claimReward = createAsyncThunk<CourseResponse, string>(
   }
 );
 
+export const getDetailSubCourse = createAsyncThunk(
+  "courses/get-detail-sub-course",
+  async ({
+    subCourseSlug,
+    lessonSlug,
+  }: {
+    subCourseSlug: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: subCourse } = await api.get(
+        `/api/v10/sub-course/${subCourseSlug}?lesson_id=${lessonSlug}`
+      );
+      return subCourse;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getDetailLesson = createAsyncThunk(
+  "courses/get-detail-lesson",
+  async (lessonIdOrSlug: string) => {
+    try {
+      const { data: lesson } = await api.get(
+        `/api/v10/lesson/${lessonIdOrSlug}`
+      );
+      return lesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const resetFinish = createAction<any>("courses/reset-finish");

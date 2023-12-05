@@ -56,7 +56,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
 };
 
 export default function CourseInfoFooter() {
-  const [isSticky, setSticky] = useState(true);
+  const [isSticky, setSticky] = useState(false);
 
   useEffect(() => {
     const handleScroll = debounce(() => {

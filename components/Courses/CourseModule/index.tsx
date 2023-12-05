@@ -2,15 +2,11 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import clock from "@/public/icons/clockfilled.svg";
-import quiz from "@/public/icons/quiz.svg";
-import cirlceFill from "@/public/icons/fill-circle.svg";
 import arrowUp from "@/public/icons/arrow-up.svg";
 import lock from "@/public/icons/lock.svg";
-import { Lesson, ModuleItem } from "@/redux/features/courses/type";
-import { secondsToMinutes } from "@/utils/convertToMinutes";
+import { ModuleItem } from "@/redux/features/courses/type";
 import { CircleCheck } from "@styled-icons/fa-solid";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
@@ -18,20 +14,16 @@ import cn from "@/services/cn";
 
 interface CourseModuleProps {
   data: any;
-  completedLesson: number[];
   activeDropdown?: boolean;
-  courseId: string;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
   data,
-  completedLesson,
   activeDropdown = false,
-  courseId,
 }) => {
+  const params = useParams();
+  const { courseId } = params;
   const [showDropdown, setShowDropdown] = useState(activeDropdown);
-  const searchParams = useSearchParams();
-  const lessonId = searchParams.get("lesson_id") || (0 as number);
   const [isCompletedLesson, setIsCompletedLesson] = useState(
     !!data.is_complete
   );
@@ -53,12 +45,12 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   return (
     <div className="flex flex-col gap-4">
       <div
-        className="w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg cursor-pointer"
+        className="w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg cursor-pointer select-none"
         onClick={() => setShowDropdown(!showDropdown)}
       >
         <div className="flex gap-[6px] flex-col">
           <div className="flex justify-between items-center">
-            <p className="select-none">{data.sub_course_title}</p>
+            <p>{data.title}</p>
             <div
               className={cn("transition-all duration-150 ease-in-out", {
                 "rotate-0": showDropdown,
@@ -68,39 +60,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
               <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
             </div>
           </div>
-
-          {/* <div className="flex items-center justify-between">
-            <div className="flex gap-6 items-center">
-              <div className="flex items-center gap-[6px]">
-                <Image
-                  alt="clock-icon"
-                  className="w-[16px] h-[16px]"
-                  src={clock}
-                />
-
-                <span className="text-sm font-light leading-6">
-                  {secondsToMinutes(data.lesson_duration)}&nbsp;minutes
-                </span>
-              </div>
-
-              <div className="flex items-center gap-[6px]">
-                <Image
-                  alt="quiz-icon"
-                  className="w-[16px] h-[16px]"
-                  src={quiz}
-                />
-                <span className="text-sm leading-6 font-light">
-                  {data.lesson_type_format === 1 ? "Text" : "Video"}
-                </span>
-              </div>
-            </div>
-            <div className={cn('transition-all duration-150 ease-in-out',{
-              "rotate-0": showDropdown,
-              "rotate-180": !showDropdown
-            })}>
-            <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
-            </div>
-          </div> */}
         </div>
 
         {/* {isCompletedLesson ? (
@@ -128,15 +87,12 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         })}
       >
         {data.module_data.map((moduleItem: ModuleItem) => (
-          <div
-            className="flex justify-between p-[6px]"
-            key={moduleItem.module_id}
-          >
+          <div className="flex justify-between p-[6px]" key={moduleItem.id}>
             <Link
-              href={`/courses/${courseId}/lessons/${moduleItem.lesson_slug}`}
+              href={`/courses/${courseId}/${data.slug}/lessons/${moduleItem.lesson_data.slug}`}
               className="font-light"
             >
-              {moduleItem.module_title}
+              {moduleItem.title}
             </Link>
             {moduleItem.is_complete_module ? (
               <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />

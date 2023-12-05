@@ -26,6 +26,10 @@ export interface CourseResponse {
   details: CourseDetail | null;
   quiz: QuizDataResponse;
   message?: string;
+  subCourseLoading: boolean;
+  subCourse: any;
+  lessonLoading: boolean;
+  lesson: any;
 }
 
 export interface ListCourse {
@@ -124,10 +128,26 @@ export interface CourseDetail {
 export interface ModuleItem {
   is_complete_module: number;
   lesson_slug: string;
-  module_duration: number;
-  module_id: number;
-  module_slug: string;
-  module_title: string;
+  duration: number;
+  lesson_data: {
+    id: number;
+    slug: string;
+  };
+  id: number;
+  slug: string;
+  title: string;
+}
+
+export interface LessonItem {
+  is_complete_lesson: number;
+  duration: number;
+  id: number;
+  slug: string;
+  type_format: number;
+  type_upload: string;
+  link: string;
+  description: string;
+  title: string;
 }
 
 export interface CourseDetailResponse {
