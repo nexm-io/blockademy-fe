@@ -83,8 +83,15 @@ export default function CourseInfoFooter() {
       style={{ boxShadow: "0px -3px 20px 0px rgba(170, 170, 170, 0.25)" }}
     >
       <div className="container">
-        <div className="flex flex-col lg:flex-row justify-end items-center gap-4">
-          {/* <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
+        <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+          {/* APPLY COURSE */}
+          {/* <div className="flex justify-end">
+            <Button className="w-full md:w-auto md:min-w-[184px]">
+              Apply course
+            </Button>
+          </div> */}
+
+          <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
             <div className="flex items-center gap-[18px]">
               <CircularProgress percent={75} />
               <div className="text-sm leading-[21px]">
@@ -92,14 +99,14 @@ export default function CourseInfoFooter() {
                 <p className="text-grey-800">594 builders ahead of you.</p>
               </div>
             </div>
-          </div> */}
-
-          {/* APPLY COURSE */}
-          <div className="flex justify-end">
-            <Button className="w-full md:w-auto md:min-w-[184px]">
-              Apply course
-            </Button>
           </div>
+
+          {/* LET'S GO */}
+          {/* <div className="flex justify-end">
+            <Button className="w-full md:w-auto md:min-w-[184px]">
+              Let’s go
+            </Button>
+          </div> */}
 
           {/* COMPLETE QUIZ */}
           {/* <div className="flex justify-end">
@@ -109,21 +116,14 @@ export default function CourseInfoFooter() {
           </div> */}
 
           {/* PREVIOUS - NEXT */}
-          {/* <div className="flex items-center justify-between flex-1 pl-[66px]">
-            <Button className="w-full md:w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3">
+          <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+            <Button className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3">
               <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
                 Previous
               </span>
             </Button>
-            <Button className="w-full md:w-auto md:min-w-[184px]">Next</Button>
-          </div> */}
-
-          {/* LET'S GO */}
-          {/* <div className="flex justify-end">
-            <Button className="w-full md:w-auto md:min-w-[184px]">
-              Let’s go
-            </Button>
-          </div> */}
+            <Button className="w-auto md:min-w-[184px]">Next</Button>
+          </div>
         </div>
       </div>
     </div>

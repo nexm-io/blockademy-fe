@@ -82,8 +82,9 @@ const CourseModule: React.FC<CourseModuleProps> = ({
                 </span>
               </div>
             </div>
-            <div className={cn('rotate-180 transition-all duration-150 ease-in-out',{
-              "rotate-0": !showDropdown
+            <div className={cn('transition-all duration-150 ease-in-out',{
+              "rotate-0": showDropdown,
+              "rotate-180": !showDropdown
             })}>
             <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
             </div>

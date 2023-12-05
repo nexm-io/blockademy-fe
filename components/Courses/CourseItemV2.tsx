@@ -15,7 +15,7 @@ const CourseItemV2 = ({ course }: { course: CourseTypes }) => {
   const courseStatus = useMemo(() => course.is_completed === 1 && course.is_completed_assignment === 1 ? 'completed' : 'progress', [course.is_completed, course.is_completed_assignment])
 
   return (
-    <Link href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`} className="group mb-10 border border-[#F5F5F5] rounded-lg md:max-w-[360px]">
+    <Link href={`/courses/${course.slug}`} className="group mb-10 border border-[#F5F5F5] rounded-lg md:max-w-[360px]">
       <div className="rounded overflow-hidden">
         <Image
           className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"

@@ -4,7 +4,7 @@ import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/CourseModule";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
@@ -13,6 +13,7 @@ import {
   useParams,
   usePathname,
   useRouter,
+  useSearchParams,
 } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
@@ -22,24 +23,27 @@ import BackToTop from "@/components/BackToTop";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import RewardDetail from "@/components/Reward/RewardDetail";
 import { setRefUrl } from "@/redux/features/auth/action";
 import cn from "@/services/cn";
 
-const CourseDetail = () => {
+const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
+  const searchParams = useSearchParams();
   const courseId = params.id;
+  const lessonId = searchParams.get("lesson_id") || (0 as number);
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const pathName = usePathname();
-  const [showPopup, setShowPopup] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [stepCompleted, setStepCompleted] = useState<string[]>([]);
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
+  const pathName = usePathname();
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -60,74 +64,74 @@ const CourseDetail = () => {
     return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
   }, [courseDetail?.lesson_data]);
 
-  // const lesson = useMemo(
-  //   () =>
-  //     courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
-  //   [courseDetail?.lesson_data, lessonId]
-  // );
+  const lesson = useMemo(
+    () =>
+      courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
+    [courseDetail?.lesson_data, lessonId]
+  );
 
-  // const lessonOrder = useMemo(() => {
-  //   const lessonData = courseDetail?.lesson_data || [];
-  //   const currIndex =
-  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-  //     0;
-  //   const lessonLength = lessonData.length - 1;
-  //   return {
-  //     first: lessonData?.[0]?.lesson_id === +lessonId,
-  //     last: currIndex >= lessonLength,
-  //   };
-  // }, [courseDetail?.lesson_data, lessonId]);
+  const lessonOrder = useMemo(() => {
+    const lessonData = courseDetail?.lesson_data || [];
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0;
+    const lessonLength = lessonData.length - 1;
+    return {
+      first: lessonData?.[0]?.lesson_id === +lessonId,
+      last: currIndex >= lessonLength,
+    };
+  }, [courseDetail?.lesson_data, lessonId]);
 
-  // const isNotCompletedLesson = useMemo(() => {
-  //   return isCompletedQuiz ||
-  //     (lessonOrder.last && completedLesson.includes(+lessonId))
-  //     ? false
-  //     : true;
-  // }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId]);
+  const isNotCompletedLesson = useMemo(() => {
+    return isCompletedQuiz ||
+      (lessonOrder.last && completedLesson.includes(+lessonId))
+      ? false
+      : true;
+  }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId]);
 
-  // const getNextLessonUrl = useCallback(() => {
-  //   const lessonData = courseDetail?.lesson_data || [];
-  //   const currIndex =
-  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-  //     0;
-  //   const lessonLength = lessonData.length - 1;
+  const getNextLessonUrl = useCallback(() => {
+    const lessonData = courseDetail?.lesson_data || [];
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0;
+    const lessonLength = lessonData.length - 1;
 
-  //   const nextLessonId =
-  //     currIndex < lessonLength
-  //       ? lessonData[currIndex + 1].lesson_id
-  //       : lessonData[0].lesson_id;
-  //   const url = `/courses/${courseId}`;
-  //   return url;
-  // }, [courseDetail?.lesson_data, courseId, lessonId]);
+    const nextLessonId =
+      currIndex < lessonLength
+        ? lessonData[currIndex + 1].lesson_id
+        : lessonData[0].lesson_id;
+    const url = `/courses/${courseId}`;
+    return url;
+  }, [courseDetail?.lesson_data, courseId, lessonId]);
 
-  // const getPrevLessonUrl = useCallback(() => {
-  //   const lessonData = courseDetail?.lesson_data || [];
-  //   const currIndex =
-  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-  //     0;
-  //   const lessonLength = lessonData.length - 1;
+  const getPrevLessonUrl = useCallback(() => {
+    const lessonData = courseDetail?.lesson_data || [];
+    const currIndex =
+      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+      0;
+    const lessonLength = lessonData.length - 1;
 
-  //   const prevLessonId =
-  //     currIndex < lessonLength
-  //       ? lessonData[currIndex - 1].lesson_id
-  //       : lessonData[0].lesson_id;
-  //   const url = `/courses/${courseId}`;
-  //   return url;
-  // }, [courseDetail?.lesson_data, courseId, lessonId]);
+    const prevLessonId =
+      currIndex < lessonLength
+        ? lessonData[currIndex - 1].lesson_id
+        : lessonData[0].lesson_id;
+    const url = `/courses/${courseId}`;
+    return url;
+  }, [courseDetail?.lesson_data, courseId, lessonId]);
 
-  // const handleChangeForm = useCallback(
-  //   (status: boolean) => {
-  //     if (status) {
-  //       const url = getNextLessonUrl();
-  //       setStepCompleted([...stepCompleted, "video"]);
-  //       setUrlNextLesson(url);
-  //       if (stepCompleted.length >= 1) {
-  //         setIsNextLesson(true);
-  //       }
-  //     }
-  //   },
-  //   [getNextLessonUrl, stepCompleted]
-  // );
+  const handleChangeForm = useCallback(
+    (status: boolean) => {
+      if (status) {
+        const url = getNextLessonUrl();
+        setStepCompleted([...stepCompleted, "video"]);
+        setUrlNextLesson(url);
+        if (stepCompleted.length >= 1) {
+          setIsNextLesson(true);
+        }
+      }
+    },
+    [getNextLessonUrl, stepCompleted]
+  );
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -156,78 +160,6 @@ const CourseDetail = () => {
     }
   };
 
-  // const handleScroll = useCallback(() => {
-  //   const bodyBottom = document.body.getBoundingClientRect().bottom;
-  //   const bottom = Math.round(bodyBottom) <= window.innerHeight;
-  //   if (
-  //     bottom &&
-  //     !completedLesson.includes(+lessonId) &&
-  //     !stepCompleted.includes("read")
-  //   ) {
-  //     setStepCompleted([...stepCompleted, "read"]);
-  //   }
-  // }, [completedLesson, lessonId, stepCompleted]);
-
-  // useEffect(() => {
-  //   document.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     document.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [handleScroll]);
-
-  // const isCompletedStep = useMemo(() => {
-  //   if (!lesson?.lesson_description) {
-  //     return stepCompleted.includes("video");
-  //   }
-  //   if (!lesson?.lesson_link) {
-  //     return stepCompleted.includes("read");
-  //   }
-  //   return stepCompleted.length >= 2;
-  // }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted]);
-
-  // const handleCheckCompletedCourse = useCallback(async () => {
-  //   if (!isCompletedStep) return;
-  //   if (completedLesson.includes(+lessonId)) return;
-  //   if (!isAuthenticated || !token) {
-  //     if (isNextLesson && !lessonOrder.last) {
-  //       router.push(urlNextLesson);
-  //       setIsNextLesson(false);
-  //     }
-  //     return;
-  //   }
-  //   try {
-  //     const response = await api.post(
-  //       `/api/v10/course/${courseId}/lesson/${lessonId}`
-  //     );
-  //     if (response.status === 200) {
-  //       setCompletedLesson([...completedLesson, +lessonId]);
-  //       setStepCompleted([]);
-  //       if (isNextLesson && !lessonOrder.last) {
-  //         router.push(urlNextLesson);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     return null;
-  //   } finally {
-  //     setIsNextLesson(false);
-  //   }
-  // }, [
-  //   isCompletedStep,
-  //   isAuthenticated,
-  //   token,
-  //   courseId,
-  //   lessonId,
-  //   completedLesson,
-  //   isNextLesson,
-  //   lessonOrder.last,
-  //   router,
-  //   urlNextLesson,
-  // ]);
-
-  // useEffect(() => {
-  //   handleCheckCompletedCourse();
-  // }, [handleCheckCompletedCourse]);
-
   useEffect(() => {
     (async () => {
       const { payload } = await dispatch(getDetailCourse(courseId as string));
@@ -238,6 +170,78 @@ const CourseDetail = () => {
   useEffect(() => {
     if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
   }, [courseDetail]);
+
+  const handleScroll = useCallback(() => {
+    const bodyBottom = document.body.getBoundingClientRect().bottom;
+    const bottom = Math.round(bodyBottom) <= window.innerHeight;
+    if (
+      bottom &&
+      !completedLesson.includes(+lessonId) &&
+      !stepCompleted.includes("read")
+    ) {
+      setStepCompleted([...stepCompleted, "read"]);
+    }
+  }, [completedLesson, lessonId, stepCompleted]);
+
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    return () => {
+      document.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  const isCompletedStep = useMemo(() => {
+    if (!lesson?.lesson_description) {
+      return stepCompleted.includes("video");
+    }
+    if (!lesson?.lesson_link) {
+      return stepCompleted.includes("read");
+    }
+    return stepCompleted.length >= 2;
+  }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted]);
+
+  const handleCheckCompletedCourse = useCallback(async () => {
+    if (!isCompletedStep) return;
+    if (completedLesson.includes(+lessonId)) return;
+    if (!isAuthenticated || !token) {
+      if (isNextLesson && !lessonOrder.last) {
+        router.push(urlNextLesson);
+        setIsNextLesson(false);
+      }
+      return;
+    }
+    try {
+      const response = await api.post(
+        `/api/v10/course/${courseId}/lesson/${lessonId}`
+      );
+      if (response.status === 200) {
+        setCompletedLesson([...completedLesson, +lessonId]);
+        setStepCompleted([]);
+        if (isNextLesson && !lessonOrder.last) {
+          router.push(urlNextLesson);
+        }
+      }
+    } catch (error) {
+      return null;
+    } finally {
+      setIsNextLesson(false);
+    }
+  }, [
+    isCompletedStep,
+    isAuthenticated,
+    token,
+    courseId,
+    lessonId,
+    completedLesson,
+    isNextLesson,
+    lessonOrder.last,
+    router,
+    urlNextLesson,
+  ]);
+
+  useEffect(() => {
+    handleCheckCompletedCourse();
+  }, [handleCheckCompletedCourse]);
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -301,7 +305,7 @@ const CourseDetail = () => {
       ) : (
         <>
           <section>
-            <div className="flex flex-col gap-4 lg:gap-10">
+            <div className="flex flex-col gap-10">
               <nav className="w-full rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
@@ -325,11 +329,11 @@ const CourseDetail = () => {
               </nav>
 
               <div
-                className={cn(`block lg:hidden`, {
+                className={cn({
                   active: isShowMenu,
                 })}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 lg:hidden">
                   <div
                     className="hambuger"
                     onClick={() => setShowMenu((prev) => !prev)}
@@ -373,7 +377,9 @@ const CourseDetail = () => {
                             <div
                               key={index}
                               onClick={() => {
-                                router.push(`/courses/${courseId}`);
+                                router.push(
+                                  `/courses/${courseId}`
+                                );
                               }}
                             >
                               <CourseModule
@@ -415,37 +421,40 @@ const CourseDetail = () => {
                 <RewardDetail courseDetail={courseDetail} />
               )}
 
-            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
+            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
                 <div className="w-full">
                   {courseDetail ? (
-                    courseDetail.lesson_data.map((lesson, index) => (
-                      <>
-                        {lesson.lesson_type_format === 2 &&
-                          formState === "video" && (
-                            <>
-                              <VideoPlayer
-                                typeUpload={lesson.lesson_type_upload}
-                                url={lesson.lesson_link}
-                                onChangeForm={() => {}}
-                                onChangeStatus={handleOnchange}
+                    courseDetail.lesson_data.map(
+                      (lesson, index) =>
+                        Number(lessonId) === lesson.lesson_id && (
+                          <>
+                            {lesson.lesson_type_format === 2 &&
+                              formState === "video" && (
+                                <>
+                                  <VideoPlayer
+                                    typeUpload={lesson.lesson_type_upload}
+                                    url={lesson.lesson_link}
+                                    onChangeForm={handleChangeForm}
+                                    onChangeStatus={handleOnchange}
+                                  />
+                                </>
+                              )}
+                            <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
+                              {lesson.lesson_title}
+                            </h2>
+                            <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                              <div
+                                id="content"
+                                className="flex flex-col gap-3 course-content text-base"
+                                dangerouslySetInnerHTML={{
+                                  __html: lesson.lesson_description,
+                                }}
                               />
-                            </>
-                          )}
-                        <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
-                          {lesson.lesson_title}
-                        </h2>
-                        <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                          <div
-                            id="content"
-                            className="flex flex-col gap-3 course-content text-base"
-                            dangerouslySetInnerHTML={{
-                              __html: lesson.lesson_description,
-                            }}
-                          />
-                        </div>
-                      </>
-                    ))
+                            </div>
+                          </>
+                        )
+                    )
                   ) : (
                     <div>No Lesson</div>
                   )}
@@ -495,7 +504,7 @@ const CourseDetail = () => {
                     )} */}
 
                   {/* TRY AGAIN */}
-                  {/* {isLogin &&
+                  {isLogin &&
                     courseDetail?.assignment_status.slug ===
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
@@ -522,7 +531,7 @@ const CourseDetail = () => {
                           </Button>
                         </div>
                       </div>
-                    )} */}
+                    )}
 
                   {courseDetail?.lesson_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
@@ -530,7 +539,9 @@ const CourseDetail = () => {
                         <div
                           key={index}
                           onClick={() => {
-                            router.push(`/courses/${courseId}`);
+                            router.push(
+                              `/courses/${courseId}`
+                            );
                           }}
                         >
                           <CourseModule
@@ -545,7 +556,7 @@ const CourseDetail = () => {
                   )}
 
                   {/* COMPLETE QUIZ */}
-                  {/* {isLogin &&
+                  {isLogin &&
                     courseDetail?.assignment_status.slug !==
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
@@ -564,9 +575,9 @@ const CourseDetail = () => {
                           </span>
                         </Button>
                       </div>
-                    )} */}
+                    )}
 
-                  {/* {isLogin &&
+                  {isLogin &&
                     courseDetail?.assignment_status.slug !==
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
@@ -579,9 +590,9 @@ const CourseDetail = () => {
                           the quiz.
                         </span>
                       </p>
-                    )} */}
+                    )}
                   {/* LEARN AGAIN */}
-                  {/* {isLogin && courseDetail?.is_completed_assignment === 1 && (
+                  {isLogin && courseDetail?.is_completed_assignment === 1 && (
                     <>
                       <Button
                         className="md:w-auto inline-block !px-6 w-full"
@@ -606,7 +617,7 @@ const CourseDetail = () => {
                         </span>
                       </Button>
                     </>
-                  )} */}
+                  )}
                 </div>
               </div>
             </div>
@@ -642,10 +653,4 @@ const CourseDetail = () => {
   );
 };
 
-export default CourseDetail;
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: false,
-  };
-};
+export default LessonDetail;
