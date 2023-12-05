@@ -44,7 +44,7 @@ const CourseItem = ({ course }: { course: CourseTypes }) => {
 
   return (
     <Link
-      href={`/courses/${course.slug}`}
+      href={`/courses/${course.course_id}`}
       className="h-full"
     >
       <div className="group border border-[#F5F5F5] rounded-lg overflow-hidden h-full flex flex-col">

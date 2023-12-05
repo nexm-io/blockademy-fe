@@ -31,7 +31,7 @@ export default function BeginTestModal(props: {
     props.onCloseModalBeginTest();
     if (listResultData) {
       router.push(
-        `/courses/${listResultData?.course_slug}`
+        `/courses/${listResultData?.course_id}`
       );
     } else {
       router.back();

@@ -1,6 +1,6 @@
 import api from "@/services/axios";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CourseDetailResponse, CourseResponse, QuizResponse } from "./type";
+import { CourseResponse, QuizResponse } from "./type";
 
 export const getListCourse = createAsyncThunk<
   CourseResponse,

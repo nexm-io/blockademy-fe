@@ -7,7 +7,7 @@ import quiz from "@/public/icons/quiz.svg";
 import cirlceFill from "@/public/icons/fill-circle.svg";
 import arrowUp from "@/public/icons/arrow-up.svg";
 import lock from "@/public/icons/lock.svg";
-import { Lesson } from "@/redux/features/courses/type";
+import { Lesson, ModuleItem } from "@/redux/features/courses/type";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { useSearchParams } from "next/navigation";
@@ -17,21 +17,23 @@ import Link from "next/link";
 import cn from "@/services/cn";
 
 interface CourseModuleProps {
-  lesson: Lesson;
+  data: any;
   completedLesson: number[];
-  activeDropdown?: boolean
+  activeDropdown?: boolean;
+  courseId: string;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
-  lesson,
+  data,
   completedLesson,
-  activeDropdown = false
+  activeDropdown = false,
+  courseId,
 }) => {
   const [showDropdown, setShowDropdown] = useState(activeDropdown);
   const searchParams = useSearchParams();
   const lessonId = searchParams.get("lesson_id") || (0 as number);
   const [isCompletedLesson, setIsCompletedLesson] = useState(
-    !!lesson.is_complete
+    !!data.is_complete
   );
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -42,11 +44,11 @@ const CourseModule: React.FC<CourseModuleProps> = ({
     if (!isAuthenticated || !token) setIsCompletedLesson(false);
   }, [isAuthenticated, token]);
 
-  useEffect(() => {
-    if (completedLesson.length) {
-      setIsCompletedLesson(!!completedLesson?.includes(lesson.lesson_id));
-    }
-  }, [completedLesson, lesson.lesson_id]);
+  // useEffect(() => {
+  //   if (isCompletedLesson.length) {
+  //     setIsCompletedLesson(!!completedLesson?.includes(data.lesson_id));
+  //   }
+  // }, [completedLesson, data.lesson_id]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -55,9 +57,19 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         onClick={() => setShowDropdown(!showDropdown)}
       >
         <div className="flex gap-[6px] flex-col">
-          <p>{lesson.lesson_title}</p>
+          <div className="flex justify-between items-center">
+            <p className="select-none">{data.sub_course_title}</p>
+            <div
+              className={cn("transition-all duration-150 ease-in-out", {
+                "rotate-0": showDropdown,
+                "rotate-180": !showDropdown,
+              })}
+            >
+              <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
+            </div>
+          </div>
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <div className="flex gap-6 items-center">
               <div className="flex items-center gap-[6px]">
                 <Image
@@ -67,7 +79,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
                 />
 
                 <span className="text-sm font-light leading-6">
-                  {secondsToMinutes(lesson.lesson_duration)}&nbsp;minutes
+                  {secondsToMinutes(data.lesson_duration)}&nbsp;minutes
                 </span>
               </div>
 
@@ -78,7 +90,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
                   src={quiz}
                 />
                 <span className="text-sm leading-6 font-light">
-                  {lesson.lesson_type_format === 1 ? "Text" : "Video"}
+                  {data.lesson_type_format === 1 ? "Text" : "Video"}
                 </span>
               </div>
             </div>
@@ -88,12 +100,12 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             })}>
             <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* {isCompletedLesson ? (
         <div className="w-[18px] h-full flex items-center">
-          {Number(lessonId) === lesson.lesson_id ? (
+          {Number(lessonId) === data.lesson_id ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
@@ -101,7 +113,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         </div>
       ) : (
         <div className="w-[18px] h-full flex items-center">
-          {Number(lessonId) === lesson.lesson_id ? (
+          {Number(lessonId) === data.lesson_id ? (
             <BarChartAlt2 className="text-blue-100" />
           ) : (
             <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
@@ -109,17 +121,33 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         </div>
       )} */}
       </div>
-      <div className={cn(`px-3 flex-col transition-all duration-150 ease-in-out`, {
-        "flex": showDropdown,
-        "hidden": !showDropdown,
-      })}>
-        <div className="flex justify-between p-[6px]">
-          <Link href="#" className="font-light">
-            What’s in a Block?
-          </Link>
-          <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
-        </div>
-        <div className="flex justify-between p-[6px]">
+      <div
+        className={cn(`px-3 flex-col transition-all duration-150 ease-in-out`, {
+          flex: showDropdown,
+          hidden: !showDropdown,
+        })}
+      >
+        {data.module_data.map((moduleItem: ModuleItem) => (
+          <div
+            className="flex justify-between p-[6px]"
+            key={moduleItem.module_id}
+          >
+            <Link
+              href={`/courses/${courseId}/lessons/${moduleItem.lesson_slug}`}
+              className="font-light"
+            >
+              {moduleItem.module_title}
+            </Link>
+            {moduleItem.is_complete_module ? (
+              <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
+            ) : (
+              <CircleCheck
+                className={`${"text-white-300 w-[18px] h-[18px]"}`}
+              />
+            )}
+          </div>
+        ))}
+        {/* <div className="flex justify-between p-[6px]">
           <Link href="#" className="font-light">
             What’s in a Block?
           </Link>
@@ -132,7 +160,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         <div className="flex justify-between p-[6px]">
           <div className="font-light text-grey-400">What’s in a Block?</div>
           <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

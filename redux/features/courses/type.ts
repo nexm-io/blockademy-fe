@@ -102,9 +102,9 @@ export interface CourseDetail {
   title: string;
   campaign_title: string;
   lesson_first: any;
+  description: string;
   slug: string;
   order: number;
-  lesson_data: Lesson[];
   lesson_type: string;
   is_completed: number;
   reward_is_claimed: number;
@@ -118,6 +118,16 @@ export interface CourseDetail {
   };
   is_opened: number;
   issue_nft_status: string;
+  sub_course_data: any[];
+}
+
+export interface ModuleItem {
+  is_complete_module: number;
+  lesson_slug: string;
+  module_duration: number;
+  module_id: number;
+  module_slug: string;
+  module_title: string;
 }
 
 export interface CourseDetailResponse {

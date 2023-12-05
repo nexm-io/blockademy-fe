@@ -4,27 +4,24 @@ import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/CourseModule";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-} from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
 import BackToTop from "@/components/BackToTop";
-import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
-import RewardDetail from "@/components/Reward/RewardDetail";
 import { setRefUrl } from "@/redux/features/auth/action";
 import cn from "@/services/cn";
+
+import RewardDetail from "@/components/Reward/RewardDetail";
+import { useSelector } from "react-redux";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -50,15 +47,16 @@ const CourseDetail = () => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const token = useSelector((state: RootState) => state.auth.token);
-  const isCompletedQuiz = useMemo(() => {
-    if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
-      return false;
-    return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
-  }, [courseDetail?.lesson_data]);
+
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  // const token = useSelector((state: RootState) => state.auth.token);
+  // const isCompletedQuiz = useMemo(() => {
+  //   if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
+  //     return false;
+  //   return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
+  // }, [courseDetail?.lesson_data]);
 
   // const lesson = useMemo(
   //   () =>
@@ -367,9 +365,9 @@ const CourseDetail = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.lesson_data.length !== 0 && !isLoading && (
+                      {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
                         <div className="flex flex-col gap-10">
-                          {courseDetail?.lesson_data.map((lesson, index) => (
+                          {courseDetail?.sub_course_data.map((subCourse, index) => (
                             <div
                               key={index}
                               onClick={() => {
@@ -378,7 +376,8 @@ const CourseDetail = () => {
                             >
                               <CourseModule
                                 key={index}
-                                lesson={lesson}
+                                data={subCourse}
+                                courseId={courseDetail.id}
                                 completedLesson={completedLesson}
                                 activeDropdown={index === 0}
                               />
@@ -409,18 +408,18 @@ const CourseDetail = () => {
             </div>
 
             {/* PASSED CASE */}
-            {isLogin &&
+            {/* {isLogin &&
               courseDetail?.is_registered === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <RewardDetail courseDetail={courseDetail} />
-              )}
+              )} */}
 
             <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
                 <div className="w-full">
                   {courseDetail ? (
-                    courseDetail.lesson_data.map((lesson, index) => (
-                      <>
+                    courseDetail?.sub_course_data.map((lesson, index) => (
+                      <div key={index}>
                         {lesson.lesson_type_format === 2 &&
                           formState === "video" && (
                             <>
@@ -432,19 +431,16 @@ const CourseDetail = () => {
                               />
                             </>
                           )}
-                        <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
-                          {lesson.lesson_title}
-                        </h2>
                         <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                           <div
                             id="content"
                             className="flex flex-col gap-3 course-content text-base"
                             dangerouslySetInnerHTML={{
-                              __html: lesson.lesson_description,
+                              __html: courseDetail.description,
                             }}
                           />
                         </div>
-                      </>
+                      </div>
                     ))
                   ) : (
                     <div>No Lesson</div>
@@ -524,9 +520,9 @@ const CourseDetail = () => {
                       </div>
                     )} */}
 
-                  {courseDetail?.lesson_data.length !== 0 && !isLoading && (
+                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.lesson_data.map((lesson, index) => (
+                      {courseDetail?.sub_course_data.map((subCourse, index) => (
                         <div
                           key={index}
                           onClick={() => {
@@ -535,7 +531,8 @@ const CourseDetail = () => {
                         >
                           <CourseModule
                             key={index}
-                            lesson={lesson}
+                            data={subCourse}
+                            courseId={courseDetail.id}
                             completedLesson={completedLesson}
                             activeDropdown={index === 0}
                           />
