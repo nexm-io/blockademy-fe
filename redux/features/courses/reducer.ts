@@ -9,6 +9,7 @@ import {
   getDetailCourseWithoutLoading,
   getDetailSubCourse,
   getDetailLesson,
+  setPrevSubCourseSlug,
 } from "./action";
 import { CourseResponse } from "./type";
 
@@ -33,6 +34,7 @@ const initialState: CourseResponse = {
     current_page: 0,
     total_pages: 0,
   },
+  previousSubCourseSlug: "",
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -82,7 +84,12 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.subCourseLoading = false;
     });
 
-    builder
+  builder
+    .addCase(setPrevSubCourseSlug, (state, action) => {
+      state.previousSubCourseSlug = action.payload;
+    });
+
+  builder
     .addCase(getDetailLesson.pending, (state) => {
       state.lessonLoading = true;
     })

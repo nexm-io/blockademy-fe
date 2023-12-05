@@ -56,7 +56,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
 };
 
 export default function CourseInfoFooter() {
-  const [isSticky, setSticky] = useState(false);
+  const [isSticky, setSticky] = useState(true);
 
   useEffect(() => {
     const handleScroll = debounce(() => {
@@ -66,7 +66,7 @@ export default function CourseInfoFooter() {
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
       setSticky(scrollPosition / pageHeight <= 0.95);
-    }, 50);
+    }, 150);
 
     window.addEventListener("scroll", handleScroll);
 

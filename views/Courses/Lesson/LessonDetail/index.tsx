@@ -3,7 +3,7 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import BackToTop from "@/components/BackToTop";
 import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import { getDetailSubCourse } from "@/redux/features/courses/action";
+import { getDetailSubCourse, setPrevSubCourseSlug } from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 
 const LessonDetail = () => {
@@ -22,7 +22,7 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const { subCourse, subCourseLoading } = useAppSelector(
+  const { subCourse, subCourseLoading, previousSubCourseSlug } = useAppSelector(
     (state: RootState) => state.courses
   );
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
@@ -33,32 +33,32 @@ const LessonDetail = () => {
     setIsWatching(status);
   };
 
-  const loadSubCourse = useCallback(async () => {
-    const { payload } = await dispatch(
-      getDetailSubCourse({
-        subCourseSlug: subCourseSlug as any,
-        lessonSlug: subCourseSlug as any,
-      })
-    );
-    if (payload?.response?.data?.error) router.push("/not-found");
-  }, [subCourseSlug]);
-
   useEffect(() => {
-    loadSubCourse();
-  }, []);
+    if (subCourseSlug !== previousSubCourseSlug) {
+      const loadSubCourse = async () => {
+        const { payload } = await dispatch(
+          getDetailSubCourse({
+            subCourseSlug: subCourseSlug as any,
+            lessonSlug: lessonSlug as any,
+          })
+        );
+        if (payload?.response?.data?.error) router.push("/not-found");
+      };
+
+      loadSubCourse();
+    }
+    dispatch(setPrevSubCourseSlug(subCourseSlug));
+  }, [subCourseSlug, lessonSlug, dispatch, router]);
 
   useEffect(() => {
     if (subCourse) {
-      let lessonData: LessonItem[] = [];
-      for (const item of subCourse.module_data) {
-        lessonData = [...lessonData, ...item.lesson_data];
-      }
-      if (lessonData.length > 0) {
-        const lesson = lessonData.find((item) => item.slug === lessonSlug);
+      const lessonData = subCourse.module_data.flatMap((item: any) => item.lesson_data);
+      const lesson = lessonData.find((item: LessonItem) => item.slug === lessonSlug);
+      if (lesson) {
         setLesson(lesson);
       }
     }
-  }, [subCourse]);
+  }, [subCourse, lessonSlug]);
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";

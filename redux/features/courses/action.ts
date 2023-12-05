@@ -120,4 +120,6 @@ export const getDetailLesson = createAsyncThunk(
   }
 );
 
+export const setPrevSubCourseSlug = createAction<any>("courses/set-prev-sub-course-slug");
+
 export const resetFinish = createAction<any>("courses/reset-finish");
