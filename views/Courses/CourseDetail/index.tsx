@@ -27,6 +27,7 @@ import { toast } from "react-toastify";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import RewardDetail from "@/components/Reward/RewardDetail";
 import { setRefUrl } from "@/redux/features/auth/action";
+import cn from "@/services/cn";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -34,6 +35,7 @@ const CourseDetail = () => {
   const searchParams = useSearchParams();
   const courseId = params.id;
   const lessonId = searchParams.get("lesson_id") || (0 as number);
+  const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
   const [registered, setRegistered] = useState<boolean>(false);
@@ -242,6 +244,13 @@ const CourseDetail = () => {
     handleCheckCompletedCourse();
   }, [handleCheckCompletedCourse]);
 
+  useEffect(() => {
+    if (isShowMenu) document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "scroll";
+    };
+  }, [isShowMenu]);
+
   return (
     <div className="container">
       {isLoading ? (
@@ -319,6 +328,76 @@ const CourseDetail = () => {
                   </li>
                 </ol>
               </nav>
+
+              <div
+                className={cn({
+                  active: isShowMenu,
+                })}
+              >
+                <div className="flex items-center gap-3 lg:hidden">
+                  <div
+                    className="hambuger"
+                    onClick={() => setShowMenu((prev) => !prev)}
+                  >
+                    <span></span>
+                  </div>
+                  <p className="text-blue-100">Menu</p>
+                </div>
+                <div
+                  className={cn(
+                    "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                    { "!visible": isShowMenu }
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                      { "!visible opacity-100": isShowMenu }
+                    )}
+                    onClick={() => setShowMenu(false)}
+                  ></div>
+                  <div
+                    className={cn(
+                      "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
+                      { "!translate-x-0": isShowMenu }
+                    )}
+                  >
+                    <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                      <p className="text-blue-100">Close</p>
+                      <div
+                        className="hambuger"
+                        onClick={() => setShowMenu((prev) => !prev)}
+                      >
+                        <span></span>
+                      </div>
+                    </div>
+                    <div className="mt-10 overflow-y-auto">
+                      {courseDetail?.lesson_data.length !== 0 && !isLoading && (
+                        <div className="flex flex-col gap-10">
+                          {courseDetail?.lesson_data.map((lesson, index) => (
+                            <div
+                              key={index}
+                              onClick={() => {
+                                router.push(
+                                  `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
+                                );
+                              }}
+                            >
+                              <CourseModule
+                                key={index}
+                                lesson={lesson}
+                                completedLesson={completedLesson}
+                                activeDropdown={index === 0}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
@@ -465,7 +544,7 @@ const CourseDetail = () => {
                     )}
 
                   {courseDetail?.lesson_data.length !== 0 && !isLoading && (
-                    <div className="hidden lg:flex flex-col gap-10 overflow-y-auto fixed top-32 h-[550px] bg-white-100">
+                    <div className="hidden lg:flex flex-col gap-10">
                       {courseDetail?.lesson_data.map((lesson, index) => (
                         <div
                           key={index}
@@ -479,6 +558,7 @@ const CourseDetail = () => {
                             key={index}
                             lesson={lesson}
                             completedLesson={completedLesson}
+                            activeDropdown={index === 0}
                           />
                         </div>
                       ))}
