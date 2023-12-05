@@ -7,6 +7,7 @@ import { LessonItem } from "@/redux/features/courses/type";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
+import circleFilled from "@/public/icons/fill-circle.svg";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import cn from "@/services/cn";
 import Link from "next/link";
@@ -14,17 +15,15 @@ import { useParams } from "next/navigation";
 
 interface LessonModuleProps {
   data: any;
-  activeDropdown?: boolean;
   courseId: string;
 }
 
 const LessonModule: React.FC<LessonModuleProps> = ({
   data,
-  activeDropdown = false,
 }) => {
   const params = useParams();
-  const { subCourseSlug, courseId } = params;
-  const [showDropdown, setShowDropdown] = useState(activeDropdown);
+  const { subCourseSlug, courseId, lessonSlug } = params;
+  const [showDropdown, setShowDropdown] = useState(true);
   return (
     <div className="flex flex-col gap-4">
       <div
@@ -83,14 +82,18 @@ const LessonModule: React.FC<LessonModuleProps> = ({
           >
             <div className="font-light">{lessonItem.title}</div>
             <div className="flex-1 flex justify-end">
-              {lessonItem.is_complete_lesson ? (
-                <CircleCheck
-                  className={`${"text-blue-100 w-[18px] h-[18px]"}`}
-                />
+              {lessonItem.slug === lessonSlug ? (
+                <Image alt="circle-fill-icon" className="w-[18px] h-[18px]" src={circleFilled} />
               ) : (
-                <CircleCheck
-                  className={`${"text-white-300 w-[18px] h-[18px]"}`}
-                />
+                lessonItem.is_complete_lesson ? (
+                  <CircleCheck
+                    className={`${"text-blue-100 w-[18px] h-[18px]"}`}
+                  />
+                ) : (
+                  <CircleCheck
+                    className={`${"text-white-300 w-[18px] h-[18px]"}`}
+                  />
+                )
               )}
             </div>
           </Link>

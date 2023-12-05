@@ -137,6 +137,18 @@ const LessonDetail = () => {
                       &gt;
                     </span>
                   </li>
+                  <li className="leading-[23px] hover:underline">
+                    <Link href={`/courses/${courseId}`}>
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        {subCourse.tile}
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
                   <li className="leading-[23px]">
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                       {lesson?.title}
@@ -206,7 +218,6 @@ const LessonDetail = () => {
                                     key={index}
                                     data={lesson}
                                     courseId={courseId as string}
-                                    activeDropdown={index === 0}
                                   />
                                 </div>
                               )
@@ -240,7 +251,7 @@ const LessonDetail = () => {
                             <VideoPlayer
                               typeUpload={lesson.type_upload}
                               url={lesson.link}
-                              onChangeForm={() => {}}
+                              onChangeForm={() => { }}
                               onChangeStatus={handleOnchange}
                             />
                           </>
@@ -271,7 +282,6 @@ const LessonDetail = () => {
                             key={index}
                             courseId={courseId as string}
                             data={lesson}
-                            activeDropdown={index === 0}
                           />
                         )
                       )}
