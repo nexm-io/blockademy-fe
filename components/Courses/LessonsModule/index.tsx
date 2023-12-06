@@ -80,10 +80,13 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
         </div>
       </div>
       <div
-        className={cn(`px-3 flex-col gap-2 transition-all duration-150 ease-in-out`, {
-          flex: showDropdown,
-          hidden: !showDropdown,
-        })}
+        className={cn(
+          `px-3 flex-col gap-2 transition-all duration-150 ease-in-out`,
+          {
+            flex: showDropdown,
+            hidden: !showDropdown,
+          }
+        )}
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
           <div
