@@ -25,7 +25,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
   const router = useRouter();
   const { subCourseSlug, courseId, lessonSlug } = params;
   const [showDropdown, setShowDropdown] = useState(true);
-  const [isLockedLesson, setIsLockedLesson] = useState(!!data.is_complete);
+  const [isLockedLesson, setIsLockedLesson] = useState(false);
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
@@ -87,8 +87,8 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
           <div
-            className={cn(`flex justify-between p-[6px]cursor-pointer`, {
-              "!cursor-default": lessonItem.is_locked || isLockedLesson,
+            className={cn(`flex justify-between p-[6px] cursor-pointer`, {
+              "!cursor-default": isLockedLesson || lessonItem.is_locked,
             })}
             onClick={() => {
               if (isLockedLesson) return;

@@ -9,7 +9,6 @@ import { CircleCheck } from "@styled-icons/fa-solid";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from "next/link";
 import cn from "@/services/cn";
 
 interface CourseModuleProps {
@@ -24,9 +23,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   const params = useParams();
   const { courseId } = params;
   const [showDropdown, setShowDropdown] = useState(activeDropdown);
-  const [isLockedLesson, setIsLockedLesson] = useState(
-    !!data.is_complete
-  );
+  const [isLockedLesson, setIsLockedLesson] = useState(false);
   const router = useRouter();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -90,7 +87,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
         {data.module_data.map((moduleItem: ModuleItem) => (
           <div
           className={cn(`flex justify-between p-[6px] cursor-pointer`, {
-            "!cursor-default": moduleItem.is_locked || isLockedLesson,
+            "!cursor-default": isLockedLesson || moduleItem.is_locked,
           })}
           onClick={() => {
             if (isLockedLesson) return;
