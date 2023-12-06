@@ -26,6 +26,11 @@ export interface CourseResponse {
   details: CourseDetail | null;
   quiz: QuizDataResponse;
   message?: string;
+  subCourseLoading: boolean;
+  subCourse: any;
+  lessonLoading: boolean;
+  lesson: any;
+  previousSubCourseSlug: string;
 }
 
 export interface ListCourse {
@@ -102,9 +107,9 @@ export interface CourseDetail {
   title: string;
   campaign_title: string;
   lesson_first: any;
+  description: string;
   slug: string;
   order: number;
-  lesson_data: Lesson[];
   lesson_type: string;
   is_completed: number;
   reward_is_claimed: number;
@@ -118,6 +123,34 @@ export interface CourseDetail {
   };
   is_opened: number;
   issue_nft_status: string;
+  sub_course_data: any[];
+}
+
+export interface ModuleItem {
+  is_complete_module: number;
+  lesson_slug: string;
+  duration: number;
+  lesson_data: {
+    id: number;
+    slug: string;
+  };
+  id: number;
+  slug: string;
+  title: string;
+  is_locked: number;
+}
+
+export interface LessonItem {
+  is_complete_lesson: number;
+  duration: number;
+  id: number;
+  slug: string;
+  type_format: number;
+  type_upload: string;
+  link: string;
+  description: string;
+  title: string;
+  is_locked: number;
 }
 
 export interface CourseDetailResponse {

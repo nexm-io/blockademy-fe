@@ -71,7 +71,7 @@ export default function ResultQuiz() {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
       router.push(
-        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
+        `/courses/${listResultData?.course_id}`
       );
     }
   }, [listResultData, isAuthenticated, token]);
@@ -136,7 +136,7 @@ export default function ResultQuiz() {
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                 <li className="leading-[23px] hover:underline">
                   <Link
-                    href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
+                    href={`/courses/${listResultData?.course_id}`}
                   >
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                       {listResultData?.quiz}
@@ -163,7 +163,7 @@ export default function ResultQuiz() {
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
                     onClick={() =>
                       router.push(
-                        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
+                        `/courses/${listResultData?.course_id}`
                       )
                     }
                   >

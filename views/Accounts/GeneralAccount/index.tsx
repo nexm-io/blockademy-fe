@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import emailIcon from "@/public/icons/mail-filled.svg";
 import phoneIcon from "@/public/icons/phone-bold.svg";
 import profileIcon from "@/public/icons/profile-fill.svg";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getAccountDetail } from "@/redux/features/account/action";
+import { useAppSelector } from "@/redux/hook";
 import FormChangeGeneral from "../FormChangeGeneral";
 import Button from "@/components/Common/Button";
 

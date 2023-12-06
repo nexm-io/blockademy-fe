@@ -79,7 +79,7 @@ const MainSection = () => {
             </div>
           ) : (
             <Link
-              href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`}
+              href={`/courses/${course.course_id}`}
               className="h-full"
             >
               <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">

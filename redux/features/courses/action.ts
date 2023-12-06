@@ -1,6 +1,6 @@
 import api from "@/services/axios";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { CourseDetailResponse, CourseResponse, QuizResponse } from "./type";
+import { CourseResponse, QuizResponse } from "./type";
 
 export const getListCourse = createAsyncThunk<
   CourseResponse,
@@ -85,5 +85,41 @@ export const claimReward = createAsyncThunk<CourseResponse, string>(
     return response.data;
   }
 );
+
+export const getDetailSubCourse = createAsyncThunk(
+  "courses/get-detail-sub-course",
+  async ({
+    subCourseSlug,
+    lessonSlug,
+  }: {
+    subCourseSlug: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: subCourse } = await api.get(
+        `/api/v10/sub-course/${subCourseSlug}?lesson_id=${lessonSlug}`
+      );
+      return subCourse;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getDetailLesson = createAsyncThunk(
+  "courses/get-detail-lesson",
+  async (lessonIdOrSlug: string) => {
+    try {
+      const { data: lesson } = await api.get(
+        `/api/v10/lesson/${lessonIdOrSlug}`
+      );
+      return lesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const setPrevSubCourseSlug = createAction<any>("courses/set-prev-sub-course-slug");
 
 export const resetFinish = createAction<any>("courses/reset-finish");

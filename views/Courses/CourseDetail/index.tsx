@@ -3,41 +3,40 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import CourseModule from "@/components/CourseModule";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Quiz from "@/components/Quiz";
+import CourseModule from "@/components/Courses/CourseModule";
+import { useEffect, useState } from "react";
 import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
 import api from "@/services/axios";
 import InfoPopup from "@/components/Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
 import BackToTop from "@/components/BackToTop";
-import { useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { toast } from "react-toastify";
-import { ASSIGNMENT_STATUS } from "@/utils/constants";
-import RewardDetail from "@/components/Reward/RewardDetail";
 import { setRefUrl } from "@/redux/features/auth/action";
+import cn from "@/services/cn";
+
+import RewardDetail from "@/components/Reward/RewardDetail";
+import { useSelector } from "react-redux";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
-  const searchParams = useSearchParams();
-  const courseId = params.id;
-  const lessonId = searchParams.get("lesson_id") || (0 as number);
-  const [isWatching, setIsWatching] = useState<boolean>(false);
+  const courseId = params.courseId;
+  const [isShowMenu, setShowMenu] = useState<boolean>(false);
+  const pathName = usePathname();
   const [showPopup, setShowPopup] = useState(false);
-  const [registered, setRegistered] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isWatching, setIsWatching] = useState<boolean>(false);
+  const [registered, setRegistered] = useState<boolean>(false);
   const [stepCompleted, setStepCompleted] = useState<string[]>([]);
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
   const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
-  const pathName = usePathname();
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -48,84 +47,85 @@ const CourseDetail = () => {
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
-  const token = useSelector((state: RootState) => state.auth.token);
-  const isCompletedQuiz = useMemo(() => {
-    if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
-      return false;
-    return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
-  }, [courseDetail?.lesson_data]);
 
-  const lesson = useMemo(
-    () =>
-      courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
-    [courseDetail?.lesson_data, lessonId]
-  );
+  // const isAuthenticated = useSelector(
+  //   (state: RootState) => state.auth.isAuthenticated
+  // );
+  // const token = useSelector((state: RootState) => state.auth.token);
+  // const isCompletedQuiz = useMemo(() => {
+  //   if (!courseDetail?.lesson_data || !courseDetail?.lesson_data.length)
+  //     return false;
+  //   return courseDetail?.lesson_data.every((item) => item.is_complete === 1);
+  // }, [courseDetail?.lesson_data]);
 
-  const lessonOrder = useMemo(() => {
-    const lessonData = courseDetail?.lesson_data || [];
-    const currIndex =
-      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0;
-    const lessonLength = lessonData.length - 1;
-    return {
-      first: lessonData?.[0]?.lesson_id === +lessonId,
-      last: currIndex >= lessonLength,
-    };
-  }, [courseDetail?.lesson_data, lessonId]);
+  // const lesson = useMemo(
+  //   () =>
+  //     courseDetail?.lesson_data?.find((item) => item.lesson_id === +lessonId),
+  //   [courseDetail?.lesson_data, lessonId]
+  // );
 
-  const isNotCompletedLesson = useMemo(() => {
-    return isCompletedQuiz ||
-      (lessonOrder.last && completedLesson.includes(+lessonId))
-      ? false
-      : true;
-  }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId]);
+  // const lessonOrder = useMemo(() => {
+  //   const lessonData = courseDetail?.lesson_data || [];
+  //   const currIndex =
+  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+  //     0;
+  //   const lessonLength = lessonData.length - 1;
+  //   return {
+  //     first: lessonData?.[0]?.lesson_id === +lessonId,
+  //     last: currIndex >= lessonLength,
+  //   };
+  // }, [courseDetail?.lesson_data, lessonId]);
 
-  const getNextLessonUrl = useCallback(() => {
-    const lessonData = courseDetail?.lesson_data || [];
-    const currIndex =
-      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0;
-    const lessonLength = lessonData.length - 1;
+  // const isNotCompletedLesson = useMemo(() => {
+  //   return isCompletedQuiz ||
+  //     (lessonOrder.last && completedLesson.includes(+lessonId))
+  //     ? false
+  //     : true;
+  // }, [completedLesson, isCompletedQuiz, lessonOrder.last, lessonId]);
 
-    const nextLessonId =
-      currIndex < lessonLength
-        ? lessonData[currIndex + 1].lesson_id
-        : lessonData[0].lesson_id;
-    const url = `/courses/${courseId}?lesson_id=${nextLessonId}`;
-    return url;
-  }, [courseDetail?.lesson_data, courseId, lessonId]);
+  // const getNextLessonUrl = useCallback(() => {
+  //   const lessonData = courseDetail?.lesson_data || [];
+  //   const currIndex =
+  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+  //     0;
+  //   const lessonLength = lessonData.length - 1;
 
-  const getPrevLessonUrl = useCallback(() => {
-    const lessonData = courseDetail?.lesson_data || [];
-    const currIndex =
-      lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
-      0;
-    const lessonLength = lessonData.length - 1;
+  //   const nextLessonId =
+  //     currIndex < lessonLength
+  //       ? lessonData[currIndex + 1].lesson_id
+  //       : lessonData[0].lesson_id;
+  //   const url = `/courses/${courseId}`;
+  //   return url;
+  // }, [courseDetail?.lesson_data, courseId, lessonId]);
 
-    const prevLessonId =
-      currIndex < lessonLength
-        ? lessonData[currIndex - 1].lesson_id
-        : lessonData[0].lesson_id;
-    const url = `/courses/${courseId}?lesson_id=${prevLessonId}`;
-    return url;
-  }, [courseDetail?.lesson_data, courseId, lessonId]);
+  // const getPrevLessonUrl = useCallback(() => {
+  //   const lessonData = courseDetail?.lesson_data || [];
+  //   const currIndex =
+  //     lessonData.findIndex((lesson) => lesson.lesson_id === Number(lessonId)) ||
+  //     0;
+  //   const lessonLength = lessonData.length - 1;
 
-  const handleChangeForm = useCallback(
-    (status: boolean) => {
-      if (status) {
-        const url = getNextLessonUrl();
-        setStepCompleted([...stepCompleted, "video"]);
-        setUrlNextLesson(url);
-        if (stepCompleted.length >= 1) {
-          setIsNextLesson(true);
-        }
-      }
-    },
-    [getNextLessonUrl, stepCompleted]
-  );
+  //   const prevLessonId =
+  //     currIndex < lessonLength
+  //       ? lessonData[currIndex - 1].lesson_id
+  //       : lessonData[0].lesson_id;
+  //   const url = `/courses/${courseId}`;
+  //   return url;
+  // }, [courseDetail?.lesson_data, courseId, lessonId]);
+
+  // const handleChangeForm = useCallback(
+  //   (status: boolean) => {
+  //     if (status) {
+  //       const url = getNextLessonUrl();
+  //       setStepCompleted([...stepCompleted, "video"]);
+  //       setUrlNextLesson(url);
+  //       if (stepCompleted.length >= 1) {
+  //         setIsNextLesson(true);
+  //       }
+  //     }
+  //   },
+  //   [getNextLessonUrl, stepCompleted]
+  // );
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -154,6 +154,78 @@ const CourseDetail = () => {
     }
   };
 
+  // const handleScroll = useCallback(() => {
+  //   const bodyBottom = document.body.getBoundingClientRect().bottom;
+  //   const bottom = Math.round(bodyBottom) <= window.innerHeight;
+  //   if (
+  //     bottom &&
+  //     !completedLesson.includes(+lessonId) &&
+  //     !stepCompleted.includes("read")
+  //   ) {
+  //     setStepCompleted([...stepCompleted, "read"]);
+  //   }
+  // }, [completedLesson, lessonId, stepCompleted]);
+
+  // useEffect(() => {
+  //   document.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     document.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [handleScroll]);
+
+  // const isCompletedStep = useMemo(() => {
+  //   if (!lesson?.lesson_description) {
+  //     return stepCompleted.includes("video");
+  //   }
+  //   if (!lesson?.lesson_link) {
+  //     return stepCompleted.includes("read");
+  //   }
+  //   return stepCompleted.length >= 2;
+  // }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted]);
+
+  // const handleCheckCompletedCourse = useCallback(async () => {
+  //   if (!isCompletedStep) return;
+  //   if (completedLesson.includes(+lessonId)) return;
+  //   if (!isAuthenticated || !token) {
+  //     if (isNextLesson && !lessonOrder.last) {
+  //       router.push(urlNextLesson);
+  //       setIsNextLesson(false);
+  //     }
+  //     return;
+  //   }
+  //   try {
+  //     const response = await api.post(
+  //       `/api/v10/course/${courseId}/lesson/${lessonId}`
+  //     );
+  //     if (response.status === 200) {
+  //       setCompletedLesson([...completedLesson, +lessonId]);
+  //       setStepCompleted([]);
+  //       if (isNextLesson && !lessonOrder.last) {
+  //         router.push(urlNextLesson);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     return null;
+  //   } finally {
+  //     setIsNextLesson(false);
+  //   }
+  // }, [
+  //   isCompletedStep,
+  //   isAuthenticated,
+  //   token,
+  //   courseId,
+  //   lessonId,
+  //   completedLesson,
+  //   isNextLesson,
+  //   lessonOrder.last,
+  //   router,
+  //   urlNextLesson,
+  // ]);
+
+  // useEffect(() => {
+  //   handleCheckCompletedCourse();
+  // }, [handleCheckCompletedCourse]);
+
   useEffect(() => {
     (async () => {
       const { payload } = await dispatch(getDetailCourse(courseId as string));
@@ -165,91 +237,18 @@ const CourseDetail = () => {
     if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
   }, [courseDetail]);
 
-  const handleScroll = useCallback(() => {
-    const bodyBottom = document.body.getBoundingClientRect().bottom;
-    const bottom = Math.round(bodyBottom) <= window.innerHeight;
-    if (
-      bottom &&
-      !completedLesson.includes(+lessonId) &&
-      !stepCompleted.includes("read")
-    ) {
-      setStepCompleted([...stepCompleted, "read"]);
-    }
-  }, [completedLesson, lessonId, stepCompleted]);
-
   useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
+    if (isShowMenu) document.body.style.overflowY = "hidden";
     return () => {
-      document.removeEventListener("scroll", handleScroll);
+      document.body.style.overflowY = "scroll";
     };
-  }, [handleScroll]);
-
-  const isCompletedStep = useMemo(() => {
-    if (!lesson?.lesson_description) {
-      return stepCompleted.includes("video");
-    }
-    if (!lesson?.lesson_link) {
-      return stepCompleted.includes("read");
-    }
-    return stepCompleted.length >= 2;
-  }, [lesson?.lesson_description, lesson?.lesson_link, stepCompleted]);
-
-  const handleCheckCompletedCourse = useCallback(async () => {
-    if (!isCompletedStep) return;
-    if (completedLesson.includes(+lessonId)) return;
-    if (!isAuthenticated || !token) {
-      if (isNextLesson && !lessonOrder.last) {
-        router.push(urlNextLesson);
-        setIsNextLesson(false);
-      }
-      return;
-    }
-    try {
-      const response = await api.post(
-        `/api/v10/course/${courseId}/lesson/${lessonId}`
-      );
-      if (response.status === 200) {
-        setCompletedLesson([...completedLesson, +lessonId]);
-        setStepCompleted([]);
-        if (isNextLesson && !lessonOrder.last) {
-          router.push(urlNextLesson);
-        }
-      }
-    } catch (error) {
-      return null;
-    } finally {
-      setIsNextLesson(false);
-    }
-  }, [
-    isCompletedStep,
-    isAuthenticated,
-    token,
-    courseId,
-    lessonId,
-    completedLesson,
-    isNextLesson,
-    lessonOrder.last,
-    router,
-    urlNextLesson,
-  ]);
-
-  useEffect(() => {
-    handleCheckCompletedCourse();
-  }, [handleCheckCompletedCourse]);
-
-  useEffect(() => {
-    if (!courseDetail) return;
-    if (!lessonId)
-      router.push(
-        `/courses/${courseId}?lesson_id=${courseDetail?.lesson_first.lesson_id}`
-      );
-  }, [courseDetail, lessonId]);
+  }, [isShowMenu]);
 
   return (
-    <div className="container mt-36">
+    <div className="container min-h-screen">
       {isLoading ? (
         <div className="md:mt-[56px] mt-8">
-          <div className="">
+          <>
             <Skeleton
               variant="rounded"
               sx={{ maxWidth: "300px" }}
@@ -258,7 +257,7 @@ const CourseDetail = () => {
             <div className="flex flex-col md:flex-row justify-between mt-[52px]">
               <Skeleton variant="rounded" sx={{ width: "400px" }} height={50} />
             </div>
-          </div>
+          </>
           <div className="mt-10">
             <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
@@ -299,8 +298,8 @@ const CourseDetail = () => {
         </div>
       ) : (
         <>
-          <section className="md:mt-[56px] mt-8">
-            <div className="grid gap-4">
+          <section>
+            <div className="flex flex-col gap-4 lg:gap-10">
               <nav className="w-full rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
@@ -322,27 +321,82 @@ const CourseDetail = () => {
                   </li>
                 </ol>
               </nav>
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap mt-[36px]">
+
+              <div
+                className={cn(`block lg:hidden`, {
+                  active: isShowMenu,
+                })}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="hambuger"
+                    onClick={() => setShowMenu((prev) => !prev)}
+                  >
+                    <span></span>
+                  </div>
+                  <p className="text-blue-100">Menu</p>
+                </div>
+                <div
+                  className={cn(
+                    "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                    { "!visible": isShowMenu }
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                      { "!visible opacity-100": isShowMenu }
+                    )}
+                    onClick={() => setShowMenu(false)}
+                  ></div>
+                  <div
+                    className={cn(
+                      "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
+                      { "!translate-x-0": isShowMenu }
+                    )}
+                  >
+                    <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                      <p className="text-blue-100">Close</p>
+                      <div
+                        className="hambuger"
+                        onClick={() => setShowMenu((prev) => !prev)}
+                      >
+                        <span></span>
+                      </div>
+                    </div>
+                    <div className="mt-10 overflow-y-auto">
+                      {courseDetail?.sub_course_data.length !== 0 &&
+                        !isLoading && (
+                          <div className="flex flex-col gap-10">
+                            {courseDetail?.sub_course_data.map(
+                              (subCourse, index) => (
+                                <div
+                                  key={index}
+                                  onClick={() => {
+                                    router.push(`/courses/${courseId}`);
+                                  }}
+                                >
+                                  <CourseModule
+                                    key={index}
+                                    data={subCourse}
+                                    activeDropdown={index === 0}
+                                  />
+                                </div>
+                              )
+                            )}
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
                 <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
                   {courseDetail?.title}
                 </h1>
               </div>
 
-              {courseDetail?.title &&
-                courseDetail?.title.includes(
-                  "HUTECH Workshop on Blockchain and Smart Contracts (Intro)"
-                ) && (
-                  <div className="bg-blue-200 py-3 px-4 flex flex-col gap-2">
-                    <p className="text-blue-100 italic">
-                      Explore fundamental concepts and gain an overview of
-                      blockchain.
-                    </p>
-                    <p className="text-blue-100 italic">
-                      Earn NFT Certificate on Solana chain as you complete the
-                      course.
-                    </p>
-                  </div>
-                )}
               {isLogin ? null : (
                 <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
                   <Image alt="gift-icon" src={gift}></Image>
@@ -355,55 +409,40 @@ const CourseDetail = () => {
             </div>
 
             {/* PASSED CASE */}
-            {isLogin &&
+            {/* {isLogin &&
               courseDetail?.is_registered === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <RewardDetail courseDetail={courseDetail} />
-              )}
+              )} */}
 
-            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
+            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
                 <div className="w-full">
                   {courseDetail ? (
-                    courseDetail.lesson_data.map(
-                      (lesson, index) =>
-                        Number(lessonId) === lesson.lesson_id && (
-                          <>
-                            {lesson.lesson_type_format === 2 &&
-                              formState === "video" && (
-                                <>
-                                  <VideoPlayer
-                                    typeUpload={lesson.lesson_type_upload}
-                                    url={lesson.lesson_link}
-                                    onChangeForm={handleChangeForm}
-                                    onChangeStatus={handleOnchange}
-                                  />
-                                </>
-                              )}
-                            {lesson.lesson_type_format === 1 &&
-                              formState === "quiz" && (
-                                <Quiz
-                                  lesson={lesson}
-                                  index={index}
-                                  campaign_id={courseDetail.campaign_id}
-                                  course_id={courseDetail.id}
-                                />
-                              )}
-                            <h2 className="font-bold md:text-[26px] text-xl text-black-100 md:mt-11 mt-7 md:mb-7 mb-5">
-                              {lesson.lesson_title}
-                            </h2>
-                            <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                              <div
-                                id="content"
-                                className="flex flex-col gap-3 course-content text-base"
-                                dangerouslySetInnerHTML={{
-                                  __html: lesson.lesson_description,
-                                }}
+                    courseDetail?.sub_course_data.map((lesson, index) => (
+                      <div key={index}>
+                        {lesson.lesson_type_format === 2 &&
+                          formState === "video" && (
+                            <>
+                              <VideoPlayer
+                                typeUpload={lesson.lesson_type_upload}
+                                url={lesson.lesson_link}
+                                onChangeForm={() => {}}
+                                onChangeStatus={handleOnchange}
                               />
-                            </div>
-                          </>
-                        )
-                    )
+                            </>
+                          )}
+                        <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                          <div
+                            id="content"
+                            className="flex flex-col gap-3 course-content text-base"
+                            dangerouslySetInnerHTML={{
+                              __html: courseDetail.description,
+                            }}
+                          />
+                        </div>
+                      </div>
+                    ))
                   ) : (
                     <div>No Lesson</div>
                   )}
@@ -431,7 +470,7 @@ const CourseDetail = () => {
                   )}
 
                   {/* APPLY COURSE */}
-                  {isLogin &&
+                  {/* {isLogin &&
                     !registered &&
                     courseDetail?.is_registered === 0 &&
                     courseDetail.is_opened === 1 && (
@@ -450,10 +489,10 @@ const CourseDetail = () => {
                           )}
                         </Button>
                       </div>
-                    )}
+                    )} */}
 
                   {/* TRY AGAIN */}
-                  {isLogin &&
+                  {/* {isLogin &&
                     courseDetail?.assignment_status.slug ===
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_registered === 1 &&
@@ -480,30 +519,22 @@ const CourseDetail = () => {
                           </Button>
                         </div>
                       </div>
-                    )}
+                    )} */}
 
-                  {courseDetail?.lesson_data.length !== 0 &&
-                    !isLoading &&
-                    courseDetail?.lesson_data.map((lesson, index) => (
-                      <div
-                        key={index}
-                        className="cursor-pointer"
-                        onClick={() => {
-                          router.push(
-                            `/courses/${courseId}?lesson_id=${lesson.lesson_id}`
-                          );
-                        }}
-                      >
+                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
+                    <div className="hidden lg:flex flex-col gap-10">
+                      {courseDetail?.sub_course_data.map((subCourse, index) => (
                         <CourseModule
                           key={index}
-                          lesson={lesson}
-                          completedLesson={completedLesson}
+                          data={subCourse}
+                          activeDropdown={index === 0}
                         />
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  )}
 
                   {/* COMPLETE QUIZ */}
-                  {isLogin &&
+                  {/* {isLogin &&
                     courseDetail?.assignment_status.slug !==
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
@@ -522,9 +553,9 @@ const CourseDetail = () => {
                           </span>
                         </Button>
                       </div>
-                    )}
+                    )} */}
 
-                  {isLogin &&
+                  {/* {isLogin &&
                     courseDetail?.assignment_status.slug !==
                       ASSIGNMENT_STATUS.FAILED &&
                     courseDetail?.is_completed_assignment === 0 &&
@@ -537,9 +568,9 @@ const CourseDetail = () => {
                           the quiz.
                         </span>
                       </p>
-                    )}
+                    )} */}
                   {/* LEARN AGAIN */}
-                  {isLogin && courseDetail?.is_completed_assignment === 1 && (
+                  {/* {isLogin && courseDetail?.is_completed_assignment === 1 && (
                     <>
                       <Button
                         className="md:w-auto inline-block !px-6 w-full"
@@ -564,7 +595,7 @@ const CourseDetail = () => {
                         </span>
                       </Button>
                     </>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

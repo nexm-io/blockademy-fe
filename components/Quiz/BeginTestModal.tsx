@@ -13,7 +13,7 @@ import Button from "../Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { soleil } from "@/utils/constants";
 import { useEffect } from "react";
-import { getListQuesOfQuiz, getListResult } from "@/redux/features/quiz/action";
+import { getListResult } from "@/redux/features/quiz/action";
 
 export default function BeginTestModal(props: {
   isModalBeginTestOpen: boolean;
@@ -22,7 +22,7 @@ export default function BeginTestModal(props: {
 }) {
   const { id } = useParams();
 
-  const { listQues, listResultData } = useAppSelector((state) => state.quiz);
+  const { listResultData } = useAppSelector((state) => state.quiz);
 
   const router = useRouter();
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ export default function BeginTestModal(props: {
     props.onCloseModalBeginTest();
     if (listResultData) {
       router.push(
-        `/courses/${listResultData?.course_id}?lesson_id=${listResultData.lesson_first?.lesson_id}`
+        `/courses/${listResultData?.course_id}`
       );
     } else {
       router.back();

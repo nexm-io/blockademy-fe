@@ -7,6 +7,9 @@ import {
   resetFinish,
   saveAnswerQuiz,
   getDetailCourseWithoutLoading,
+  getDetailSubCourse,
+  getDetailLesson,
+  setPrevSubCourseSlug,
 } from "./action";
 import { CourseResponse } from "./type";
 
@@ -16,6 +19,10 @@ const initialState: CourseResponse = {
   data: [],
   error: null,
   details: null,
+  subCourseLoading: true,
+  subCourse: null,
+  lessonLoading: true,
+  lesson: null,
   quiz: {
     is_correct: false,
     is_finished: 0,
@@ -27,6 +34,7 @@ const initialState: CourseResponse = {
     current_page: 0,
     total_pages: 0,
   },
+  previousSubCourseSlug: "",
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -61,6 +69,37 @@ const courseReducer = createReducer(initialState, (builder) => {
     .addCase(getDetailCourse.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
       state.error = action.payload.data;
+    });
+
+  builder
+    .addCase(getDetailSubCourse.pending, (state) => {
+      state.subCourseLoading = true;
+    })
+    .addCase(getDetailSubCourse.fulfilled, (state, action) => {
+      state.subCourseLoading = false;
+      if (!action.payload) return;
+      state.subCourse = action.payload.data;
+    })
+    .addCase(getDetailSubCourse.rejected, (state) => {
+      state.subCourseLoading = false;
+    });
+
+  builder
+    .addCase(setPrevSubCourseSlug, (state, action) => {
+      state.previousSubCourseSlug = action.payload;
+    });
+
+  builder
+    .addCase(getDetailLesson.pending, (state) => {
+      state.lessonLoading = true;
+    })
+    .addCase(getDetailLesson.fulfilled, (state, action) => {
+      state.lessonLoading = false;
+      if (!action.payload) return;
+      state.lesson = action.payload.data;
+    })
+    .addCase(getDetailLesson.rejected, (state) => {
+      state.lessonLoading = false;
     });
 
   builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
