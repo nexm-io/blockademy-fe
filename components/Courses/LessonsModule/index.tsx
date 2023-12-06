@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import arrowUp from "@/public/icons/arrow-up.svg";
 import { LessonItem } from "@/redux/features/courses/type";
 import { CircleCheck } from "@styled-icons/fa-solid";
@@ -12,6 +12,8 @@ import circleFilled from "@/public/icons/fill-circle.svg";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import cn from "@/services/cn";
 import { useParams, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface LessonModuleProps {
   data: any;
@@ -23,6 +25,15 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
   const router = useRouter();
   const { subCourseSlug, courseId, lessonSlug } = params;
   const [showDropdown, setShowDropdown] = useState(true);
+  const [isLockedLesson, setIsLockedLesson] = useState(!!data.is_complete);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const token = useSelector((state: RootState) => state.auth.token);
+
+  useEffect(() => {
+    if (!isAuthenticated || !token) setIsLockedLesson(true);
+  }, [isAuthenticated, token]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -69,17 +80,18 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
         </div>
       </div>
       <div
-        className={cn(`px-3 flex-col transition-all duration-150 ease-in-out`, {
+        className={cn(`px-3 flex-col gap-2 transition-all duration-150 ease-in-out`, {
           flex: showDropdown,
           hidden: !showDropdown,
         })}
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
           <div
-            className={cn(`flex justify-between p-[6px]`, {
-              "cursor-pointer": !lessonItem.is_locked,
+            className={cn(`flex justify-between p-[6px]cursor-pointer`, {
+              "!cursor-default": lessonItem.is_locked || isLockedLesson,
             })}
             onClick={() => {
+              if (isLockedLesson) return;
               if (!lessonItem.is_locked)
                 router.push(
                   `/courses/${courseId}/${subCourseSlug}/lessons/${lessonItem.slug}`
@@ -89,13 +101,13 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
           >
             <div
               className={cn("font-light", {
-                "text-grey-400": lessonItem.is_locked,
+                "text-grey-400": lessonItem.is_locked || isLockedLesson,
               })}
             >
               {lessonItem.title}
             </div>
             <div className="flex-1 flex justify-end">
-              {lessonItem.is_locked ? (
+              {isLockedLesson || lessonItem.is_locked ? (
                 <Image
                   alt="circle-fill-icon"
                   className="w-4 h-[18px]"

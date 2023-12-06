@@ -140,7 +140,7 @@ const LessonDetail = () => {
                   <li className="leading-[23px] hover:underline">
                     <Link href={`/courses/${courseId}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse.title}
+                        {subCourse.course_title}
                       </span>
                     </Link>
                   </li>

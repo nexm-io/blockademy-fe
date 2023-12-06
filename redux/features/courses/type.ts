@@ -137,6 +137,7 @@ export interface ModuleItem {
   id: number;
   slug: string;
   title: string;
+  is_locked: number;
 }
 
 export interface LessonItem {
