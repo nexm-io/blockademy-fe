@@ -31,6 +31,7 @@ export interface CourseResponse {
   lessonLoading: boolean;
   lesson: any;
   previousSubCourseSlug: string;
+  nextLesson: any;
 }
 
 export interface ListCourse {

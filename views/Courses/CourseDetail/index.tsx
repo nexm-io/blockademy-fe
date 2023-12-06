@@ -29,10 +29,7 @@ const CourseDetail = () => {
   const courseId = params.courseId;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const pathName = usePathname();
-  const [showPopup, setShowPopup] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const [registered, setRegistered] = useState<boolean>(false);
   const [stepCompleted, setStepCompleted] = useState<string[]>([]);
   const [completedLesson, setCompletedLesson] = useState<number[]>([]);
   const [urlNextLesson, setUrlNextLesson] = useState<string>("");
@@ -131,29 +128,6 @@ const CourseDetail = () => {
     setIsWatching(status);
   };
 
-  const handleApplyCourse = async () => {
-    if (!isLogin) {
-      dispatch(setRefUrl(pathName));
-      router.push("/login");
-      toast.info("Please login to continue");
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await api.get(
-        `/api/v10/register-course?course_id=${courseId}`
-      );
-      if (response.status === 200) {
-        setRegistered(true);
-        setShowPopup(true);
-      }
-    } catch (error) {
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // const handleScroll = useCallback(() => {
   //   const bodyBottom = document.body.getBoundingClientRect().bottom;
   //   const bottom = Math.round(bodyBottom) <= window.innerHeight;
@@ -232,10 +206,6 @@ const CourseDetail = () => {
       if (payload?.response?.data?.error) router.push("/not-found");
     })();
   }, []);
-
-  useEffect(() => {
-    if (courseDetail?.id) setRegistered(!!courseDetail.is_registered);
-  }, [courseDetail]);
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -451,7 +421,7 @@ const CourseDetail = () => {
 
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {!isLogin && (
+                  {/* {!isLogin && (
                     <div className="flex justify-end">
                       <Button
                         onClick={handleApplyCourse}
@@ -467,7 +437,7 @@ const CourseDetail = () => {
                         )}
                       </Button>
                     </div>
-                  )}
+                  )} */}
 
                   {/* APPLY COURSE */}
                   {/* {isLogin &&
@@ -601,30 +571,6 @@ const CourseDetail = () => {
             </div>
           </section>
         </>
-      )}
-
-      {showPopup && (
-        <InfoPopup
-          title="Congratulations!"
-          desc={
-            <div className="text-gray-700 text-center mb-4">
-              <p>Thanks for joining the course.</p>
-              <p>
-                Please enjoy your journey, complete quiz and get certificate.
-              </p>
-            </div>
-          }
-          onClose={() => setShowPopup(false)}
-          className="md:max-w-[359px]"
-        >
-          <Button
-            type="button"
-            onClick={() => setShowPopup(false)}
-            className="mt-2 w-[184px]"
-          >
-            Yap, sure
-          </Button>
-        </InfoPopup>
       )}
       <BackToTop />
     </div>

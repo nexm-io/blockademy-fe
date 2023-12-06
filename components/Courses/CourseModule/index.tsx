@@ -9,7 +9,6 @@ import { CircleCheck } from "@styled-icons/fa-solid";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from "next/link";
 import cn from "@/services/cn";
 
 interface CourseModuleProps {
@@ -24,9 +23,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   const params = useParams();
   const { courseId } = params;
   const [showDropdown, setShowDropdown] = useState(activeDropdown);
-  const [isLockedLesson, setIsLockedLesson] = useState(
-    !!data.is_complete
-  );
+  const [isLockedLesson, setIsLockedLesson] = useState(false);
   const router = useRouter();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -82,50 +79,53 @@ const CourseModule: React.FC<CourseModuleProps> = ({
       )} */}
       </div>
       <div
-        className={cn(`px-3 flex-col transition-all duration-150 ease-in-out gap-2`, {
-          flex: showDropdown,
-          hidden: !showDropdown,
-        })}
+        className={cn(
+          `px-3 flex-col transition-all duration-150 ease-in-out gap-2`,
+          {
+            flex: showDropdown,
+            hidden: !showDropdown,
+          }
+        )}
       >
         {data.module_data.map((moduleItem: ModuleItem) => (
           <div
-          className={cn(`flex justify-between p-[6px] cursor-pointer`, {
-            "!cursor-default": moduleItem.is_locked || isLockedLesson,
-          })}
-          onClick={() => {
-            if (isLockedLesson) return;
-            if (!moduleItem.is_locked)
-              router.push(
-                `/courses/${courseId}/${data.slug}/lessons/${moduleItem.lesson_data.slug}`
-              );
-          }}
-          key={moduleItem.id}
-        >
-          <div
-            className={cn("font-light", {
-              "text-grey-400": moduleItem.is_locked || isLockedLesson,
+            className={cn(`flex justify-between p-[6px] cursor-pointer`, {
+              "!cursor-default": isLockedLesson || moduleItem.is_locked,
             })}
+            onClick={() => {
+              if (isLockedLesson) return;
+              if (!moduleItem.is_locked)
+                router.push(
+                  `/courses/${courseId}/${data.slug}/lessons/${moduleItem.lesson_data.slug}`
+                );
+            }}
+            key={moduleItem.id}
           >
-            {moduleItem.title}
+            <div
+              className={cn("font-light", {
+                "text-grey-400": moduleItem.is_locked || isLockedLesson,
+              })}
+            >
+              {moduleItem.title}
+            </div>
+            <div className="flex-1 flex justify-end">
+              {isLockedLesson || moduleItem.is_locked ? (
+                <Image
+                  alt="circle-fill-icon"
+                  className="w-4 h-[18px]"
+                  src={lock}
+                />
+              ) : moduleItem.is_complete_module ? (
+                <CircleCheck
+                  className={`${"text-blue-100 w-[18px] h-[18px]"}`}
+                />
+              ) : (
+                <CircleCheck
+                  className={`${"text-white-300 w-[18px] h-[18px]"}`}
+                />
+              )}
+            </div>
           </div>
-          <div className="flex-1 flex justify-end">
-            {isLockedLesson || moduleItem.is_locked ? (
-              <Image
-                alt="circle-fill-icon"
-                className="w-4 h-[18px]"
-                src={lock}
-              />
-            ): moduleItem.is_complete_module ? (
-              <CircleCheck
-                className={`${"text-blue-100 w-[18px] h-[18px]"}`}
-              />
-            ) : (
-              <CircleCheck
-                className={`${"text-white-300 w-[18px] h-[18px]"}`}
-              />
-            )}
-          </div>
-        </div>
         ))}
         {/* <div className="flex justify-between p-[6px]">
           <Link href="#" className="font-light">

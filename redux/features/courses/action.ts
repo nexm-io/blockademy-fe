@@ -120,6 +120,20 @@ export const getDetailLesson = createAsyncThunk(
   }
 );
 
+export const getNextLesson = createAsyncThunk(
+  "courses/get-next-lesson",
+  async (courseId: string) => {
+    try {
+      const { data: nextLesson } = await api.get(
+        `api/v10/get-next-lesson?course_id=${courseId}`
+      );
+      return nextLesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const setPrevSubCourseSlug = createAction<any>("courses/set-prev-sub-course-slug");
 
 export const resetFinish = createAction<any>("courses/reset-finish");
