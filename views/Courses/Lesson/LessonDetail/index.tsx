@@ -68,7 +68,7 @@ const LessonDetail = () => {
   }, [isShowMenu]);
 
   return (
-    <div className="container">
+    <div className="container min-h-screen">
       {subCourseLoading ? (
         <div className="md:mt-[56px] mt-8">
           <div className="">
@@ -140,7 +140,7 @@ const LessonDetail = () => {
                   <li className="leading-[23px] hover:underline">
                     <Link href={`/courses/${courseId}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse.tile}
+                        {subCourse.title}
                       </span>
                     </Link>
                   </li>

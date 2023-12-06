@@ -7,23 +7,23 @@ import { LessonItem } from "@/redux/features/courses/type";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import clock from "@/public/icons/clockfilled.svg";
 import quiz from "@/public/icons/quiz.svg";
+import lock from "@/public/icons/lock.svg";
 import circleFilled from "@/public/icons/fill-circle.svg";
 import { secondsToMinutes } from "@/utils/convertToMinutes";
 import cn from "@/services/cn";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface LessonModuleProps {
   data: any;
   courseId: string;
 }
 
-const LessonModule: React.FC<LessonModuleProps> = ({
-  data,
-}) => {
+const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
   const params = useParams();
+  const router = useRouter();
   const { subCourseSlug, courseId, lessonSlug } = params;
   const [showDropdown, setShowDropdown] = useState(true);
+
   return (
     <div className="flex flex-col gap-4">
       <div
@@ -75,28 +75,49 @@ const LessonModule: React.FC<LessonModuleProps> = ({
         })}
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
-          <Link
-            href={`/courses/${courseId}/${subCourseSlug}/lessons/${lessonItem.slug}`}
-            className="flex justify-between p-[6px] cursor-pointer"
+          <div
+            className={cn(`flex justify-between p-[6px]`, {
+              "cursor-pointer": !lessonItem.is_locked,
+            })}
+            onClick={() => {
+              if (!lessonItem.is_locked)
+                router.push(
+                  `/courses/${courseId}/${subCourseSlug}/lessons/${lessonItem.slug}`
+                );
+            }}
             key={lessonItem.id}
           >
-            <div className="font-light">{lessonItem.title}</div>
+            <div
+              className={cn("font-light", {
+                "text-grey-400": lessonItem.is_locked,
+              })}
+            >
+              {lessonItem.title}
+            </div>
             <div className="flex-1 flex justify-end">
-              {lessonItem.slug === lessonSlug ? (
-                <Image alt="circle-fill-icon" className="w-[18px] h-[18px]" src={circleFilled} />
+              {lessonItem.is_locked ? (
+                <Image
+                  alt="circle-fill-icon"
+                  className="w-4 h-[18px]"
+                  src={lock}
+                />
+              ) : lessonItem.slug === lessonSlug ? (
+                <Image
+                  alt="circle-fill-icon"
+                  className="w-[18px] h-[18px]"
+                  src={circleFilled}
+                />
+              ) : lessonItem.is_complete_lesson ? (
+                <CircleCheck
+                  className={`${"text-blue-100 w-[18px] h-[18px]"}`}
+                />
               ) : (
-                lessonItem.is_complete_lesson ? (
-                  <CircleCheck
-                    className={`${"text-blue-100 w-[18px] h-[18px]"}`}
-                  />
-                ) : (
-                  <CircleCheck
-                    className={`${"text-white-300 w-[18px] h-[18px]"}`}
-                  />
-                )
+                <CircleCheck
+                  className={`${"text-white-300 w-[18px] h-[18px]"}`}
+                />
               )}
             </div>
-          </Link>
+          </div>
         ))}
         {/* <div className="flex justify-between p-[6px]">
           <Link href="#" className="font-light">

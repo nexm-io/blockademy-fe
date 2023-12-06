@@ -245,7 +245,7 @@ const CourseDetail = () => {
   }, [isShowMenu]);
 
   return (
-    <div className="container">
+    <div className="container min-h-screen">
       {isLoading ? (
         <div className="md:mt-[56px] mt-8">
           <>

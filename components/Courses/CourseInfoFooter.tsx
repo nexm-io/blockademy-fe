@@ -77,7 +77,7 @@ export default function CourseInfoFooter() {
 
   return (
     <div
-      className={cn(`bg-white-100 py-[22px]`, {
+      className={cn(`bg-white-100 py-[22px] transition-all duration-150 ease-in-out`, {
         "fixed bottom-0 left-0 right-0": isSticky,
       })}
       style={{ boxShadow: "0px -3px 20px 0px rgba(170, 170, 170, 0.25)" }}

@@ -149,6 +149,7 @@ export interface LessonItem {
   link: string;
   description: string;
   title: string;
+  is_locked: number;
 }
 
 export interface CourseDetailResponse {
