@@ -125,9 +125,23 @@ export const getNextLesson = createAsyncThunk(
   async (courseId: string) => {
     try {
       const { data: nextLesson } = await api.get(
-        `api/v10/get-next-lesson?course_id=${courseId}`
+        `/api/v10/get-next-lesson?course_id=${courseId}`
       );
       return nextLesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getCompleteRate = createAsyncThunk(
+  "courses/get-complete-rate",
+  async (courseId: string) => {
+    try {
+      const { data: completeRate } = await api.get(
+        `/api/v10/course/${courseId}/get-complete-rate`
+      );
+      return completeRate;
     } catch (error) {
       return error;
     }

@@ -32,6 +32,9 @@ export interface CourseResponse {
   lesson: any;
   previousSubCourseSlug: string;
   nextLesson: any;
+  completeRate: {
+    total_completed: number;
+  };
 }
 
 export interface ListCourse {

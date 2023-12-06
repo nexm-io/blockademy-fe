@@ -11,6 +11,7 @@ import {
   getDetailLesson,
   setPrevSubCourseSlug,
   getNextLesson,
+  getCompleteRate,
 } from "./action";
 import { CourseResponse } from "./type";
 import { RootState } from "@/redux/store";
@@ -38,6 +39,9 @@ const initialState: CourseResponse = {
   },
   previousSubCourseSlug: "",
   nextLesson: {},
+  completeRate: {
+    total_completed: 0,
+  },
 };
 
 const courseReducer = createReducer(initialState, (builder) => {
@@ -74,28 +78,27 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = action.payload.data;
     });
 
-  builder
-    .addCase(getNextLesson.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      state.nextLesson = action.payload.data;
-    })
-  builder
-  .addCase(getDetailSubCourse.pending, (state) => {
-    state.subCourseLoading = true;
-  })
-  .addCase(getDetailSubCourse.fulfilled, (state, action) => {
-    state.subCourseLoading = false;
+  builder.addCase(getNextLesson.fulfilled, (state, action) => {
     if (!action.payload) return;
-    state.subCourse = action.payload.data;
-  })
-  .addCase(getDetailSubCourse.rejected, (state) => {
-    state.subCourseLoading = false;
+    state.nextLesson = action.payload.data;
   });
 
   builder
-    .addCase(setPrevSubCourseSlug, (state, action) => {
-      state.previousSubCourseSlug = action.payload;
+    .addCase(getDetailSubCourse.pending, (state) => {
+      state.subCourseLoading = true;
+    })
+    .addCase(getDetailSubCourse.fulfilled, (state, action) => {
+      state.subCourseLoading = false;
+      if (!action.payload) return;
+      state.subCourse = action.payload.data;
+    })
+    .addCase(getDetailSubCourse.rejected, (state) => {
+      state.subCourseLoading = false;
     });
+
+  builder.addCase(setPrevSubCourseSlug, (state, action) => {
+    state.previousSubCourseSlug = action.payload;
+  });
 
   builder
     .addCase(getDetailLesson.pending, (state) => {
@@ -109,6 +112,12 @@ const courseReducer = createReducer(initialState, (builder) => {
     .addCase(getDetailLesson.rejected, (state) => {
       state.lessonLoading = false;
     });
+
+  builder
+    .addCase(getCompleteRate.fulfilled, (state, action) => {
+      if (!action.payload) return;
+      state.completeRate = action.payload.data;
+    })
 
   builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
     if (!action.payload) return;

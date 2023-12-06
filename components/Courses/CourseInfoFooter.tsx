@@ -15,9 +15,10 @@ import { Loader3 } from "@styled-icons/remix-line";
 import { getNextLesson } from "@/redux/features/courses/action";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
-const patternLessonDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?\/lessons\/[^\/]+(?:\/[^\/]+)?$/;
+const patternLessonDetail =
+  /^\/courses\/[^\/]+(?:\/[^\/]+)?\/lessons\/[^\/]+(?:\/[^\/]+)?$/;
 
-const CircularProgress = ({ percent }: { percent: any }) => {
+const CircularProgress = ({ percent }: { percent: number }) => {
   return (
     <div className="flex justify-normal">
       <div
@@ -37,7 +38,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
             <circle
               className="text-indigo-500 stroke-current"
               style={{
-                strokeDasharray: "400, 400",
+                strokeDasharray: `400, 400`,
                 transition: "stroke-dashoffset 0.35s",
                 transform: "rotate(-90deg)",
                 transformOrigin: "50% 50%",
@@ -48,7 +49,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
               cy={50}
               r={40}
               fill="transparent"
-              strokeDashoffset="calc(400 - (400 * 31) / 100)"
+              strokeDashoffset={`calc(400 - (${percent} * 250) / 100)`}
             />
           </svg>
         </div>
@@ -75,7 +76,7 @@ export default function CourseInfoFooter() {
   const [isCourseDetailPage, setIsCourseDetailPage] = useState<boolean>(false);
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const pathName = usePathname();
-  const { details, nextLesson } = useAppSelector(selectCourses);
+  const { details, nextLesson, completeRate } = useAppSelector(selectCourses);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -156,13 +157,15 @@ export default function CourseInfoFooter() {
               }
             )}
           >
-            {registered && (
+            {isLogin && registered && (
               <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
                 <div className="flex items-center gap-[18px]">
-                  <CircularProgress percent={75} />
+                  <CircularProgress percent={completeRate.total_completed} />
                   <div className="text-sm leading-[21px]">
-                    <p className="font-medium">5% Completed. Keep going!</p>
-                    <p className="text-grey-800">594 builders ahead of you.</p>
+                    <p className="font-medium">
+                      {completeRate.total_completed}% Completed. Keep going!
+                    </p>
+                    {/* <p className="text-grey-800">594 builders ahead of you.</p> */}
                   </div>
                 </div>
               </div>
@@ -189,13 +192,15 @@ export default function CourseInfoFooter() {
             )}
 
             {/* LET'S GO */}
-            {registered && isCourseDetailPage && (
+            {isLogin && registered && isCourseDetailPage && (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
                   disabled={!details?.id}
-                  onClick={()=>{
-                    router.push(`/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`)
+                  onClick={() => {
+                    router.push(
+                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
+                    );
                   }}
                 >
                   Let’s go
