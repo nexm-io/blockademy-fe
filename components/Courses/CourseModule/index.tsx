@@ -94,10 +94,11 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             })}
             onClick={() => {
               if (isLockedLesson) return;
-              if (!moduleItem.is_locked)
+              if (!moduleItem.is_locked) {
                 router.push(
                   `/courses/${courseId}/${data.slug}/lessons/${moduleItem.lesson_data.slug}`
                 );
+              }
             }}
             key={moduleItem.id}
           >

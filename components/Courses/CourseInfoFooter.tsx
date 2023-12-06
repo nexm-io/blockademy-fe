@@ -12,7 +12,13 @@ import { toast } from "react-toastify";
 import api from "@/services/axios";
 import InfoPopup from "../Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
-import { getNextLesson } from "@/redux/features/courses/action";
+import {
+  completeLesson,
+  getDetailCourse,
+  getDetailSubCourse,
+  getNextLesson,
+  getNextPrevLesson,
+} from "@/redux/features/courses/action";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -76,12 +82,13 @@ export default function CourseInfoFooter() {
   const [isCourseDetailPage, setIsCourseDetailPage] = useState<boolean>(false);
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const pathName = usePathname();
-  const { details, nextLesson, completeRate } = useAppSelector(selectCourses);
+  const { details, nextLesson, completeRate, nextPrevLesson } =
+    useAppSelector(selectCourses);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
-  const courseId = params.courseId;
+  const { courseId, subCourseSlug, lessonSlug } = params;
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
@@ -106,10 +113,36 @@ export default function CourseInfoFooter() {
     }
   };
 
+  const handlePrevLesson = () => {
+    if (!nextPrevLesson.previous_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${subCourseSlug}/lessons/${nextPrevLesson.previous_data.lesson_slug}`
+    );
+  };
+
+  const handleNextLesson = async () => {
+    if (!nextPrevLesson.next_data.lesson_slug) return;
+    await dispatch(
+      completeLesson({
+        courseId: courseId as string,
+        moduleId: nextPrevLesson.current_data.module_id as number,
+        lessonId: nextPrevLesson.current_data.lesson_id as number,
+      })
+    );
+    await dispatch(
+      getDetailSubCourse({
+        subCourseSlug: subCourseSlug as any,
+        lessonSlug: lessonSlug as any,
+      })
+    );
+    router.push(
+      `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
+    );
+  };
+
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
     setIsLessonDetailPage(patternLessonDetail.test(pathName));
-    console.log(pathName);
   }, [pathName]);
 
   useEffect(() => {
@@ -130,12 +163,29 @@ export default function CourseInfoFooter() {
   }, []);
 
   useEffect(() => {
+    if (!isLogin) setRegistered(false);
+  }, [isLogin]);
+
+  useEffect(() => {
+    if (isLessonDetailPage && !details?.id)
+      dispatch(getDetailCourse(courseId as string));
+  }, [isLessonDetailPage, details, dispatch, courseId]);
+
+  useEffect(() => {
     if (details?.id) setRegistered(!!details.is_registered);
   }, [details]);
 
   useEffect(() => {
+    if (isLessonDetailPage) {
+      dispatch(
+        getNextPrevLesson({
+          subCourseIdOrSlug: subCourseSlug as string,
+          lessonSlug: lessonSlug as string,
+        })
+      );
+    }
     dispatch(getNextLesson(courseId as string));
-  }, []);
+  }, [isLessonDetailPage]);
 
   return (
     <>
@@ -218,12 +268,22 @@ export default function CourseInfoFooter() {
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered && (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-                <Button className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3">
+                <Button
+                  className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+                  disabled={!nextPrevLesson?.previous_data?.lesson_slug}
+                  onClick={handlePrevLesson}
+                >
                   <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
                     Previous
                   </span>
                 </Button>
-                <Button className="w-auto md:min-w-[184px]">Next</Button>
+                <Button
+                  className="w-auto md:min-w-[184px]"
+                  disabled={!nextPrevLesson?.next_data?.lesson_slug}
+                  onClick={handleNextLesson}
+                >
+                  Next
+                </Button>
               </div>
             )}
           </div>

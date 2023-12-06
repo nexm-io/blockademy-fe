@@ -12,6 +12,8 @@ import {
   setPrevSubCourseSlug,
   getNextLesson,
   getCompleteRate,
+  getNextPrevLesson,
+  completeLesson,
 } from "./action";
 import { CourseResponse } from "./type";
 import { RootState } from "@/redux/store";
@@ -41,6 +43,32 @@ const initialState: CourseResponse = {
   nextLesson: {},
   completeRate: {
     total_completed: 0,
+  },
+  nextPrevLesson: {
+    previous_data: {
+      lesson_id: 0,
+      lesson_slug: "",
+      module_id: 0,
+      module_slug: "",
+      sub_course_id: 0,
+      sub_course_slug: "",
+    },
+    current_data: {
+      lesson_id: 0,
+      lesson_slug: "",
+      module_id: 0,
+      module_slug: "",
+      sub_course_id: 0,
+      sub_course_slug: "",
+    },
+    next_data: {
+      lesson_id: 0,
+      lesson_slug: "",
+      module_id: 0,
+      module_slug: "",
+      sub_course_id: 0,
+      sub_course_slug: "",
+    },
   },
 };
 
@@ -83,6 +111,16 @@ const courseReducer = createReducer(initialState, (builder) => {
     state.nextLesson = action.payload.data;
   });
 
+  builder.addCase(getNextPrevLesson.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    state.nextPrevLesson = action.payload.data;
+  });
+
+  builder.addCase(completeLesson.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    console.log(action.payload.data);
+  });
+
   builder
     .addCase(getDetailSubCourse.pending, (state) => {
       state.subCourseLoading = true;
@@ -113,11 +151,10 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.lessonLoading = false;
     });
 
-  builder
-    .addCase(getCompleteRate.fulfilled, (state, action) => {
-      if (!action.payload) return;
-      state.completeRate = action.payload.data;
-    })
+  builder.addCase(getCompleteRate.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    state.completeRate = action.payload.data;
+  });
 
   builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
     if (!action.payload) return;

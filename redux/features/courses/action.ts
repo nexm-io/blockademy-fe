@@ -134,6 +134,26 @@ export const getNextLesson = createAsyncThunk(
   }
 );
 
+export const getNextPrevLesson = createAsyncThunk(
+  "courses/get-next-prev-lesson",
+  async ({
+    subCourseIdOrSlug,
+    lessonSlug,
+  }: {
+    subCourseIdOrSlug: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: nextPrevLesson } = await api.get(
+        `/api/v10/sub-course/${subCourseIdOrSlug}/previous-next-lesson?lesson_id=${lessonSlug}`
+      );
+      return nextPrevLesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getCompleteRate = createAsyncThunk(
   "courses/get-complete-rate",
   async (courseId: string) => {
@@ -148,6 +168,31 @@ export const getCompleteRate = createAsyncThunk(
   }
 );
 
-export const setPrevSubCourseSlug = createAction<any>("courses/set-prev-sub-course-slug");
+export const completeLesson = createAsyncThunk(
+  "courses/complete-lesson",
+  async ({
+    courseId,
+    moduleId,
+    lessonId,
+  }: {
+    courseId: string;
+    moduleId: number;
+    lessonId: number;
+  }) => {
+    try {
+      const { data } = await api.post(
+        `/api/v10/course/${courseId}/${moduleId}/lesson/${lessonId}`
+      );
+      console.log(data);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const setPrevSubCourseSlug = createAction<any>(
+  "courses/set-prev-sub-course-slug"
+);
 
 export const resetFinish = createAction<any>("courses/reset-finish");

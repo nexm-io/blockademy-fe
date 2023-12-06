@@ -3,7 +3,7 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import React, { useCallback, useRef } from "react";
+import React from "react";
 import BackToTop from "@/components/BackToTop";
 import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
@@ -140,7 +140,7 @@ const LessonDetail = () => {
                   <li className="leading-[23px] hover:underline">
                     <Link href={`/courses/${courseId}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse.course_title}
+                        {subCourse?.course_title}
                       </span>
                     </Link>
                   </li>
@@ -227,6 +227,12 @@ const LessonDetail = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
+                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
+                  {lesson?.title}
+                </h1>
               </div>
 
               {isLogin ? null : (
