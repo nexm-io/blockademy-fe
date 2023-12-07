@@ -124,7 +124,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
                 />
               ) : lessonItem.is_complete_lesson ? (
                 <CircleCheck
-                  className={`${"text-blue-100 w-[18px] h-[18px]"}`}
+                  className={`${"text-green-400 w-[18px] h-[18px]"}`}
                 />
               ) : (
                 <CircleCheck
