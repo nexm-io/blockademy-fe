@@ -12,12 +12,21 @@ import { toast } from "react-toastify";
 import api from "@/services/axios";
 import InfoPopup from "../Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
-import { getNextLesson } from "@/redux/features/courses/action";
+import {
+  completeLesson,
+  getCompleteRate,
+  getDetailCourse,
+  getDetailSubCourse,
+  getNextLesson,
+  getNextPrevLesson,
+} from "@/redux/features/courses/action";
+import { RootState } from "@/redux/store";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
-const patternLessonDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?\/lessons\/[^\/]+(?:\/[^\/]+)?$/;
+const patternLessonDetail =
+  /^\/courses\/[^\/]+(?:\/[^\/]+)?\/lessons\/[^\/]+(?:\/[^\/]+)?$/;
 
-const CircularProgress = ({ percent }: { percent: any }) => {
+const CircularProgress = ({ percent }: { percent: number }) => {
   return (
     <div className="flex justify-normal">
       <div
@@ -37,7 +46,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
             <circle
               className="text-indigo-500 stroke-current"
               style={{
-                strokeDasharray: "400, 400",
+                strokeDasharray: `400, 400`,
                 transition: "stroke-dashoffset 0.35s",
                 transform: "rotate(-90deg)",
                 transformOrigin: "50% 50%",
@@ -48,7 +57,7 @@ const CircularProgress = ({ percent }: { percent: any }) => {
               cy={50}
               r={40}
               fill="transparent"
-              strokeDashoffset="calc(400 - (400 * 31) / 100)"
+              strokeDashoffset={`calc(400 - (${percent} * 250) / 100)`}
             />
           </svg>
         </div>
@@ -75,12 +84,13 @@ export default function CourseInfoFooter() {
   const [isCourseDetailPage, setIsCourseDetailPage] = useState<boolean>(false);
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const pathName = usePathname();
-  const { details, nextLesson } = useAppSelector(selectCourses);
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
+  const { details, nextLesson, completeRate, nextPrevLesson } =
+    useAppSelector(selectCourses);
+  const isLogin = useAppSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
-  const courseId = params.courseId;
+  const { courseId, subCourseSlug, lessonSlug } = params;
 
   const handleApplyCourse = async () => {
     if (!isLogin) {
@@ -105,10 +115,36 @@ export default function CourseInfoFooter() {
     }
   };
 
+  const handlePrevLesson = () => {
+    if (!nextPrevLesson.previous_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${subCourseSlug}/lessons/${nextPrevLesson.previous_data.lesson_slug}`
+    );
+  };
+
+  const handleNextLesson = async () => {
+    if (!nextPrevLesson.next_data.lesson_slug) return;
+    await dispatch(
+      completeLesson({
+        courseId: courseId as string,
+        moduleId: nextPrevLesson.current_data.module_id as number,
+        lessonId: nextPrevLesson.current_data.lesson_id as number,
+      })
+    );
+    await dispatch(
+      getDetailSubCourse({
+        subCourseSlug: subCourseSlug as any,
+        lessonSlug: lessonSlug as any,
+      })
+    );
+    router.push(
+      `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
+    );
+  };
+
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
     setIsLessonDetailPage(patternLessonDetail.test(pathName));
-    console.log(pathName);
   }, [pathName]);
 
   useEffect(() => {
@@ -129,12 +165,36 @@ export default function CourseInfoFooter() {
   }, []);
 
   useEffect(() => {
+    if (!isLogin) setRegistered(false);
+  }, [isLogin]);
+
+  useEffect(() => {
+    if (isLessonDetailPage && !details?.id)
+      dispatch(getDetailCourse(courseId as string));
+  }, [isLessonDetailPage, details, dispatch, courseId]);
+
+  useEffect(() => {
+    dispatch(getCompleteRate(courseId as string));
+  }, [courseId]);
+
+  useEffect(() => {
     if (details?.id) setRegistered(!!details.is_registered);
   }, [details]);
 
   useEffect(() => {
-    dispatch(getNextLesson(courseId as string));
-  }, []);
+    if (isLessonDetailPage) {
+      dispatch(
+        getNextPrevLesson({
+          subCourseIdOrSlug: subCourseSlug as string,
+          lessonSlug: lessonSlug as string,
+        })
+      );
+    }
+  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
+
+  useEffect(() => {
+    if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
+  }, [isCourseDetailPage]);
 
   return (
     <>
@@ -156,13 +216,15 @@ export default function CourseInfoFooter() {
               }
             )}
           >
-            {registered && (
+            {isLogin && registered && (
               <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
                 <div className="flex items-center gap-[18px]">
-                  <CircularProgress percent={75} />
+                  <CircularProgress percent={completeRate.total_completed} />
                   <div className="text-sm leading-[21px]">
-                    <p className="font-medium">5% Completed. Keep going!</p>
-                    <p className="text-grey-800">594 builders ahead of you.</p>
+                    <p className="font-medium">
+                      {completeRate.total_completed}% Completed. Keep going!
+                    </p>
+                    {/* <p className="text-grey-800">594 builders ahead of you.</p> */}
                   </div>
                 </div>
               </div>
@@ -189,13 +251,15 @@ export default function CourseInfoFooter() {
             )}
 
             {/* LET'S GO */}
-            {registered && isCourseDetailPage && (
+            {isLogin && registered && isCourseDetailPage && (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
                   disabled={!details?.id}
-                  onClick={()=>{
-                    router.push(`/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`)
+                  onClick={() => {
+                    router.push(
+                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
+                    );
                   }}
                 >
                   Let’s go
@@ -213,12 +277,22 @@ export default function CourseInfoFooter() {
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered && (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-                <Button className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3">
+                <Button
+                  className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+                  disabled={!nextPrevLesson?.previous_data?.lesson_slug}
+                  onClick={handlePrevLesson}
+                >
                   <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
                     Previous
                   </span>
                 </Button>
-                <Button className="w-auto md:min-w-[184px]">Next</Button>
+                <Button
+                  className="w-auto md:min-w-[184px]"
+                  disabled={!nextPrevLesson?.next_data?.lesson_slug}
+                  onClick={handleNextLesson}
+                >
+                  Next
+                </Button>
               </div>
             )}
           </div>

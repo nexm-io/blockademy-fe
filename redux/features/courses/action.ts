@@ -125,7 +125,7 @@ export const getNextLesson = createAsyncThunk(
   async (courseId: string) => {
     try {
       const { data: nextLesson } = await api.get(
-        `api/v10/get-next-lesson?course_id=${courseId}`
+        `/api/v10/get-next-lesson?course_id=${courseId}`
       );
       return nextLesson;
     } catch (error) {
@@ -134,6 +134,64 @@ export const getNextLesson = createAsyncThunk(
   }
 );
 
-export const setPrevSubCourseSlug = createAction<any>("courses/set-prev-sub-course-slug");
+export const getNextPrevLesson = createAsyncThunk(
+  "courses/get-next-prev-lesson",
+  async ({
+    subCourseIdOrSlug,
+    lessonSlug,
+  }: {
+    subCourseIdOrSlug: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: nextPrevLesson } = await api.get(
+        `/api/v10/sub-course/${subCourseIdOrSlug}/previous-next-lesson?lesson_id=${lessonSlug}`
+      );
+      return nextPrevLesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getCompleteRate = createAsyncThunk(
+  "courses/get-complete-rate",
+  async (courseId: string) => {
+    try {
+      const { data: completeRate } = await api.get(
+        `/api/v10/course/${courseId}/get-complete-rate`
+      );
+      return completeRate;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const completeLesson = createAsyncThunk(
+  "courses/complete-lesson",
+  async ({
+    courseId,
+    moduleId,
+    lessonId,
+  }: {
+    courseId: string;
+    moduleId: number;
+    lessonId: number;
+  }) => {
+    try {
+      const { data } = await api.post(
+        `/api/v10/course/${courseId}/${moduleId}/lesson/${lessonId}`
+      );
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const setPrevSubCourseSlug = createAction<any>(
+  "courses/set-prev-sub-course-slug"
+);
 
 export const resetFinish = createAction<any>("courses/reset-finish");

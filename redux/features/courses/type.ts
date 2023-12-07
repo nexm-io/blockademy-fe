@@ -32,6 +32,23 @@ export interface CourseResponse {
   lesson: any;
   previousSubCourseSlug: string;
   nextLesson: any;
+  completeRate: {
+    total_completed: number;
+  };
+  nextPrevLesson: {
+    previous_data: LessonData;
+    next_data: LessonData;
+    current_data: LessonData;
+  };
+}
+
+export interface LessonData {
+  lesson_id: number;
+  lesson_slug: string;
+  module_id: number;
+  module_slug: string;
+  sub_course_id: number;
+  sub_course_slug: string;
 }
 
 export interface ListCourse {

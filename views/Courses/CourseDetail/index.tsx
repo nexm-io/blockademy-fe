@@ -5,35 +5,23 @@ import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
-import Button from "@/components/Common/Button";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
-import api from "@/services/axios";
-import InfoPopup from "@/components/Popup/InfoPopup";
-import { Loader3 } from "@styled-icons/remix-line";
 import BackToTop from "@/components/BackToTop";
 import { Skeleton } from "@mui/material";
-import { toast } from "react-toastify";
-import { setRefUrl } from "@/redux/features/auth/action";
 import cn from "@/services/cn";
 
 import RewardDetail from "@/components/Reward/RewardDetail";
-import { useSelector } from "react-redux";
 
 const CourseDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
   const courseId = params.courseId;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const pathName = usePathname();
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const [stepCompleted, setStepCompleted] = useState<string[]>([]);
-  const [completedLesson, setCompletedLesson] = useState<number[]>([]);
-  const [urlNextLesson, setUrlNextLesson] = useState<string>("");
-  const [isNextLesson, setIsNextLesson] = useState<boolean>(false);
 
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
@@ -379,46 +367,28 @@ const CourseDetail = () => {
             </div>
 
             {/* PASSED CASE */}
-            {/* {isLogin &&
+            {isLogin &&
               courseDetail?.is_registered === 1 &&
               courseDetail?.is_completed_assignment === 1 && (
                 <RewardDetail courseDetail={courseDetail} />
-              )} */}
+              )}
 
             <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
               <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
                 <div className="w-full">
-                  {courseDetail ? (
-                    courseDetail?.sub_course_data.map((lesson, index) => (
-                      <div key={index}>
-                        {lesson.lesson_type_format === 2 &&
-                          formState === "video" && (
-                            <>
-                              <VideoPlayer
-                                typeUpload={lesson.lesson_type_upload}
-                                url={lesson.lesson_link}
-                                onChangeForm={() => {}}
-                                onChangeStatus={handleOnchange}
-                              />
-                            </>
-                          )}
-                        <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                          <div
-                            id="content"
-                            className="flex flex-col gap-3 course-content text-base"
-                            dangerouslySetInnerHTML={{
-                              __html: courseDetail.description,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div>No Lesson</div>
+                  {courseDetail && (
+                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                      <div
+                        id="content"
+                        className="flex flex-col gap-3 course-content text-base"
+                        dangerouslySetInnerHTML={{
+                          __html: courseDetail.description,
+                        }}
+                      />
+                    </div>
                   )}
                 </div>
               </div>
-
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
                   {/* {!isLogin && (

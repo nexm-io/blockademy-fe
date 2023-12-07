@@ -3,7 +3,7 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
-import React, { useCallback, useRef } from "react";
+import React from "react";
 import BackToTop from "@/components/BackToTop";
 import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
@@ -12,7 +12,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import { getDetailSubCourse, setPrevSubCourseSlug } from "@/redux/features/courses/action";
+import {
+  getDetailSubCourse,
+  setPrevSubCourseSlug,
+} from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 
 const LessonDetail = () => {
@@ -52,8 +55,12 @@ const LessonDetail = () => {
 
   useEffect(() => {
     if (subCourse) {
-      const lessonData = subCourse.module_data.flatMap((item: any) => item.lesson_data);
-      const lesson = lessonData.find((item: LessonItem) => item.slug === lessonSlug);
+      const lessonData = subCourse.module_data.flatMap(
+        (item: any) => item.lesson_data
+      );
+      const lesson = lessonData.find(
+        (item: LessonItem) => item.slug === lessonSlug
+      );
       if (lesson) {
         setLesson(lesson);
       }
@@ -66,6 +73,13 @@ const LessonDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push("/login");
+      return;
+    }
+  }, [isLogin]);
 
   return (
     <div className="container min-h-screen">
@@ -140,7 +154,7 @@ const LessonDetail = () => {
                   <li className="leading-[23px] hover:underline">
                     <Link href={`/courses/${courseId}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse.course_title}
+                        {subCourse?.course_title}
                       </span>
                     </Link>
                   </li>
@@ -229,6 +243,12 @@ const LessonDetail = () => {
                 </div>
               </div>
 
+              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
+                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
+                  {lesson?.title}
+                </h1>
+              </div>
+
               {isLogin ? null : (
                 <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
                   <Image alt="gift-icon" src={gift}></Image>
@@ -245,17 +265,16 @@ const LessonDetail = () => {
                 <div className="w-full">
                   {lesson ? (
                     <>
-                      {lesson.type_format === 2 &&
-                        formState === "video" && (
-                          <>
-                            <VideoPlayer
-                              typeUpload={lesson.type_upload}
-                              url={lesson.link}
-                              onChangeForm={() => { }}
-                              onChangeStatus={handleOnchange}
-                            />
-                          </>
-                        )}
+                      {lesson.type_format === 2 && formState === "video" && (
+                        <>
+                          <VideoPlayer
+                            typeUpload={lesson.type_upload}
+                            url={lesson.link}
+                            onChangeForm={() => {}}
+                            onChangeStatus={handleOnchange}
+                          />
+                        </>
+                      )}
                       <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                         <div
                           id="content"
