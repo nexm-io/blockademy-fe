@@ -2,27 +2,22 @@
 import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import VideoPlayer from "@/components/VideoPlayer";
 import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { getDetailCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
+import { Skeleton } from "@mui/material";
 import React from "react";
 import BackToTop from "@/components/BackToTop";
-import { Skeleton } from "@mui/material";
 import cn from "@/services/cn";
-
 import RewardDetail from "@/components/Reward/RewardDetail";
 
 const CourseDetail = () => {
-  const [formState, setFormState] = useState<"video" | "quiz">("video");
   const params = useParams();
   const courseId = params.courseId;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const [isWatching, setIsWatching] = useState<boolean>(false);
-
   const courseDetail = useAppSelector(
     (state: RootState) => state.courses.details
   );
@@ -111,10 +106,6 @@ const CourseDetail = () => {
   //   },
   //   [getNextLessonUrl, stepCompleted]
   // );
-
-  const handleOnchange = (status: boolean) => {
-    setIsWatching(status);
-  };
 
   // const handleScroll = useCallback(() => {
   //   const bodyBottom = document.body.getBoundingClientRect().bottom;
@@ -261,6 +252,18 @@ const CourseDetail = () => {
               <nav className="w-full rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
+                    <Link href="/">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Home
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  <li className="leading-[23px] hover:underline">
                     <Link href="/courses">
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         Courses
@@ -273,7 +276,7 @@ const CourseDetail = () => {
                     </span>
                   </li>
                   <li className="leading-[23px]">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                       {courseDetail?.title}
                     </span>
                   </li>

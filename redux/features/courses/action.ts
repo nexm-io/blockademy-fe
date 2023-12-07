@@ -90,14 +90,12 @@ export const getDetailSubCourse = createAsyncThunk(
   "courses/get-detail-sub-course",
   async ({
     subCourseSlug,
-    lessonSlug,
   }: {
     subCourseSlug: string;
-    lessonSlug: string;
   }) => {
     try {
       const { data: subCourse } = await api.get(
-        `/api/v10/sub-course/${subCourseSlug}?lesson_id=${lessonSlug}`
+        `/api/v10/sub-course/${subCourseSlug}?lesson_id=182`
       );
       return subCourse;
     } catch (error) {

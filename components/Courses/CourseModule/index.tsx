@@ -34,12 +34,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
     if (!isAuthenticated || !token) setIsLockedLesson(true);
   }, [isAuthenticated, token]);
 
-  // useEffect(() => {
-  //   if (isCompletedLesson.length) {
-  //     setIsCompletedLesson(!!completedLesson?.includes(data.lesson_id));
-  //   }
-  // }, [completedLesson, data.lesson_id]);
-
   return (
     <div className="flex flex-col gap-4">
       <div
@@ -59,24 +53,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             </div>
           </div>
         </div>
-
-        {/* {isCompletedLesson ? (
-        <div className="w-[18px] h-full flex items-center">
-          {Number(lessonId) === data.lesson_id ? (
-            <BarChartAlt2 className="text-blue-100" />
-          ) : (
-            <CircleCheck className={`${"text-blue-100 w-[18px] h-[18px]"}`} />
-          )}
-        </div>
-      ) : (
-        <div className="w-[18px] h-full flex items-center">
-          {Number(lessonId) === data.lesson_id ? (
-            <BarChartAlt2 className="text-blue-100" />
-          ) : (
-            <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
-          )}
-        </div>
-      )} */}
       </div>
       <div
         className={cn(
@@ -96,7 +72,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
               if (isLockedLesson) return;
               if (!moduleItem.is_locked) {
                 router.push(
-                  `/courses/${courseId}/${data.slug}/lessons/${moduleItem.lesson_data.slug}`
+                  `/courses/${courseId}/${data.slug}`
                 );
               }
             }}
@@ -128,20 +104,6 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             </div>
           </div>
         ))}
-        {/* <div className="flex justify-between p-[6px]">
-          <Link href="#" className="font-light">
-            What’s in a Block?
-          </Link>
-          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
-        </div>
-        <div className="flex justify-between p-[6px]">
-          <div className="font-light text-grey-400">What’s in a Block?</div>
-          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
-        </div>
-        <div className="flex justify-between p-[6px]">
-          <div className="font-light text-grey-400">What’s in a Block?</div>
-          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
-        </div> */}
       </div>
     </div>
   );

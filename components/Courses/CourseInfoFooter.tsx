@@ -16,7 +16,6 @@ import {
   completeLesson,
   getCompleteRate,
   getDetailCourse,
-  getDetailSubCourse,
   getNextLesson,
   getNextPrevLesson,
 } from "@/redux/features/courses/action";
@@ -86,7 +85,9 @@ export default function CourseInfoFooter() {
   const pathName = usePathname();
   const { details, nextLesson, completeRate, nextPrevLesson } =
     useAppSelector(selectCourses);
-  const isLogin = useAppSelector((state: RootState) => state.auth.isAuthenticated);
+  const isLogin = useAppSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
@@ -129,12 +130,6 @@ export default function CourseInfoFooter() {
         courseId: courseId as string,
         moduleId: nextPrevLesson.current_data.module_id as number,
         lessonId: nextPrevLesson.current_data.lesson_id as number,
-      })
-    );
-    await dispatch(
-      getDetailSubCourse({
-        subCourseSlug: subCourseSlug as any,
-        lessonSlug: lessonSlug as any,
       })
     );
     router.push(
