@@ -264,10 +264,10 @@ export default function CourseInfoFooter() {
 
             {/* COMPLETE QUIZ */}
             {/* <div className="flex justify-end">
-            <Button className="w-full md:w-auto md:min-w-[184px]">
-              Complete Quiz
-            </Button>
-          </div> */}
+              <Button className="w-full md:w-auto md:min-w-[184px]">
+                Complete Quiz
+              </Button>
+            </div> */}
 
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered && (
@@ -290,6 +290,44 @@ export default function CourseInfoFooter() {
                 </Button>
               </div>
             )}
+
+            {/* PREV - TRY AGAIN */}
+            {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+              <Button
+                className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+                disabled={!nextPrevLesson?.previous_data?.lesson_slug}
+                onClick={handlePrevLesson}
+              >
+                <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                  Previous
+                </span>
+              </Button>
+              <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
+                <p className="text-sm">Your Highest Score:</p>
+                <p className="text-[28px] leading-10 text-red-100">10%</p>
+              </div>
+              <Button className="!px-6 min-w-[184px]">Try Again</Button>
+            </div> */}
+
+            {/* PREV - TRY AGAIN */}
+            {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+              <Button
+                className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+                disabled={!nextPrevLesson?.previous_data?.lesson_slug}
+                onClick={handlePrevLesson}
+              >
+                <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                  Previous
+                </span>
+              </Button>
+              <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+                <p className="text-sm">Your Highest Score:</p>
+                <p className="text-[28px] leading-10 text-green-400">10%</p>
+              </div>
+              <Button className="md:w-auto inline-block !px-6 w-full">
+                Review Feedback
+              </Button>
+            </div> */}
           </div>
         </div>
       </div>
