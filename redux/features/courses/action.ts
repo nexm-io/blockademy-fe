@@ -95,7 +95,7 @@ export const getDetailSubCourse = createAsyncThunk(
   }) => {
     try {
       const { data: subCourse } = await api.get(
-        `/api/v10/sub-course/${subCourseSlug}?lesson_id=182`
+        `/api/v10/sub-course/${subCourseSlug}`
       );
       return subCourse;
     } catch (error) {

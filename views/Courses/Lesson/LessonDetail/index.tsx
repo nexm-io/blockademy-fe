@@ -13,10 +13,12 @@ import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import {
+  getDetailCourse,
   getDetailSubCourse,
   setPrevSubCourseSlug,
 } from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
+import { selectCourses } from "@/redux/features/courses/reducer";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -25,10 +27,15 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const { subCourse, subCourseLoading, previousSubCourseSlug } = useAppSelector(
-    (state: RootState) => state.courses
+  const {
+    isLoading,
+    details: courseDetail,
+    subCourse,
+    previousSubCourseSlug,
+  } = useAppSelector(selectCourses);
+  const isLogin = useAppSelector(
+    (state: RootState) => state.auth.isAuthenticated
   );
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -40,9 +47,7 @@ const LessonDetail = () => {
     if (subCourseSlug !== previousSubCourseSlug) {
       const loadSubCourse = async () => {
         const { payload } = await dispatch(
-          getDetailSubCourse({
-            subCourseSlug: subCourseSlug as any,
-          })
+          getDetailCourse(subCourseSlug as string)
         );
         if (payload?.response?.data?.error) router.push("/not-found");
       };
@@ -82,7 +87,7 @@ const LessonDetail = () => {
 
   return (
     <div className="container min-h-screen">
-      {subCourseLoading ? (
+      {isLoading ? (
         <div className="md:mt-[56px] mt-8">
           <div className="">
             <Skeleton
@@ -163,9 +168,11 @@ const LessonDetail = () => {
                     </span>
                   </li>
                   <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}`}>
+                    <Link
+                      href={`/courses/${courseDetail?.main_course_data?.id}`}
+                    >
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse?.course_title}
+                        {courseDetail?.main_course_data?.title}
                       </span>
                     </Link>
                   </li>
@@ -174,12 +181,10 @@ const LessonDetail = () => {
                       &gt;
                     </span>
                   </li>
-                  <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}/${subCourse.slug}`}>
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse?.title}
-                      </span>
-                    </Link>
+                  <li className="leading-[23px]">
+                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
+                      {courseDetail?.title}
+                    </span>
                   </li>
                   <li className="leading-[23px]">
                     <span className="mx-3 md:text-[12px] text-[10px]">
@@ -237,30 +242,29 @@ const LessonDetail = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {subCourse?.module_data.length !== 0 &&
-                        !subCourseLoading && (
-                          <div className="flex flex-col gap-10">
-                            {subCourse?.module_data.map(
-                              (
-                                lesson: any,
-                                index: React.Key | null | undefined
-                              ) => (
-                                <div
+                      {subCourse?.module_data.length !== 0 && !isLoading && (
+                        <div className="flex flex-col gap-10">
+                          {subCourse?.module_data.map(
+                            (
+                              lesson: any,
+                              index: React.Key | null | undefined
+                            ) => (
+                              <div
+                                key={index}
+                                onClick={() => {
+                                  router.push(`/courses/${courseId}`);
+                                }}
+                              >
+                                <LessonModule
                                   key={index}
-                                  onClick={() => {
-                                    router.push(`/courses/${courseId}`);
-                                  }}
-                                >
-                                  <LessonModule
-                                    key={index}
-                                    data={lesson}
-                                    courseId={courseId as string}
-                                  />
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                                  data={lesson}
+                                  courseId={courseId as string}
+                                />
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -316,7 +320,7 @@ const LessonDetail = () => {
 
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {subCourse?.module_data.length !== 0 && !subCourseLoading && (
+                  {subCourse?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
                       {subCourse?.module_data.map(
                         (lesson: any, index: React.Key | null | undefined) => (

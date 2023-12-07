@@ -72,7 +72,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
               if (isLockedLesson) return;
               if (!moduleItem.is_locked) {
                 router.push(
-                  `/courses/${courseId}/${data.slug}`
+                  `/courses/${courseId}/${data.id}`
                 );
               }
             }}

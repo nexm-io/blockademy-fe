@@ -193,6 +193,8 @@ const CourseDetail = () => {
     };
   }, [isShowMenu]);
 
+  console.log(courseDetail);
+
   return (
     <div className="container min-h-screen">
       {isLoading ? (

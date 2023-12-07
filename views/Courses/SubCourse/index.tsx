@@ -2,14 +2,9 @@
 import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
-import {
-  getDetailCourse,
-  getDetailSubCourse,
-} from "@/redux/features/courses/action";
+import { getDetailCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -24,24 +19,10 @@ const SubCourseView = () => {
   const params = useParams();
   const { courseId, subCourseSlug } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const {
-    isLoading,
-    details: courseDetail,
-    subCourse,
-    subCourseLoading,
-  } = useAppSelector(selectCourses);
+  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
   const dispatch = useAppDispatch();
-
-  const loadSubCourse = async () => {
-    const { payload } = await dispatch(
-      getDetailSubCourse({
-        subCourseSlug: subCourseSlug as string,
-      })
-    );
-    if (payload?.response?.data?.error) router.push("/not-found");
-  };
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -51,14 +32,12 @@ const SubCourseView = () => {
   }, [isShowMenu]);
 
   useEffect(() => {
-    loadSubCourse();
+    dispatch(getDetailCourse(subCourseSlug as string));
   }, []);
-
-  console.log(subCourse);
 
   return (
     <div className="container min-h-screen">
-      {subCourseLoading ? (
+      {isLoading ? (
         <div className="md:mt-[56px] mt-8">
           <>
             <Skeleton
@@ -139,9 +118,11 @@ const SubCourseView = () => {
                     </span>
                   </li>
                   <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}`}>
+                    <Link
+                      href={`/courses/${courseDetail?.main_course_data?.id}`}
+                    >
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse?.course_title}
+                        {courseDetail?.main_course_data?.title}
                       </span>
                     </Link>
                   </li>
@@ -152,7 +133,7 @@ const SubCourseView = () => {
                   </li>
                   <li className="leading-[23px]">
                     <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                      {subCourse?.title}
+                      {courseDetail?.title}
                     </span>
                   </li>
                 </ol>
@@ -201,27 +182,24 @@ const SubCourseView = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.sub_course_data.length !== 0 &&
-                        !isLoading && (
-                          <div className="flex flex-col gap-10">
-                            {courseDetail?.sub_course_data.map(
-                              (subCourse, index) => (
-                                <div
-                                  key={index}
-                                  onClick={() => {
-                                    router.push(`/courses/${courseId}`);
-                                  }}
-                                >
-                                  {/* <LessonModule
-                                    key={index}
-                                    data={subCourse}
-                                    courseId={courseId as string}
-                                  /> */}
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                      {courseDetail?.module_data.length !== 0 && !isLoading && (
+                        <div className="flex flex-col gap-10">
+                          {courseDetail?.module_data.map((z: any, i: React.Key | null | undefined) => (
+                            <div
+                              key={i}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <LessonModule
+                                key={i}
+                                data={z}
+                                courseId={courseId as string}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -269,15 +247,15 @@ const SubCourseView = () => {
               </div>
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
+                  {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {/* {courseDetail?.sub_course_data.map((subCourse, index) => (
+                      {courseDetail?.module_data.map((z: any, i: React.Key | null | undefined) => (
                         <LessonModule
-                          key={index}
-                          data={subCourse}
+                          key={i}
+                          data={z}
                           courseId={courseId as string}
                         />
-                      ))} */}
+                      ))}
                     </div>
                   )}
                 </div>

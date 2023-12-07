@@ -142,6 +142,12 @@ export interface CourseDetail {
   is_opened: number;
   issue_nft_status: string;
   sub_course_data: any[];
+  main_course_data: {
+    id: string;
+    title: string;
+    slug: string;
+  };
+  module_data: any;
 }
 
 export interface ModuleItem {

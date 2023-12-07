@@ -134,20 +134,6 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
             </div>
           </div>
         ))}
-        {/* <div className="flex justify-between p-[6px]">
-          <Link href="#" className="font-light">
-            What’s in a Block?
-          </Link>
-          <CircleCheck className={`${"text-white-300 w-[18px] h-[18px]"}`} />
-        </div>
-        <div className="flex justify-between p-[6px]">
-          <div className="font-light text-grey-400">What’s in a Block?</div>
-          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
-        </div>
-        <div className="flex justify-between p-[6px]">
-          <div className="font-light text-grey-400">What’s in a Block?</div>
-          <Image alt="circle-fill-icon" className="w-4 h-[18px]" src={lock} />
-        </div> */}
       </div>
     </div>
   );
