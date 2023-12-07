@@ -14,11 +14,13 @@ import InfoPopup from "../Popup/InfoPopup";
 import { Loader3 } from "@styled-icons/remix-line";
 import {
   completeLesson,
+  getCompleteRate,
   getDetailCourse,
   getDetailSubCourse,
   getNextLesson,
   getNextPrevLesson,
 } from "@/redux/features/courses/action";
+import { RootState } from "@/redux/store";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -84,7 +86,7 @@ export default function CourseInfoFooter() {
   const pathName = usePathname();
   const { details, nextLesson, completeRate, nextPrevLesson } =
     useAppSelector(selectCourses);
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
+  const isLogin = useAppSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
@@ -172,6 +174,10 @@ export default function CourseInfoFooter() {
   }, [isLessonDetailPage, details, dispatch, courseId]);
 
   useEffect(() => {
+    dispatch(getCompleteRate(courseId as string));
+  }, [courseId]);
+
+  useEffect(() => {
     if (details?.id) setRegistered(!!details.is_registered);
   }, [details]);
 
@@ -184,8 +190,11 @@ export default function CourseInfoFooter() {
         })
       );
     }
-    dispatch(getNextLesson(courseId as string));
-  }, [isLessonDetailPage]);
+  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
+
+  useEffect(() => {
+    if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
+  }, [isCourseDetailPage]);
 
   return (
     <>

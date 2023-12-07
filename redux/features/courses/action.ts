@@ -183,7 +183,6 @@ export const completeLesson = createAsyncThunk(
       const { data } = await api.post(
         `/api/v10/course/${courseId}/${moduleId}/lesson/${lessonId}`
       );
-      console.log(data);
       return data;
     } catch (error) {
       return error;
