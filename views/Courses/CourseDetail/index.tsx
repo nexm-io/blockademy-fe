@@ -6,24 +6,20 @@ import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import { getDetailCourse, setPrevSubCourseSlug } from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
 import BackToTop from "@/components/BackToTop";
 import cn from "@/services/cn";
 import RewardDetail from "@/components/Reward/RewardDetail";
+import { selectCourses } from "@/redux/features/courses/reducer";
 
 const CourseDetail = () => {
   const params = useParams();
-  const courseId = params.courseId;
+  const { subCourseSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const courseDetail = useAppSelector(
-    (state: RootState) => state.courses.details
-  );
-  const isLoading = useAppSelector(
-    (state: RootState) => state.courses.isLoading
-  );
+  const { isLoading, details: courseDetail, previousSubCourseSlug } = useAppSelector(selectCourses);
   const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -181,8 +177,11 @@ const CourseDetail = () => {
 
   useEffect(() => {
     (async () => {
-      const { payload } = await dispatch(getDetailCourse(courseId as string));
-      if (payload?.response?.data?.error) router.push("/not-found");
+      if (subCourseSlug !== previousSubCourseSlug) {
+        const { payload } = await dispatch(getDetailCourse(courseId as string));
+        if (payload?.response?.data?.error) router.push("/not-found");
+        dispatch(setPrevSubCourseSlug(subCourseSlug as string));
+      }
     })();
   }, []);
 
@@ -192,8 +191,6 @@ const CourseDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
-
-  console.log(courseDetail);
 
   return (
     <div className="container min-h-screen">

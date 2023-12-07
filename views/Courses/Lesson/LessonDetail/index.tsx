@@ -12,13 +12,10 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import {
-  getDetailCourse,
-  getDetailSubCourse,
-  setPrevSubCourseSlug,
-} from "@/redux/features/courses/action";
+import { getDetailCourse, getSubCourseDetail } from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -28,14 +25,10 @@ const LessonDetail = () => {
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
   const {
-    isLoading,
-    details: courseDetail,
+    subCourseLoading,
     subCourse,
-    previousSubCourseSlug,
   } = useAppSelector(selectCourses);
-  const isLogin = useAppSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -43,19 +36,26 @@ const LessonDetail = () => {
     setIsWatching(status);
   };
 
-  useEffect(() => {
-    if (subCourseSlug !== previousSubCourseSlug) {
-      const loadSubCourse = async () => {
-        const { payload } = await dispatch(
-          getDetailCourse(subCourseSlug as string)
-        );
-        if (payload?.response?.data?.error) router.push("/not-found");
-      };
+  const loadDetailCourse = async () => {
+    const { payload } = await dispatch(
+      getSubCourseDetail(subCourseSlug as string)
+    );
+    if (payload?.response?.data?.error) router.push("/not-found");
+  };
 
-      loadSubCourse();
-    }
-    dispatch(setPrevSubCourseSlug(subCourseSlug));
-  }, [subCourseSlug, lessonSlug, dispatch, router]);
+  // useEffect(() => {
+  //   if (subCourseSlug !== previousSubCourseSlug) {
+  //     const loadSubCourse = async () => {
+  //       const { payload } = await dispatch(
+  //         getDetailCourse(subCourseSlug as string)
+  //       );
+  //       if (payload?.response?.data?.error) router.push("/not-found");
+  //     };
+
+  //     loadSubCourse();
+  //   }
+  //   dispatch(setPrevSubCourseSlug(subCourseSlug));
+  // }, [subCourseSlug, lessonSlug, dispatch, router]);
 
   useEffect(() => {
     if (subCourse) {
@@ -79,6 +79,10 @@ const LessonDetail = () => {
   }, [isShowMenu]);
 
   useEffect(() => {
+    loadDetailCourse();
+  }, [])
+
+  useEffect(() => {
     if (!isLogin) {
       router.push("/login");
       return;
@@ -87,7 +91,7 @@ const LessonDetail = () => {
 
   return (
     <div className="container min-h-screen">
-      {isLoading ? (
+      {subCourseLoading ? (
         <div className="md:mt-[56px] mt-8">
           <div className="">
             <Skeleton
@@ -169,10 +173,10 @@ const LessonDetail = () => {
                   </li>
                   <li className="leading-[23px] hover:underline">
                     <Link
-                      href={`/courses/${courseDetail?.main_course_data?.id}`}
+                      href={`/courses/${subCourse?.main_course_data?.id}`}
                     >
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {courseDetail?.main_course_data?.title}
+                        {subCourse?.main_course_data?.title}
                       </span>
                     </Link>
                   </li>
@@ -181,10 +185,14 @@ const LessonDetail = () => {
                       &gt;
                     </span>
                   </li>
-                  <li className="leading-[23px]">
-                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                      {courseDetail?.title}
-                    </span>
+                  <li className="leading-[23px] hover:underline">
+                    <Link
+                      href={`/courses/${courseId}/${subCourse?.id}`}
+                    >
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        {subCourse?.title}
+                      </span>
+                    </Link>
                   </li>
                   <li className="leading-[23px]">
                     <span className="mx-3 md:text-[12px] text-[10px]">
@@ -242,27 +250,22 @@ const LessonDetail = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {subCourse?.module_data.length !== 0 && !isLoading && (
+                      {subCourse?.module_data.length !== 0 && !subCourseLoading && (
                         <div className="flex flex-col gap-10">
-                          {subCourse?.module_data.map(
-                            (
-                              lesson: any,
-                              index: React.Key | null | undefined
-                            ) => (
-                              <div
-                                key={index}
-                                onClick={() => {
-                                  router.push(`/courses/${courseId}`);
-                                }}
-                              >
-                                <LessonModule
-                                  key={index}
-                                  data={lesson}
-                                  courseId={courseId as string}
-                                />
-                              </div>
-                            )
-                          )}
+                          {subCourse?.module_data.map((z: any, i: React.Key | null | undefined) => (
+                            <div
+                              key={i}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <LessonModule
+                                key={i}
+                                data={z}
+                                courseId={courseId as string}
+                              />
+                            </div>
+                          ))}
                         </div>
                       )}
                     </div>
@@ -297,7 +300,7 @@ const LessonDetail = () => {
                           <VideoPlayer
                             typeUpload={lesson.type_upload}
                             url={lesson.link}
-                            onChangeForm={() => {}}
+                            onChangeForm={() => { }}
                             onChangeStatus={handleOnchange}
                           />
                         </>
@@ -320,17 +323,15 @@ const LessonDetail = () => {
 
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {subCourse?.module_data.length !== 0 && !isLoading && (
+                  {subCourse?.module_data.length !== 0 && !subCourseLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {subCourse?.module_data.map(
-                        (lesson: any, index: React.Key | null | undefined) => (
-                          <LessonModule
-                            key={index}
-                            courseId={courseId as string}
-                            data={lesson}
-                          />
-                        )
-                      )}
+                      {subCourse?.module_data.map((z: any, i: React.Key | null | undefined) => (
+                        <LessonModule
+                          key={i}
+                          data={z}
+                          courseId={courseId as string}
+                        />
+                      ))}
                     </div>
                   )}
                 </div>

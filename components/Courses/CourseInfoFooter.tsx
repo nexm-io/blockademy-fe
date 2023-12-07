@@ -253,7 +253,7 @@ export default function CourseInfoFooter() {
                   disabled={!details?.id}
                   onClick={() => {
                     router.push(
-                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
+                      `/courses/${courseId}/${nextLesson.sub_course_id}/lessons/${nextLesson.lesson_slug}`
                     );
                   }}
                 >
