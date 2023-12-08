@@ -8,9 +8,7 @@ import { LIMIT_COURSES } from "@/utils/constants";
 import Pagination from "@/components/Pagination";
 import BackToTop from "@/components/BackToTop";
 import { selectCategory } from "@/redux/features/category/reducer";
-import {
-  loadCategory,
-} from "@/redux/features/category/action";
+import { loadCategory } from "@/redux/features/category/action";
 
 const CoursesView = () => {
   const divRef = useRef<any>();

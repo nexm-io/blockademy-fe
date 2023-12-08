@@ -395,9 +395,3 @@ const CourseDetail = () => {
 };
 
 export default CourseDetail;
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: false,
-  };
-};

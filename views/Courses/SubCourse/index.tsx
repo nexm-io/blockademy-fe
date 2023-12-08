@@ -117,20 +117,24 @@ const SubCourseView = () => {
                       &gt;
                     </span>
                   </li>
-                  <li className="leading-[23px] hover:underline">
-                    <Link
-                      href={`/courses/${courseDetail?.main_course_data?.id}`}
-                    >
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {courseDetail?.main_course_data?.title}
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="mx-3 md:text-[12px] text-[10px]">
-                      &gt;
-                    </span>
-                  </li>
+                  {courseDetail?.main_is_specialization == 1 && (
+                    <>
+                      <li className="leading-[23px] hover:underline">
+                        <Link
+                          href={`/courses/${courseDetail?.main_course_data?.id}`}
+                        >
+                          <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                            {courseDetail?.main_course_data?.title}
+                          </span>
+                        </Link>
+                      </li>
+                      <li className="leading-[23px]">
+                        <span className="mx-3 md:text-[12px] text-[10px]">
+                          &gt;
+                        </span>
+                      </li>
+                    </>
+                  )}
                   <li className="leading-[23px]">
                     <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                       {courseDetail?.title}
@@ -184,20 +188,22 @@ const SubCourseView = () => {
                     <div className="mt-10 overflow-y-auto">
                       {courseDetail?.module_data.length !== 0 && !isLoading && (
                         <div className="flex flex-col gap-10">
-                          {courseDetail?.module_data.map((z: any, i: React.Key | null | undefined) => (
-                            <div
-                              key={i}
-                              onClick={() => {
-                                router.push(`/courses/${courseId}`);
-                              }}
-                            >
-                              <LessonModule
+                          {courseDetail?.module_data.map(
+                            (z: any, i: React.Key | null | undefined) => (
+                              <div
                                 key={i}
-                                data={z}
-                                courseId={courseId as string}
-                              />
-                            </div>
-                          ))}
+                                onClick={() => {
+                                  router.push(`/courses/${courseId}`);
+                                }}
+                              >
+                                <LessonModule
+                                  key={i}
+                                  data={z}
+                                  courseId={courseId as string}
+                                />
+                              </div>
+                            )
+                          )}
                         </div>
                       )}
                     </div>
@@ -249,13 +255,15 @@ const SubCourseView = () => {
                 <div className="flex flex-col gap-5 md:px-0">
                   {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.module_data.map((z: any, i: React.Key | null | undefined) => (
-                        <LessonModule
-                          key={i}
-                          data={z}
-                          courseId={courseId as string}
-                        />
-                      ))}
+                      {courseDetail?.module_data.map(
+                        (z: any, i: React.Key | null | undefined) => (
+                          <LessonModule
+                            key={i}
+                            data={z}
+                            courseId={courseId as string}
+                          />
+                        )
+                      )}
                     </div>
                   )}
                 </div>
