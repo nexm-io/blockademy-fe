@@ -190,7 +190,7 @@ const LessonDetail = () => {
                     </>
                   )}
                   <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}/${subCourse?.main_is_specialization === 1 ? subCourse?.id : subCourse?.slug}`}>
+                    <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
                       </span>

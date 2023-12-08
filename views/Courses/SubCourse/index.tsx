@@ -14,6 +14,7 @@ import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import LessonModule from "@/components/Courses/LessonsModule";
+import { toast } from "react-toastify";
 
 const SubCourseView = () => {
   const params = useParams();
@@ -30,6 +31,13 @@ const SubCourseView = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      router.push("/login");
+      toast.info("Please login to continue");
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     dispatch(getDetailCourse(subCourseSlug as string));

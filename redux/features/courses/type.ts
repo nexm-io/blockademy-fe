@@ -149,7 +149,7 @@ export interface CourseDetail {
   };
   module_data: any;
   is_specialization: number;
-  main_is_specialization: number;
+  main_is_specialization: number | string;
 }
 
 export interface ModuleItem {

@@ -1,7 +1,7 @@
 import cn from "@/services/cn";
 import { debounce } from "@/utils/debounce";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import cup from "@/public/icons/cup.svg";
 import Button from "../Common/Button";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -19,7 +19,8 @@ import {
   getNextLesson,
   getNextPrevLesson,
 } from "@/redux/features/courses/action";
-import { RootState } from "@/redux/store";
+import { selectAuth } from "@/redux/features/auth/reducer";
+import { CourseDetail } from "@/redux/features/courses/type";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -80,14 +81,19 @@ export default function CourseInfoFooter() {
   const [loading, setLoading] = useState<boolean>(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [details, setDetails] = useState<CourseDetail>();
   const [isCourseDetailPage, setIsCourseDetailPage] = useState<boolean>(false);
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const pathName = usePathname();
-  const { details, nextLesson, completeRate, nextPrevLesson } =
-    useAppSelector(selectCourses);
-  const isLogin = useAppSelector(
-    (state: RootState) => state.auth.isAuthenticated
-  );
+  const {
+    details: courseDetails,
+    subCourse,
+    isLoading,
+    nextLesson,
+    completeRate,
+    nextPrevLesson,
+  } = useAppSelector(selectCourses);
+  const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useParams();
@@ -106,6 +112,7 @@ export default function CourseInfoFooter() {
         `/api/v10/register-course?course_id=${courseId}`
       );
       if (response.status === 200) {
+        dispatch(getDetailCourse(courseId as string));
         setRegistered(true);
         setShowPopup(true);
       }
@@ -137,47 +144,52 @@ export default function CourseInfoFooter() {
     );
   };
 
-  useEffect(() => {
-    setIsCourseDetailPage(patternCourseDetail.test(pathName));
-    setIsLessonDetailPage(patternLessonDetail.test(pathName));
-  }, [pathName]);
-
-  useEffect(() => {
-    const handleScroll = debounce(() => {
+  const debouncedScrollHandler = useCallback(
+    debounce(() => {
       const scrollPosition =
         window.scrollY || document.documentElement.scrollTop;
       const pageHeight =
         document.documentElement.scrollHeight -
         document.documentElement.clientHeight;
       setSticky(scrollPosition / pageHeight <= 0.95);
-    }, 150);
+    }, 150),
+    []
+  );
 
-    window.addEventListener("scroll", handleScroll);
+  useEffect(() => {
+    setIsCourseDetailPage(patternCourseDetail.test(pathName));
+    setIsLessonDetailPage(patternLessonDetail.test(pathName));
+  }, [pathName]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", debouncedScrollHandler);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", debouncedScrollHandler);
     };
-  }, []);
+  }, [debouncedScrollHandler]);
 
   useEffect(() => {
     if (!isLogin) setRegistered(false);
   }, [isLogin]);
 
   useEffect(() => {
-    if (isLessonDetailPage && !details?.id)
-      dispatch(getDetailCourse(courseId as string));
-  }, [isLessonDetailPage, details, dispatch, courseId]);
-
-  useEffect(() => {
     dispatch(getCompleteRate(courseId as string));
   }, [courseId]);
 
   useEffect(() => {
-    if (details?.id) setRegistered(!!details.is_registered);
-  }, [details]);
+    if (!isLessonDetailPage && courseDetails) {
+      setDetails(courseDetails);
+      setRegistered(!!courseDetails.is_registered);
+    }
+    if (isLessonDetailPage && subCourse) {
+      setDetails(subCourse);
+      setRegistered(!!subCourse.is_registered);
+    }
+  }, [courseDetails, subCourse, isLessonDetailPage]);
 
   useEffect(() => {
-    if (isLessonDetailPage) {
+    if (details?.main_is_specialization === 1) {
       dispatch(
         getNextPrevLesson({
           subCourseIdOrSlug: subCourseSlug as string,
@@ -185,7 +197,7 @@ export default function CourseInfoFooter() {
         })
       );
     }
-  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
+  }, [details, subCourseSlug, lessonSlug]);
 
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
@@ -226,12 +238,12 @@ export default function CourseInfoFooter() {
             )}
 
             {/* APPLY COURSE */}
-            {!registered && isCourseDetailPage && (
+            {!registered && details?.main_is_specialization === "" && (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
                   onClick={handleApplyCourse}
-                  disabled={!details?.id}
+                  disabled={isLoading}
                 >
                   Apply course
                   {loading && (
@@ -246,14 +258,14 @@ export default function CourseInfoFooter() {
             )}
 
             {/* LET'S GO */}
-            {isLogin && registered && isCourseDetailPage && (
+            {registered && !details?.main_is_specialization && (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
-                  disabled={!details?.id}
+                  disabled={isLoading}
                   onClick={() => {
                     router.push(
-                      `/courses/${courseId}/${nextLesson.sub_course_id}/lessons/${nextLesson.lesson_slug}`
+                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
                     );
                   }}
                 >
@@ -270,7 +282,7 @@ export default function CourseInfoFooter() {
             </div> */}
 
             {/* PREVIOUS - NEXT */}
-            {isLessonDetailPage && registered && (
+            {details?.main_is_specialization === 1 && registered && (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
