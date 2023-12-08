@@ -49,6 +49,10 @@ export interface LessonData {
   module_slug: string;
   sub_course_id: number;
   sub_course_slug: string;
+  lession_assignment_data: any;
+  is_complete_lesson: any;
+  is_complete_module: any;
+  module_assignment_data: any;
 }
 
 export interface ListCourse {

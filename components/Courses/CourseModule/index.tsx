@@ -13,11 +13,13 @@ import cn from "@/services/cn";
 
 interface CourseModuleProps {
   data: any;
+  isRegistered: number;
   activeDropdown?: boolean;
 }
 
 const CourseModule: React.FC<CourseModuleProps> = ({
   data,
+  isRegistered,
   activeDropdown = false,
 }) => {
   const params = useParams();
@@ -31,7 +33,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
   const token = useSelector((state: RootState) => state.auth.token);
 
   useEffect(() => {
-    if (!isAuthenticated || !token) setIsLockedLesson(true);
+    if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
   }, [isAuthenticated, token]);
 
   return (

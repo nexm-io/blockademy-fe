@@ -84,6 +84,8 @@ export default function CourseInfoFooter() {
   const [details, setDetails] = useState<CourseDetail>();
   const [isCourseDetailPage, setIsCourseDetailPage] = useState<boolean>(false);
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
+  const [completeQuizLoading, setCompleteQuizLoading] =
+    useState<boolean>(false);
   const pathName = usePathname();
   const {
     details: courseDetails,
@@ -144,6 +146,56 @@ export default function CourseInfoFooter() {
     );
   };
 
+  const getNextButton = () => (
+    <Button
+      className="w-auto md:min-w-[184px]"
+      disabled={!nextPrevLesson?.next_data?.lesson_slug}
+      onClick={handleNextLesson}
+    >
+      Next
+    </Button>
+  );
+
+  const getQuizButton = (id: string, label: string) => (
+    <div className="flex justify-end">
+      <Button
+        className="w-full md:w-auto md:min-w-[184px]"
+        onClick={() => {
+          setCompleteQuizLoading(true);
+          router.push(`/quiz/${id}`);
+        }}
+        disabled={completeQuizLoading}
+      >
+        {label}
+        {completeQuizLoading && (
+          <Loader3 className="animate-spin ml-2" width={25} height={25} />
+        )}
+      </Button>
+    </div>
+  );
+
+  const LessonComponent = () => {
+    const { current_data: currentData, next_data: nextData } = nextPrevLesson;
+
+    if (currentData?.is_complete_lesson) {
+      return getNextButton();
+    } else if (currentData?.is_complete_module) {
+      return getNextButton();
+    } else if (currentData?.lession_assignment_data?.id) {
+      return getQuizButton(
+        currentData?.lession_assignment_data?.id,
+        "Complete Quiz Lesson"
+      );
+    } else if (currentData?.module_assignment_data?.id) {
+      return getQuizButton(
+        currentData?.module_assignment_data?.id,
+        "Complete Quiz Module"
+      );
+    }
+
+    return null;
+  };
+
   const debouncedScrollHandler = useCallback(
     debounce(() => {
       const scrollPosition =
@@ -189,7 +241,7 @@ export default function CourseInfoFooter() {
   }, [courseDetails, subCourse, isLessonDetailPage]);
 
   useEffect(() => {
-    if (details?.main_is_specialization === 1) {
+    if (isLessonDetailPage) {
       dispatch(
         getNextPrevLesson({
           subCourseIdOrSlug: subCourseSlug as string,
@@ -197,7 +249,7 @@ export default function CourseInfoFooter() {
         })
       );
     }
-  }, [details, subCourseSlug, lessonSlug]);
+  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
 
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
@@ -258,7 +310,7 @@ export default function CourseInfoFooter() {
             )}
 
             {/* LET'S GO */}
-            {registered && !details?.main_is_specialization && (
+            {registered && isCourseDetailPage && (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
@@ -282,7 +334,7 @@ export default function CourseInfoFooter() {
             </div> */}
 
             {/* PREVIOUS - NEXT */}
-            {details?.main_is_specialization === 1 && registered && (
+            {isLessonDetailPage && registered && (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
@@ -293,13 +345,7 @@ export default function CourseInfoFooter() {
                     Previous
                   </span>
                 </Button>
-                <Button
-                  className="w-auto md:min-w-[184px]"
-                  disabled={!nextPrevLesson?.next_data?.lesson_slug}
-                  onClick={handleNextLesson}
-                >
-                  Next
-                </Button>
+                <LessonComponent />
               </div>
             )}
 
