@@ -13,10 +13,12 @@ import { RootState } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import {
-  getDetailSubCourse,
-  setPrevSubCourseSlug,
+  getDetailCourse,
+  getSubCourseDetail,
 } from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
+import { selectCourses } from "@/redux/features/courses/reducer";
+import { selectAuth } from "@/redux/features/auth/reducer";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -25,10 +27,8 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const { subCourse, subCourseLoading, previousSubCourseSlug } = useAppSelector(
-    (state: RootState) => state.courses
-  );
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
+  const { subCourseLoading, subCourse } = useAppSelector(selectCourses);
+  const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -36,22 +36,26 @@ const LessonDetail = () => {
     setIsWatching(status);
   };
 
-  useEffect(() => {
-    if (subCourseSlug !== previousSubCourseSlug) {
-      const loadSubCourse = async () => {
-        const { payload } = await dispatch(
-          getDetailSubCourse({
-            subCourseSlug: subCourseSlug as any,
-            lessonSlug: lessonSlug as any,
-          })
-        );
-        if (payload?.response?.data?.error) router.push("/not-found");
-      };
+  const loadDetailCourse = async () => {
+    const { payload } = await dispatch(
+      getSubCourseDetail(subCourseSlug as string)
+    );
+    if (payload?.response?.data?.error) router.push("/not-found");
+  };
 
-      loadSubCourse();
-    }
-    dispatch(setPrevSubCourseSlug(subCourseSlug));
-  }, [subCourseSlug, lessonSlug, dispatch, router]);
+  // useEffect(() => {
+  //   if (subCourseSlug !== previousSubCourseSlug) {
+  //     const loadSubCourse = async () => {
+  //       const { payload } = await dispatch(
+  //         getDetailCourse(subCourseSlug as string)
+  //       );
+  //       if (payload?.response?.data?.error) router.push("/not-found");
+  //     };
+
+  //     loadSubCourse();
+  //   }
+  //   dispatch(setPrevSubCourseSlug(subCourseSlug));
+  // }, [subCourseSlug, lessonSlug, dispatch, router]);
 
   useEffect(() => {
     if (subCourse) {
@@ -73,6 +77,10 @@ const LessonDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    loadDetailCourse();
+  }, []);
 
   useEffect(() => {
     if (!isLogin) {
@@ -140,6 +148,18 @@ const LessonDetail = () => {
               <nav className="w-full rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
+                    <Link href="/">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Home
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  <li className="leading-[23px] hover:underline">
                     <Link href="/courses">
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         Courses
@@ -151,10 +171,28 @@ const LessonDetail = () => {
                       &gt;
                     </span>
                   </li>
+                  {subCourse?.main_is_specialization === 1 && (
+                    <>
+                      <li className="leading-[23px] hover:underline">
+                        <Link
+                          href={`/courses/${subCourse?.main_course_data?.id}`}
+                        >
+                          <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                            {subCourse?.main_course_data?.title}
+                          </span>
+                        </Link>
+                      </li>
+                      <li className="leading-[23px]">
+                        <span className="mx-3 md:text-[12px] text-[10px]">
+                          &gt;
+                        </span>
+                      </li>
+                    </>
+                  )}
                   <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}`}>
+                    <Link href={`/courses/${courseId}/${subCourse?.main_is_specialization === 1 ? subCourse?.id : subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse?.course_title}
+                        {subCourse?.title}
                       </span>
                     </Link>
                   </li>
@@ -164,7 +202,7 @@ const LessonDetail = () => {
                     </span>
                   </li>
                   <li className="leading-[23px]">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                       {lesson?.title}
                     </span>
                   </li>
@@ -218,19 +256,16 @@ const LessonDetail = () => {
                         !subCourseLoading && (
                           <div className="flex flex-col gap-10">
                             {subCourse?.module_data.map(
-                              (
-                                lesson: any,
-                                index: React.Key | null | undefined
-                              ) => (
+                              (z: any, i: React.Key | null | undefined) => (
                                 <div
-                                  key={index}
+                                  key={i}
                                   onClick={() => {
                                     router.push(`/courses/${courseId}`);
                                   }}
                                 >
                                   <LessonModule
-                                    key={index}
-                                    data={lesson}
+                                    key={i}
+                                    data={z}
                                     courseId={courseId as string}
                                   />
                                 </div>
@@ -296,11 +331,11 @@ const LessonDetail = () => {
                   {subCourse?.module_data.length !== 0 && !subCourseLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
                       {subCourse?.module_data.map(
-                        (lesson: any, index: React.Key | null | undefined) => (
+                        (z: any, i: React.Key | null | undefined) => (
                           <LessonModule
-                            key={index}
+                            key={i}
+                            data={z}
                             courseId={courseId as string}
-                            data={lesson}
                           />
                         )
                       )}

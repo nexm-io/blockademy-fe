@@ -2,11 +2,9 @@
 import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
-import { getDetailCourse, setPrevSubCourseSlug } from "@/redux/features/courses/action";
+import { getDetailCourse } from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -14,21 +12,17 @@ import BackToTop from "@/components/BackToTop";
 import cn from "@/services/cn";
 import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
+import { selectAuth } from "@/redux/features/auth/reducer";
+import LessonModule from "@/components/Courses/LessonsModule";
 
-const CourseDetail = () => {
+const SubCourseView = () => {
   const params = useParams();
-  const { subCourseSlug, courseId } = params;
+  const { courseId, subCourseSlug } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
-  const { isLoading, details: courseDetail, previousSubCourseSlug } = useAppSelector(selectCourses);
-  const isLogin = useAppSelector((state) => state.auth.isAuthenticated);
-  const dispatch = useAppDispatch();
+  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
-  useEffect(() => {
-    (async () => {
-      const { payload } = await dispatch(getDetailCourse(courseId as string));
-      if (payload?.response?.data?.error) router.push("/not-found");
-    })();
-  }, []);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -36,6 +30,10 @@ const CourseDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    dispatch(getDetailCourse(subCourseSlug as string));
+  }, []);
 
   return (
     <div className="container min-h-screen">
@@ -119,6 +117,24 @@ const CourseDetail = () => {
                       &gt;
                     </span>
                   </li>
+                  {courseDetail?.main_is_specialization == 1 && (
+                    <>
+                      <li className="leading-[23px] hover:underline">
+                        <Link
+                          href={`/courses/${courseDetail?.main_course_data?.id}`}
+                        >
+                          <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                            {courseDetail?.main_course_data?.title}
+                          </span>
+                        </Link>
+                      </li>
+                      <li className="leading-[23px]">
+                        <span className="mx-3 md:text-[12px] text-[10px]">
+                          &gt;
+                        </span>
+                      </li>
+                    </>
+                  )}
                   <li className="leading-[23px]">
                     <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                       {courseDetail?.title}
@@ -170,27 +186,26 @@ const CourseDetail = () => {
                       </div>
                     </div>
                     <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.sub_course_data.length !== 0 &&
-                        !isLoading && (
-                          <div className="flex flex-col gap-10">
-                            {courseDetail?.sub_course_data.map(
-                              (subCourse, index) => (
-                                <div
-                                  key={index}
-                                  onClick={() => {
-                                    router.push(`/courses/${courseId}`);
-                                  }}
-                                >
-                                  <CourseModule
-                                    key={index}
-                                    data={subCourse}
-                                    activeDropdown={index === 0}
-                                  />
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
+                      {courseDetail?.module_data.length !== 0 && !isLoading && (
+                        <div className="flex flex-col gap-10">
+                          {courseDetail?.module_data.map(
+                            (z: any, i: React.Key | null | undefined) => (
+                              <div
+                                key={i}
+                                onClick={() => {
+                                  router.push(`/courses/${courseId}`);
+                                }}
+                              >
+                                <LessonModule
+                                  key={i}
+                                  data={z}
+                                  courseId={courseId as string}
+                                />
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -238,151 +253,19 @@ const CourseDetail = () => {
               </div>
               <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {/* {!isLogin && (
-                    <div className="flex justify-end">
-                      <Button
-                        onClick={handleApplyCourse}
-                        className="!px-6 min-w-[184px]"
-                      >
-                        Apply Course
-                        {loading && (
-                          <Loader3
-                            className="animate-spin ml-2"
-                            width={25}
-                            height={25}
-                          />
-                        )}
-                      </Button>
-                    </div>
-                  )} */}
-
-                  {/* APPLY COURSE */}
-                  {/* {isLogin &&
-                    !registered &&
-                    courseDetail?.is_registered === 0 &&
-                    courseDetail.is_opened === 1 && (
-                      <div className="flex justify-end">
-                        <Button
-                          onClick={handleApplyCourse}
-                          className="!px-6 min-w-[184px]"
-                        >
-                          Apply Course
-                          {loading && (
-                            <Loader3
-                              className="animate-spin ml-2"
-                              width={25}
-                              height={25}
-                            />
-                          )}
-                        </Button>
-                      </div>
-                    )} */}
-
-                  {/* TRY AGAIN */}
-                  {/* {isLogin &&
-                    courseDetail?.assignment_status.slug ===
-                      ASSIGNMENT_STATUS.FAILED &&
-                    courseDetail?.is_registered === 1 &&
-                    courseDetail?.is_completed_assignment === 0 && (
-                      <div className="rounded-lg bg-red-200/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
-                        <div className="text-center">
-                          <p className="text-sm">Your Highest Score</p>
-                          <p className="text-[28px] leading-10 text-red-100">
-                            {courseDetail?.aissignment_grade}%
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <Button
-                            className="!px-6 min-w-[184px]"
-                            disabled={isNotCompletedLesson}
-                            onClick={() => {
-                              if (isNotCompletedLesson) return;
-                              router.push(
-                                `/quiz/${courseDetail?.assigment_id}`
-                              );
-                            }}
-                          >
-                            Try Again
-                          </Button>
-                        </div>
-                      </div>
-                    )} */}
-
-                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
+                  {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.sub_course_data.map((subCourse, index) => (
-                        <CourseModule
-                          key={index}
-                          data={subCourse}
-                          activeDropdown={index === 0}
-                        />
-                      ))}
+                      {courseDetail?.module_data.map(
+                        (z: any, i: React.Key | null | undefined) => (
+                          <LessonModule
+                            key={i}
+                            data={z}
+                            courseId={courseId as string}
+                          />
+                        )
+                      )}
                     </div>
                   )}
-
-                  {/* COMPLETE QUIZ */}
-                  {/* {isLogin &&
-                    courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
-                    courseDetail?.is_completed_assignment === 0 &&
-                    registered && (
-                      <div className="flex justify-end">
-                        <Button
-                          className="inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                          disabled={isNotCompletedLesson}
-                          onClick={() => {
-                            if (isNotCompletedLesson) return;
-                            router.push(`/quiz/${courseDetail?.assigment_id}`);
-                          }}
-                        >
-                          <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                            Complete Quiz
-                          </span>
-                        </Button>
-                      </div>
-                    )} */}
-
-                  {/* {isLogin &&
-                    courseDetail?.assignment_status.slug !==
-                      ASSIGNMENT_STATUS.FAILED &&
-                    courseDetail?.is_completed_assignment === 0 &&
-                    registered && (
-                      <p className="text-grey-700">
-                        <span className="text-red-200">Note:</span>
-                        <span>
-                          {" "}
-                          Please review all course materials before attempting
-                          the quiz.
-                        </span>
-                      </p>
-                    )} */}
-                  {/* LEARN AGAIN */}
-                  {/* {isLogin && courseDetail?.is_completed_assignment === 1 && (
-                    <>
-                      <Button
-                        className="md:w-auto inline-block !px-6 w-full"
-                        disabled={isNotCompletedLesson}
-                        onClick={() => {
-                          if (isNotCompletedLesson) return;
-                          router.push(`/result/${courseDetail?.assigment_id}`);
-                        }}
-                      >
-                        Review Feedback
-                      </Button>
-                      <Button
-                        className="md:w-auto inline-block !px-6 bg-blue-600 group hover:bg-blue-600/50 w-full"
-                        disabled={isNotCompletedLesson}
-                        onClick={() => {
-                          if (isNotCompletedLesson) return;
-                          router.push(`/quiz/${courseDetail?.assigment_id}`);
-                        }}
-                      >
-                        <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                          Learn Again
-                        </span>
-                      </Button>
-                    </>
-                  )} */}
                 </div>
               </div>
             </div>
@@ -394,4 +277,4 @@ const CourseDetail = () => {
   );
 };
 
-export default CourseDetail;
+export default SubCourseView;

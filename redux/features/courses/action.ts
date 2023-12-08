@@ -28,6 +28,18 @@ export const getDetailCourse = createAsyncThunk(
   }
 );
 
+export const getSubCourseDetail = createAsyncThunk(
+  "courses/get-sub-course-detail",
+  async (courseId: string) => {
+    try {
+      const { data: subCouse } = await api.get(`/api/v10/course/${courseId}`);
+      return subCouse;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getDetailCourseWithoutLoading = createAsyncThunk(
   "courses/detail-course-without-loading",
   async (courseId: string) => {
@@ -83,26 +95,6 @@ export const claimReward = createAsyncThunk<CourseResponse, string>(
       `/api/v10/campaign/${campaign_id}/reward/claimed-reward`
     );
     return response.data;
-  }
-);
-
-export const getDetailSubCourse = createAsyncThunk(
-  "courses/get-detail-sub-course",
-  async ({
-    subCourseSlug,
-    lessonSlug,
-  }: {
-    subCourseSlug: string;
-    lessonSlug: string;
-  }) => {
-    try {
-      const { data: subCourse } = await api.get(
-        `/api/v10/sub-course/${subCourseSlug}?lesson_id=${lessonSlug}`
-      );
-      return subCourse;
-    } catch (error) {
-      return error;
-    }
   }
 );
 
