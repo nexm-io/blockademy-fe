@@ -184,6 +184,7 @@ const CourseDetail = () => {
                                 >
                                   <CourseModule
                                     key={index}
+                                    isRegistered={courseDetail?.is_registered}
                                     data={subCourse}
                                     activeDropdown={index === 0}
                                   />
@@ -315,6 +316,7 @@ const CourseDetail = () => {
                         <CourseModule
                           key={index}
                           data={subCourse}
+                          isRegistered={courseDetail?.is_registered}
                           activeDropdown={index === 0}
                         />
                       ))}
