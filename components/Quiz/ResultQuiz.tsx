@@ -37,10 +37,10 @@ export default function ResultQuiz() {
       if (typeof id !== "string") return;
       if (isViewResultInCourse) {
         const { payload } = await dispatch(getListHighestResult(id));
-        if (!payload?.course_id) router.push("/not-found");
+        // if (!payload?.course_id) router.push("/not-found");
       } else {
         const { payload } = await dispatch(getListResult(id));
-        if (!payload?.course_id) router.push("/not-found");
+        // if (!payload?.course_id) router.push("/not-found");
       }
     };
     fetchData();
@@ -70,9 +70,7 @@ export default function ResultQuiz() {
   useEffect(() => {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
-      router.push(
-        `/courses/${listResultData?.course_id}`
-      );
+      router.push(`/courses/${listResultData?.course_id}`);
     }
   }, [listResultData, isAuthenticated, token]);
 
@@ -135,9 +133,7 @@ export default function ResultQuiz() {
             <nav className="w-full rounded-md">
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                 <li className="leading-[23px] hover:underline">
-                  <Link
-                    href={`/courses/${listResultData?.course_id}`}
-                  >
+                  <Link href={`/courses/${listResultData?.course_id}`}>
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                       {listResultData?.quiz}
                     </span>
@@ -162,9 +158,7 @@ export default function ResultQuiz() {
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
                     onClick={() =>
-                      router.push(
-                        `/courses/${listResultData?.course_id}`
-                      )
+                      router.push(`/courses/${listResultData?.course_id}`)
                     }
                   >
                     <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">

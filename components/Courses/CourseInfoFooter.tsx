@@ -18,6 +18,7 @@ import {
   getDetailCourse,
   getNextLesson,
   getNextPrevLesson,
+  getSubCourseDetail,
 } from "@/redux/features/courses/action";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { CourseDetail } from "@/redux/features/courses/type";
@@ -178,12 +179,18 @@ export default function CourseInfoFooter() {
   const LessonComponent = () => {
     const { current_data: currentData, next_data: nextData } = nextPrevLesson;
 
-    if (currentData?.lesson_assignment_data?.id) {
+    if (
+      !currentData?.lesson_assignment_data?.score &&
+      currentData?.lesson_assignment_data?.id
+    ) {
       return getQuizButton(
         currentData?.lesson_assignment_data?.id,
         "Complete Quiz Lesson"
       );
-    } else if (currentData?.module_assignment_data?.id) {
+    } else if (
+      !currentData?.module_assignment_data?.score &&
+      currentData?.module_assignment_data?.id
+    ) {
       return getQuizButton(
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
@@ -217,7 +224,7 @@ export default function CourseInfoFooter() {
     if (
       !nextPrevLesson?.next_data &&
       !nextPrevLesson?.current_data?.is_complete_lesson
-    )
+    ) {
       await dispatch(
         completeLesson({
           courseId: courseId as string,
@@ -225,6 +232,14 @@ export default function CourseInfoFooter() {
           lessonId: nextPrevLesson.current_data.lesson_id as number,
         })
       );
+      dispatch(
+        getNextPrevLesson({
+          subCourseIdOrSlug: subCourseSlug as string,
+          lessonSlug: lessonSlug as string,
+        })
+      );
+      dispatch(getCompleteRate(courseId as string));
+    }
   };
 
   useEffect(() => {
@@ -333,28 +348,34 @@ export default function CourseInfoFooter() {
             )}
 
             {/* LET'S GO */}
-            {registered && isCourseDetailPage && (
-              <div className="flex justify-end">
-                <Button
-                  className="w-full md:w-auto md:min-w-[184px]"
-                  disabled={isLoading}
-                  onClick={() => {
-                    router.push(
-                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
-                    );
-                  }}
-                >
-                  Let’s go
-                </Button>
-              </div>
-            )}
+            {registered &&
+              !courseDetails?.is_complete_module_sub_course &&
+              isCourseDetailPage && (
+                <div className="flex justify-end">
+                  <Button
+                    className="w-full md:w-auto md:min-w-[184px]"
+                    disabled={isLoading}
+                    onClick={() => {
+                      router.push(
+                        `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
+                      );
+                    }}
+                  >
+                    Let’s go
+                  </Button>
+                </div>
+              )}
 
-            {/* COMPLETE QUIZ */}
-            {/* <div className="flex justify-end">
-              <Button className="w-full md:w-auto md:min-w-[184px]">
-                Complete Quiz
-              </Button>
-            </div> */}
+            {registered &&
+              courseDetails?.is_complete_module_sub_course &&
+              isCourseDetailPage && (
+                <div className="flex justify-end">
+                  {getQuizButton(
+                    courseDetails?.assigment_id as any,
+                    "Complete Quiz Course"
+                  )}
+                </div>
+              )}
 
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered && (

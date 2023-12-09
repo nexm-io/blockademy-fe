@@ -116,6 +116,7 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  is_complete_module_sub_course: number | string;
   is_claimed: number;
   complete_assignment_at: string;
   certificate_pdf_url: string;
