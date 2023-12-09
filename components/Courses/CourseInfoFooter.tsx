@@ -176,14 +176,14 @@ export default function CourseInfoFooter() {
 
   const LessonComponent = () => {
     const { current_data: currentData, next_data: nextData } = nextPrevLesson;
-
+    
     if (currentData?.is_complete_lesson) {
       return getNextButton();
     } else if (currentData?.is_complete_module) {
       return getNextButton();
-    } else if (currentData?.lession_assignment_data?.id) {
+    } else if (currentData?.lesson_assignment_data?.id) {
       return getQuizButton(
-        currentData?.lession_assignment_data?.id,
+        currentData?.lesson_assignment_data?.id,
         "Complete Quiz Lesson"
       );
     } else if (currentData?.module_assignment_data?.id) {

@@ -27,8 +27,14 @@ export default function EndTestModal(props: {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { id } = useParams();
-  const { listQues, dataStartTime, userAnswer, loadingSendQuiz } =
-    useAppSelector((state) => state.quiz);
+  const {
+    quesLessonId,
+    quesModuleId,
+    listQues,
+    dataStartTime,
+    userAnswer,
+    loadingSendQuiz,
+  } = useAppSelector((state) => state.quiz);
 
   const handleSendQuiz = async () => {
     dispatch(setSubmitInBtn(true));
@@ -50,6 +56,8 @@ export default function EndTestModal(props: {
           }
     );
     const list = {
+      module_id: quesModuleId,
+      lesson_id: quesLessonId,
       post_id: listQues[0]?.post_id,
       start_time: formatUtcTime(dataStartTime),
       end_time: formatUtcTime(Date.now()),

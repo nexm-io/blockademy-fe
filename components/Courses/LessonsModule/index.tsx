@@ -35,7 +35,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data, isRegistered }) => {
   useEffect(() => {
     if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
   }, [isAuthenticated, token, isRegistered]);
-  console.log(isRegistered);
+  
   return (
     <div className="flex flex-col gap-4">
       <div

@@ -63,6 +63,8 @@ const TestDetail = () => {
 
   const {
     listQues,
+    quesLessonId, 
+    quesModuleId,
     userAnswer,
     listView,
     duration,
@@ -244,6 +246,8 @@ const TestDetail = () => {
           }
     );
     const list = {
+      module_id: quesModuleId,
+      lesson_id: quesLessonId,
       post_id: listQues[0]?.post_id,
       start_time: formatUtcTime(dataStartTime),
       end_time: formatUtcTime(Date.now()),
