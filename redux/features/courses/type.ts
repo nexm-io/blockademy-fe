@@ -49,6 +49,10 @@ export interface LessonData {
   module_slug: string;
   sub_course_id: number;
   sub_course_slug: string;
+  lesson_assignment_data: any;
+  is_complete_lesson: any;
+  is_complete_module: any;
+  module_assignment_data: any;
 }
 
 export interface ListCourse {
@@ -149,7 +153,7 @@ export interface CourseDetail {
   };
   module_data: any;
   is_specialization: number;
-  main_is_specialization: number;
+  main_is_specialization: number | string;
 }
 
 export interface ModuleItem {

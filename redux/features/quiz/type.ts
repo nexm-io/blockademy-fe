@@ -26,7 +26,8 @@ export type QuizReducerType = {
   dataStartTime: any;
   isCountDownStop: boolean;
   quesDetail: DetailQuestion | null;
-
+  quesLessonId: string | number;
+  quesModuleId: string | number;
   loadingCheckShowResult: boolean;
   isCheckShowResult: boolean;
   iShowFeedBack: boolean;
@@ -57,7 +58,8 @@ export const defaultQuizReducer: QuizReducerType = {
   dataStartTime: null,
   isCountDownStop: false,
   quesDetail: null,
-
+  quesLessonId: "",
+  quesModuleId: "",
   loadingCheckShowResult: false,
   isCheckShowResult: false,
   iShowFeedBack: false,
@@ -151,6 +153,8 @@ export type DataSendQuiz = {
   start_time: string;
   end_time: string;
   data: DataSubmitType[];
+  lesson_id: string | number;
+  module_id: string | number;
 };
 
 export type DataSubmitType = {

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getDetailCourse } from "@/redux/features/courses/action";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
 import BackToTop from "@/components/BackToTop";
@@ -14,6 +14,8 @@ import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import LessonModule from "@/components/Courses/LessonsModule";
+import { toast } from "react-toastify";
+import { setRefUrl } from "@/redux/features/auth/action";
 
 const SubCourseView = () => {
   const params = useParams();
@@ -23,6 +25,7 @@ const SubCourseView = () => {
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const pathName = usePathname();
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -30,6 +33,13 @@ const SubCourseView = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    if (!isLogin) {
+      dispatch(setRefUrl(pathName));
+      router.push("/login");
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     dispatch(getDetailCourse(subCourseSlug as string));
@@ -199,6 +209,10 @@ const SubCourseView = () => {
                                 <LessonModule
                                   key={i}
                                   data={z}
+                                  isRegistered={courseDetail?.is_registered}
+                                  moduleLength={
+                                    courseDetail?.module_data.length
+                                  }
                                   courseId={courseId as string}
                                 />
                               </div>
@@ -260,6 +274,8 @@ const SubCourseView = () => {
                           <LessonModule
                             key={i}
                             data={z}
+                            isRegistered={courseDetail?.is_registered}
+                            moduleLength={courseDetail?.module_data.length}
                             courseId={courseId as string}
                           />
                         )

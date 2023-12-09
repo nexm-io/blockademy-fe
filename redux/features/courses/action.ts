@@ -137,7 +137,9 @@ export const getNextPrevLesson = createAsyncThunk(
   }) => {
     try {
       const { data: nextPrevLesson } = await api.get(
-        `/api/v10/sub-course/${subCourseIdOrSlug}/previous-next-lesson?lesson_id=${lessonSlug}`
+        `/api/v10/sub-course/${subCourseIdOrSlug}/previous-next-lesson${
+          lessonSlug ? `?lesson_id=${lessonSlug}` : ""
+        }`
       );
       return nextPrevLesson;
     } catch (error) {

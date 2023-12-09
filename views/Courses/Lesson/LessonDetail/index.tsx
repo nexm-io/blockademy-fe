@@ -10,7 +10,7 @@ import cn from "@/services/cn";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import {
   getDetailCourse,
@@ -19,6 +19,7 @@ import {
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
+import { setRefUrl } from "@/redux/features/auth/action";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -31,6 +32,7 @@ const LessonDetail = () => {
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathName = usePathname();
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -84,8 +86,8 @@ const LessonDetail = () => {
 
   useEffect(() => {
     if (!isLogin) {
+      dispatch(setRefUrl(pathName));
       router.push("/login");
-      return;
     }
   }, [isLogin]);
 
@@ -190,7 +192,7 @@ const LessonDetail = () => {
                     </>
                   )}
                   <li className="leading-[23px] hover:underline">
-                    <Link href={`/courses/${courseId}/${subCourse?.main_is_specialization === 1 ? subCourse?.id : subCourse?.slug}`}>
+                    <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
                       </span>
@@ -266,6 +268,8 @@ const LessonDetail = () => {
                                   <LessonModule
                                     key={i}
                                     data={z}
+                                    moduleLength={subCourse?.module_data.length}
+                                    isRegistered={subCourse?.is_registered}
                                     courseId={courseId as string}
                                   />
                                 </div>
@@ -335,6 +339,8 @@ const LessonDetail = () => {
                           <LessonModule
                             key={i}
                             data={z}
+                            moduleLength={subCourse?.module_data.length}
+                            isRegistered={subCourse?.is_registered}
                             courseId={courseId as string}
                           />
                         )

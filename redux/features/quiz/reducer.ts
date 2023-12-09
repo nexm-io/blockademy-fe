@@ -61,6 +61,8 @@ const quizReducer = createReducer(defaultQuizReducer, (builder) => {
       state.duration = action.payload?.data[0]?.time;
       state.listQues = action.payload?.data;
       state.quesDetail = action.payload?.data[0];
+      state.quesLessonId = action.payload?.data[0]?.lesson_id;
+      state.quesModuleId = action.payload?.data[0]?.module_id;
       state.loadingListQues = false;
     })
     .addCase(getListQuesOfQuiz.rejected, (state) => {
