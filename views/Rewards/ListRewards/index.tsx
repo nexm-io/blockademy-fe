@@ -59,11 +59,10 @@ export default function ListRewards() {
       <div className="flex flex-col gap-6">
         {rewardRx.listRewardLoading ? (
           <RewardLoading row={3} />
-        ) : rewardRx.rewards.filter((z) => z.is_completed_assignment).length === 0 ? (
+        ) : rewardRx.rewards.length === 0 ? (
           <RewardEmpty />
         ) : (
           rewardRx.rewards
-            .filter((z) => z.is_completed_assignment)
             .map((reward) => (
               <RewardItem key={reward.course_id} data={reward} />
             ))
