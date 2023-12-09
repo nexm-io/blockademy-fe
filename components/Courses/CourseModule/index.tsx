@@ -13,7 +13,7 @@ import cn from "@/services/cn";
 
 interface CourseModuleProps {
   data: any;
-  isRegistered: boolean;
+  isRegistered: number;
   activeDropdown?: boolean;
 }
 
