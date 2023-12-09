@@ -19,9 +19,14 @@ interface LessonModuleProps {
   data: any;
   courseId: string;
   isRegistered: number;
+  moduleLength: number;
 }
 
-const LessonModule: React.FC<LessonModuleProps> = ({ data, isRegistered }) => {
+const LessonModule: React.FC<LessonModuleProps> = ({
+  data,
+  isRegistered,
+  moduleLength,
+}) => {
   const params = useParams();
   const router = useRouter();
   const { subCourseSlug, courseId, lessonSlug } = params;
@@ -35,51 +40,53 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data, isRegistered }) => {
   useEffect(() => {
     if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
   }, [isAuthenticated, token, isRegistered]);
-  
+
   return (
     <div className="flex flex-col gap-4">
-      <div
-        className="w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg cursor-pointer select-none"
-        onClick={() => setShowDropdown(!showDropdown)}
-      >
-        <div className="flex gap-[6px] flex-col">
-          <p>{data.title}</p>
-          <div className="flex items-center justify-between">
-            <div className="flex gap-6 items-center">
-              <div className="flex items-center gap-[6px]">
-                <Image
-                  alt="clock-icon"
-                  className="w-[16px] h-[16px]"
-                  src={clock}
-                />
+      {moduleLength > 1 && (
+        <div
+          className="w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg cursor-pointer select-none"
+          onClick={() => setShowDropdown(!showDropdown)}
+        >
+          <div className="flex gap-[6px] flex-col">
+            <p>{data.title}</p>
+            <div className="flex items-center justify-between">
+              <div className="flex gap-6 items-center">
+                <div className="flex items-center gap-[6px]">
+                  <Image
+                    alt="clock-icon"
+                    className="w-[16px] h-[16px]"
+                    src={clock}
+                  />
 
-                <span className="text-sm font-light leading-6">
-                  {secondsToMinutes(data.duration)}&nbsp;minutes
-                </span>
-              </div>
+                  <span className="text-sm font-light leading-6">
+                    {secondsToMinutes(data.duration)}&nbsp;minutes
+                  </span>
+                </div>
 
-              <div className="flex items-center gap-[6px]">
-                <Image
-                  alt="quiz-icon"
-                  className="w-[16px] h-[16px]"
-                  src={quiz}
-                />
-                <span className="text-sm leading-6 font-light">
-                  {data.lesson_type_format === 1 ? "Text" : "Video"}
-                </span>
+                <div className="flex items-center gap-[6px]">
+                  <Image
+                    alt="quiz-icon"
+                    className="w-[16px] h-[16px]"
+                    src={quiz}
+                  />
+                  <span className="text-sm leading-6 font-light">
+                    {data.lesson_type_format === 1 ? "Text" : "Video"}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div
-              className={cn("transition-all duration-150 ease-in-out", {
-                "rotate-0": showDropdown,
-                "rotate-180": !showDropdown,
-              })}
-            >
-              <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
+              <div
+                className={cn("transition-all duration-150 ease-in-out", {
+                  "rotate-0": showDropdown,
+                  "rotate-180": !showDropdown,
+                })}
+              >
+                <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div
         className={cn(
           `px-3 flex-col gap-2 transition-all duration-150 ease-in-out`,

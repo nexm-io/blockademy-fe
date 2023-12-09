@@ -268,6 +268,7 @@ const LessonDetail = () => {
                                   <LessonModule
                                     key={i}
                                     data={z}
+                                    moduleLength={subCourse?.module_data.length}
                                     isRegistered={subCourse?.is_registered}
                                     courseId={courseId as string}
                                   />
@@ -338,6 +339,7 @@ const LessonDetail = () => {
                           <LessonModule
                             key={i}
                             data={z}
+                            moduleLength={subCourse?.module_data.length}
                             isRegistered={subCourse?.is_registered}
                             courseId={courseId as string}
                           />
