@@ -191,6 +191,8 @@ export default function CourseInfoFooter() {
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
       );
+    } else if (nextData?.lesson_id) {
+      return getNextButton();
     }
 
     return null;

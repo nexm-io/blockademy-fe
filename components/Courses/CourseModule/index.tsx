@@ -13,7 +13,7 @@ import cn from "@/services/cn";
 
 interface CourseModuleProps {
   data: any;
-  isRegistered: number;
+  isRegistered: boolean;
   activeDropdown?: boolean;
 }
 
@@ -73,9 +73,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             onClick={() => {
               if (isLockedLesson) return;
               if (!moduleItem.is_locked) {
-                router.push(
-                  `/courses/${courseId}/${data.slug}`
-                );
+                router.push(`/courses/${courseId}/${data.slug}`);
               }
             }}
             key={moduleItem.id}

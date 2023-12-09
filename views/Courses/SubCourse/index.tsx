@@ -44,7 +44,7 @@ const SubCourseView = () => {
   useEffect(() => {
     dispatch(getDetailCourse(subCourseSlug as string));
   }, []);
-
+ 
   return (
     <div className="container min-h-screen">
       {isLoading ? (
@@ -209,6 +209,7 @@ const SubCourseView = () => {
                                 <LessonModule
                                   key={i}
                                   data={z}
+                                  isRegistered={courseDetail?.is_registered}
                                   courseId={courseId as string}
                                 />
                               </div>
@@ -270,6 +271,7 @@ const SubCourseView = () => {
                           <LessonModule
                             key={i}
                             data={z}
+                            isRegistered={courseDetail?.is_registered}
                             courseId={courseId as string}
                           />
                         )

@@ -18,9 +18,10 @@ import { RootState } from "@/redux/store";
 interface LessonModuleProps {
   data: any;
   courseId: string;
+  isRegistered: number;
 }
 
-const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
+const LessonModule: React.FC<LessonModuleProps> = ({ data, isRegistered }) => {
   const params = useParams();
   const router = useRouter();
   const { subCourseSlug, courseId, lessonSlug } = params;
@@ -32,9 +33,9 @@ const LessonModule: React.FC<LessonModuleProps> = ({ data }) => {
   const token = useSelector((state: RootState) => state.auth.token);
 
   useEffect(() => {
-    if (!isAuthenticated || !token) setIsLockedLesson(true);
-  }, [isAuthenticated, token]);
-
+    if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
+  }, [isAuthenticated, token, isRegistered]);
+  console.log(isRegistered);
   return (
     <div className="flex flex-col gap-4">
       <div
