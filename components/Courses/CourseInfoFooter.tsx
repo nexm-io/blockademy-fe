@@ -141,6 +141,7 @@ export default function CourseInfoFooter() {
         lessonId: nextPrevLesson.current_data.lesson_id as number,
       })
     );
+    dispatch(getCompleteRate(courseId as string));
     router.push(
       `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
     );
@@ -176,12 +177,8 @@ export default function CourseInfoFooter() {
 
   const LessonComponent = () => {
     const { current_data: currentData, next_data: nextData } = nextPrevLesson;
-    
-    if (currentData?.is_complete_lesson) {
-      return getNextButton();
-    } else if (currentData?.is_complete_module) {
-      return getNextButton();
-    } else if (currentData?.lesson_assignment_data?.id) {
+
+    if (currentData?.lesson_assignment_data?.id) {
       return getQuizButton(
         currentData?.lesson_assignment_data?.id,
         "Complete Quiz Lesson"
@@ -191,7 +188,13 @@ export default function CourseInfoFooter() {
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
       );
+    } else if (currentData?.is_complete_lesson) {
+      return getNextButton();
+    } else if (currentData?.is_complete_module) {
+      return getNextButton();
     } else if (nextData?.lesson_id) {
+      return getNextButton();
+    } else if (!nextData) {
       return getNextButton();
     }
 
@@ -209,6 +212,24 @@ export default function CourseInfoFooter() {
     }, 150),
     []
   );
+
+  const completeCurrentLesson = async () => {
+    if (
+      !nextPrevLesson?.next_data &&
+      !nextPrevLesson?.current_data?.is_complete_lesson
+    )
+      await dispatch(
+        completeLesson({
+          courseId: courseId as string,
+          moduleId: nextPrevLesson.current_data.module_id as number,
+          lessonId: nextPrevLesson.current_data.lesson_id as number,
+        })
+      );
+  };
+
+  useEffect(() => {
+    completeCurrentLesson();
+  }, [nextPrevLesson]);
 
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
