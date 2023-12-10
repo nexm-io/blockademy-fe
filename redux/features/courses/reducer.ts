@@ -56,6 +56,8 @@ const initialState: CourseResponse = {
       is_complete_lesson: 0,
       is_complete_module: 0,
       module_assignment_data: {},
+      is_complete_module_sub_course: 0,
+      is_complete_lesson_module: 0,
     },
     current_data: {
       lesson_id: 0,
@@ -68,6 +70,8 @@ const initialState: CourseResponse = {
       is_complete_lesson: 0,
       is_complete_module: 0,
       module_assignment_data: {},
+      is_complete_module_sub_course: 0,
+      is_complete_lesson_module: 0,
     },
     next_data: {
       lesson_id: 0,
@@ -80,6 +84,8 @@ const initialState: CourseResponse = {
       is_complete_lesson: 0,
       is_complete_module: 0,
       module_assignment_data: {},
+      is_complete_module_sub_course: 0,
+      is_complete_lesson_module: 0,
     },
   },
 };

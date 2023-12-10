@@ -177,6 +177,38 @@ export default function CourseInfoFooter() {
     </div>
   );
 
+  const getTryAgainButton = (grade: number, assignmentId: string) => (
+    <>
+      <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
+        <p className="text-sm">Your Highest Score:</p>
+        <p className="text-[28px] leading-10 text-red-100">{grade}%</p>
+      </div>
+      <Button
+        className="!px-6 min-w-[184px]"
+        onClick={() => router.push(`/quiz/${assignmentId}`)}
+      >
+        Try Again
+      </Button>
+    </>
+  );
+
+  const getReviewButton = (grade: string, assignmentId: string) => (
+    <>
+      <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+        <p className="text-sm">Your Highest Score:</p>
+        <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
+      </div>
+      <Button
+        className="md:w-auto inline-block !px-6 w-full"
+        onClick={() => {
+          router.push(`/result/${assignmentId}`);
+        }}
+      >
+        Review Feedback
+      </Button>
+    </>
+  );
+
   const LessonComponent = () => {
     const { current_data: currentData, next_data: nextData } = nextPrevLesson;
 
@@ -195,6 +227,36 @@ export default function CourseInfoFooter() {
       return getQuizButton(
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
+      );
+    } else if (
+      currentData?.is_complete_lesson_module &&
+      !currentData?.is_complete_lesson &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.FAILED
+    ) {
+      return getTryAgainButton(
+        currentData?.module_assignment_data?.score,
+        currentData?.module_assignment_data?.id
+      );
+    } else if (
+      currentData?.is_complete_module_sub_course &&
+      !currentData?.is_complete_module &&
+      currentData?.module_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.FAILED
+    ) {
+      return getTryAgainButton(
+        currentData?.module_assignment_data?.score,
+        currentData?.module_assignment_data?.id
+      );
+    } else if (
+      currentData?.is_complete_module_sub_course &&
+      currentData?.is_complete_module &&
+      currentData?.module_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.PASSED
+    ) {
+      return getReviewButton(
+        currentData?.module_assignment_data?.score,
+        currentData?.module_assignment_data?.id
       );
     } else if (currentData?.is_complete_lesson) {
       return getNextButton();
@@ -329,9 +391,7 @@ export default function CourseInfoFooter() {
             ) : null}
 
             {/* APPLY COURSE */}
-            {!registered &&
-            details?.main_is_specialization === "" &&
-            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW ? (
+            {!registered && !details?.main_is_specialization ? (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
@@ -353,7 +413,6 @@ export default function CourseInfoFooter() {
             {/* LET'S GO */}
             {registered &&
             !courseDetails?.is_complete_module_sub_course &&
-            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW &&
             isCourseDetailPage ? (
               <div className="flex justify-end">
                 <Button
@@ -399,23 +458,6 @@ export default function CourseInfoFooter() {
               </div>
             ) : null}
 
-            {/* PREV - TRY AGAIN */}
-            {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-              <Button
-                className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                disabled={!nextPrevLesson?.previous_data?.lesson_slug}
-                onClick={handlePrevLesson}
-              >
-                <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                  Previous
-                </span>
-              </Button>
-              <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
-                <p className="text-sm">Your Highest Score:</p>
-                <p className="text-[28px] leading-10 text-red-100">10%</p>
-              </div>
-              <Button className="!px-6 min-w-[184px]">Try Again</Button>
-            </div> */}
             {registered &&
             courseDetails?.is_complete_module_sub_course &&
             !courseDetails?.is_completed_assignment &&
@@ -424,20 +466,10 @@ export default function CourseInfoFooter() {
             isCourseDetailPage ? (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <div></div>
-                <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
-                  <p className="text-sm">Your Highest Score:</p>
-                  <p className="text-[28px] leading-10 text-red-100">
-                    {courseDetails?.aissignment_grade}%
-                  </p>
-                </div>
-                <Button
-                  className="!px-6 min-w-[184px]"
-                  onClick={() =>
-                    router.push(`/quiz/${courseDetails?.assigment_id}`)
-                  }
-                >
-                  Try Again
-                </Button>
+                {getTryAgainButton(
+                  courseDetails?.aissignment_grade,
+                  courseDetails?.assigment_id
+                )}
               </div>
             ) : null}
 
@@ -464,7 +496,8 @@ export default function CourseInfoFooter() {
             {registered &&
             courseDetails?.is_complete_module_sub_course &&
             courseDetails?.is_completed_assignment &&
-            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED &&
+            courseDetails?.assignment_status.slug ===
+              ASSIGNMENT_STATUS.PASSED &&
             isCourseDetailPage ? (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
