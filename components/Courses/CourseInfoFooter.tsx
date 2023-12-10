@@ -399,7 +399,7 @@ export default function CourseInfoFooter() {
             {registered && isCourseDetailPage ? (
               <div
                 className={cn(`flex`, {
-                  "justify-start flex-1 md:pl-[66px]":
+                  "justify-start lg:pl-[66px]":
                     courseDetails?.assignment_status,
                   "justify-end": !courseDetails?.assignment_status,
                 })}
@@ -433,7 +433,9 @@ export default function CourseInfoFooter() {
 
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered ? (
-              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+              <div
+                className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]"
+              >
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                   disabled={!nextPrevLesson?.previous_data?.lesson_slug}
@@ -453,7 +455,7 @@ export default function CourseInfoFooter() {
             courseDetails?.assignment_status.slug ===
               ASSIGNMENT_STATUS.FAILED &&
             isCourseDetailPage ? (
-              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0">
                 <div></div>
                 {getTryAgainButton(
                   courseDetails?.aissignment_grade,
@@ -488,17 +490,8 @@ export default function CourseInfoFooter() {
             courseDetails?.assignment_status.slug ===
               ASSIGNMENT_STATUS.PASSED &&
             isCourseDetailPage ? (
-              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-                <Button
-                  className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                  onClick={() =>
-                    router.push(`/quiz/${courseDetails?.assigment_id}`)
-                  }
-                >
-                  <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                    Learn Again
-                  </span>
-                </Button>
+              <div className="flex items-center flex-col gap-1 lg:flex-row justify-between w-full flex-1 px-4 lg:px-0">
+                <div></div>
                 <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
                   <p className="text-sm">Your Highest Score:</p>
                   <p className="text-[28px] leading-10 text-green-400">
