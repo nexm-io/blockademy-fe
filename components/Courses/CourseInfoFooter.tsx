@@ -279,6 +279,14 @@ export default function CourseInfoFooter() {
   );
 
   const completeCurrentLesson = async () => {
+    if (
+      !isLogin ||
+      !registered ||
+      isLoading ||
+      !nextPrevLesson.current_data.module_id ||
+      !nextPrevLesson.current_data.lesson_id
+    )
+      return;
     if (!nextPrevLesson?.current_data?.is_complete_lesson) {
       await dispatch(
         completeLesson({
@@ -292,7 +300,7 @@ export default function CourseInfoFooter() {
 
   useEffect(() => {
     completeCurrentLesson();
-  }, [pathName]);
+  }, [pathName,isLogin, registered, isLoading, nextPrevLesson]);
 
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
@@ -312,8 +320,8 @@ export default function CourseInfoFooter() {
   }, [isLogin]);
 
   useEffect(() => {
-    dispatch(getCompleteRate(courseId as string));
-  }, [courseId, nextPrevLesson]);
+    if (isLogin && registered) dispatch(getCompleteRate(courseId as string));
+  }, [courseId, pathName, nextPrevLesson]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -399,8 +407,9 @@ export default function CourseInfoFooter() {
             {registered && isCourseDetailPage ? (
               <div
                 className={cn(`flex`, {
-                  "justify-start lg:pl-[66px]":
-                    courseDetails?.assignment_status,
+                  "justify-start flex-1 lg:pl-[66px]":
+                    courseDetails?.assignment_status &&
+                    courseDetails?.assignment_status?.s,
                   "justify-end": !courseDetails?.assignment_status,
                 })}
               >
@@ -433,9 +442,7 @@ export default function CourseInfoFooter() {
 
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered ? (
-              <div
-                className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]"
-              >
+              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                   disabled={!nextPrevLesson?.previous_data?.lesson_slug}
