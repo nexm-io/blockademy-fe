@@ -16,6 +16,7 @@ export const TYPE_QUIZ = {
 };
 
 export const ASSIGNMENT_STATUS = {
+  NEW: "new",
   PASSED: "passed",
   NOT_COMPLETED: "new",
   FAILED: "failed",

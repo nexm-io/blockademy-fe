@@ -22,6 +22,7 @@ import {
 } from "@/redux/features/courses/action";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { CourseDetail } from "@/redux/features/courses/type";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -313,7 +314,7 @@ export default function CourseInfoFooter() {
               }
             )}
           >
-            {isLogin && registered && (
+            {isLogin && registered ? (
               <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
                 <div className="flex items-center gap-[18px]">
                   <CircularProgress percent={completeRate.total_completed} />
@@ -325,10 +326,12 @@ export default function CourseInfoFooter() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* APPLY COURSE */}
-            {!registered && details?.main_is_specialization === "" && (
+            {!registered &&
+            details?.main_is_specialization === "" &&
+            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW ? (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
@@ -345,41 +348,43 @@ export default function CourseInfoFooter() {
                   )}
                 </Button>
               </div>
-            )}
+            ) : null}
 
             {/* LET'S GO */}
             {registered &&
-              !courseDetails?.is_complete_module_sub_course &&
-              isCourseDetailPage && (
-                <div className="flex justify-end">
-                  <Button
-                    className="w-full md:w-auto md:min-w-[184px]"
-                    disabled={isLoading}
-                    onClick={() => {
-                      router.push(
-                        `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
-                      );
-                    }}
-                  >
-                    Let’s go
-                  </Button>
-                </div>
-              )}
+            !courseDetails?.is_complete_module_sub_course &&
+            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW &&
+            isCourseDetailPage ? (
+              <div className="flex justify-end">
+                <Button
+                  className="w-full md:w-auto md:min-w-[184px]"
+                  disabled={isLoading}
+                  onClick={() => {
+                    router.push(
+                      `/courses/${courseId}/${nextLesson.sub_course_slug}/lessons/${nextLesson.lesson_slug}`
+                    );
+                  }}
+                >
+                  Let’s go
+                </Button>
+              </div>
+            ) : null}
 
             {registered &&
-              courseDetails?.is_complete_module_sub_course &&
-              !courseDetails?.is_completed_assignment &&
-              isCourseDetailPage && (
-                <div className="flex justify-end">
-                  {getQuizButton(
-                    courseDetails?.assigment_id as any,
-                    "Complete Quiz Course"
-                  )}
-                </div>
-              )}
+            courseDetails?.is_complete_module_sub_course &&
+            !courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW &&
+            isCourseDetailPage ? (
+              <div className="flex justify-end">
+                {getQuizButton(
+                  courseDetails?.assigment_id as any,
+                  "Complete Quiz Course"
+                )}
+              </div>
+            ) : null}
 
             {/* PREVIOUS - NEXT */}
-            {isLessonDetailPage && registered && (
+            {isLessonDetailPage && registered ? (
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
@@ -392,7 +397,7 @@ export default function CourseInfoFooter() {
                 </Button>
                 <LessonComponent />
               </div>
-            )}
+            ) : null}
 
             {/* PREV - TRY AGAIN */}
             {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
@@ -411,6 +416,30 @@ export default function CourseInfoFooter() {
               </div>
               <Button className="!px-6 min-w-[184px]">Try Again</Button>
             </div> */}
+            {registered &&
+            courseDetails?.is_complete_module_sub_course &&
+            !courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug ===
+              ASSIGNMENT_STATUS.FAILED &&
+            isCourseDetailPage ? (
+              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+                <div></div>
+                <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
+                  <p className="text-sm">Your Highest Score:</p>
+                  <p className="text-[28px] leading-10 text-red-100">
+                    {courseDetails?.aissignment_grade}%
+                  </p>
+                </div>
+                <Button
+                  className="!px-6 min-w-[184px]"
+                  onClick={() =>
+                    router.push(`/quiz/${courseDetails?.assigment_id}`)
+                  }
+                >
+                  Try Again
+                </Button>
+              </div>
+            ) : null}
 
             {/* PREV - Review Feedback */}
             {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
@@ -433,36 +462,37 @@ export default function CourseInfoFooter() {
             </div> */}
 
             {registered &&
-              courseDetails?.is_complete_module_sub_course &&
-              courseDetails?.is_completed_assignment &&
-              isCourseDetailPage && (
-                <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-                  <Button
-                    className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                    onClick={() =>
-                      router.push(`/quiz/${courseDetails?.assigment_id}`)
-                    }
-                  >
-                    <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                      Learn Again
-                    </span>
-                  </Button>
-                  <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
-                    <p className="text-sm">Your Highest Score:</p>
-                    <p className="text-[28px] leading-10 text-green-400">
-                      {courseDetails?.aissignment_grade}%
-                    </p>
-                  </div>
-                  <Button
-                    className="md:w-auto inline-block !px-6 w-full"
-                    onClick={() => {
-                      router.push(`/result/${courseDetails?.assigment_id}`);
-                    }}
-                  >
-                    Review Feedback
-                  </Button>
+            courseDetails?.is_complete_module_sub_course &&
+            courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.PASSED &&
+            isCourseDetailPage ? (
+              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+                <Button
+                  className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
+                  onClick={() =>
+                    router.push(`/quiz/${courseDetails?.assigment_id}`)
+                  }
+                >
+                  <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
+                    Learn Again
+                  </span>
+                </Button>
+                <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+                  <p className="text-sm">Your Highest Score:</p>
+                  <p className="text-[28px] leading-10 text-green-400">
+                    {courseDetails?.aissignment_grade}%
+                  </p>
                 </div>
-              )}
+                <Button
+                  className="md:w-auto inline-block !px-6 w-full"
+                  onClick={() => {
+                    router.push(`/result/${courseDetails?.assigment_id}`);
+                  }}
+                >
+                  Review Feedback
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
