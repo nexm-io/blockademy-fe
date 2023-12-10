@@ -136,14 +136,6 @@ export default function CourseInfoFooter() {
 
   const handleNextLesson = async () => {
     if (!nextPrevLesson.next_data.lesson_slug) return;
-    await dispatch(
-      completeLesson({
-        courseId: courseId as string,
-        moduleId: nextPrevLesson.current_data.module_id as number,
-        lessonId: nextPrevLesson.current_data.lesson_id as number,
-      })
-    );
-    dispatch(getCompleteRate(courseId as string));
     router.push(
       `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
     );
@@ -181,7 +173,9 @@ export default function CourseInfoFooter() {
     <>
       <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
         <p className="text-sm">Your Highest Score:</p>
-        <p className="text-[28px] leading-10 text-red-100">{grade}%</p>
+        <p className="text-[28px] leading-10 text-red-100">
+          {grade ? grade : "0"}%
+        </p>
       </div>
       <Button
         className="!px-6 min-w-[184px]"
@@ -214,7 +208,9 @@ export default function CourseInfoFooter() {
 
     if (
       !currentData?.lesson_assignment_data?.score &&
-      currentData?.lesson_assignment_data?.id
+      currentData?.lesson_assignment_data?.id &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.NEW
     ) {
       return getQuizButton(
         currentData?.lesson_assignment_data?.id,
@@ -222,24 +218,24 @@ export default function CourseInfoFooter() {
       );
     } else if (
       !currentData?.module_assignment_data?.score &&
-      currentData?.module_assignment_data?.id
+      currentData?.module_assignment_data?.id &&
+      currentData?.module_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.NEW
     ) {
       return getQuizButton(
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
       );
     } else if (
-      currentData?.is_complete_lesson_module &&
       !currentData?.is_complete_lesson &&
       currentData?.lesson_assignment_data?.assignment_status?.slug ===
         ASSIGNMENT_STATUS.FAILED
     ) {
       return getTryAgainButton(
-        currentData?.module_assignment_data?.score,
-        currentData?.module_assignment_data?.id
+        currentData?.lesson_assignment_data?.score,
+        currentData?.lesson_assignment_data?.id
       );
     } else if (
-      currentData?.is_complete_module_sub_course &&
       !currentData?.is_complete_module &&
       currentData?.module_assignment_data?.assignment_status?.slug ===
         ASSIGNMENT_STATUS.FAILED
@@ -249,14 +245,13 @@ export default function CourseInfoFooter() {
         currentData?.module_assignment_data?.id
       );
     } else if (
-      currentData?.is_complete_module_sub_course &&
-      currentData?.is_complete_module &&
-      currentData?.module_assignment_data?.assignment_status?.slug ===
+      currentData?.is_complete_lesson &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
         ASSIGNMENT_STATUS.PASSED
     ) {
       return getReviewButton(
-        currentData?.module_assignment_data?.score,
-        currentData?.module_assignment_data?.id
+        currentData?.lesson_assignment_data?.score,
+        currentData?.lesson_assignment_data?.id
       );
     } else if (currentData?.is_complete_lesson) {
       return getNextButton();
@@ -284,10 +279,7 @@ export default function CourseInfoFooter() {
   );
 
   const completeCurrentLesson = async () => {
-    if (
-      !nextPrevLesson?.next_data &&
-      !nextPrevLesson?.current_data?.is_complete_lesson
-    ) {
+    if (!nextPrevLesson?.current_data?.is_complete_lesson) {
       await dispatch(
         completeLesson({
           courseId: courseId as string,
@@ -295,19 +287,12 @@ export default function CourseInfoFooter() {
           lessonId: nextPrevLesson.current_data.lesson_id as number,
         })
       );
-      dispatch(
-        getNextPrevLesson({
-          subCourseIdOrSlug: subCourseSlug as string,
-          lessonSlug: lessonSlug as string,
-        })
-      );
-      dispatch(getCompleteRate(courseId as string));
     }
   };
 
   useEffect(() => {
     completeCurrentLesson();
-  }, [nextPrevLesson]);
+  }, [pathName]);
 
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
@@ -328,7 +313,7 @@ export default function CourseInfoFooter() {
 
   useEffect(() => {
     dispatch(getCompleteRate(courseId as string));
-  }, [courseId]);
+  }, [courseId, nextPrevLesson]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -350,7 +335,7 @@ export default function CourseInfoFooter() {
         })
       );
     }
-  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
+  }, [isLessonDetailPage, pathName]);
 
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
@@ -411,10 +396,14 @@ export default function CourseInfoFooter() {
             ) : null}
 
             {/* LET'S GO */}
-            {registered &&
-            !courseDetails?.is_complete_module_sub_course &&
-            isCourseDetailPage ? (
-              <div className="flex justify-end">
+            {registered && isCourseDetailPage ? (
+              <div
+                className={cn(`flex`, {
+                  "justify-start flex-1 md:pl-[66px]":
+                    courseDetails?.assignment_status,
+                  "justify-end": !courseDetails?.assignment_status,
+                })}
+              >
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
                   disabled={isLoading}
