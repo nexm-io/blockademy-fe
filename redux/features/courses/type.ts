@@ -53,6 +53,8 @@ export interface LessonData {
   is_complete_lesson: any;
   is_complete_module: any;
   module_assignment_data: any;
+  is_complete_module_sub_course: string | number;
+  is_complete_lesson_module: string | number;
 }
 
 export interface ListCourse {
@@ -116,6 +118,7 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  is_complete_module_sub_course: number | string;
   is_claimed: number;
   complete_assignment_at: string;
   certificate_pdf_url: string;

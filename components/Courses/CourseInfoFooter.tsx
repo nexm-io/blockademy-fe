@@ -18,9 +18,11 @@ import {
   getDetailCourse,
   getNextLesson,
   getNextPrevLesson,
+  getSubCourseDetail,
 } from "@/redux/features/courses/action";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { CourseDetail } from "@/redux/features/courses/type";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -134,14 +136,6 @@ export default function CourseInfoFooter() {
 
   const handleNextLesson = async () => {
     if (!nextPrevLesson.next_data.lesson_slug) return;
-    await dispatch(
-      completeLesson({
-        courseId: courseId as string,
-        moduleId: nextPrevLesson.current_data.module_id as number,
-        lessonId: nextPrevLesson.current_data.lesson_id as number,
-      })
-    );
-    dispatch(getCompleteRate(courseId as string));
     router.push(
       `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
     );
@@ -175,18 +169,89 @@ export default function CourseInfoFooter() {
     </div>
   );
 
+  const getTryAgainButton = (grade: number, assignmentId: string) => (
+    <>
+      <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
+        <p className="text-sm">Your Highest Score:</p>
+        <p className="text-[28px] leading-10 text-red-100">
+          {grade ? grade : "0"}%
+        </p>
+      </div>
+      <Button
+        className="!px-6 min-w-[184px]"
+        onClick={() => router.push(`/quiz/${assignmentId}`)}
+      >
+        Try Again
+      </Button>
+    </>
+  );
+
+  const getReviewButton = (grade: string, assignmentId: string) => (
+    <>
+      <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+        <p className="text-sm">Your Highest Score:</p>
+        <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
+      </div>
+      <Button
+        className="md:w-auto inline-block !px-6 w-full"
+        onClick={() => {
+          router.push(`/result/${assignmentId}`);
+        }}
+      >
+        Review Feedback
+      </Button>
+    </>
+  );
+
   const LessonComponent = () => {
     const { current_data: currentData, next_data: nextData } = nextPrevLesson;
 
-    if (currentData?.lesson_assignment_data?.id) {
+    if (
+      !currentData?.lesson_assignment_data?.score &&
+      currentData?.lesson_assignment_data?.id &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.NEW
+    ) {
       return getQuizButton(
         currentData?.lesson_assignment_data?.id,
         "Complete Quiz Lesson"
       );
-    } else if (currentData?.module_assignment_data?.id) {
+    } else if (
+      !currentData?.module_assignment_data?.score &&
+      currentData?.module_assignment_data?.id &&
+      currentData?.module_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.NEW
+    ) {
       return getQuizButton(
         currentData?.module_assignment_data?.id,
         "Complete Quiz Module"
+      );
+    } else if (
+      !currentData?.is_complete_lesson &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.FAILED
+    ) {
+      return getTryAgainButton(
+        currentData?.lesson_assignment_data?.score,
+        currentData?.lesson_assignment_data?.id
+      );
+    } else if (
+      !currentData?.is_complete_module &&
+      currentData?.module_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.FAILED
+    ) {
+      return getTryAgainButton(
+        currentData?.module_assignment_data?.score,
+        currentData?.module_assignment_data?.id
+      );
+    } else if (
+      currentData?.is_complete_lesson &&
+      currentData?.lesson_assignment_data?.assignment_status?.slug ===
+        ASSIGNMENT_STATUS.PASSED
+    ) {
+      return getReviewButton(
+        currentData?.lesson_assignment_data?.score,
+        currentData?.lesson_assignment_data?.id
       );
     } else if (currentData?.is_complete_lesson) {
       return getNextButton();
@@ -214,10 +279,7 @@ export default function CourseInfoFooter() {
   );
 
   const completeCurrentLesson = async () => {
-    if (
-      !nextPrevLesson?.next_data &&
-      !nextPrevLesson?.current_data?.is_complete_lesson
-    )
+    if (!nextPrevLesson?.current_data?.is_complete_lesson) {
       await dispatch(
         completeLesson({
           courseId: courseId as string,
@@ -225,11 +287,12 @@ export default function CourseInfoFooter() {
           lessonId: nextPrevLesson.current_data.lesson_id as number,
         })
       );
+    }
   };
 
   useEffect(() => {
     completeCurrentLesson();
-  }, [nextPrevLesson]);
+  }, [pathName]);
 
   useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
@@ -250,7 +313,7 @@ export default function CourseInfoFooter() {
 
   useEffect(() => {
     dispatch(getCompleteRate(courseId as string));
-  }, [courseId]);
+  }, [courseId, nextPrevLesson]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -272,7 +335,7 @@ export default function CourseInfoFooter() {
         })
       );
     }
-  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
+  }, [isLessonDetailPage, pathName]);
 
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
@@ -298,7 +361,7 @@ export default function CourseInfoFooter() {
               }
             )}
           >
-            {isLogin && registered && (
+            {isLogin && registered ? (
               <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
                 <div className="flex items-center gap-[18px]">
                   <CircularProgress percent={completeRate.total_completed} />
@@ -310,10 +373,10 @@ export default function CourseInfoFooter() {
                   </div>
                 </div>
               </div>
-            )}
+            ) : null}
 
             {/* APPLY COURSE */}
-            {!registered && details?.main_is_specialization === "" && (
+            {!registered && !details?.main_is_specialization ? (
               <div className="flex justify-end">
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
@@ -330,11 +393,17 @@ export default function CourseInfoFooter() {
                   )}
                 </Button>
               </div>
-            )}
+            ) : null}
 
             {/* LET'S GO */}
-            {registered && isCourseDetailPage && (
-              <div className="flex justify-end">
+            {registered && isCourseDetailPage ? (
+              <div
+                className={cn(`flex`, {
+                  "justify-start lg:pl-[66px]":
+                    courseDetails?.assignment_status,
+                  "justify-end": !courseDetails?.assignment_status,
+                })}
+              >
                 <Button
                   className="w-full md:w-auto md:min-w-[184px]"
                   disabled={isLoading}
@@ -347,18 +416,26 @@ export default function CourseInfoFooter() {
                   Let’s go
                 </Button>
               </div>
-            )}
+            ) : null}
 
-            {/* COMPLETE QUIZ */}
-            {/* <div className="flex justify-end">
-              <Button className="w-full md:w-auto md:min-w-[184px]">
-                Complete Quiz
-              </Button>
-            </div> */}
+            {registered &&
+            courseDetails?.is_complete_module_sub_course &&
+            !courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug === ASSIGNMENT_STATUS.NEW &&
+            isCourseDetailPage ? (
+              <div className="flex justify-end">
+                {getQuizButton(
+                  courseDetails?.assigment_id as any,
+                  "Complete Quiz Course"
+                )}
+              </div>
+            ) : null}
 
             {/* PREVIOUS - NEXT */}
-            {isLessonDetailPage && registered && (
-              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+            {isLessonDetailPage && registered ? (
+              <div
+                className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]"
+              >
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                   disabled={!nextPrevLesson?.previous_data?.lesson_slug}
@@ -370,27 +447,24 @@ export default function CourseInfoFooter() {
                 </Button>
                 <LessonComponent />
               </div>
-            )}
+            ) : null}
 
-            {/* PREV - TRY AGAIN */}
-            {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
-              <Button
-                className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                disabled={!nextPrevLesson?.previous_data?.lesson_slug}
-                onClick={handlePrevLesson}
-              >
-                <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
-                  Previous
-                </span>
-              </Button>
-              <div className="text-center bg-red-200/10 rounded-lg px-4 py-2 flex items-center gap-4">
-                <p className="text-sm">Your Highest Score:</p>
-                <p className="text-[28px] leading-10 text-red-100">10%</p>
+            {registered &&
+            courseDetails?.is_complete_module_sub_course &&
+            !courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug ===
+              ASSIGNMENT_STATUS.FAILED &&
+            isCourseDetailPage ? (
+              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0">
+                <div></div>
+                {getTryAgainButton(
+                  courseDetails?.aissignment_grade,
+                  courseDetails?.assigment_id
+                )}
               </div>
-              <Button className="!px-6 min-w-[184px]">Try Again</Button>
-            </div> */}
+            ) : null}
 
-            {/* PREV - TRY AGAIN */}
+            {/* PREV - Review Feedback */}
             {/* <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
               <Button
                 className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
@@ -409,6 +483,31 @@ export default function CourseInfoFooter() {
                 Review Feedback
               </Button>
             </div> */}
+
+            {registered &&
+            courseDetails?.is_complete_module_sub_course &&
+            courseDetails?.is_completed_assignment &&
+            courseDetails?.assignment_status.slug ===
+              ASSIGNMENT_STATUS.PASSED &&
+            isCourseDetailPage ? (
+              <div className="flex items-center flex-col gap-1 lg:flex-row justify-between w-full flex-1 px-4 lg:px-0">
+                <div></div>
+                <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+                  <p className="text-sm">Your Highest Score:</p>
+                  <p className="text-[28px] leading-10 text-green-400">
+                    {courseDetails?.aissignment_grade}%
+                  </p>
+                </div>
+                <Button
+                  className="md:w-auto inline-block !px-6 w-full"
+                  onClick={() => {
+                    router.push(`/result/${courseDetails?.assigment_id}`);
+                  }}
+                >
+                  Review Feedback
+                </Button>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

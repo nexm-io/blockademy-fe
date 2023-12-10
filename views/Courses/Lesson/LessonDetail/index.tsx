@@ -9,13 +9,9 @@ import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { RootState } from "@/redux/store";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import {
-  getDetailCourse,
-  getSubCourseDetail,
-} from "@/redux/features/courses/action";
+import { getSubCourseDetail } from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
@@ -44,20 +40,6 @@ const LessonDetail = () => {
     );
     if (payload?.response?.data?.error) router.push("/not-found");
   };
-
-  // useEffect(() => {
-  //   if (subCourseSlug !== previousSubCourseSlug) {
-  //     const loadSubCourse = async () => {
-  //       const { payload } = await dispatch(
-  //         getDetailCourse(subCourseSlug as string)
-  //       );
-  //       if (payload?.response?.data?.error) router.push("/not-found");
-  //     };
-
-  //     loadSubCourse();
-  //   }
-  //   dispatch(setPrevSubCourseSlug(subCourseSlug));
-  // }, [subCourseSlug, lessonSlug, dispatch, router]);
 
   useEffect(() => {
     if (subCourse) {

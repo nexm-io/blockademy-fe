@@ -14,7 +14,6 @@ import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import LessonModule from "@/components/Courses/LessonsModule";
-import { toast } from "react-toastify";
 import { setRefUrl } from "@/redux/features/auth/action";
 
 const SubCourseView = () => {

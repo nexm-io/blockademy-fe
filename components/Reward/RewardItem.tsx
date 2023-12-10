@@ -41,11 +41,11 @@ const RewardItem = ({
           <div className="flex-1 flex flex-col gap-2">
             <h5 className="text-2xl line-clamp-2">{title}</h5>
             <p className="text-[14px] font-light capitalize text-green-400">
-              {assignment_status.name}
+              Passed
             </p>
-            <p className="text-grey-700 text-xl">
+            {/* <p className="text-grey-700 text-xl">
               Grade Achieved: {aissignment_grade || "--"}%
-            </p>
+            </p> */}
           </div>
           <div>
             <Link href={`/accomplishments/${course_id}`}>

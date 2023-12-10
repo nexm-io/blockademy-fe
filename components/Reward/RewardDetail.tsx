@@ -193,9 +193,9 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
               </p>
             ) : null}
 
-            <p className="text-xl text-grey-700">
+            {/* <p className="text-xl text-grey-700">
               Grade Achieved: {courseDetail?.aissignment_grade || "--"}%
-            </p>
+            </p> */}
           </div>
           <div className="flex items-center flex-col md:flex-row gap-4">
             {(courseDetail as any)?.issue_nft_status === "Committed" ? (

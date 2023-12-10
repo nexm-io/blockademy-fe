@@ -14,6 +14,8 @@ import cn from "@/services/cn";
 import { useParams, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import Button from "@/components/Common/Button";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 
 interface LessonModuleProps {
   data: any;
@@ -40,7 +42,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
   useEffect(() => {
     if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
   }, [isAuthenticated, token, isRegistered]);
-
+ 
   return (
     <div className="flex flex-col gap-4">
       {moduleLength > 1 && (
@@ -142,6 +144,28 @@ const LessonModule: React.FC<LessonModuleProps> = ({
             </div>
           </div>
         ))}
+        {data.assignment_data &&
+        data?.assignment_data.assignment_status?.slug ===
+          ASSIGNMENT_STATUS.PASSED ? (
+          <div className="rounded-lg bg-green-400/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
+            <div className="text-center">
+              <p className="text-sm">Your Highest Score</p>
+              <p className="text-[28px] leading-10 text-green-400">
+                {data?.assignment_data?.score}%
+              </p>
+            </div>
+            <div className="flex items-center justify-center">
+              <Button
+                className="!px-6 min-w-[184px]"
+                onClick={() => {
+                  router.push(`/result/${data?.assignment_data?.id}`);
+                }}
+              >
+                Review Feedback
+              </Button>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
