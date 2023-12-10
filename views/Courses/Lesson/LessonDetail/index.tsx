@@ -73,6 +73,25 @@ const LessonDetail = () => {
     }
   }, [isLogin]);
 
+  useEffect(() => {
+    if (subCourseLoading) {
+      return;
+    }
+  
+    const isRegistered = subCourse?.is_registered;
+    const isSpecialization = subCourse?.is_specialization;
+    const courseId = subCourse?.id;
+    const courseSlug = subCourse?.slug;
+  
+    if (!isRegistered && !isSpecialization) {
+      router.push(`/courses/${courseId}/${courseSlug}`);
+    }
+  
+    if (!isRegistered && isSpecialization) {
+      router.push(`/courses/${courseId}`);
+    }
+  }, [subCourseLoading, subCourse]);
+
   return (
     <div className="container min-h-screen">
       {subCourseLoading ? (
