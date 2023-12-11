@@ -93,6 +93,7 @@ export default function CourseInfoFooter() {
     details: courseDetails,
     subCourse,
     isLoading,
+    subCourseLoading,
     nextLesson,
     completeRate,
     nextPrevLesson,
@@ -179,6 +180,7 @@ export default function CourseInfoFooter() {
       </div>
       <Button
         className="!px-6 min-w-[184px]"
+        disabled={isLoading}
         onClick={() => router.push(`/quiz/${assignmentId}`)}
       >
         Try Again
@@ -194,6 +196,7 @@ export default function CourseInfoFooter() {
       </div>
       <Button
         className="md:w-auto inline-block !px-6 w-full"
+        disabled={isLoading}
         onClick={() => {
           router.push(`/result/${assignmentId}`);
         }}
@@ -408,8 +411,8 @@ export default function CourseInfoFooter() {
               <div
                 className={cn(`flex`, {
                   "justify-start flex-1 lg:pl-[66px]":
-                    courseDetails?.assignment_status,
-                  "justify-end": !courseDetails?.assignment_status,
+                    courseDetails?.assignment_status && courseDetails?.assignment_status?.slug !== ASSIGNMENT_STATUS.NEW,
+                  "justify-end": !courseDetails?.assignment_status || courseDetails?.assignment_status?.slug === ASSIGNMENT_STATUS.NEW,
                 })}
               >
                 <Button
@@ -444,7 +447,7 @@ export default function CourseInfoFooter() {
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                  disabled={!nextPrevLesson?.previous_data?.lesson_slug}
+                  disabled={!nextPrevLesson?.previous_data?.lesson_slug && isLoading}
                   onClick={handlePrevLesson}
                 >
                   <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
