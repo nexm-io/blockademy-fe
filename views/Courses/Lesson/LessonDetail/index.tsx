@@ -68,8 +68,16 @@ const LessonDetail = () => {
 
   useEffect(() => {
     if (!isLogin) {
-      dispatch(setRefUrl(pathName));
-      router.push("/login");
+      const isSpecialization = subCourse?.main_is_specialization === 1;
+      const courseIdOrMainId = isSpecialization
+        ? courseId
+        : `${courseId}/${subCourse?.slug}`;
+
+      const url = isSpecialization
+        ? `/courses/${courseIdOrMainId}`
+        : `/courses/${courseIdOrMainId}`;
+
+      router.push(url);
     }
   }, [isLogin]);
 
@@ -77,16 +85,16 @@ const LessonDetail = () => {
     if (subCourseLoading) {
       return;
     }
-  
+
     const isRegistered = subCourse?.is_registered;
     const isSpecialization = subCourse?.is_specialization;
     const courseId = subCourse?.id;
     const courseSlug = subCourse?.slug;
-  
+
     if (!isRegistered && !isSpecialization) {
       router.push(`/courses/${courseId}/${courseSlug}`);
     }
-  
+
     if (!isRegistered && isSpecialization) {
       router.push(`/courses/${courseId}`);
     }
