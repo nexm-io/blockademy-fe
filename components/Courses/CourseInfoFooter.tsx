@@ -1,7 +1,7 @@
 import cn from "@/services/cn";
 import { debounce } from "@/utils/debounce";
 import Image from "next/image";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import cup from "@/public/icons/cup.svg";
 import Button from "../Common/Button";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -88,6 +88,7 @@ export default function CourseInfoFooter() {
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
+  const hasCalledCompleteCurrentLesson = useRef(false);
   const pathName = usePathname();
   const {
     details: courseDetails,
@@ -180,7 +181,6 @@ export default function CourseInfoFooter() {
       </div>
       <Button
         className="!px-6 min-w-[184px]"
-        disabled={isLoading}
         onClick={() => router.push(`/quiz/${assignmentId}`)}
       >
         Try Again
@@ -196,7 +196,6 @@ export default function CourseInfoFooter() {
       </div>
       <Button
         className="md:w-auto inline-block !px-6 w-full"
-        disabled={isLoading}
         onClick={() => {
           router.push(`/result/${assignmentId}`);
         }}
@@ -302,10 +301,6 @@ export default function CourseInfoFooter() {
   };
 
   useEffect(() => {
-    completeCurrentLesson();
-  }, [pathName,isLogin, registered, isLoading, nextPrevLesson]);
-
-  useEffect(() => {
     setIsCourseDetailPage(patternCourseDetail.test(pathName));
     setIsLessonDetailPage(patternLessonDetail.test(pathName));
   }, [pathName]);
@@ -323,8 +318,17 @@ export default function CourseInfoFooter() {
   }, [isLogin]);
 
   useEffect(() => {
-    if (isLogin && registered) dispatch(getCompleteRate(courseId as string));
-  }, [courseId, pathName, nextPrevLesson]);
+    if (!hasCalledCompleteCurrentLesson.current) {
+      completeCurrentLesson();
+      hasCalledCompleteCurrentLesson.current = true;
+    }
+  }, [pathName, isLogin, registered, isLoading, nextPrevLesson]);
+
+  useEffect(() => {
+    if (registered) {
+      dispatch(getCompleteRate(courseId as string));
+    }
+  }, [courseId, pathName, nextPrevLesson, registered]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -375,10 +379,13 @@ export default function CourseInfoFooter() {
             {isLogin && registered ? (
               <div className="inline-block lg:pr-[70px] lg:border-r border-black-100">
                 <div className="flex items-center gap-[18px]">
-                  <CircularProgress percent={completeRate.total_completed} />
+                  <CircularProgress
+                    percent={completeRate?.total_completed || 0}
+                  />
                   <div className="text-sm leading-[21px]">
                     <p className="font-medium">
-                      {completeRate.total_completed}% Completed. Keep going!
+                      {completeRate?.total_completed || 0}% Completed. Keep
+                      going!
                     </p>
                     {/* <p className="text-grey-800">594 builders ahead of you.</p> */}
                   </div>
@@ -411,8 +418,13 @@ export default function CourseInfoFooter() {
               <div
                 className={cn(`flex`, {
                   "justify-start flex-1 lg:pl-[66px]":
-                    courseDetails?.assignment_status && courseDetails?.assignment_status?.slug !== ASSIGNMENT_STATUS.NEW,
-                  "justify-end": !courseDetails?.assignment_status || courseDetails?.assignment_status?.slug === ASSIGNMENT_STATUS.NEW,
+                    courseDetails?.assignment_status &&
+                    courseDetails?.assignment_status?.slug !==
+                      ASSIGNMENT_STATUS.NEW,
+                  "justify-end":
+                    !courseDetails?.assignment_status ||
+                    courseDetails?.assignment_status?.slug ===
+                      ASSIGNMENT_STATUS.NEW,
                 })}
               >
                 <Button
@@ -447,7 +459,9 @@ export default function CourseInfoFooter() {
               <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
-                  disabled={!nextPrevLesson?.previous_data?.lesson_slug && isLoading}
+                  disabled={
+                    !nextPrevLesson?.previous_data?.lesson_slug && isLoading
+                  }
                   onClick={handlePrevLesson}
                 >
                   <span className="text-blue-700 group-hover:text-blue-700/80 transition-all">
