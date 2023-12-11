@@ -78,15 +78,29 @@ export default function ResultQuiz() {
     return href;
   }, [listResultData]);
 
+  const courseUrl = useMemo(() => {
+    if (!listResultData) return "";
+
+    const {
+      main_is_specialization: isSpecialization,
+      course_id: courseId,
+      course_slug: courseSlug,
+    } = listResultData;
+
+    const href = isSpecialization
+      ? `/courses/${courseId}`
+      : `/courses/${courseId}/${courseSlug}`;
+
+    return href;
+  }, [listResultData]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
       if (isViewResultInCourse) {
-        const { payload } = await dispatch(getListHighestResult(id));
-        // if (!payload?.course_id) router.push("/not-found");
+        await dispatch(getListHighestResult(id));
       } else {
-        const { payload } = await dispatch(getListResult(id));
-        // if (!payload?.course_id) router.push("/not-found");
+        await dispatch(getListResult(id));
       }
     };
     fetchData();
@@ -116,7 +130,16 @@ export default function ResultQuiz() {
   useEffect(() => {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
-      router.push(`/courses/${listResultData?.course_id}`);
+        const isSpecialization = listResultData?.main_is_specialization === 1;
+      const courseIdOrMainId = isSpecialization
+        ? listResultData.course_id
+        : `${listResultData.course_id}/${listResultData?.course_slug}`;
+
+      const url = isSpecialization
+        ? `/courses/${courseIdOrMainId}`
+        : `/courses/${courseIdOrMainId}`;
+
+      router.push(url);
     }
   }, [listResultData, isAuthenticated, token]);
 
@@ -199,7 +222,7 @@ export default function ResultQuiz() {
                   <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
                 </li>
                 <li className="leading-[23px] hover:underline">
-                  <Link href={`/courses/${listResultData?.course_id}`}>
+                  <Link href={courseUrl}>
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                       {listResultData?.course_title}
                     </span>
