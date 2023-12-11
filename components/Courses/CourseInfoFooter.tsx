@@ -408,8 +408,7 @@ export default function CourseInfoFooter() {
               <div
                 className={cn(`flex`, {
                   "justify-start flex-1 lg:pl-[66px]":
-                    courseDetails?.assignment_status &&
-                    courseDetails?.assignment_status?.s,
+                    courseDetails?.assignment_status,
                   "justify-end": !courseDetails?.assignment_status,
                 })}
               >
