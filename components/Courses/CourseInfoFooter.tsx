@@ -23,6 +23,7 @@ import {
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { CourseDetail } from "@/redux/features/courses/type";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
+import Link from "next/link";
 
 const patternCourseDetail = /^\/courses\/[^\/]+(?:\/[^\/]+)?$/;
 const patternLessonDetail =
@@ -188,18 +189,14 @@ export default function CourseInfoFooter() {
 
   const getReviewButton = (grade: string, assignmentId: string) => (
     <>
-      <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
-        <p className="text-sm">Your Highest Score:</p>
-        <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
+      <div className="flex flex-col items-center gap-2">
+        <div className="text-center bg-green-400/10 rounded-lg px-4 py-2 flex items-center gap-4">
+          <p className="text-sm">Your Highest Score:</p>
+          <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
+        </div>
+        <Link className="text-sm hover:underline" href={`/result/${assignmentId}`}>Review Feedback</Link>
       </div>
-      <Button
-        className="md:w-auto inline-block !px-6 w-full"
-        onClick={() => {
-          router.push(`/result/${assignmentId}`);
-        }}
-      >
-        Review Feedback
-      </Button>
+      {getNextButton()}
     </>
   );
 
@@ -450,7 +447,7 @@ export default function CourseInfoFooter() {
 
             {/* PREVIOUS - NEXT */}
             {isLessonDetailPage && registered ? (
-              <div className="flex items-center justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
+              <div className="flex items-center flex-col gap-2 lg:flex-row justify-between w-full flex-1 px-4 lg:px-0 lg:pl-[66px]">
                 <Button
                   className="w-auto md:min-w-[184px] bg-blue-600 group hover:bg-blue-600/50 group !px-3"
                   disabled={
