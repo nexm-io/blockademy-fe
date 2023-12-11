@@ -130,7 +130,16 @@ export default function ResultQuiz() {
   useEffect(() => {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
-      router.push(`/courses/${listResultData?.course_id}`);
+        const isSpecialization = listResultData?.main_is_specialization === 1;
+      const courseIdOrMainId = isSpecialization
+        ? listResultData.course_id
+        : `${listResultData.course_id}/${listResultData?.course_slug}`;
+
+      const url = isSpecialization
+        ? `/courses/${courseIdOrMainId}`
+        : `/courses/${courseIdOrMainId}`;
+
+      router.push(url);
     }
   }, [listResultData, isAuthenticated, token]);
 
