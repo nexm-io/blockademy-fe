@@ -295,6 +295,7 @@ export default function CourseInfoFooter() {
           lessonId: nextPrevLesson.current_data.lesson_id as number,
         })
       );
+      dispatch(getCompleteRate(courseId as string));
     }
   };
 
@@ -316,14 +317,12 @@ export default function CourseInfoFooter() {
   }, [isLogin]);
 
   useEffect(() => {
-      completeCurrentLesson();
-  }, [pathName, isLogin, registered, isLoading, nextPrevLesson]);
+    dispatch(getCompleteRate(courseId as string));
+  }, []);
 
   useEffect(() => {
-    if (registered) {
-      dispatch(getCompleteRate(courseId as string));
-    }
-  }, [courseId, pathName, nextPrevLesson, registered]);
+    completeCurrentLesson();
+  }, [pathName, isLogin, registered, isLoading, nextPrevLesson]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
