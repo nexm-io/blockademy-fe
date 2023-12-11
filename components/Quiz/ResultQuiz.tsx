@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, useRouter } from "next/navigation";
 import { RESULT_QUIZ_FAIL, RESULT_QUIZ_PASS } from "@/utils/constants";
@@ -31,6 +31,52 @@ export default function ResultQuiz() {
       behavior: "smooth",
     });
   };
+
+  const handleClickKeepLearning = () => {
+    let url = "";
+
+    if (listResultData) {
+      const courseId = listResultData.course_id as string;
+      const isSpecialization = listResultData.main_is_specialization;
+      const courseSlug = listResultData.course_slug;
+
+      if (listResultData.is_course_quiz || listResultData.is_module_quiz) {
+        url = isSpecialization
+          ? `/courses/${courseId}`
+          : `/courses/${courseId}/${courseSlug}`;
+      }
+
+      if (listResultData.is_lesson_quiz) {
+        const lessonSlug = listResultData.lesson_data?.slug;
+        const moduleSlug = listResultData.lesson_data?.module_slug;
+        url = isSpecialization
+          ? `/courses/${courseId}/${moduleSlug}/lessons/${lessonSlug}`
+          : `/courses/${courseId}/${courseSlug}/lessons/${lessonSlug}`;
+      }
+
+      router.push(url);
+    }
+  };
+
+  const lessonUrl = useMemo(() => {
+    if (!listResultData) return "";
+    const isSpecialization = listResultData.main_is_specialization;
+    const courseId = listResultData.course_id;
+    const moduleSlug = listResultData.lesson_data?.module_slug;
+    const lessonSlug = listResultData.lesson_data?.slug;
+    const courseSlug = listResultData.course_slug;
+
+    let href = `/courses/${courseId}`;
+
+    if (isSpecialization) {
+      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [listResultData]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,15 +201,31 @@ export default function ResultQuiz() {
                 <li className="leading-[23px] hover:underline">
                   <Link href={`/courses/${listResultData?.course_id}`}>
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      {listResultData?.quiz}
+                      {listResultData?.course_title}
                     </span>
                   </Link>
                 </li>
                 <li className="leading-[23px]">
                   <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
                 </li>
+                {listResultData?.is_lesson_quiz && (
+                  <>
+                    <li className="leading-[23px] hover:underline">
+                      <Link href={lessonUrl}>
+                        <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                          {listResultData?.lesson_data?.title}
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="leading-[23px]">
+                      <span className="mx-3 md:text-[12px] text-[10px]">
+                        &gt;
+                      </span>
+                    </li>
+                  </>
+                )}
                 <li className="leading-[23px]">
-                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                  <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                     Result
                   </span>
                 </li>
@@ -177,9 +239,7 @@ export default function ResultQuiz() {
                 {Number(listResultData?.score) < PASSED_QUIZZ_SCORE ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
-                    onClick={() =>
-                      router.push(`/courses/${listResultData?.course_id}`)
-                    }
+                    onClick={handleClickKeepLearning}
                   >
                     <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
                       Keep Learning

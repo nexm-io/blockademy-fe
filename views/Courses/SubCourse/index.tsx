@@ -34,7 +34,7 @@ const SubCourseView = () => {
   }, [isShowMenu]);
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin && courseDetail?.is_specialization) {
       dispatch(setRefUrl(pathName));
       router.push("/login");
     }

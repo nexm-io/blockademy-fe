@@ -178,6 +178,12 @@ export type listResultDataType = {
     lesson_slug: string;
     lesson_id: string;
   };
+  main_is_specialization: string | number;
+  is_lesson_quiz: number;
+  is_module_quiz: number;
+  is_course_quiz: number;
+  lesson_data: any;
+  course_title: string;
 };
 
 export type QuestionAnswerType = {
