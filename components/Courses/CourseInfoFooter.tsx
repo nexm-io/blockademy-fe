@@ -88,13 +88,11 @@ export default function CourseInfoFooter() {
   const [isLessonDetailPage, setIsLessonDetailPage] = useState<boolean>(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
-  const hasCalledCompleteCurrentLesson = useRef(false);
   const pathName = usePathname();
   const {
     details: courseDetails,
     subCourse,
     isLoading,
-    subCourseLoading,
     nextLesson,
     completeRate,
     nextPrevLesson,
@@ -318,10 +316,7 @@ export default function CourseInfoFooter() {
   }, [isLogin]);
 
   useEffect(() => {
-    if (!hasCalledCompleteCurrentLesson.current) {
       completeCurrentLesson();
-      hasCalledCompleteCurrentLesson.current = true;
-    }
   }, [pathName, isLogin, registered, isLoading, nextPrevLesson]);
 
   useEffect(() => {
