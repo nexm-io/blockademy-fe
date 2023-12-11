@@ -194,7 +194,12 @@ export default function CourseInfoFooter() {
           <p className="text-sm">Your Highest Score:</p>
           <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
         </div>
-        <Link className="text-sm hover:underline" href={`/result/${assignmentId}`}>Review Feedback</Link>
+        <Link
+          className="text-sm hover:underline"
+          href={`/result/${assignmentId}`}
+        >
+          Review Feedback
+        </Link>
       </div>
       {getNextButton()}
     </>
@@ -279,7 +284,6 @@ export default function CourseInfoFooter() {
     if (
       !isLogin ||
       !registered ||
-      isLoading ||
       !nextPrevLesson.current_data.module_id ||
       !nextPrevLesson.current_data.lesson_id
     )
@@ -319,7 +323,7 @@ export default function CourseInfoFooter() {
 
   useEffect(() => {
     completeCurrentLesson();
-  }, [pathName, isLogin, registered, isLoading, nextPrevLesson]);
+  }, [subCourseSlug, lessonSlug, isLogin, registered, isLoading, nextPrevLesson]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -341,7 +345,7 @@ export default function CourseInfoFooter() {
         })
       );
     }
-  }, [isLessonDetailPage, pathName]);
+  }, [isLessonDetailPage, subCourseSlug, lessonSlug]);
 
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
