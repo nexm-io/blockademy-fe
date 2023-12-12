@@ -96,7 +96,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="h-[84px]"></div>
+      <div className="h-[82px]"></div>
       <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
         <div
           className={cn(

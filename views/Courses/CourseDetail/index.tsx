@@ -93,127 +93,119 @@ const CourseDetail = () => {
       ) : (
         <>
           <section>
-            <div className="flex flex-col gap-4 lg:gap-10">
-              <nav className="w-full rounded-md">
-                <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
-                  <li className="leading-[23px] hover:underline">
-                    <Link href="/">
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        Home
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="mx-3 md:text-[12px] text-[10px]">
-                      &gt;
+            <nav className="w-full rounded-md mb-[41px]">
+              <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
+                <li className="leading-[23px] hover:underline">
+                  <Link href="/">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Home
                     </span>
-                  </li>
-                  <li className="leading-[23px] hover:underline">
-                    <Link href="/courses">
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        Courses
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="mx-3 md:text-[12px] text-[10px]">
-                      &gt;
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link href="/courses">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Courses
                     </span>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                      {courseDetail?.title}
-                    </span>
-                  </li>
-                </ol>
-              </nav>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
+                    {courseDetail?.title}
+                  </span>
+                </li>
+              </ol>
+            </nav>
 
-              <div
-                className={cn(`block lg:hidden`, {
-                  active: isShowMenu,
-                })}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="hambuger"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                  >
-                    <span></span>
-                  </div>
-                  <p className="text-blue-100">Menu</p>
+            <div
+              className={cn(`block lg:hidden mb-10`, {
+                active: isShowMenu,
+              })}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="hambuger"
+                  onClick={() => setShowMenu((prev) => !prev)}
+                >
+                  <span></span>
                 </div>
+                <p className="text-blue-100">Menu</p>
+              </div>
+              <div
+                className={cn(
+                  "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                  { "!visible": isShowMenu }
+                )}
+              >
                 <div
                   className={cn(
-                    "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
-                    { "!visible": isShowMenu }
+                    "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                    { "!visible opacity-100": isShowMenu }
+                  )}
+                  onClick={() => setShowMenu(false)}
+                ></div>
+                <div
+                  className={cn(
+                    "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
+                    { "!translate-x-0": isShowMenu }
                   )}
                 >
-                  <div
-                    className={cn(
-                      "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
-                      { "!visible opacity-100": isShowMenu }
-                    )}
-                    onClick={() => setShowMenu(false)}
-                  ></div>
-                  <div
-                    className={cn(
-                      "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
-                      { "!translate-x-0": isShowMenu }
-                    )}
-                  >
-                    <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
-                      <p className="text-blue-100">Close</p>
-                      <div
-                        className="hambuger"
-                        onClick={() => setShowMenu((prev) => !prev)}
-                      >
-                        <span></span>
-                      </div>
+                  <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                    <p className="text-blue-100">Close</p>
+                    <div
+                      className="hambuger"
+                      onClick={() => setShowMenu((prev) => !prev)}
+                    >
+                      <span></span>
                     </div>
-                    <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.sub_course_data.length !== 0 &&
-                        !isLoading && (
-                          <div className="flex flex-col gap-10">
-                            {courseDetail?.sub_course_data.map(
-                              (subCourse, index) => (
-                                <div
+                  </div>
+                  <div className="mt-10 overflow-y-auto">
+                    {courseDetail?.sub_course_data.length !== 0 &&
+                      !isLoading && (
+                        <div className="flex flex-col gap-10">
+                          {courseDetail?.sub_course_data.map(
+                            (subCourse, index) => (
+                              <div
+                                key={index}
+                                onClick={() => {
+                                  router.push(`/courses/${courseId}`);
+                                }}
+                              >
+                                <CourseModule
                                   key={index}
-                                  onClick={() => {
-                                    router.push(`/courses/${courseId}`);
-                                  }}
-                                >
-                                  <CourseModule
-                                    key={index}
-                                    isRegistered={courseDetail?.is_registered}
-                                    data={subCourse}
-                                    activeDropdown={index === 0}
-                                  />
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
-                    </div>
+                                  isRegistered={courseDetail?.is_registered}
+                                  data={subCourse}
+                                  activeDropdown={index === 0}
+                                />
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
-
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
-                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-                  {courseDetail?.title}
-                </h1>
-              </div>
-
-              {isLogin ? null : (
-                <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
-                  <Image alt="gift-icon" src={gift}></Image>
-                  <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                    Log into your Blockademy account to register courses, track
-                    progress and claim your rewards.
-                  </span>
-                </div>
-              )}
             </div>
+
+            <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
+              {courseDetail?.title}
+            </h1>
+
+            {isLogin ? null : (
+              <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
+                <Image alt="gift-icon" src={gift}></Image>
+                <span className="md:text-base text-[13px] font-normal text-black-100 ">
+                  Log into your Blockademy account to register courses, track
+                  progress and claim your rewards.
+                </span>
+              </div>
+            )}
 
             {/* PASSED CASE */}
             {isLogin &&
