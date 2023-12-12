@@ -95,17 +95,19 @@ const LessonModule: React.FC<LessonModuleProps> = ({
       )}
       <div
         className={cn(
-          `px-3 flex-col gap-2 transition-all duration-150 ease-in-out`,
+          `flex-col transition-all duration-150 ease-in-out`,
           {
             flex: showDropdown,
             hidden: !showDropdown,
+            "px-3": moduleLength > 1,
           }
         )}
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
           <div
-            className={cn(`flex justify-between p-[6px] cursor-pointer`, {
+            className={cn(`flex justify-between p-[10px] cursor-pointer`, {
               "!cursor-default": isLockedLesson || lessonItem.is_locked,
+              "bg-grey-100": moduleLength <= 1 && lessonSlug === lessonItem.slug,
             })}
             onClick={() => {
               if (isLockedLesson) return;
