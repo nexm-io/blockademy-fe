@@ -205,8 +205,8 @@ const LessonDetail = () => {
       ) : (
         <>
           <section>
-            <div className="flex justify-between items-center">
-              <nav className="rounded-md mb-[41px]">
+            <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4 lg:mb-[41px]">
+              <nav className="rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
                     <Link href="/">
@@ -250,7 +250,7 @@ const LessonDetail = () => {
                       </li>
                     </>
                   )}
-                  <li className="leading-[23px] hover:underline truncate w-[100px] lg:w-auto inline-block">
+                  <li className="leading-[23px] hover:underline truncate max-w-[100px] lg:w-auto inline-block">
                     <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
@@ -275,8 +275,8 @@ const LessonDetail = () => {
                     `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
                     {
                       hidden:
-                        Object.keys(nextPrevLesson?.previous_data)
-                          .length <= 0 || subCourseLoading,
+                        Object.keys(nextPrevLesson?.previous_data).length <=
+                          0 || subCourseLoading,
                     }
                   )}
                   onClick={handlePrevLesson}
