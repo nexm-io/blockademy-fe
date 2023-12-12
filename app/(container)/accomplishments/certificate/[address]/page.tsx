@@ -30,31 +30,29 @@ const CertificateDetailPage = () => {
   }, [getCertificate]);
 
   return (
-    <div className="mt-[82.27px]">
-      <div className="h-screen">
-        {isloading ? (
-          <div className="flex justify-center mt-[200px]">
-            <SpinnerIos className="animate-spin text-blue-100" size={100} />
+    <div className="h-screen">
+      {isloading ? (
+        <div className="flex justify-center mt-[200px]">
+          <SpinnerIos className="animate-spin text-blue-100" size={100} />
+        </div>
+      ) : (
+        <>
+          <div className="block sm:hidden px-4">
+            Your web browser may not have a PDF plugin. Instead you can{" "}
+            <a className="text-blue-100 underline" href={pdf} target="_blank">
+              click here to download the PDF file.
+            </a>
           </div>
-        ) : (
-          <>
-            <div className="block sm:hidden px-4">
-              Your web browser may not have a PDF plugin. Instead you can{" "}
-              <a className="text-blue-100 underline" href={pdf} target="_blank">
-                click here to download the PDF file.
-              </a>
-            </div>
-            <div className="h-full mx-auto container hidden sm:block">
-              <object
-                data={pdf}
-                type="application/pdf"
-                width="100%"
-                height="100%"
-              ></object>
-            </div>
-          </>
-        )}
-      </div>
+          <div className="h-full mx-auto container hidden sm:block">
+            <object
+              data={pdf}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            ></object>
+          </div>
+        </>
+      )}
     </div>
   );
 };

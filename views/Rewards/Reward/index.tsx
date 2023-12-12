@@ -34,7 +34,7 @@ const Reward = () => {
   }, []);
 
   return (
-    <div className="container mt-24 sm:mt-32 min-h-[64vh]">
+    <div className="container min-h-[64vh]">
       {coursesRx.isLoading ? (
         <div className="flex flex-col gap-10">
           <div className="skeleton h-10"></div>

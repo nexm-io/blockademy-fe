@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 
 const CourseAllPage = () => {
   return (
-    <div className="mt-[74px]">
+    <>
       <CourseBanner />
       <PageContainer>
         <CoursesView />
       </PageContainer>
       <NoSignal />
-    </div>
+    </>
   );
 };
 

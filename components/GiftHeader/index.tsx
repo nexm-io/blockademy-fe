@@ -11,7 +11,7 @@ const GiftHeader = () => {
 
   return (
     <>
-      <div className="bg-blue-200 relative flex items-center justify-center py-6 mt-[74px] px-4 full-bleed__header ">
+      <div className="bg-blue-200 relative flex items-center justify-center py-6 px-4 full-bleed__header ">
         <div className="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-4">
           <Image
             alt="hutech"

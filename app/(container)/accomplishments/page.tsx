@@ -7,11 +7,7 @@ export const metadata: Metadata = {
 };
 
 const AccomplishmentsPage = () => {
-  return (
-    <div className="mt-[74px]">
-        <Accomplishments />
-    </div>
-  );
+  return <Accomplishments />;
 };
 
 export default AccomplishmentsPage;
