@@ -21,7 +21,10 @@ import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { setRefUrl } from "@/redux/features/auth/action";
-import { Next, Previous } from "@/components/Icon";
+import { CloseCirlce, Next, Previous } from "@/components/Icon";
+import Button from "@/components/Common/Button";
+import { CloseCircle, Loader3 } from "@styled-icons/remix-line";
+import { CircleCheck } from "@styled-icons/fa-solid";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -30,6 +33,8 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
+  const [completeQuizLoading, setCompleteQuizLoading] =
+    useState<boolean>(false);
   const { subCourseLoading, subCourse, nextPrevLesson } =
     useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
@@ -250,7 +255,7 @@ const LessonDetail = () => {
                       </li>
                     </>
                   )}
-                  <li className="leading-[23px] hover:underline truncate max-w-[100px] lg:w-auto inline-block">
+                  <li className="leading-[23px] hover:underline inline-block">
                     <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
@@ -400,6 +405,168 @@ const LessonDetail = () => {
                         />
                       </>
                     )}
+
+                    <div className="flex flex-col gap-10">
+                      <h3 className="text-[28px] font-bold mb-[3px]">
+                        Quizz: What’s in a Block?
+                      </h3>
+                      <div className="flex flex-col gap-10 mb-[11px]">
+                        <div>
+                          <Button
+                            className="w-full md:w-auto md:min-w-[184px]"
+                            onClick={() => {
+                              setCompleteQuizLoading(true);
+                              router.push(`/quiz/${lesson}`);
+                            }}
+                            disabled={completeQuizLoading}
+                          >
+                            Complete Quiz
+                            {completeQuizLoading && (
+                              <Loader3
+                                className="animate-spin ml-2"
+                                width={25}
+                                height={25}
+                              />
+                            )}
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            className="w-full md:w-auto md:min-w-[184px] mb-[11px]"
+                            onClick={() => {
+                              setCompleteQuizLoading(true);
+                              router.push(`/quiz/${lesson}`);
+                            }}
+                            disabled={completeQuizLoading}
+                          >
+                            Resume Quizz
+                            {completeQuizLoading && (
+                              <Loader3
+                                className="animate-spin ml-2"
+                                width={25}
+                                height={25}
+                              />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="h-[1px] bg-grey-100 mb-[2px]"></div>
+
+                      <div className="grid grid-cols-2">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold">
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold">
+                            Your grade
+                          </p>
+                          <p className="text-grey-700 font-light">--</p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CircleCheck
+                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                            />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-green-400 text-[28px] leading-10">
+                            100%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Button
+                            className="md:w-auto inline-block !px-6 w-full"
+                            onClick={() => {
+                              router.push(`/result/`);
+                            }}
+                          >
+                            Review Feedback
+                          </Button>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CircleCheck
+                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                            />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-green-400 text-[28px] leading-10">
+                            100%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Link
+                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
+                            href={`/result/`}
+                          >
+                            Review Feedback
+                          </Link>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CloseCirlce />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-red-200 text-[28px] leading-10">
+                            20%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Link
+                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
+                            href={`/result/`}
+                          >
+                            Review Feedback
+                          </Link>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                       <div
                         id="content"
