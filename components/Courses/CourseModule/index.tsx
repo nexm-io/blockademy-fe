@@ -79,7 +79,7 @@ const CourseModule: React.FC<CourseModuleProps> = ({
             key={moduleItem.id}
           >
             <div
-              className={cn("font-light", {
+              className={cn("font-light truncate lg:w-[300px]", {
                 "text-grey-400": moduleItem.is_locked || isLockedLesson,
               })}
             >

@@ -200,7 +200,7 @@ const LessonDetail = () => {
                       </li>
                     </>
                   )}
-                  <li className="leading-[23px] hover:underline">
+                  <li className="leading-[23px] hover:underline truncate w-[100px] lg:w-auto inline-block">
                     <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
@@ -308,38 +308,35 @@ const LessonDetail = () => {
               )}
             </div>
 
-            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
-                <div className="w-full">
-                  {lesson ? (
-                    <>
-                      {lesson.type_format === 2 && formState === "video" && (
-                        <>
-                          <VideoPlayer
-                            typeUpload={lesson.type_upload}
-                            url={lesson.link}
-                            onChangeForm={() => {}}
-                            onChangeStatus={handleOnchange}
-                          />
-                        </>
-                      )}
-                      <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                        <div
-                          id="content"
-                          className="flex flex-col gap-3 course-content text-base"
-                          dangerouslySetInnerHTML={{
-                            __html: lesson.description,
-                          }}
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
+                {lesson ? (
+                  <>
+                    {lesson.type_format === 2 && formState === "video" && (
+                      <>
+                        <VideoPlayer
+                          typeUpload={lesson.type_upload}
+                          url={lesson.link}
+                          onChangeForm={() => {}}
+                          onChangeStatus={handleOnchange}
                         />
-                      </div>
-                    </>
-                  ) : (
-                    <div>No Lesson</div>
-                  )}
-                </div>
+                      </>
+                    )}
+                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                      <div
+                        id="content"
+                        className="flex flex-col gap-3 course-content text-base"
+                        dangerouslySetInnerHTML={{
+                          __html: lesson.description,
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div>No Lesson</div>
+                )}
               </div>
-
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
+              <div className="w-full lg:w-[352px]">
                 <div className="flex flex-col gap-5 md:px-0">
                   {subCourse?.module_data.length !== 0 && !subCourseLoading && (
                     <div className="hidden lg:flex flex-col gap-10">

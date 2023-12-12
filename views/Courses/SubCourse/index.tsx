@@ -248,23 +248,21 @@ const SubCourseView = () => {
                 <RewardDetail courseDetail={courseDetail} />
               )}
 
-            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
-                <div className="w-full">
-                  {courseDetail && (
-                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                      <div
-                        id="content"
-                        className="flex flex-col gap-3 course-content text-base"
-                        dangerouslySetInnerHTML={{
-                          __html: courseDetail.description,
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
+                {courseDetail && (
+                  <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                    <div
+                      id="content"
+                      className="flex flex-col gap-3 course-content text-base"
+                      dangerouslySetInnerHTML={{
+                        __html: courseDetail.description,
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
+              <div className="w-full lg:w-[352px]">
                 <div className="flex flex-col gap-5 md:px-0">
                   {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">

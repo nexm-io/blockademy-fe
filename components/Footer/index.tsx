@@ -42,7 +42,7 @@ const Footer = () => {
 
   return (
     <footer className="py-[28px] grid gap-6 mt-6">
-      {showInfoPattern.test(pathName) && <CourseInfoFooter />}
+      {/* {showInfoPattern.test(pathName) && <CourseInfoFooter />} */}
       <div className="container flex flex-col gap-4 lg:flex-row justify-between items-center">
         <Link href="/">
           <Image
