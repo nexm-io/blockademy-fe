@@ -55,6 +55,7 @@ export interface LessonData {
   module_assignment_data: any;
   is_complete_module_sub_course: string | number;
   is_complete_lesson_module: string | number;
+  is_complete_sub_course: string | number;
 }
 
 export interface ListCourse {
