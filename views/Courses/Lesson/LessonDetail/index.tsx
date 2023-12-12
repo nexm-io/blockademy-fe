@@ -283,13 +283,7 @@ const LessonDetail = () => {
                 </div>
               </div>
             </div>
-
-            <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
-              <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-                {lesson?.title}
-              </h1>
-            </div>
-
+            
             <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
               {lesson?.title}
             </h1>

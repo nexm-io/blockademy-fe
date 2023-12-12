@@ -14,11 +14,16 @@ import cn from "@/services/cn";
 import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
+import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
+import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 
 const CourseDetail = () => {
   const params = useParams();
   const { courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
+  const [registered, setRegistered] = useState<number>(0);
+  const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
+    useState(false);
   const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
@@ -30,6 +35,10 @@ const CourseDetail = () => {
       if (payload?.response?.data?.error) router.push("/not-found");
     })();
   }, []);
+
+  useEffect(() => {
+    setRegistered(courseDetail?.is_registered as number);
+  }, [courseDetail]);
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -166,6 +175,11 @@ const CourseDetail = () => {
                     </div>
                   </div>
                   <div className="mt-10 overflow-y-auto">
+                    <ApplyCourseButton
+                      courseId={courseDetail?.id as string}
+                      isRegistered={!!courseDetail?.is_registered}
+                      showPopup={setShowPopupRegisterSuccess}
+                    />
                     {courseDetail?.sub_course_data.length !== 0 &&
                       !isLoading && (
                         <div className="flex flex-col gap-10">
@@ -179,7 +193,7 @@ const CourseDetail = () => {
                               >
                                 <CourseModule
                                   key={index}
-                                  isRegistered={courseDetail?.is_registered}
+                                  isRegistered={registered}
                                   data={subCourse}
                                   activeDropdown={index === 0}
                                 />
@@ -229,6 +243,14 @@ const CourseDetail = () => {
                 )}
               </div>
               <div className="w-full lg:w-[352px]">
+                <div className="hidden lg:block">
+                  <ApplyCourseButton
+                    courseId={courseDetail?.id as string}
+                    isRegistered={!!courseDetail?.is_registered}
+                    showPopup={setShowPopupRegisterSuccess}
+                  />
+                </div>
+
                 <div className="flex flex-col gap-5 md:px-0">
                   {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
@@ -236,7 +258,7 @@ const CourseDetail = () => {
                         <CourseModule
                           key={index}
                           data={subCourse}
-                          isRegistered={courseDetail?.is_registered}
+                          isRegistered={registered}
                           activeDropdown={index === 0}
                         />
                       ))}
@@ -249,6 +271,9 @@ const CourseDetail = () => {
         </>
       )}
       <BackToTop />
+      {showPopupRegisterSuccess && (
+        <RegisterSuccessPopup setShowPopup={setShowPopupRegisterSuccess} />
+      )}
     </div>
   );
 };

@@ -15,11 +15,16 @@ import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import LessonModule from "@/components/Courses/LessonsModule";
 import { setRefUrl } from "@/redux/features/auth/action";
+import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
+import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 
 const SubCourseView = () => {
   const params = useParams();
   const { courseId, subCourseSlug } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
+  const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
+    useState(false);
+  const [registered, setRegistered] = useState<number>(0);
   const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
@@ -39,6 +44,10 @@ const SubCourseView = () => {
       router.push("/login");
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    setRegistered(courseDetail?.is_registered as number);
+  }, [courseDetail]);
 
   useEffect(() => {
     dispatch(getDetailCourse(subCourseSlug as string));
@@ -190,6 +199,11 @@ const SubCourseView = () => {
                     </div>
                   </div>
                   <div className="mt-10 overflow-y-auto">
+                    <ApplyCourseButton
+                      courseId={courseDetail?.id as string}
+                      isRegistered={!!courseDetail?.is_registered}
+                      showPopup={setShowPopupRegisterSuccess}
+                    />
                     {courseDetail?.module_data.length !== 0 && !isLoading && (
                       <div className="flex flex-col gap-10">
                         {courseDetail?.module_data.map(
@@ -203,7 +217,7 @@ const SubCourseView = () => {
                               <LessonModule
                                 key={i}
                                 data={z}
-                                isRegistered={courseDetail?.is_registered}
+                                isRegistered={registered}
                                 moduleLength={courseDetail?.module_data.length}
                                 courseId={courseId as string}
                               />
@@ -215,12 +229,6 @@ const SubCourseView = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
-              <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-                {courseDetail?.title}
-              </h1>
             </div>
 
             <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
@@ -259,6 +267,13 @@ const SubCourseView = () => {
                 )}
               </div>
               <div className="w-full lg:w-[352px]">
+                <div className="hidden lg:block">
+                  <ApplyCourseButton
+                    courseId={courseDetail?.id as string}
+                    isRegistered={!!courseDetail?.is_registered}
+                    showPopup={setShowPopupRegisterSuccess}
+                  />
+                </div>
                 <div className="flex flex-col gap-5 md:px-0">
                   {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
@@ -267,7 +282,7 @@ const SubCourseView = () => {
                           <LessonModule
                             key={i}
                             data={z}
-                            isRegistered={courseDetail?.is_registered}
+                            isRegistered={registered}
                             moduleLength={courseDetail?.module_data.length}
                             courseId={courseId as string}
                           />
@@ -282,6 +297,9 @@ const SubCourseView = () => {
         </>
       )}
       <BackToTop />
+      {showPopupRegisterSuccess && (
+        <RegisterSuccessPopup setShowPopup={setShowPopupRegisterSuccess} />
+      )}
     </div>
   );
 };

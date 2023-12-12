@@ -42,7 +42,11 @@ const LessonModule: React.FC<LessonModuleProps> = ({
   useEffect(() => {
     if (!isAuthenticated || !token || !isRegistered) setIsLockedLesson(true);
   }, [isAuthenticated, token, isRegistered]);
- 
+
+  useEffect(() => {
+    setIsLockedLesson(false);
+  }, [isRegistered]);
+
   return (
     <div className="flex flex-col gap-4">
       {moduleLength > 1 && (
