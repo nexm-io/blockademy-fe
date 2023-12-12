@@ -11,11 +11,17 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import { getSubCourseDetail } from "@/redux/features/courses/action";
+import {
+  completeLesson,
+  getCompleteRate,
+  getNextPrevLesson,
+  getSubCourseDetail,
+} from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { setRefUrl } from "@/redux/features/auth/action";
+import { Next, Previous } from "@/components/Icon";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -24,7 +30,8 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const { subCourseLoading, subCourse } = useAppSelector(selectCourses);
+  const { subCourseLoading, subCourse, nextPrevLesson } =
+    useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -39,6 +46,36 @@ const LessonDetail = () => {
       getSubCourseDetail(subCourseSlug as string)
     );
     if (payload?.response?.data?.error) router.push("/not-found");
+  };
+
+  const handlePrevLesson = () => {
+    if (!nextPrevLesson.previous_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${subCourseSlug}/lessons/${nextPrevLesson.previous_data.lesson_slug}`
+    );
+  };
+
+  const handleNextLesson = async () => {
+    if (!nextPrevLesson.next_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
+    );
+  };
+
+  const completeCurrentLesson = async () => {
+    const { current_data: currentData } = nextPrevLesson;
+
+    if (!isLogin || !currentData.module_id || !currentData.lesson_id) return;
+    if (!currentData?.is_complete_lesson) {
+      await dispatch(
+        completeLesson({
+          courseId: courseId as string,
+          moduleId: currentData.module_id as number,
+          lessonId: currentData.lesson_id as number,
+        })
+      );
+      dispatch(getCompleteRate(courseId as string));
+    }
   };
 
   useEffect(() => {
@@ -100,6 +137,19 @@ const LessonDetail = () => {
     }
   }, [subCourseLoading, subCourse]);
 
+  useEffect(() => {
+    completeCurrentLesson();
+  }, [subCourseSlug, lessonSlug, isLogin, nextPrevLesson]);
+
+  useEffect(() => {
+    dispatch(
+      getNextPrevLesson({
+        subCourseIdOrSlug: subCourseSlug as string,
+        lessonSlug: lessonSlug as string,
+      })
+    );
+  }, [subCourseSlug, lessonSlug]);
+
   return (
     <div className="container min-h-screen">
       {subCourseLoading ? (
@@ -155,63 +205,101 @@ const LessonDetail = () => {
       ) : (
         <>
           <section>
-            <nav className="w-full rounded-md mb-[41px]">
-              <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
-                <li className="leading-[23px] hover:underline">
-                  <Link href="/">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      Home
-                    </span>
-                  </Link>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-                </li>
-                <li className="leading-[23px] hover:underline">
-                  <Link href="/courses">
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      Courses
-                    </span>
-                  </Link>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-                </li>
-                {subCourse?.main_is_specialization === 1 && (
-                  <>
-                    <li className="leading-[23px] hover:underline">
-                      <Link
-                        href={`/courses/${subCourse?.main_course_data?.id}`}
-                      >
-                        <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                          {subCourse?.main_course_data?.title}
-                        </span>
-                      </Link>
-                    </li>
-                    <li className="leading-[23px]">
-                      <span className="mx-3 md:text-[12px] text-[10px]">
-                        &gt;
+            <div className="flex justify-between items-center">
+              <nav className="rounded-md mb-[41px]">
+                <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
+                  <li className="leading-[23px] hover:underline">
+                    <Link href="/">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Home
                       </span>
-                    </li>
-                  </>
-                )}
-                <li className="leading-[23px] hover:underline truncate w-[100px] lg:w-auto inline-block">
-                  <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
-                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      {subCourse?.title}
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
                     </span>
-                  </Link>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
-                </li>
-                <li className="leading-[23px]">
-                  <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                    {lesson?.title}
-                  </span>
-                </li>
-              </ol>
-            </nav>
+                  </li>
+                  <li className="leading-[23px] hover:underline">
+                    <Link href="/courses">
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        Courses
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  {subCourse?.main_is_specialization === 1 && (
+                    <>
+                      <li className="leading-[23px] hover:underline">
+                        <Link
+                          href={`/courses/${subCourse?.main_course_data?.id}`}
+                        >
+                          <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                            {subCourse?.main_course_data?.title}
+                          </span>
+                        </Link>
+                      </li>
+                      <li className="leading-[23px]">
+                        <span className="mx-3 md:text-[12px] text-[10px]">
+                          &gt;
+                        </span>
+                      </li>
+                    </>
+                  )}
+                  <li className="leading-[23px] hover:underline truncate w-[100px] lg:w-auto inline-block">
+                    <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
+                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                        {subCourse?.title}
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="mx-3 md:text-[12px] text-[10px]">
+                      &gt;
+                    </span>
+                  </li>
+                  <li className="leading-[23px]">
+                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
+                      {lesson?.title}
+                    </span>
+                  </li>
+                </ol>
+              </nav>
+              <div className="flex items-center gap-10">
+                <div
+                  className={cn(
+                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                    {
+                      hidden:
+                        Object.keys(nextPrevLesson?.previous_data)
+                          .length <= 0 || subCourseLoading,
+                    }
+                  )}
+                  onClick={handlePrevLesson}
+                >
+                  <Previous />
+                  <span className="text-blue-100">Previous</span>
+                </div>
+                <div
+                  className={cn(
+                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                    {
+                      hidden:
+                        Object.keys(nextPrevLesson?.next_data).length <= 0 ||
+                        subCourseLoading,
+                    }
+                  )}
+                  onClick={handleNextLesson}
+                >
+                  <span className="text-blue-100">Next</span>
+                  <Next />
+                </div>
+              </div>
+            </div>
 
             <div
               className={cn(`block lg:hidden mb-10`, {
@@ -283,7 +371,7 @@ const LessonDetail = () => {
                 </div>
               </div>
             </div>
-            
+
             <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
               {lesson?.title}
             </h1>

@@ -205,3 +205,35 @@ export const Google = ({ className = "" }: { className?: string }) => (
     </g>
   </svg>
 );
+
+export const Previous = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M0.35 4.24L4.59 8.48L6 7.06L3.18 4.24L6 1.42L4.59 0L0.35 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
+
+export const Next = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M5.65 4.24L1.41 8.48L0 7.06L2.82 4.24L0 1.42L1.41 0L5.65 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
