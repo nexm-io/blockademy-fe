@@ -99,8 +99,8 @@ const LessonDetail = () => {
       !isLogin ||
       !subCourse.is_registered ||
       !subCourse ||
-      !lesson ||
-      !isClaimSuccess
+      isClaimLoading ||
+      isClaimSuccess
     )
       return;
     setIsClaimLoading(true);
@@ -194,8 +194,6 @@ const LessonDetail = () => {
   useEffect(() => {
     setIsClaimSuccess(subCourse?.is_claimed);
   }, [subCourse]);
-
-  console.log(subCourse);
 
   return (
     <div className="container min-h-screen">
@@ -357,7 +355,8 @@ const LessonDetail = () => {
                         !lesson.assignment_detail?.id &&
                         (!nextPrevLesson?.next_data ||
                           Object.keys(nextPrevLesson?.next_data).length <= 0),
-                      "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
+                      "hover:bg-blue-100": !isClaimSuccess,
+                      "opacity-90 cursor-default": isClaimLoading,
                     }
                   )}
                   onClick={claimReward}
