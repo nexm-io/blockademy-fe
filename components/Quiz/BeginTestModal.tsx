@@ -10,7 +10,7 @@ import {
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import Button from "../Common/Button";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useAppDispatch } from "@/redux/hook";
 import { soleil } from "@/utils/constants";
 import { useEffect } from "react";
 import { getListResult } from "@/redux/features/quiz/action";
@@ -22,20 +22,12 @@ export default function BeginTestModal(props: {
 }) {
   const { id } = useParams();
 
-  const { listResultData } = useAppSelector((state) => state.quiz);
-
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const handleGoBack = () => {
     props.onCloseModalBeginTest();
-    if (listResultData) {
-      router.push(
-        `/courses/${listResultData?.course_id}`
-      );
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   useEffect(() => {
