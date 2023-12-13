@@ -198,7 +198,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             </p> */}
           </div>
           <div className="flex items-center flex-col md:flex-row gap-4">
-            {(courseDetail as any)?.issue_nft_status === "Committed" ? (
+            {/* {(courseDetail as any)?.issue_nft_status === "Committed" ? (
               <Button
                 className="w-full md:w-auto md:min-w-[184px]"
                 onClick={viewNFT}
@@ -220,7 +220,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                   ? `Processing`
                   : `Issue NFT`}
               </Button>
-            )}
+            )} */}
 
             <Button
               disabled={certAssets.isClaimed === 0 || isGetCertLoading}
