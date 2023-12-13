@@ -282,9 +282,9 @@ export default function ResultQuiz() {
                     Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
                       <Button
                         className="w-full md:w-[184px] !px-0"
-                        onClick={() => router.push(courseUrl)}
+                        onClick={() => router.push(lessonUrl)}
                       >
-                        Back to Courses
+                        Back to Course
                       </Button>
                     )
                   )
