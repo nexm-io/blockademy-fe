@@ -139,7 +139,7 @@ const LessonDetail = () => {
   useEffect(() => {
     lesson &&
       setAssignmentStatus(lesson.assignment_detail?.assignment_status?.slug);
-  }, [lesson]);
+  }, [subCourse, lesson]);
 
   useEffect(() => {
     loadDetailCourse();

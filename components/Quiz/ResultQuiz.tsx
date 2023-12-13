@@ -130,7 +130,7 @@ export default function ResultQuiz() {
   useEffect(() => {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
-        const isSpecialization = listResultData?.main_is_specialization === 1;
+      const isSpecialization = listResultData?.main_is_specialization === 1;
       const courseIdOrMainId = isSpecialization
         ? listResultData.course_id
         : `${listResultData.course_id}/${listResultData?.course_slug}`;
@@ -271,12 +271,23 @@ export default function ResultQuiz() {
                 ) : null}
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <Button
-                    className="w-full md:w-[184px] !px-0"
-                    onClick={() => router.push("/accomplishments")}
-                  >
-                    Accomplishments
-                  </Button>
+                  listResultData?.is_claimed ? (
+                    <Button
+                      className="w-full md:w-[184px] !px-0"
+                      onClick={() => router.push("/accomplishments")}
+                    >
+                      Accomplishments
+                    </Button>
+                  ) : (
+                    Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
+                      <Button
+                        className="w-full md:w-[184px] !px-0"
+                        onClick={() => router.push(courseUrl)}
+                      >
+                        Back to Courses
+                      </Button>
+                    )
+                  )
                 ) : null}
               </div>
             </div>
