@@ -146,7 +146,7 @@ export default function ResultQuiz() {
   return (
     <>
       {loadingListResult ? (
-        <Box sx={{ py: 10, m: "auto" }}>
+        <Box sx={{ py: 6, m: "auto" }}>
           <div className="container">
             <Skeleton
               variant="rounded"
@@ -197,7 +197,7 @@ export default function ResultQuiz() {
           </div>
         </Box>
       ) : (
-        <Box sx={{ py: 10, m: "auto" }}>
+        <Box sx={{ py: 6, m: "auto" }}>
           <div className="container">
             <nav className="w-full rounded-md">
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">

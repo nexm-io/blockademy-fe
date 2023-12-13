@@ -205,3 +205,51 @@ export const Google = ({ className = "" }: { className?: string }) => (
     </g>
   </svg>
 );
+
+export const Previous = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M0.35 4.24L4.59 8.48L6 7.06L3.18 4.24L6 1.42L4.59 0L0.35 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
+
+export const Next = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M5.65 4.24L1.41 8.48L0 7.06L2.82 4.24L0 1.42L1.41 0L5.65 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
+
+export const CloseCirlce = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M9 0C3.98571 0 0 3.98571 0 9C0 14.0143 3.98571 18 9 18C14.0143 18 18 14.0143 18 9C18 3.98571 14.0143 0 9 0ZM12.4714 13.5L9 10.0286L5.52857 13.5L4.5 12.4714L7.97143 9L4.5 5.52857L5.52857 4.5L9 7.97143L12.4714 4.5L13.5 5.52857L10.0286 9L13.5 12.4714L12.4714 13.5Z"
+      fill="#FF3333"
+    />
+  </svg>
+);

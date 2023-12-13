@@ -15,11 +15,16 @@ import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import LessonModule from "@/components/Courses/LessonsModule";
 import { setRefUrl } from "@/redux/features/auth/action";
+import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
+import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 
 const SubCourseView = () => {
   const params = useParams();
   const { courseId, subCourseSlug } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
+  const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
+    useState(false);
+  const [registered, setRegistered] = useState<number>(0);
   const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
@@ -39,6 +44,10 @@ const SubCourseView = () => {
       router.push("/login");
     }
   }, [isLogin]);
+
+  useEffect(() => {
+    setRegistered(courseDetail?.is_registered as number);
+  }, [courseDetail]);
 
   useEffect(() => {
     dispatch(getDetailCourse(subCourseSlug as string));
@@ -99,147 +108,142 @@ const SubCourseView = () => {
       ) : (
         <>
           <section>
-            <div className="flex flex-col gap-4 lg:gap-10">
-              <nav className="w-full rounded-md">
-                <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
-                  <li className="leading-[23px] hover:underline">
-                    <Link href="/">
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        Home
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="mx-3 md:text-[12px] text-[10px]">
-                      &gt;
+            <nav className="w-full rounded-md mb-[41px]">
+              <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
+                <li className="leading-[23px] hover:underline">
+                  <Link href="/">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Home
                     </span>
-                  </li>
-                  <li className="leading-[23px] hover:underline">
-                    <Link href="/courses">
-                      <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        Courses
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="leading-[23px]">
-                    <span className="mx-3 md:text-[12px] text-[10px]">
-                      &gt;
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link href="/courses">
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Courses
                     </span>
-                  </li>
-                  {courseDetail?.main_is_specialization == 1 && (
-                    <>
-                      <li className="leading-[23px] hover:underline">
-                        <Link
-                          href={`/courses/${courseDetail?.main_course_data?.id}`}
-                        >
-                          <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                            {courseDetail?.main_course_data?.title}
-                          </span>
-                        </Link>
-                      </li>
-                      <li className="leading-[23px]">
-                        <span className="mx-3 md:text-[12px] text-[10px]">
-                          &gt;
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                {courseDetail?.main_is_specialization == 1 && (
+                  <>
+                    <li className="leading-[23px] hover:underline">
+                      <Link
+                        href={`/courses/${courseDetail?.main_course_data?.id}`}
+                      >
+                        <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                          {courseDetail?.main_course_data?.title}
                         </span>
-                      </li>
-                    </>
-                  )}
-                  <li className="leading-[23px]">
-                    <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                      {courseDetail?.title}
-                    </span>
-                  </li>
-                </ol>
-              </nav>
+                      </Link>
+                    </li>
+                    <li className="leading-[23px]">
+                      <span className="mx-3 md:text-[12px] text-[10px]">
+                        &gt;
+                      </span>
+                    </li>
+                  </>
+                )}
+                <li className="leading-[23px]">
+                  <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
+                    {courseDetail?.title}
+                  </span>
+                </li>
+              </ol>
+            </nav>
 
-              <div
-                className={cn(`block lg:hidden`, {
-                  active: isShowMenu,
-                })}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="hambuger"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                  >
-                    <span></span>
-                  </div>
-                  <p className="text-blue-100">Menu</p>
+            <div
+              className={cn(`block lg:hidden mb-10`, {
+                active: isShowMenu,
+              })}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="hambuger"
+                  onClick={() => setShowMenu((prev) => !prev)}
+                >
+                  <span></span>
                 </div>
+                <p className="text-blue-100">Menu</p>
+              </div>
+              <div
+                className={cn(
+                  "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                  { "!visible": isShowMenu }
+                )}
+              >
                 <div
                   className={cn(
-                    "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
-                    { "!visible": isShowMenu }
+                    "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                    { "!visible opacity-100": isShowMenu }
+                  )}
+                  onClick={() => setShowMenu(false)}
+                ></div>
+                <div
+                  className={cn(
+                    "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
+                    { "!translate-x-0": isShowMenu }
                   )}
                 >
-                  <div
-                    className={cn(
-                      "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
-                      { "!visible opacity-100": isShowMenu }
-                    )}
-                    onClick={() => setShowMenu(false)}
-                  ></div>
-                  <div
-                    className={cn(
-                      "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
-                      { "!translate-x-0": isShowMenu }
-                    )}
-                  >
-                    <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
-                      <p className="text-blue-100">Close</p>
-                      <div
-                        className="hambuger"
-                        onClick={() => setShowMenu((prev) => !prev)}
-                      >
-                        <span></span>
-                      </div>
+                  <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                    <p className="text-blue-100">Close</p>
+                    <div
+                      className="hambuger"
+                      onClick={() => setShowMenu((prev) => !prev)}
+                    >
+                      <span></span>
                     </div>
-                    <div className="mt-10 overflow-y-auto">
-                      {courseDetail?.module_data.length !== 0 && !isLoading && (
-                        <div className="flex flex-col gap-10">
-                          {courseDetail?.module_data.map(
-                            (z: any, i: React.Key | null | undefined) => (
-                              <div
+                  </div>
+                  <div className="mt-10 overflow-y-auto">
+                    <ApplyCourseButton
+                      courseId={courseDetail?.id as string}
+                      isRegistered={!!courseDetail?.is_registered}
+                      showPopup={setShowPopupRegisterSuccess}
+                    />
+                    {courseDetail?.module_data.length !== 0 && !isLoading && (
+                      <div className="flex flex-col gap-10">
+                        {courseDetail?.module_data.map(
+                          (z: any, i: React.Key | null | undefined) => (
+                            <div
+                              key={i}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <LessonModule
                                 key={i}
-                                onClick={() => {
-                                  router.push(`/courses/${courseId}`);
-                                }}
-                              >
-                                <LessonModule
-                                  key={i}
-                                  data={z}
-                                  isRegistered={courseDetail?.is_registered}
-                                  moduleLength={
-                                    courseDetail?.module_data.length
-                                  }
-                                  courseId={courseId as string}
-                                />
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )}
-                    </div>
+                                data={z}
+                                isRegistered={registered}
+                                moduleLength={courseDetail?.module_data.length}
+                                courseId={courseId as string}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
-
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
-                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-                  {courseDetail?.title}
-                </h1>
-              </div>
-
-              {isLogin ? null : (
-                <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
-                  <Image alt="gift-icon" src={gift}></Image>
-                  <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                    Log into your Blockademy account to register courses, track
-                    progress and claim your rewards.
-                  </span>
-                </div>
-              )}
             </div>
+
+            <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
+              {courseDetail?.title}
+            </h1>
+
+            {isLogin ? null : (
+              <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
+                <Image alt="gift-icon" src={gift}></Image>
+                <span className="md:text-base text-[13px] font-normal text-black-100 ">
+                  Log into your Blockademy account to register courses, track
+                  progress and claim your rewards.
+                </span>
+              </div>
+            )}
 
             {/* PASSED CASE */}
             {isLogin &&
@@ -248,23 +252,28 @@ const SubCourseView = () => {
                 <RewardDetail courseDetail={courseDetail} />
               )}
 
-            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
-                <div className="w-full">
-                  {courseDetail && (
-                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                      <div
-                        id="content"
-                        className="flex flex-col gap-3 course-content text-base"
-                        dangerouslySetInnerHTML={{
-                          __html: courseDetail.description,
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
+                {courseDetail && (
+                  <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                    <div
+                      id="content"
+                      className="flex flex-col gap-3 course-content text-base"
+                      dangerouslySetInnerHTML={{
+                        __html: courseDetail.description,
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
+              <div className="w-full lg:w-[352px]">
+                <div className="hidden lg:block">
+                  <ApplyCourseButton
+                    courseId={courseDetail?.id as string}
+                    isRegistered={!!courseDetail?.is_registered}
+                    showPopup={setShowPopupRegisterSuccess}
+                  />
+                </div>
                 <div className="flex flex-col gap-5 md:px-0">
                   {courseDetail?.module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
@@ -273,7 +282,7 @@ const SubCourseView = () => {
                           <LessonModule
                             key={i}
                             data={z}
-                            isRegistered={courseDetail?.is_registered}
+                            isRegistered={registered}
                             moduleLength={courseDetail?.module_data.length}
                             courseId={courseId as string}
                           />
@@ -288,6 +297,9 @@ const SubCourseView = () => {
         </>
       )}
       <BackToTop />
+      {showPopupRegisterSuccess && (
+        <RegisterSuccessPopup setShowPopup={setShowPopupRegisterSuccess} />
+      )}
     </div>
   );
 };

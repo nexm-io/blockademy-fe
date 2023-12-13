@@ -104,30 +104,6 @@ export default function CourseInfoFooter() {
   const params = useParams();
   const { courseId, subCourseSlug, lessonSlug } = params;
 
-  const handleApplyCourse = async () => {
-    if (!isLogin) {
-      dispatch(setRefUrl(pathName));
-      router.push("/login");
-      toast.info("Please login to continue");
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await api.get(
-        `/api/v10/register-course?course_id=${courseId}`
-      );
-      if (response.status === 200) {
-        dispatch(getDetailCourse(courseId as string));
-        setRegistered(true);
-        setShowPopup(true);
-      }
-    } catch (error) {
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handlePrevLesson = () => {
     if (!nextPrevLesson.previous_data.lesson_slug) return;
     router.push(
@@ -189,8 +165,8 @@ export default function CourseInfoFooter() {
 
   const getReviewButton = (grade: string, assignmentId: string) => (
     <>
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-center px-4 py-2 flex items-center gap-4">
+      <div className="flex flex-col items-center">
+        <div className="text-center flex items-center gap-4">
           <p className="text-sm">Your Highest Score:</p>
           <p className="text-[28px] leading-10 text-green-400">{grade}%</p>
         </div>
@@ -201,7 +177,7 @@ export default function CourseInfoFooter() {
           Review Feedback
         </Link>
       </div>
-      {getNextButton()}
+      <div className="hidden lg:block">{getNextButton()}</div>
     </>
   );
 
@@ -281,22 +257,38 @@ export default function CourseInfoFooter() {
   );
 
   const completeCurrentLesson = async () => {
+    const { current_data: currentData } = nextPrevLesson;
+
     if (
       !isLogin ||
       !registered ||
-      !nextPrevLesson.current_data.module_id ||
-      !nextPrevLesson.current_data.lesson_id
+      !currentData.module_id ||
+      !currentData.lesson_id
     )
       return;
-    if (!nextPrevLesson?.current_data?.is_complete_lesson) {
+    if (!currentData?.is_complete_lesson) {
       await dispatch(
         completeLesson({
           courseId: courseId as string,
-          moduleId: nextPrevLesson.current_data.module_id as number,
-          lessonId: nextPrevLesson.current_data.lesson_id as number,
+          moduleId: currentData.module_id as number,
+          lessonId: currentData.lesson_id as number,
         })
       );
       dispatch(getCompleteRate(courseId as string));
+    }
+  };
+
+  const handleClaimReward = async () => {
+    const { current_data: currentData } = nextPrevLesson;
+    if (
+      !currentData.module_assignment_data &&
+      currentData.is_complete_sub_course &&
+      currentData.is_complete_lesson
+    ) {
+      const { data } = await api.get(
+        `/api/v10/claim-reward/${currentData.sub_course_id}`
+      );
+      console.log(data);
     }
   };
 
@@ -323,7 +315,14 @@ export default function CourseInfoFooter() {
 
   useEffect(() => {
     completeCurrentLesson();
-  }, [subCourseSlug, lessonSlug, isLogin, registered, isLoading, nextPrevLesson]);
+  }, [
+    subCourseSlug,
+    lessonSlug,
+    isLogin,
+    registered,
+    isLoading,
+    nextPrevLesson,
+  ]);
 
   useEffect(() => {
     if (!isLessonDetailPage && courseDetails) {
@@ -350,6 +349,10 @@ export default function CourseInfoFooter() {
   useEffect(() => {
     if (isCourseDetailPage) dispatch(getNextLesson(courseId as string));
   }, [isCourseDetailPage]);
+
+  useEffect(() => {
+    handleClaimReward();
+  }, [nextPrevLesson]);
 
   return (
     <>
@@ -387,27 +390,6 @@ export default function CourseInfoFooter() {
                 </div>
               </div>
             ) : null}
-
-            {/* APPLY COURSE */}
-            {!registered && !details?.main_is_specialization ? (
-              <div className="flex justify-end">
-                <Button
-                  className="w-full md:w-auto md:min-w-[184px]"
-                  onClick={handleApplyCourse}
-                  disabled={isLoading}
-                >
-                  Apply course
-                  {loading && (
-                    <Loader3
-                      className="animate-spin ml-2"
-                      width={25}
-                      height={25}
-                    />
-                  )}
-                </Button>
-              </div>
-            ) : null}
-
             {/* LET'S GO */}
             {registered && isCourseDetailPage ? (
               <div
@@ -490,7 +472,7 @@ export default function CourseInfoFooter() {
             isCourseDetailPage ? (
               <div className="flex items-center flex-col gap-1 lg:flex-row justify-between w-full flex-1 px-4 lg:px-0">
                 <div></div>
-                <div className="text-center px-4 py-2 flex items-center gap-4">
+                <div className="text-center flex items-center gap-4">
                   <p className="text-sm">Your Highest Score:</p>
                   <p className="text-[28px] leading-10 text-green-400">
                     {courseDetails?.aissignment_grade}%
@@ -509,30 +491,6 @@ export default function CourseInfoFooter() {
           </div>
         </div>
       </div>
-
-      {showPopup && (
-        <InfoPopup
-          title="Congratulations!"
-          desc={
-            <div className="text-gray-700 text-center mb-4">
-              <p>Thanks for joining the course.</p>
-              <p>
-                Please enjoy your journey, complete quiz and get certificate.
-              </p>
-            </div>
-          }
-          onClose={() => setShowPopup(false)}
-          className="md:max-w-[359px]"
-        >
-          <Button
-            type="button"
-            onClick={() => setShowPopup(false)}
-            className="mt-2 w-[184px]"
-          >
-            Yap, sure
-          </Button>
-        </InfoPopup>
-      )}
     </>
   );
 }

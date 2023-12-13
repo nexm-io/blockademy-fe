@@ -11,11 +11,20 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
-import { getSubCourseDetail } from "@/redux/features/courses/action";
+import {
+  completeLesson,
+  getCompleteRate,
+  getNextPrevLesson,
+  getSubCourseDetail,
+} from "@/redux/features/courses/action";
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { setRefUrl } from "@/redux/features/auth/action";
+import { CloseCirlce, Next, Previous } from "@/components/Icon";
+import Button from "@/components/Common/Button";
+import { CloseCircle, Loader3 } from "@styled-icons/remix-line";
+import { CircleCheck } from "@styled-icons/fa-solid";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -24,7 +33,10 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
-  const { subCourseLoading, subCourse } = useAppSelector(selectCourses);
+  const [completeQuizLoading, setCompleteQuizLoading] =
+    useState<boolean>(false);
+  const { subCourseLoading, subCourse, nextPrevLesson } =
+    useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -39,6 +51,36 @@ const LessonDetail = () => {
       getSubCourseDetail(subCourseSlug as string)
     );
     if (payload?.response?.data?.error) router.push("/not-found");
+  };
+
+  const handlePrevLesson = () => {
+    if (!nextPrevLesson.previous_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${subCourseSlug}/lessons/${nextPrevLesson.previous_data.lesson_slug}`
+    );
+  };
+
+  const handleNextLesson = async () => {
+    if (!nextPrevLesson.next_data.lesson_slug) return;
+    router.push(
+      `/courses/${courseId}/${nextPrevLesson.next_data.sub_course_slug}/lessons/${nextPrevLesson.next_data.lesson_slug}`
+    );
+  };
+
+  const completeCurrentLesson = async () => {
+    const { current_data: currentData } = nextPrevLesson;
+
+    if (!isLogin || !currentData.module_id || !currentData.lesson_id) return;
+    if (!currentData?.is_complete_lesson) {
+      await dispatch(
+        completeLesson({
+          courseId: courseId as string,
+          moduleId: currentData.module_id as number,
+          lessonId: currentData.lesson_id as number,
+        })
+      );
+      dispatch(getCompleteRate(courseId as string));
+    }
   };
 
   useEffect(() => {
@@ -100,6 +142,19 @@ const LessonDetail = () => {
     }
   }, [subCourseLoading, subCourse]);
 
+  useEffect(() => {
+    completeCurrentLesson();
+  }, [subCourseSlug, lessonSlug, isLogin, nextPrevLesson]);
+
+  useEffect(() => {
+    dispatch(
+      getNextPrevLesson({
+        subCourseIdOrSlug: subCourseSlug as string,
+        lessonSlug: lessonSlug as string,
+      })
+    );
+  }, [subCourseSlug, lessonSlug]);
+
   return (
     <div className="container min-h-screen">
       {subCourseLoading ? (
@@ -155,8 +210,8 @@ const LessonDetail = () => {
       ) : (
         <>
           <section>
-            <div className="flex flex-col gap-4 lg:gap-10">
-              <nav className="w-full rounded-md">
+            <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4 lg:mb-[41px]">
+              <nav className="rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
                     <Link href="/">
@@ -200,7 +255,7 @@ const LessonDetail = () => {
                       </li>
                     </>
                   )}
-                  <li className="leading-[23px] hover:underline">
+                  <li className="leading-[23px] hover:underline inline-block">
                     <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
                         {subCourse?.title}
@@ -219,127 +274,314 @@ const LessonDetail = () => {
                   </li>
                 </ol>
               </nav>
-
-              <div
-                className={cn(`block lg:hidden`, {
-                  active: isShowMenu,
-                })}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="hambuger"
-                    onClick={() => setShowMenu((prev) => !prev)}
-                  >
-                    <span></span>
-                  </div>
-                  <p className="text-blue-100">Menu</p>
+              <div className="flex items-center gap-10">
+                <div
+                  className={cn(
+                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                    {
+                      hidden:
+                        Object.keys(nextPrevLesson?.previous_data).length <=
+                          0 || subCourseLoading,
+                    }
+                  )}
+                  onClick={handlePrevLesson}
+                >
+                  <Previous />
+                  <span className="text-blue-100">Previous</span>
                 </div>
                 <div
                   className={cn(
-                    "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
-                    { "!visible": isShowMenu }
+                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                    {
+                      hidden:
+                        Object.keys(nextPrevLesson?.next_data).length <= 0 ||
+                        subCourseLoading,
+                    }
+                  )}
+                  onClick={handleNextLesson}
+                >
+                  <span className="text-blue-100">Next</span>
+                  <Next />
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={cn(`block lg:hidden mb-10`, {
+                active: isShowMenu,
+              })}
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className="hambuger"
+                  onClick={() => setShowMenu((prev) => !prev)}
+                >
+                  <span></span>
+                </div>
+                <p className="text-blue-100">Menu</p>
+              </div>
+              <div
+                className={cn(
+                  "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                  { "!visible": isShowMenu }
+                )}
+              >
+                <div
+                  className={cn(
+                    "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                    { "!visible opacity-100": isShowMenu }
+                  )}
+                  onClick={() => setShowMenu(false)}
+                ></div>
+                <div
+                  className={cn(
+                    "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
+                    { "!translate-x-0": isShowMenu }
                   )}
                 >
-                  <div
-                    className={cn(
-                      "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
-                      { "!visible opacity-100": isShowMenu }
-                    )}
-                    onClick={() => setShowMenu(false)}
-                  ></div>
-                  <div
-                    className={cn(
-                      "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
-                      { "!translate-x-0": isShowMenu }
-                    )}
-                  >
-                    <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
-                      <p className="text-blue-100">Close</p>
-                      <div
-                        className="hambuger"
-                        onClick={() => setShowMenu((prev) => !prev)}
-                      >
-                        <span></span>
-                      </div>
+                  <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                    <p className="text-blue-100">Close</p>
+                    <div
+                      className="hambuger"
+                      onClick={() => setShowMenu((prev) => !prev)}
+                    >
+                      <span></span>
                     </div>
-                    <div className="mt-10 overflow-y-auto">
-                      {subCourse?.module_data.length !== 0 &&
-                        !subCourseLoading && (
-                          <div className="flex flex-col gap-10">
-                            {subCourse?.module_data.map(
-                              (z: any, i: React.Key | null | undefined) => (
-                                <div
+                  </div>
+                  <div className="mt-10 overflow-y-auto">
+                    {subCourse?.module_data.length !== 0 &&
+                      !subCourseLoading && (
+                        <div className="flex flex-col gap-10">
+                          {subCourse?.module_data.map(
+                            (z: any, i: React.Key | null | undefined) => (
+                              <div
+                                key={i}
+                                onClick={() => {
+                                  router.push(`/courses/${courseId}`);
+                                }}
+                              >
+                                <LessonModule
                                   key={i}
-                                  onClick={() => {
-                                    router.push(`/courses/${courseId}`);
-                                  }}
-                                >
-                                  <LessonModule
-                                    key={i}
-                                    data={z}
-                                    moduleLength={subCourse?.module_data.length}
-                                    isRegistered={subCourse?.is_registered}
-                                    courseId={courseId as string}
-                                  />
-                                </div>
-                              )
-                            )}
-                          </div>
-                        )}
-                    </div>
+                                  data={z}
+                                  moduleLength={subCourse?.module_data.length}
+                                  isRegistered={subCourse?.is_registered}
+                                  courseId={courseId as string}
+                                />
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
-
-              <div className="flex justify-between gap-4 items-center flex-wrap lg:flex-nowrap">
-                <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
-                  {lesson?.title}
-                </h1>
-              </div>
-
-              {isLogin ? null : (
-                <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
-                  <Image alt="gift-icon" src={gift}></Image>
-                  <span className="md:text-base text-[13px] font-normal text-black-100 ">
-                    Log into your Blockademy account to register courses, track
-                    progress and claim your rewards.
-                  </span>
-                </div>
-              )}
             </div>
 
-            <div className="relative mt-4 lg:mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3 order-last lg:order-first">
-                <div className="w-full">
-                  {lesson ? (
-                    <>
-                      {lesson.type_format === 2 && formState === "video" && (
-                        <>
-                          <VideoPlayer
-                            typeUpload={lesson.type_upload}
-                            url={lesson.link}
-                            onChangeForm={() => {}}
-                            onChangeStatus={handleOnchange}
-                          />
-                        </>
-                      )}
-                      <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                        <div
-                          id="content"
-                          className="flex flex-col gap-3 course-content text-base"
-                          dangerouslySetInnerHTML={{
-                            __html: lesson.description,
-                          }}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <div>No Lesson</div>
-                  )}
-                </div>
-              </div>
+            <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
+              {lesson?.title}
+            </h1>
 
-              <div className="w-full h-fit lg:sticky top-[100px] order-first lg:order-last mb-6">
+            {isLogin ? null : (
+              <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
+                <Image alt="gift-icon" src={gift}></Image>
+                <span className="md:text-base text-[13px] font-normal text-black-100 ">
+                  Log into your Blockademy account to register courses, track
+                  progress and claim your rewards.
+                </span>
+              </div>
+            )}
+
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
+                {lesson ? (
+                  <>
+                    {lesson.type_format === 2 && formState === "video" && (
+                      <>
+                        <VideoPlayer
+                          typeUpload={lesson.type_upload}
+                          url={lesson.link}
+                          onChangeForm={() => {}}
+                          onChangeStatus={handleOnchange}
+                        />
+                      </>
+                    )}
+
+                    <div className="flex flex-col gap-10">
+                      <h3 className="text-[28px] font-bold mb-[3px]">
+                        Quizz: What’s in a Block?
+                      </h3>
+                      <div className="flex flex-col gap-10 mb-[11px]">
+                        <div>
+                          <Button
+                            className="w-full md:w-auto md:min-w-[184px]"
+                            onClick={() => {
+                              setCompleteQuizLoading(true);
+                              router.push(`/quiz/${lesson}`);
+                            }}
+                            disabled={completeQuizLoading}
+                          >
+                            Complete Quiz
+                            {completeQuizLoading && (
+                              <Loader3
+                                className="animate-spin ml-2"
+                                width={25}
+                                height={25}
+                              />
+                            )}
+                          </Button>
+                        </div>
+                        <div>
+                          <Button
+                            className="w-full md:w-auto md:min-w-[184px] mb-[11px]"
+                            onClick={() => {
+                              setCompleteQuizLoading(true);
+                              router.push(`/quiz/${lesson}`);
+                            }}
+                            disabled={completeQuizLoading}
+                          >
+                            Resume Quizz
+                            {completeQuizLoading && (
+                              <Loader3
+                                className="animate-spin ml-2"
+                                width={25}
+                                height={25}
+                              />
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="h-[1px] bg-grey-100 mb-[2px]"></div>
+
+                      <div className="grid grid-cols-2">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold">
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold">
+                            Your grade
+                          </p>
+                          <p className="text-grey-700 font-light">--</p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CircleCheck
+                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                            />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-green-400 text-[28px] leading-10">
+                            100%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Button
+                            className="md:w-auto inline-block !px-6 w-full"
+                            onClick={() => {
+                              router.push(`/result/`);
+                            }}
+                          >
+                            Review Feedback
+                          </Button>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CircleCheck
+                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                            />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-green-400 text-[28px] leading-10">
+                            100%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Link
+                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
+                            href={`/result/`}
+                          >
+                            Review Feedback
+                          </Link>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <div className="flex flex-col gap-1">
+                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
+                            <CloseCirlce />
+                            Receive grade
+                          </p>
+                          <p className="text-grey-700 font-light">
+                            <span className="font-bold">To Pass</span> 80% or
+                            higher
+                          </p>
+                        </div>
+                        <div className="flex flex-row items-center gap-5">
+                          <p className="text-sm">Your Lesson Highest Score</p>
+                          <p className="text-red-200 text-[28px] leading-10">
+                            20%
+                          </p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          <Link
+                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
+                            href={`/result/`}
+                          >
+                            Review Feedback
+                          </Link>
+                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                            We keep your highest score
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                      <div
+                        id="content"
+                        className="flex flex-col gap-3 course-content text-base"
+                        dangerouslySetInnerHTML={{
+                          __html: lesson.description,
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <div>No Lesson</div>
+                )}
+              </div>
+              <div className="w-full lg:w-[352px]">
                 <div className="flex flex-col gap-5 md:px-0">
                   {subCourse?.module_data.length !== 0 && !subCourseLoading && (
                     <div className="hidden lg:flex flex-col gap-10">

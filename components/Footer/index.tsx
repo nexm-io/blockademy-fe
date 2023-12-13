@@ -5,7 +5,6 @@ import React from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
 import Socials from "../Socials";
-import CourseInfoFooter from "../Courses/CourseInfoFooter";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
@@ -35,14 +34,9 @@ const LINKS = [
   },
 ];
 
-const showInfoPattern = /^\/courses\/[^\/]+(?:\/[^\/]+(?:\/lessons\/[^\/]+)?)?$/;
-
 const Footer = () => {
-  const pathName = usePathname();
-
   return (
     <footer className="py-[28px] grid gap-6 mt-6">
-      {showInfoPattern.test(pathName) && <CourseInfoFooter />}
       <div className="container flex flex-col gap-4 lg:flex-row justify-between items-center">
         <Link href="/">
           <Image

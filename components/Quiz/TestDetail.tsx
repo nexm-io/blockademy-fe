@@ -112,7 +112,6 @@ const TestDetail = () => {
     window.onpopstate = function () {
       window.history.pushState(null, "", window.location.href);
     };
-    enterFullScreen();
   };
 
   const handleShowImage = () => {
