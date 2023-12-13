@@ -86,9 +86,9 @@ export default function BeginTestModal(props: {
                 clicking <span className="text-blue-100">{`"Start"`}</span>
               </span>
               <p className="text-gray-700 mt-2">
-                <span className="text-[#F33]">Note:</span> Once the test starts,
+                {/* <span className="text-[#F33]">Note:</span> Once the test starts,
                 please avoid quitting (pressing Esc) or experiencing
-                interruptions, as it can impact your final result.{" "}
+                interruptions, as it can impact your final result.{" "} */}
                 <span className="text-blue-100">Good luck!!!</span>
               </p>
             </DialogContentText>
