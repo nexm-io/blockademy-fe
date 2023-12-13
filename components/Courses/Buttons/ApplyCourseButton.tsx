@@ -64,7 +64,7 @@ const ApplyCourseButton = ({
       >
         Apply course
         {loading && (
-          <Loader3 className="animate-spin ml-2" width={25} height={25} />
+          <Loader3 className="animate-spin ml-2" width={20} height={20} />
         )}
       </Button>
     </div>
