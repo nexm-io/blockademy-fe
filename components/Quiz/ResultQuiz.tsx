@@ -270,22 +270,25 @@ export default function ResultQuiz() {
                   </Button>
                 ) : null}
 
-                {listResultData?.is_claimed &&
-                listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <Button
-                    className="w-full md:w-[184px] !px-0"
-                    onClick={() => router.push("/accomplishments")}
-                  >
-                    Accomplishments
-                  </Button>
-                ) : (
-                  <Button
-                    className="w-full md:w-[184px] !px-0"
-                    onClick={() => router.push(courseUrl)}
-                  >
-                    Back to Courses
-                  </Button>
-                )}
+                {listResultData?.result === RESULT_QUIZ_PASS ? (
+                  listResultData?.is_claimed ? (
+                    <Button
+                      className="w-full md:w-[184px] !px-0"
+                      onClick={() => router.push("/accomplishments")}
+                    >
+                      Accomplishments
+                    </Button>
+                  ) : (
+                    Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
+                      <Button
+                        className="w-full md:w-[184px] !px-0"
+                        onClick={() => router.push(courseUrl)}
+                      >
+                        Back to Courses
+                      </Button>
+                    )
+                  )
+                ) : null}
               </div>
             </div>
           </div>
