@@ -9,7 +9,7 @@ import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import {
   completeLesson,
@@ -25,6 +25,7 @@ import Button from "@/components/Common/Button";
 import { Loader3 } from "@styled-icons/remix-line";
 import { CircleCheck } from "@styled-icons/fa-solid";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
+import api from "@/services/axios";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -36,6 +37,8 @@ const LessonDetail = () => {
   const [assignmentStatus, setAssignmentStatus] = useState<string>(
     ASSIGNMENT_STATUS.NEW
   );
+  const [isClaimSuccess, setIsClaimSuccess] = useState<boolean>(false);
+  const [isClaimLoading, setIsClaimLoading] = useState<boolean>(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
   const { subCourseLoading, subCourse, nextPrevLesson } =
@@ -88,6 +91,26 @@ const LessonDetail = () => {
         })
       );
       dispatch(getCompleteRate(courseId as string));
+    }
+  };
+
+  const claimReward = async () => {
+    if (
+      !isLogin ||
+      !subCourse.is_registered ||
+      !subCourse ||
+      !lesson ||
+      !isClaimSuccess
+    )
+      return;
+    setIsClaimLoading(true);
+    try {
+      await api.get(`/api/v10/claim-reward/${subCourse.id}`);
+      router.push(`/courses/${courseId}/${subCourse?.slug}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsClaimLoading(false);
     }
   };
 
@@ -167,6 +190,10 @@ const LessonDetail = () => {
       })
     );
   }, [subCourseSlug, lessonSlug]);
+
+  useEffect(() => {
+    setIsClaimSuccess(subCourse?.is_claimed);
+  }, [subCourse]);
 
   console.log(subCourse);
 
@@ -320,6 +347,40 @@ const LessonDetail = () => {
                 >
                   <span className="text-blue-100">Next</span>
                   <Next />
+                </div>
+                <div
+                  className={cn(
+                    `px-[14px] py-1 hidden items-center gap-2 bg-blue-200 group duration-300 transition-all rounded`,
+                    {
+                      "!flex":
+                        lesson &&
+                        !lesson.assignment_detail?.id &&
+                        (!nextPrevLesson?.next_data ||
+                          Object.keys(nextPrevLesson?.next_data).length <= 0),
+                      "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
+                    }
+                  )}
+                  onClick={claimReward}
+                >
+                  <span
+                    className={cn(`text-blue-100`, {
+                      "group-hover:text-white-100": !isClaimSuccess,
+                    })}
+                  >
+                    {isClaimSuccess ? "Completed" : "Complete"}
+                  </span>
+                  {isClaimLoading && (
+                    <Loader3
+                      className="animate-spin ml-2"
+                      width={14}
+                      height={14}
+                    />
+                  )}
+                  {isClaimSuccess ? (
+                    <CircleCheck
+                      className={`${"text-green-400 w-[14px] h-[14px]"}`}
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>

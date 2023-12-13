@@ -247,10 +247,10 @@ const SubCourseView = () => {
 
             {/* PASSED CASE */}
             {isLogin &&
-              courseDetail?.is_registered === 1 &&
-              courseDetail?.is_completed_assignment === 1 && (
-                <RewardDetail courseDetail={courseDetail} />
-              )}
+            courseDetail?.is_complete_module_sub_course === 1 &&
+            courseDetail?.is_claimed ? (
+              <RewardDetail courseDetail={courseDetail} />
+            ) : null}
 
             <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
               <div className="flex-1">
