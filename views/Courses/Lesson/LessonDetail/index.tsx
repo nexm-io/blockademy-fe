@@ -354,10 +354,11 @@ const LessonDetail = () => {
                     `px-[14px] py-1 hidden items-center gap-2 bg-blue-200 group duration-300 transition-all rounded`,
                     {
                       "!flex":
-                        lesson &&
-                        !lesson.assignment_detail?.id &&
-                        (!nextPrevLesson?.next_data ||
-                          Object.keys(nextPrevLesson?.next_data).length <= 0),
+                        (lesson &&
+                          !lesson.assignment_detail?.id &&
+                          !subCourse.is_claimed &&
+                          !nextPrevLesson?.next_data) ||
+                        Object.keys(nextPrevLesson?.next_data).length <= 0,
                       "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
                       "opacity-90 cursor-default": isClaimLoading,
                     }
