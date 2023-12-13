@@ -184,6 +184,7 @@ export type listResultDataType = {
   is_course_quiz: number;
   lesson_data: any;
   course_title: string;
+  is_claimed: number | string;
 };
 
 export type QuestionAnswerType = {
