@@ -185,6 +185,7 @@ export interface LessonItem {
   description: string;
   title: string;
   is_locked: number;
+  assignment_detail: any;
 }
 
 export interface CourseDetailResponse {

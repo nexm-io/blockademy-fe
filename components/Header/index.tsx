@@ -96,19 +96,19 @@ const Header = () => {
 
   return (
     <>
-      <div className="h-[82px]"></div>
+      <div className="h-[96px]"></div>
       <header className="bg-white-100 text-black top-0 left-0 right-0 fixed z-[997] min-h-[74px]">
         <div
           className={cn(
-            `container relative flex items-center justify-between py-4`,
+            `container relative flex items-center justify-between py-[18px] lg:py-[23px]`,
             {
               active: isShowMenu,
             }
           )}
         >
           <div className="hidden md:flex md:w-full max-w-[230px] sm:max-w-[unset] sm:w-[40%] items-center gap-[105px] flex-1 md:flex-[unset] justify-center md:justify-start">
-            <Link href="/">
-              <Image alt="logo" src={logo} width={164} height={49}></Image>
+            <Link href="/" className="h-[49px]">
+              <Image alt="logo" className="h-full" src={logo} width={164} height={49}></Image>
             </Link>
             <div className="md:flex gap-[50px] text-base font-normal text-black-100 hidden">
               {MENU.map((z) => (

@@ -163,7 +163,7 @@ const SubCourseView = () => {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="hambuger"
+                  className="module hambuger"
                   onClick={() => setShowMenu((prev) => !prev)}
                 >
                   <span></span>

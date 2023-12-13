@@ -20,11 +20,11 @@ import {
 import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
-import { setRefUrl } from "@/redux/features/auth/action";
 import { CloseCirlce, Next, Previous } from "@/components/Icon";
 import Button from "@/components/Common/Button";
-import { CloseCircle, Loader3 } from "@styled-icons/remix-line";
+import { Loader3 } from "@styled-icons/remix-line";
 import { CircleCheck } from "@styled-icons/fa-solid";
+import { ASSIGNMENT_STATUS } from "@/utils/constants";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -33,6 +33,9 @@ const LessonDetail = () => {
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [isWatching, setIsWatching] = useState<boolean>(false);
+  const [assignmentStatus, setAssignmentStatus] = useState<string>(
+    ASSIGNMENT_STATUS.NEW
+  );
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
   const { subCourseLoading, subCourse, nextPrevLesson } =
@@ -40,7 +43,6 @@ const LessonDetail = () => {
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const pathName = usePathname();
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
@@ -70,7 +72,13 @@ const LessonDetail = () => {
   const completeCurrentLesson = async () => {
     const { current_data: currentData } = nextPrevLesson;
 
-    if (!isLogin || !currentData.module_id || !currentData.lesson_id) return;
+    if (
+      !isLogin ||
+      !currentData.module_id ||
+      !currentData.lesson_id ||
+      currentData.is_complete_lesson
+    )
+      return;
     if (!currentData?.is_complete_lesson) {
       await dispatch(
         completeLesson({
@@ -103,6 +111,11 @@ const LessonDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    lesson &&
+      setAssignmentStatus(lesson.assignment_detail?.assignment_status?.slug);
+  }, [lesson]);
 
   useEffect(() => {
     loadDetailCourse();
@@ -154,6 +167,8 @@ const LessonDetail = () => {
       })
     );
   }, [subCourseSlug, lessonSlug]);
+
+  console.log(subCourse);
 
   return (
     <div className="container min-h-screen">
@@ -210,7 +225,7 @@ const LessonDetail = () => {
       ) : (
         <>
           <section>
-            <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-4 lg:mb-[41px]">
+            <div className="flex flex-col lg:flex-row gap-4 justify-between items-center mb-[49px] lg:mb-[41px]">
               <nav className="rounded-md">
                 <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                   <li className="leading-[23px] hover:underline">
@@ -280,8 +295,10 @@ const LessonDetail = () => {
                     `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
                     {
                       hidden:
+                        !nextPrevLesson?.previous_data ||
                         Object.keys(nextPrevLesson?.previous_data).length <=
-                          0 || subCourseLoading,
+                          0 ||
+                        subCourseLoading,
                     }
                   )}
                   onClick={handlePrevLesson}
@@ -294,6 +311,7 @@ const LessonDetail = () => {
                     `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
                     {
                       hidden:
+                        !nextPrevLesson?.next_data ||
                         Object.keys(nextPrevLesson?.next_data).length <= 0 ||
                         subCourseLoading,
                     }
@@ -313,7 +331,7 @@ const LessonDetail = () => {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="hambuger"
+                  className="module hambuger"
                   onClick={() => setShowMenu((prev) => !prev)}
                 >
                   <span></span>
@@ -406,167 +424,6 @@ const LessonDetail = () => {
                       </>
                     )}
 
-                    <div className="flex flex-col gap-10">
-                      <h3 className="text-[28px] font-bold mb-[3px]">
-                        Quizz: What’s in a Block?
-                      </h3>
-                      <div className="flex flex-col gap-10 mb-[11px]">
-                        <div>
-                          <Button
-                            className="w-full md:w-auto md:min-w-[184px]"
-                            onClick={() => {
-                              setCompleteQuizLoading(true);
-                              router.push(`/quiz/${lesson}`);
-                            }}
-                            disabled={completeQuizLoading}
-                          >
-                            Complete Quiz
-                            {completeQuizLoading && (
-                              <Loader3
-                                className="animate-spin ml-2"
-                                width={25}
-                                height={25}
-                              />
-                            )}
-                          </Button>
-                        </div>
-                        <div>
-                          <Button
-                            className="w-full md:w-auto md:min-w-[184px] mb-[11px]"
-                            onClick={() => {
-                              setCompleteQuizLoading(true);
-                              router.push(`/quiz/${lesson}`);
-                            }}
-                            disabled={completeQuizLoading}
-                          >
-                            Resume Quizz
-                            {completeQuizLoading && (
-                              <Loader3
-                                className="animate-spin ml-2"
-                                width={25}
-                                height={25}
-                              />
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                      <div className="h-[1px] bg-grey-100 mb-[2px]"></div>
-
-                      <div className="grid grid-cols-2">
-                        <div className="flex flex-col gap-1">
-                          <p className="text-xl leading-8 font-bold">
-                            Receive grade
-                          </p>
-                          <p className="text-grey-700 font-light">
-                            <span className="font-bold">To Pass</span> 80% or
-                            higher
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <p className="text-xl leading-8 font-bold">
-                            Your grade
-                          </p>
-                          <p className="text-grey-700 font-light">--</p>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <div className="flex flex-col gap-1">
-                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
-                            <CircleCheck
-                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
-                            />
-                            Receive grade
-                          </p>
-                          <p className="text-grey-700 font-light">
-                            <span className="font-bold">To Pass</span> 80% or
-                            higher
-                          </p>
-                        </div>
-                        <div className="flex flex-row items-center gap-5">
-                          <p className="text-sm">Your Lesson Highest Score</p>
-                          <p className="text-green-400 text-[28px] leading-10">
-                            100%
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Button
-                            className="md:w-auto inline-block !px-6 w-full"
-                            onClick={() => {
-                              router.push(`/result/`);
-                            }}
-                          >
-                            Review Feedback
-                          </Button>
-                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
-                            We keep your highest score
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <div className="flex flex-col gap-1">
-                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
-                            <CircleCheck
-                              className={`${"text-green-400 w-[18px] h-[18px]"}`}
-                            />
-                            Receive grade
-                          </p>
-                          <p className="text-grey-700 font-light">
-                            <span className="font-bold">To Pass</span> 80% or
-                            higher
-                          </p>
-                        </div>
-                        <div className="flex flex-row items-center gap-5">
-                          <p className="text-sm">Your Lesson Highest Score</p>
-                          <p className="text-green-400 text-[28px] leading-10">
-                            100%
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Link
-                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
-                            href={`/result/`}
-                          >
-                            Review Feedback
-                          </Link>
-                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
-                            We keep your highest score
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex justify-between">
-                        <div className="flex flex-col gap-1">
-                          <p className="text-xl leading-8 font-bold flex gap-2 items-center">
-                            <CloseCirlce />
-                            Receive grade
-                          </p>
-                          <p className="text-grey-700 font-light">
-                            <span className="font-bold">To Pass</span> 80% or
-                            higher
-                          </p>
-                        </div>
-                        <div className="flex flex-row items-center gap-5">
-                          <p className="text-sm">Your Lesson Highest Score</p>
-                          <p className="text-red-200 text-[28px] leading-10">
-                            20%
-                          </p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                          <Link
-                            className="text-blue-100 hover:underline md:w-auto inline-block px-6 w-full"
-                            href={`/result/`}
-                          >
-                            Review Feedback
-                          </Link>
-                          <p className="text-[10px] leading-[14px] text-grey-700 text-center">
-                            We keep your highest score
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
                     <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                       <div
                         id="content"
@@ -576,6 +433,150 @@ const LessonDetail = () => {
                         }}
                       />
                     </div>
+
+                    {lesson.type_format === 3 && (
+                      <div className="flex flex-col gap-10">
+                        <div className="flex flex-col gap-10 mb-[11px]">
+                          {assignmentStatus === ASSIGNMENT_STATUS.NEW && (
+                            <div>
+                              <Button
+                                className="w-full md:w-auto md:min-w-[184px]"
+                                onClick={() => {
+                                  setCompleteQuizLoading(true);
+                                  router.push(
+                                    `/quiz/${lesson.assignment_detail?.id}`
+                                  );
+                                }}
+                                disabled={completeQuizLoading}
+                              >
+                                Complete Quiz
+                                {completeQuizLoading && (
+                                  <Loader3
+                                    className="animate-spin ml-2"
+                                    width={25}
+                                    height={25}
+                                  />
+                                )}
+                              </Button>
+                            </div>
+                          )}
+
+                          {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
+                            <div>
+                              <Button
+                                className="w-full md:w-auto md:min-w-[184px] mb-[11px]"
+                                onClick={() => {
+                                  setCompleteQuizLoading(true);
+                                  router.push(
+                                    `/quiz/${lesson.assignment_detail?.id}`
+                                  );
+                                }}
+                                disabled={completeQuizLoading}
+                              >
+                                {assignmentStatus === ASSIGNMENT_STATUS.PASSED
+                                  ? "Learn Again"
+                                  : "Try Again"}
+                                {completeQuizLoading && (
+                                  <Loader3
+                                    className="animate-spin ml-2"
+                                    width={25}
+                                    height={25}
+                                  />
+                                )}
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                        <div className="h-[1px] bg-grey-100 mb-[2px]"></div>
+
+                        {assignmentStatus === ASSIGNMENT_STATUS.NEW && (
+                          <div className="grid grid-cols-3">
+                            <div className="flex flex-col col-span-2 gap-1">
+                              <p className="text-xl leading-8 font-bold">
+                                Receive grade
+                              </p>
+                              <p className="text-grey-700 font-light">
+                                <span className="font-bold">To Pass</span> 80%
+                                or higher
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p className="text-xl leading-8 font-bold">
+                                Your grade
+                              </p>
+                              <p className="text-grey-700 font-light">-</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
+                          <div className="flex flex-col lg:flex-row justify-between gap-4 lg:gap-0">
+                            <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
+                              <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
+                                {assignmentStatus !== ASSIGNMENT_STATUS.NEW ? (
+                                  assignmentStatus ===
+                                  ASSIGNMENT_STATUS.FAILED ? (
+                                    <CloseCirlce />
+                                  ) : (
+                                    <CircleCheck
+                                      className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                                    />
+                                  )
+                                ) : null}
+                                Receive grade
+                              </div>
+                              <div className="text-grey-700 font-light">
+                                <span className="font-bold">To Pass</span> 80%
+                                or higher
+                              </div>
+                            </div>
+                            <div
+                              className={cn(
+                                `flex flex-col lg:flex-row items-center gap-2 lg:gap-5 px-6 py-2 lg:py-0 lg:h-[50px] rounded bg-green-400/10`,
+                                {
+                                  "bg-green-400/10":
+                                    assignmentStatus ===
+                                    ASSIGNMENT_STATUS.PASSED,
+                                  "bg-red-200/10":
+                                    assignmentStatus ===
+                                    ASSIGNMENT_STATUS.FAILED,
+                                }
+                              )}
+                            >
+                              <p className="text-sm">
+                                Your Lesson Highest Score
+                              </p>
+                              <p
+                                className={cn(
+                                  `text-green-400 text-[28px] leading-10`,
+                                  {
+                                    "text-green-400":
+                                      assignmentStatus ===
+                                      ASSIGNMENT_STATUS.PASSED,
+                                    "text-red-200":
+                                      assignmentStatus ===
+                                      ASSIGNMENT_STATUS.FAILED,
+                                  }
+                                )}
+                              >
+                                {lesson.assignment_detail?.score}%
+                              </p>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <Link
+                                className="text-blue-100 hover:bg-blue-100 hover:text-white-100 md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
+                                href={`/result/${lesson.assignment_detail?.id}`}
+                              >
+                                Review Feedback
+                              </Link>
+                              <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                                We keep your highest score
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div>No Lesson</div>
