@@ -51,7 +51,12 @@ const LessonModule: React.FC<LessonModuleProps> = ({
     <div className="flex flex-col gap-4">
       {moduleLength > 1 && (
         <div
-          className="w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg cursor-pointer select-none"
+          className={cn(
+            `w-full md:mx-0 py-3 bg-gray-200 px-4 rounded-lg select-none`,
+            {
+              "cursor-pointer": data.lesson_data.length > 0,
+            }
+          )}
           onClick={() => setShowDropdown(!showDropdown)}
         >
           <div className="flex gap-[6px] flex-col">
@@ -70,21 +75,26 @@ const LessonModule: React.FC<LessonModuleProps> = ({
                   </span>
                 </div>
 
-                <div className="flex items-center gap-[6px]">
+                {/* <div className="flex items-center gap-[6px]">
                   <Image
                     alt="quiz-icon"
                     className="w-[16px] h-[16px]"
                     src={quiz}
                   />
                   <span className="text-sm leading-6 font-light">
-                    {data.lesson_type_format === 1 ? "Text" : "Video"}
+                    {data.lesson_type_format === 1
+                      ? "Text"
+                      : data.lesson_type_format === 2
+                      ? "Video"
+                      : "Quiz"}
                   </span>
-                </div>
+                </div> */}
               </div>
               <div
                 className={cn("transition-all duration-150 ease-in-out", {
                   "rotate-0": showDropdown,
                   "rotate-180": !showDropdown,
+                  hidden: data.lesson_data.length === 0,
                 })}
               >
                 <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
@@ -94,20 +104,18 @@ const LessonModule: React.FC<LessonModuleProps> = ({
         </div>
       )}
       <div
-        className={cn(
-          `flex-col transition-all duration-150 ease-in-out`,
-          {
-            flex: showDropdown,
-            hidden: !showDropdown,
-            "px-3": moduleLength > 1,
-          }
-        )}
+        className={cn(`flex-col transition-all duration-150 ease-in-out`, {
+          flex: showDropdown,
+          hidden: !showDropdown || data.lesson_data.length === 0,
+          "px-3": moduleLength > 1,
+        })}
       >
         {data.lesson_data.map((lessonItem: LessonItem) => (
           <div
             className={cn(`flex justify-between p-[10px] cursor-pointer`, {
               "!cursor-default": isLockedLesson || lessonItem.is_locked,
-              "bg-grey-100": moduleLength <= 1 && lessonSlug === lessonItem.slug,
+              "bg-grey-100":
+                moduleLength <= 1 && lessonSlug === lessonItem.slug,
             })}
             onClick={() => {
               if (isLockedLesson) return;
@@ -119,7 +127,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
             key={lessonItem.id}
           >
             <div
-              className={cn("font-light truncate lg:w-[300px]", {
+              className={cn("font-light truncate lg:max-w-[270px]", {
                 "text-grey-400": lessonItem.is_locked || isLockedLesson,
               })}
             >
