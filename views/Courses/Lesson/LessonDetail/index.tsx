@@ -513,8 +513,8 @@ const LessonDetail = () => {
                                 {completeQuizLoading && (
                                   <Loader3
                                     className="animate-spin ml-2"
-                                    width={25}
-                                    height={25}
+                                    width={20}
+                                    height={20}
                                   />
                                 )}
                               </Button>
@@ -539,8 +539,8 @@ const LessonDetail = () => {
                                 {completeQuizLoading && (
                                   <Loader3
                                     className="animate-spin ml-2"
-                                    width={25}
-                                    height={25}
+                                    width={20}
+                                    height={20}
                                   />
                                 )}
                               </Button>
