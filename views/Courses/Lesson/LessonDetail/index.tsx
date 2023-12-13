@@ -107,6 +107,7 @@ const LessonDetail = () => {
     try {
       await api.get(`/api/v10/claim-reward/${subCourse.id}`);
       router.push(`/courses/${courseId}/${subCourse?.slug}`);
+      setIsClaimSuccess(true);
     } catch (error) {
       console.log(error);
     } finally {
@@ -338,6 +339,7 @@ const LessonDetail = () => {
                       hidden:
                         !nextPrevLesson?.next_data ||
                         Object.keys(nextPrevLesson?.next_data).length <= 0 ||
+                        assignmentStatus !== ASSIGNMENT_STATUS.PASSED ||
                         subCourseLoading,
                     }
                   )}
@@ -355,7 +357,7 @@ const LessonDetail = () => {
                         !lesson.assignment_detail?.id &&
                         (!nextPrevLesson?.next_data ||
                           Object.keys(nextPrevLesson?.next_data).length <= 0),
-                      "hover:bg-blue-100": !isClaimSuccess,
+                      "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
                       "opacity-90 cursor-default": isClaimLoading,
                     }
                   )}
