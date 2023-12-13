@@ -339,7 +339,8 @@ const LessonDetail = () => {
                       hidden:
                         !nextPrevLesson?.next_data ||
                         Object.keys(nextPrevLesson?.next_data).length <= 0 ||
-                        assignmentStatus !== ASSIGNMENT_STATUS.PASSED ||
+                        (lesson?.assignment_detail?.id &&
+                          assignmentStatus !== ASSIGNMENT_STATUS.PASSED) ||
                         subCourseLoading,
                     }
                   )}
@@ -372,7 +373,7 @@ const LessonDetail = () => {
                   </span>
                   {isClaimLoading && (
                     <Loader3
-                      className="animate-spin ml-2"
+                      className="animate-spin ml-2 text-blue-100 group-hover:text-white-100"
                       width={14}
                       height={14}
                     />
