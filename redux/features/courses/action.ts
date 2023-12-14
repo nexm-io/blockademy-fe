@@ -132,6 +132,26 @@ export const getDetailLesson = createAsyncThunk(
   }
 );
 
+export const getDetailLessonWithoutLoading = createAsyncThunk(
+  "courses/get-detail-lesson-without-loading",
+  async ({
+    courseId,
+    lessonSlug,
+  }: {
+    courseId: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: lesson } = await api.get(
+        `/api/v10/lesson/${lessonSlug}?course_id=${courseId}`
+      );
+      return lesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getNextLesson = createAsyncThunk(
   "courses/get-next-lesson",
   async (courseId: string) => {

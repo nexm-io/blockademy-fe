@@ -5,7 +5,11 @@ import Image from "next/image";
 import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourse, getMenuData } from "@/redux/features/courses/action";
+import {
+  getDetailCourse,
+  getDetailCourseWithoutLoading,
+  getMenuData,
+} from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -33,17 +37,42 @@ const CourseDetail = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const loadData = async () => {
+  const loadMenuData = async () => {
     try {
       const { payload: payloadMenu } = await dispatch(
         getMenuData(courseId as string)
       );
-      if (payloadMenu?.response?.data?.error) router.push("/not-found");
+      if (payloadMenu?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadMenu;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      const { payload: payloadDetail } = await dispatch(
-        getDetailCourse(courseId as string)
-      );
-      if (payloadDetail?.response?.data?.error) router.push("/not-found");
+  const loadCourseDetail = async () => {
+    try {
+      let payloadDetail: any;
+      const params = courseId as string;
+      if (courseDetail?.id === courseId) {
+        payloadDetail = await dispatch(getDetailCourseWithoutLoading(params));
+      } else {
+        payloadDetail = await dispatch(getDetailCourse(params));
+      }
+
+      if (payloadDetail?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadDetail;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadData = async () => {
+    try {
+      await Promise.all([loadMenuData(), loadCourseDetail()]);
     } catch (error) {
       console.log(error);
     }

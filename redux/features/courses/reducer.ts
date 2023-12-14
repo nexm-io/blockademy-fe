@@ -13,13 +13,14 @@ import {
   getCompleteRate,
   getNextPrevLesson,
   getMenuData,
+  getDetailLessonWithoutLoading,
 } from "./action";
 import { CourseResponse } from "./type";
 import { RootState } from "@/redux/store";
 
 const initialState: CourseResponse = {
   success: false,
-  isLoading: true,
+  isLoading: false,
   data: [],
   error: null,
   details: null,
@@ -126,6 +127,19 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.error = action.payload.data;
     });
 
+  builder
+    .addCase(getDetailCourseWithoutLoading.pending, (state) => {
+      state.isLoading = false;
+    })
+    .addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
+      state.isLoading = false;
+      if (!action.payload) return;
+      state.details = action.payload.data;
+    })
+    .addCase(getDetailCourseWithoutLoading.rejected, (state) => {
+      state.isLoading = false;
+    });
+
   builder.addCase(getMenuData.fulfilled, (state, action) => {
     if (!action.payload) return;
     state.menuData = action.payload.data;
@@ -158,16 +172,22 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.lessonLoading = false;
     });
 
+  builder
+    .addCase(getDetailLessonWithoutLoading.pending, (state) => {
+      state.lessonLoading = false;
+    })
+    .addCase(getDetailLessonWithoutLoading.fulfilled, (state, action) => {
+      state.lessonLoading = false;
+      if (!action.payload) return;
+      state.lesson = action.payload.data;
+    })
+    .addCase(getDetailLessonWithoutLoading.rejected, (state) => {
+      state.lessonLoading = false;
+    });
+
   builder.addCase(getCompleteRate.fulfilled, (state, action) => {
     if (!action.payload) return;
     state.completeRate = action.payload.data;
-  });
-
-  builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
-    if (!action.payload) return;
-    state.isLoading = false;
-    state.details = action.payload.data;
-    state.error = null;
   });
 
   builder
