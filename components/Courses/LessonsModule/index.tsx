@@ -158,7 +158,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
             </div>
           </div>
         ))}
-        {data.assignment_data &&
+        {/* {data.assignment_data &&
         data?.assignment_data.assignment_status?.slug ===
           ASSIGNMENT_STATUS.PASSED ? (
           <div className="rounded-lg bg-green-400/10 px-4 py-3 flex justify-between flex-col sm:flex-row gap-2 flex-1">
@@ -179,7 +179,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
               </Button>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

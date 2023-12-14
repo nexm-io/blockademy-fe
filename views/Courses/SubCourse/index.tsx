@@ -2,9 +2,9 @@
 import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import { getDetailCourse, getMenuData } from "@/redux/features/courses/action";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -25,11 +25,51 @@ const SubCourseView = () => {
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
   const [registered, setRegistered] = useState<number>(0);
-  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const {
+    isLoading,
+    details: courseDetail,
+    menuData: { module_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pathName = usePathname();
+
+  const lessonUrl = useMemo(() => {
+    if (!courseDetail) return "";
+    const isSpecialization = courseDetail.main_is_specialization;
+    const courseId = courseDetail.id;
+    const moduleSlug = "";
+    const lessonSlug = "";
+    const courseSlug = "";
+
+    let href = `/courses/${courseId}`;
+
+    if (isSpecialization) {
+      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [courseDetail]);
+
+  const loadData = async () => {
+    try {
+      const { payload: payloadMenu } = await dispatch(
+        getMenuData(courseId as string)
+      );
+      if (payloadMenu?.response?.data?.error) router.push("/not-found");
+
+      const { payload: payloadDetail } = await dispatch(
+        getDetailCourse(courseId as string)
+      );
+      if (payloadDetail?.response?.data?.error) router.push("/not-found");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -50,7 +90,7 @@ const SubCourseView = () => {
   }, [courseDetail]);
 
   useEffect(() => {
-    dispatch(getDetailCourse(subCourseSlug as string));
+    loadData();
   }, []);
 
   return (
@@ -204,9 +244,9 @@ const SubCourseView = () => {
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
                     />
-                    {courseDetail?.module_data.length !== 0 && !isLoading && (
+                    {module_data.length !== 0 && !isLoading && (
                       <div className="flex flex-col gap-10">
-                        {courseDetail?.module_data.map(
+                        {module_data.map(
                           (z: any, i: React.Key | null | undefined) => (
                             <div
                               key={i}
@@ -218,7 +258,7 @@ const SubCourseView = () => {
                                 key={i}
                                 data={z}
                                 isRegistered={registered}
-                                moduleLength={courseDetail?.module_data.length}
+                                moduleLength={module_data.length}
                                 courseId={courseId as string}
                               />
                             </div>
@@ -275,15 +315,15 @@ const SubCourseView = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-5 md:px-0">
-                  {courseDetail?.module_data.length !== 0 && !isLoading && (
+                  {module_data.length !== 0 && !isLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.module_data.map(
+                      {module_data.map(
                         (z: any, i: React.Key | null | undefined) => (
                           <LessonModule
                             key={i}
                             data={z}
                             isRegistered={registered}
-                            moduleLength={courseDetail?.module_data.length}
+                            moduleLength={module_data.length}
                             courseId={courseId as string}
                           />
                         )

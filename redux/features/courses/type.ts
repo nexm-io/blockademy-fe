@@ -31,31 +31,46 @@ export interface CourseResponse {
   lessonLoading: boolean;
   lesson: any;
   previousSubCourseSlug: string;
-  nextLesson: any;
+  nextLesson: LessonTypes;
   completeRate: {
     total_completed: number;
   };
   nextPrevLesson: {
-    previous_data: LessonData;
-    next_data: LessonData;
-    current_data: LessonData;
+    previous_data: NextPrevType;
+    next_data: NextPrevType;
+    current_data: NextPrevType;
+  };
+  menuData: {
+    sub_course_data: any;
+    module_data: any;
   };
 }
 
-export interface LessonData {
-  lesson_id: number;
-  lesson_slug: string;
+export interface LessonTypes {
+  main_is_specialization: string | any;
+  main_course_data: string | any;
+  course_id: string;
+  course_slug: string;
+  course_title: string;
+  is_registered: number;
+  is_claimed: number;
+  title: string;
+  link: null | string;
+  duration: number;
+  assignment_detail: any;
+  type_upload: string;
+  type_format: number;
+  description: null | string;
+}
+
+export interface NextPrevType {
+  sub_course_id: string;
+  sub_course_slug: string;
   module_id: number;
   module_slug: string;
-  sub_course_id: number;
-  sub_course_slug: string;
-  lesson_assignment_data: any;
-  is_complete_lesson: any;
-  is_complete_module: any;
-  module_assignment_data: any;
-  is_complete_module_sub_course: string | number;
-  is_complete_lesson_module: string | number;
-  is_complete_sub_course: string | number;
+  lesson_id: number;
+  lesson_slug: string;
+  is_complete_lesson: number;
 }
 
 export interface ListCourse {
@@ -149,13 +164,11 @@ export interface CourseDetail {
   };
   is_opened: number;
   issue_nft_status: string;
-  sub_course_data: any[];
   main_course_data: {
     id: string;
     title: string;
     slug: string;
   };
-  module_data: any;
   is_specialization: number;
   main_is_specialization: number | string;
 }

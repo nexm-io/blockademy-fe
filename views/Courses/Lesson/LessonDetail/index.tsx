@@ -13,11 +13,10 @@ import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import {
   completeLesson,
-  getCompleteRate,
+  getDetailLesson,
+  getMenuData,
   getNextPrevLesson,
-  getSubCourseDetail,
 } from "@/redux/features/courses/action";
-import { LessonItem } from "@/redux/features/courses/type";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { CloseCirlce, Next, Previous } from "@/components/Icon";
@@ -29,7 +28,6 @@ import api from "@/services/axios";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
-  const [lesson, setLesson] = useState<LessonItem>();
   const params = useParams();
   const { subCourseSlug, lessonSlug, courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
@@ -41,21 +39,18 @@ const LessonDetail = () => {
   const [isClaimLoading, setIsClaimLoading] = useState<boolean>(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
-  const { subCourseLoading, subCourse, nextPrevLesson } =
-    useAppSelector(selectCourses);
+  const {
+    lessonLoading,
+    lesson,
+    nextPrevLesson,
+    menuData: { module_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleOnchange = (status: boolean) => {
     setIsWatching(status);
-  };
-
-  const loadDetailCourse = async () => {
-    const { payload } = await dispatch(
-      getSubCourseDetail(subCourseSlug as string)
-    );
-    if (payload?.response?.data?.error) router.push("/not-found");
   };
 
   const handlePrevLesson = () => {
@@ -90,23 +85,17 @@ const LessonDetail = () => {
           lessonId: currentData.lesson_id as number,
         })
       );
-      dispatch(getCompleteRate(courseId as string));
     }
   };
 
   const claimReward = async () => {
-    if (
-      !isLogin ||
-      !subCourse.is_registered ||
-      !subCourse ||
-      isClaimLoading ||
-      isClaimSuccess
-    )
+    const { current_data: currentData } = nextPrevLesson;
+    if (!isLogin || !lesson.is_registered || isClaimLoading || isClaimSuccess)
       return;
     setIsClaimLoading(true);
     try {
-      await api.get(`/api/v10/claim-reward/${subCourse.id}`);
-      router.push(`/courses/${courseId}/${subCourse?.slug}`);
+      await api.get(`/api/v10/claim-reward/${currentData.sub_course_id}`);
+      router.push(`/courses/${courseId}/${currentData.sub_course_slug}`);
       setIsClaimSuccess(true);
     } catch (error) {
       console.log(error);
@@ -115,19 +104,24 @@ const LessonDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (subCourse) {
-      const lessonData = subCourse.module_data.flatMap(
-        (item: any) => item.lesson_data
+  const loadData = async () => {
+    try {
+      const { payload: payloadMenu } = await dispatch(
+        getMenuData(courseId as string)
       );
-      const lesson = lessonData.find(
-        (item: LessonItem) => item.slug === lessonSlug
+      if (payloadMenu?.response?.data?.error) router.push("/not-found");
+
+      const { payload: payloadDetail } = await dispatch(
+        getDetailLesson({
+          courseId: courseId as string,
+          lessonSlug: lessonSlug as string,
+        })
       );
-      if (lesson) {
-        setLesson(lesson);
-      }
+      if (payloadDetail?.response?.data?.error) router.push("/not-found");
+    } catch (error) {
+      console.log(error);
     }
-  }, [subCourse, lessonSlug]);
+  };
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -139,18 +133,14 @@ const LessonDetail = () => {
   useEffect(() => {
     lesson &&
       setAssignmentStatus(lesson.assignment_detail?.assignment_status?.slug);
-  }, [subCourse, lesson]);
-
-  useEffect(() => {
-    loadDetailCourse();
-  }, []);
+  }, [lesson]);
 
   useEffect(() => {
     if (!isLogin) {
-      const isSpecialization = subCourse?.main_is_specialization === 1;
+      const isSpecialization = lesson?.main_is_specialization;
       const courseIdOrMainId = isSpecialization
         ? courseId
-        : `${courseId}/${subCourse?.slug}`;
+        : `${courseId}/${lesson?.course_slug}`;
 
       const url = isSpecialization
         ? `/courses/${courseIdOrMainId}`
@@ -161,14 +151,14 @@ const LessonDetail = () => {
   }, [isLogin]);
 
   useEffect(() => {
-    if (subCourseLoading) {
+    if (lessonLoading) {
       return;
     }
 
-    const isRegistered = subCourse?.is_registered;
-    const isSpecialization = subCourse?.is_specialization;
-    const courseId = subCourse?.id;
-    const courseSlug = subCourse?.slug;
+    const isRegistered = lesson?.is_registered;
+    const isSpecialization = lesson?.main_is_specialization;
+    const courseId = lesson?.course_id;
+    const courseSlug = lesson?.course_slug;
 
     if (!isRegistered && !isSpecialization) {
       router.push(`/courses/${courseId}/${courseSlug}`);
@@ -177,7 +167,7 @@ const LessonDetail = () => {
     if (!isRegistered && isSpecialization) {
       router.push(`/courses/${courseId}`);
     }
-  }, [subCourseLoading, subCourse]);
+  }, [lessonLoading, lesson]);
 
   useEffect(() => {
     completeCurrentLesson();
@@ -193,12 +183,16 @@ const LessonDetail = () => {
   }, [subCourseSlug, lessonSlug]);
 
   useEffect(() => {
-    setIsClaimSuccess(subCourse?.is_claimed);
-  }, [subCourse]);
+    setIsClaimSuccess(!!lesson?.is_claimed);
+  }, [lesson]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <div className="container min-h-screen">
-      {subCourseLoading ? (
+      {lessonLoading ? (
         <div className="md:mt-[56px] mt-8">
           <div className="">
             <Skeleton
@@ -278,14 +272,12 @@ const LessonDetail = () => {
                       &gt;
                     </span>
                   </li>
-                  {subCourse?.main_is_specialization === 1 && (
+                  {lesson?.main_is_specialization ? (
                     <>
                       <li className="leading-[23px] hover:underline">
-                        <Link
-                          href={`/courses/${subCourse?.main_course_data?.id}`}
-                        >
+                        <Link href={`/courses/${lesson?.main_course_data?.id}`}>
                           <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                            {subCourse?.main_course_data?.title}
+                            {lesson?.main_course_data?.title}
                           </span>
                         </Link>
                       </li>
@@ -295,11 +287,11 @@ const LessonDetail = () => {
                         </span>
                       </li>
                     </>
-                  )}
+                  ) : null}
                   <li className="leading-[23px] hover:underline inline-block">
-                    <Link href={`/courses/${courseId}/${subCourse?.slug}`}>
+                    <Link href={`/courses/${courseId}/${lesson?.course_slug}`}>
                       <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                        {subCourse?.title}
+                        {lesson?.course_title}
                       </span>
                     </Link>
                   </li>
@@ -360,29 +352,28 @@ const LessonDetail = () => {
                     </div>
                   </div>
                   <div className="mt-10 overflow-y-auto">
-                    {subCourse?.module_data.length !== 0 &&
-                      !subCourseLoading && (
-                        <div className="flex flex-col gap-10">
-                          {subCourse?.module_data.map(
-                            (z: any, i: React.Key | null | undefined) => (
-                              <div
+                    {module_data.length !== 0 && !lessonLoading && (
+                      <div className="flex flex-col gap-10">
+                        {module_data.map(
+                          (z: any, i: React.Key | null | undefined) => (
+                            <div
+                              key={i}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <LessonModule
                                 key={i}
-                                onClick={() => {
-                                  router.push(`/courses/${courseId}`);
-                                }}
-                              >
-                                <LessonModule
-                                  key={i}
-                                  data={z}
-                                  moduleLength={subCourse?.module_data.length}
-                                  isRegistered={subCourse?.is_registered}
-                                  courseId={courseId as string}
-                                />
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )}
+                                data={z}
+                                moduleLength={module_data.length}
+                                isRegistered={lesson?.is_registered as number}
+                                courseId={courseId as string}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -604,10 +595,7 @@ const LessonDetail = () => {
                           `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
                           {
                             hidden:
-                              !nextPrevLesson?.previous_data ||
-                              Object.keys(nextPrevLesson?.previous_data)
-                                .length <= 0 ||
-                              subCourseLoading,
+                              !nextPrevLesson?.previous_data || lessonLoading,
                           }
                         )}
                         onClick={handlePrevLesson}
@@ -621,12 +609,10 @@ const LessonDetail = () => {
                           {
                             hidden:
                               !nextPrevLesson?.next_data ||
-                              Object.keys(nextPrevLesson?.next_data).length <=
-                                0 ||
                               (lesson?.assignment_detail?.id &&
                                 assignmentStatus !==
                                   ASSIGNMENT_STATUS.PASSED) ||
-                              subCourseLoading,
+                              lessonLoading,
                           }
                         )}
                         onClick={handleNextLesson}
@@ -639,12 +625,10 @@ const LessonDetail = () => {
                           `px-[14px] py-1 hidden items-center gap-2 bg-blue-200 group duration-300 transition-all rounded`,
                           {
                             "!flex":
-                              (lesson &&
-                                !lesson.assignment_detail?.id &&
-                                !subCourse.is_claimed &&
-                                !nextPrevLesson?.next_data) ||
-                              Object.keys(nextPrevLesson?.next_data).length <=
-                                0,
+                              lesson &&
+                              !lesson.assignment_detail?.id &&
+                              !lesson?.is_claimed &&
+                              !nextPrevLesson?.next_data,
                             "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
                             "opacity-90 cursor-default": isClaimLoading,
                           }
@@ -679,15 +663,15 @@ const LessonDetail = () => {
               </div>
               <div className="w-full lg:w-[352px]">
                 <div className="flex flex-col gap-5 md:px-0">
-                  {subCourse?.module_data.length !== 0 && !subCourseLoading && (
+                  {module_data.length !== 0 && !lessonLoading && (
                     <div className="hidden lg:flex flex-col gap-10">
-                      {subCourse?.module_data.map(
+                      {module_data.map(
                         (z: any, i: React.Key | null | undefined) => (
                           <LessonModule
                             key={i}
                             data={z}
-                            moduleLength={subCourse?.module_data.length}
-                            isRegistered={subCourse?.is_registered}
+                            moduleLength={module_data.length}
+                            isRegistered={lesson?.is_registered as number}
                             courseId={courseId as string}
                           />
                         )

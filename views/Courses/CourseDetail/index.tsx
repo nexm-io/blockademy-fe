@@ -5,7 +5,7 @@ import Image from "next/image";
 import CourseModule from "@/components/Courses/CourseModule";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import { getDetailCourse, getMenuData } from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -24,17 +24,30 @@ const CourseDetail = () => {
   const [registered, setRegistered] = useState<number>(0);
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
-  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const {
+    isLoading,
+    details: courseDetail,
+    menuData: { sub_course_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const { payload } = await dispatch(getDetailCourse(courseId as string));
-      if (payload?.response?.data?.error) router.push("/not-found");
-    })();
-  }, []);
+  const loadData = async () => {
+    try {
+      const { payload: payloadMenu } = await dispatch(
+        getMenuData(courseId as string)
+      );
+      if (payloadMenu?.response?.data?.error) router.push("/not-found");
+
+      const { payload: payloadDetail } = await dispatch(
+        getDetailCourse(courseId as string)
+      );
+      if (payloadDetail?.response?.data?.error) router.push("/not-found");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setRegistered(courseDetail?.is_registered as number);
@@ -46,6 +59,10 @@ const CourseDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <div className="container min-h-screen">
@@ -180,28 +197,30 @@ const CourseDetail = () => {
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
                     />
-                    {courseDetail?.sub_course_data.length !== 0 &&
-                      !isLoading && (
-                        <div className="flex flex-col gap-10">
-                          {courseDetail?.sub_course_data.map(
-                            (subCourse, index) => (
-                              <div
+                    {sub_course_data.length !== 0 && !isLoading && (
+                      <div className="flex flex-col gap-10">
+                        {sub_course_data.map(
+                          (
+                            subCourse: any,
+                            index: React.Key | null | undefined
+                          ) => (
+                            <div
+                              key={index}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <CourseModule
                                 key={index}
-                                onClick={() => {
-                                  router.push(`/courses/${courseId}`);
-                                }}
-                              >
-                                <CourseModule
-                                  key={index}
-                                  isRegistered={registered}
-                                  data={subCourse}
-                                  activeDropdown={index === 0}
-                                />
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )}
+                                isRegistered={registered}
+                                data={subCourse}
+                                activeDropdown={index === 0}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -223,10 +242,10 @@ const CourseDetail = () => {
 
             {/* PASSED CASE */}
             {isLogin &&
-              courseDetail?.is_registered === 1 &&
-              courseDetail?.is_completed_assignment === 1 && (
-                <RewardDetail courseDetail={courseDetail} />
-              )}
+            courseDetail?.is_claimed &&
+            courseDetail?.is_complete_module_sub_course === 1 ? (
+              <RewardDetail courseDetail={courseDetail} />
+            ) : null}
 
             <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
               <div className="flex-1">
@@ -252,18 +271,25 @@ const CourseDetail = () => {
                 </div>
 
                 <div className="flex flex-col gap-5 md:px-0">
-                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
-                    <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.sub_course_data.map((subCourse, index) => (
-                        <CourseModule
-                          key={index}
-                          data={subCourse}
-                          isRegistered={registered}
-                          activeDropdown={index === 0}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  {sub_course_data &&
+                    sub_course_data.length !== 0 &&
+                    !isLoading && (
+                      <div className="hidden lg:flex flex-col gap-10">
+                        {sub_course_data.map(
+                          (
+                            subCourse: any,
+                            index: React.Key | null | undefined
+                          ) => (
+                            <CourseModule
+                              key={index}
+                              data={subCourse}
+                              isRegistered={registered}
+                              activeDropdown={index === 0}
+                            />
+                          )
+                        )}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
