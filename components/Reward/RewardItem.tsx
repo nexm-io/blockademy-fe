@@ -4,12 +4,10 @@ import React, { useEffect, useState } from "react";
 import { RewardDetails } from "@/redux/features/reward/type";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import Button from "../Common/Button";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const RewardItem = ({
   data: {
-    assignment_status,
     title,
     course_id,
     certificate_image_url,
@@ -18,7 +16,6 @@ const RewardItem = ({
 }: {
   data: RewardDetails;
 }) => {
-  const router = useRouter();
   const [cerImage, setCerImage] = useState("");
 
   useEffect(() => {
