@@ -22,6 +22,7 @@ import { setRefUrl } from "@/redux/features/auth/action";
 import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 import MenuData from "@/components/Courses/MenuData/MenuData";
+import { Plus } from "@/components/Icon";
 
 const SubCourseView = () => {
   const params = useParams();
@@ -231,14 +232,12 @@ const SubCourseView = () => {
                 active: isShowMenu,
               })}
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className="module hambuger"
-                  onClick={() => setShowMenu((prev) => !prev)}
-                >
-                  <span></span>
-                </div>
-                <p className="text-blue-100">Menu</p>
+              <div
+                className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
+                onClick={() => setShowMenu((prev) => !prev)}
+              >
+                <p className="text-blue-100">Course Menu</p>
+                <Plus />
               </div>
               <div
                 className={cn(

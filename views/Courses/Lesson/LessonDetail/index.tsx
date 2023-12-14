@@ -19,7 +19,7 @@ import {
 } from "@/redux/features/courses/action";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
-import { CloseCirlce, Next, Previous } from "@/components/Icon";
+import { CloseCirlce, Next, Plus, Previous } from "@/components/Icon";
 import Button from "@/components/Common/Button";
 import { Loader3 } from "@styled-icons/remix-line";
 import { CircleCheck } from "@styled-icons/fa-solid";
@@ -315,14 +315,12 @@ const LessonDetail = () => {
               active: isShowMenu,
             })}
           >
-            <div className="flex items-center gap-3">
-              <div
-                className="module hambuger"
-                onClick={() => setShowMenu((prev) => !prev)}
-              >
-                <span></span>
-              </div>
-              <p className="text-blue-100">Menu</p>
+            <div
+              className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
+              onClick={() => setShowMenu((prev) => !prev)}
+            >
+              <p className="text-blue-100">Course Menu</p>
+              <Plus />
             </div>
             <div
               className={cn(
