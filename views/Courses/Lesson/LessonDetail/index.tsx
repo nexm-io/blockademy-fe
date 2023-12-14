@@ -315,77 +315,6 @@ const LessonDetail = () => {
                   </li>
                 </ol>
               </nav>
-              <div className="flex items-center gap-10">
-                <div
-                  className={cn(
-                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
-                    {
-                      hidden:
-                        !nextPrevLesson?.previous_data ||
-                        Object.keys(nextPrevLesson?.previous_data).length <=
-                          0 ||
-                        subCourseLoading,
-                    }
-                  )}
-                  onClick={handlePrevLesson}
-                >
-                  <Previous />
-                  <span className="text-blue-100">Previous</span>
-                </div>
-                <div
-                  className={cn(
-                    `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
-                    {
-                      hidden:
-                        !nextPrevLesson?.next_data ||
-                        Object.keys(nextPrevLesson?.next_data).length <= 0 ||
-                        (lesson?.assignment_detail?.id &&
-                          assignmentStatus !== ASSIGNMENT_STATUS.PASSED) ||
-                        subCourseLoading,
-                    }
-                  )}
-                  onClick={handleNextLesson}
-                >
-                  <span className="text-blue-100">Next</span>
-                  <Next />
-                </div>
-                <div
-                  className={cn(
-                    `px-[14px] py-1 hidden items-center gap-2 bg-blue-200 group duration-300 transition-all rounded`,
-                    {
-                      "!flex":
-                        (lesson &&
-                          !lesson.assignment_detail?.id &&
-                          !subCourse.is_claimed &&
-                          !nextPrevLesson?.next_data) ||
-                        Object.keys(nextPrevLesson?.next_data).length <= 0,
-                      "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
-                      "opacity-90 cursor-default": isClaimLoading,
-                    }
-                  )}
-                  onClick={claimReward}
-                >
-                  <span
-                    className={cn(`text-blue-100`, {
-                      "group-hover:text-white-100": !isClaimSuccess,
-                    })}
-                  >
-                    {isClaimSuccess ? "Completed" : "Complete"}
-                  </span>
-                  {isClaimLoading && (
-                    <Loader3
-                      className="animate-spin ml-2 text-blue-100 group-hover:text-white-100"
-                      width={14}
-                      height={14}
-                    />
-                  )}
-                  {isClaimSuccess ? (
-                    <CircleCheck
-                      className={`${"text-green-400 w-[14px] h-[14px]"}`}
-                    />
-                  ) : null}
-                </div>
-              </div>
             </div>
 
             <div
@@ -488,15 +417,17 @@ const LessonDetail = () => {
                       </>
                     )}
 
-                    <div className="text-black-100 md:text-lg text-base font-normal mb-9">
-                      <div
-                        id="content"
-                        className="flex flex-col gap-3 course-content text-base"
-                        dangerouslySetInnerHTML={{
-                          __html: lesson.description,
-                        }}
-                      />
-                    </div>
+                    {lesson.description && (
+                      <div className="text-black-100 md:text-lg text-base font-normal mb-9">
+                        <div
+                          id="content"
+                          className="flex flex-col gap-3 course-content text-base"
+                          dangerouslySetInnerHTML={{
+                            __html: lesson.description,
+                          }}
+                        />
+                      </div>
+                    )}
 
                     {lesson.type_format === 3 && (
                       <div className="flex flex-col gap-10">
@@ -526,16 +457,40 @@ const LessonDetail = () => {
                           )}
 
                           {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
-                            <div>
-                              <Button
-                                className="w-full md:w-auto md:min-w-[184px] mb-[11px]"
-                                onClick={() => {
-                                  setCompleteQuizLoading(true);
-                                  router.push(
-                                    `/quiz/${lesson.assignment_detail?.id}`
-                                  );
-                                }}
-                                disabled={completeQuizLoading}
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
+                                <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
+                                  {assignmentStatus !==
+                                  ASSIGNMENT_STATUS.NEW ? (
+                                    assignmentStatus ===
+                                    ASSIGNMENT_STATUS.FAILED ? (
+                                      <>
+                                        <CloseCirlce />
+                                        You failed!
+                                      </>
+                                    ) : (
+                                      <>
+                                        <CircleCheck
+                                          className={`${"text-green-400 w-[18px] h-[18px]"}`}
+                                        />
+                                        You passed!
+                                      </>
+                                    )
+                                  ) : null}
+                                </div>
+                                <div className="text-grey-700 font-light">
+                                  {assignmentStatus !== ASSIGNMENT_STATUS.NEW
+                                    ? assignmentStatus ===
+                                      ASSIGNMENT_STATUS.FAILED
+                                      ? "Review the material and try again"
+                                      : "Keep striving for excellence!"
+                                    : null}
+                                </div>
+                              </div>
+                              <Link
+                                className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
+                                href={`/quiz/${lesson.assignment_detail?.id}`}
+                                onClick={() => setCompleteQuizLoading(true)}
                               >
                                 {assignmentStatus === ASSIGNMENT_STATUS.PASSED
                                   ? "Learn Again"
@@ -547,7 +502,7 @@ const LessonDetail = () => {
                                     height={20}
                                   />
                                 )}
-                              </Button>
+                              </Link>
                             </div>
                           )}
                         </div>
@@ -628,19 +583,95 @@ const LessonDetail = () => {
                             </div>
                             <div className="flex flex-col gap-2">
                               <Link
-                                className="text-blue-100 hover:bg-blue-100 hover:text-white-100 md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
                                 href={`/result/${lesson.assignment_detail?.id}`}
                               >
-                                Review Feedback
+                                <Button className="w-full md:w-auto md:min-w-[184px] mb-[11px]">
+                                  Review Feedback
+                                </Button>
                               </Link>
-                              <p className="text-[10px] leading-[14px] text-grey-700 text-center">
+                              {/* <p className="text-[10px] leading-[14px] text-grey-700 text-center">
                                 We keep your highest score
-                              </p>
+                              </p> */}
                             </div>
                           </div>
                         )}
                       </div>
                     )}
+
+                    <div className="flex items-center justify-end gap-10 mt-10">
+                      <div
+                        className={cn(
+                          `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                          {
+                            hidden:
+                              !nextPrevLesson?.previous_data ||
+                              Object.keys(nextPrevLesson?.previous_data)
+                                .length <= 0 ||
+                              subCourseLoading,
+                          }
+                        )}
+                        onClick={handlePrevLesson}
+                      >
+                        <Previous />
+                        <span className="text-blue-100">Previous</span>
+                      </div>
+                      <div
+                        className={cn(
+                          `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                          {
+                            hidden:
+                              !nextPrevLesson?.next_data ||
+                              Object.keys(nextPrevLesson?.next_data).length <=
+                                0 ||
+                              (lesson?.assignment_detail?.id &&
+                                assignmentStatus !==
+                                  ASSIGNMENT_STATUS.PASSED) ||
+                              subCourseLoading,
+                          }
+                        )}
+                        onClick={handleNextLesson}
+                      >
+                        <span className="text-blue-100">Next</span>
+                        <Next />
+                      </div>
+                      <div
+                        className={cn(
+                          `px-[14px] py-1 hidden items-center gap-2 bg-blue-200 group duration-300 transition-all rounded`,
+                          {
+                            "!flex":
+                              (lesson &&
+                                !lesson.assignment_detail?.id &&
+                                !subCourse.is_claimed &&
+                                !nextPrevLesson?.next_data) ||
+                              Object.keys(nextPrevLesson?.next_data).length <=
+                                0,
+                            "hover:bg-blue-100 cursor-pointer": !isClaimSuccess,
+                            "opacity-90 cursor-default": isClaimLoading,
+                          }
+                        )}
+                        onClick={claimReward}
+                      >
+                        <span
+                          className={cn(`text-blue-100`, {
+                            "group-hover:text-white-100": !isClaimSuccess,
+                          })}
+                        >
+                          {isClaimSuccess ? "Completed" : "Complete"}
+                        </span>
+                        {isClaimLoading && (
+                          <Loader3
+                            className="animate-spin ml-2 text-blue-100 group-hover:text-white-100"
+                            width={14}
+                            height={14}
+                          />
+                        )}
+                        {isClaimSuccess ? (
+                          <CircleCheck
+                            className={`${"text-green-400 w-[14px] h-[14px]"}`}
+                          />
+                        ) : null}
+                      </div>
+                    </div>
                   </>
                 ) : (
                   <div>No Lesson</div>
