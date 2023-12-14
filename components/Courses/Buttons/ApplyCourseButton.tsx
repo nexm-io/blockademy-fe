@@ -16,10 +16,12 @@ const ApplyCourseButton = ({
   courseId,
   showPopup,
   isRegistered,
+  lessonFirstUrl,
 }: {
   courseId: string;
   showPopup: (params: boolean) => void;
   isRegistered: boolean;
+  lessonFirstUrl: string;
 }) => {
   const pathName = usePathname();
   const [registered, setRegistered] = useState<boolean>(false);
@@ -44,6 +46,7 @@ const ApplyCourseButton = ({
         dispatch(getMenuData(courseId as string));
         setRegistered(true);
         showPopup(true);
+        router.push(lessonFirstUrl);
       }
     } catch (error) {
       return null;

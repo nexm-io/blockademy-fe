@@ -3,7 +3,7 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import CourseModule from "@/components/Courses/CourseModule";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
   getDetailCourse,
@@ -36,6 +36,26 @@ const CourseDetail = () => {
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  const lessonUrl = useMemo(() => {
+    if (!courseDetail) return "";
+    const {
+      main_is_specialization,
+      lesson_first: { module_slug, slug: lessonSlug },
+      slug: courseSlug,
+    } = courseDetail;
+
+    let href = `/courses/${courseId}`;
+
+    if (main_is_specialization) {
+      href += module_slug ? `/${module_slug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [courseDetail]);
 
   const loadMenuData = async () => {
     try {
@@ -225,6 +245,7 @@ const CourseDetail = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
+                      lessonFirstUrl={lessonUrl}
                     />
                     {sub_course_data.length !== 0 && !isLoading && (
                       <div className="flex flex-col gap-10">
@@ -296,6 +317,7 @@ const CourseDetail = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
+                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
 

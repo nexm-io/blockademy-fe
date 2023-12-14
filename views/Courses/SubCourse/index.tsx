@@ -42,16 +42,16 @@ const SubCourseView = () => {
 
   const lessonUrl = useMemo(() => {
     if (!courseDetail) return "";
-    const isSpecialization = courseDetail.main_is_specialization;
-    const courseId = courseDetail.id;
-    const moduleSlug = "";
-    const lessonSlug = "";
-    const courseSlug = "";
+    const {
+      main_is_specialization,
+      lesson_first: { module_slug, slug: lessonSlug },
+      slug: courseSlug,
+    } = courseDetail;
 
     let href = `/courses/${courseId}`;
 
-    if (isSpecialization) {
-      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    if (main_is_specialization) {
+      href += module_slug ? `/${module_slug}/lessons/` : "";
     } else {
       href += courseSlug ? `/${courseSlug}/lessons/` : "";
     }
@@ -122,8 +122,6 @@ const SubCourseView = () => {
   useEffect(() => {
     loadData();
   }, []);
-
-  console.log(courseDetail);
 
   return (
     <div className="container min-h-screen">
@@ -275,6 +273,7 @@ const SubCourseView = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
+                      lessonFirstUrl={lessonUrl}
                     />
                     <MenuData />
                   </div>
@@ -323,6 +322,7 @@ const SubCourseView = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
+                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
                 <div className="hidden lg:flex flex-col gap-5 md:px-0">
