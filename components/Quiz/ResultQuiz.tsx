@@ -80,7 +80,7 @@ export default function ResultQuiz() {
 
   const nextLessonUrl = useMemo(() => {
     if (!listResultData) return "";
-    const nextData = listResultData.lesson_data.next_data;
+    const nextData = listResultData.lesson_data?.next_data;
 
     if (!nextData) return "";
     const isSpecialization = nextData.main_is_specialization;
