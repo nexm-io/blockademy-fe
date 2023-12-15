@@ -11,7 +11,7 @@ import { logoutAuth, setRefUrl } from "@/redux/features/auth/action";
 import { toast } from "react-toastify";
 import { hideEmail } from "@/utils/hideEmail";
 import { getAccountDetail } from "@/redux/features/account/action";
-import userDefault from "@/public/images/home/home-iconuser.png";
+import userDefault from "@/public/images/course/default-avatar.png";
 import cn from "@/services/cn";
 import { MENU } from "@/utils/constants";
 import { usePathname } from "next/navigation";
