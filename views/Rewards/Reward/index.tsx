@@ -33,7 +33,7 @@ const Reward = () => {
   }, []);
 
   return (
-    <div className="container min-h-[64vh]">
+    <div className="container min-h-[64vh] mt-[45px]">
       {rewardDetailLoading ? (
         <div className="flex flex-col gap-10">
           <div className="skeleton h-10"></div>
