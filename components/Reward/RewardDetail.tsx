@@ -1,4 +1,3 @@
-import { CourseDetail } from "@/redux/features/courses/type";
 import api from "@/services/axios";
 import Image from "next/image";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -17,8 +16,10 @@ import Facebook from "@/public/icons/facebook-fill.svg";
 import Linked from "@/public/icons/linkedin.svg";
 import Twitter from "@/public/icons/twitter.svg";
 import OcticonLink from "@/public/icons/octicon-link.svg";
+import { RewardDetails } from "@/redux/features/reward/type";
+import { getRewardDetail } from "@/redux/features/reward/action";
 
-const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
+const RewardDetail = ({ reward }: { reward: RewardDetails }) => {
   const [certAssets, setCertAssets] = useState<any>({
     image: "",
     pdf: "",
@@ -34,13 +35,13 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
   const router = useRouter();
 
   const certificateLink = useMemo(() => {
-    const certificateId = (courseDetail as any)?.certificate_id;
+    const certificateId = (reward as any)?.certificate_id;
     const baseUrl = window.location.hostname;
     return `${baseUrl}/accomplishments/certificate/${certificateId}`;
-  }, [courseDetail]);
+  }, [reward]);
 
   const getCertificateText = () => {
-    const title = courseDetail.title;
+    const title = reward.title;
     return `🎓 Excited to receive my Certificate on "${title}" from @blockademy_ai!\n\n Ready for the next challenge at blockademy.ai\n\n${certificateLink}`;
   };
 
@@ -65,47 +66,47 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   const getCertificate = useCallback(async () => {
     setIsGetCertLoading(true);
-    if (!courseDetail) return;
+    if (!reward) return;
     try {
-      if (!courseDetail?.is_claimed) {
+      if (!reward?.is_claimed) {
         const { data } = await api.get(
-          `/api/v10/claim-reward/${courseDetail.id}`
+          `/api/v10/claim-reward/${reward.course_id}`
         );
         setCertAssets({
           image: data.data.certificate_image_url,
           pdf: data.data.certificate_pdf_url,
           isClaimed: 1,
         });
-        await dispatch(getDetailCourseWithoutLoading(courseDetail?.id));
+        await dispatch(getRewardDetail(reward?.course_id));
       } else {
         setCertAssets({
-          image: courseDetail?.certificate_image_url,
-          isClaimed: courseDetail?.is_claimed,
-          pdf: courseDetail?.certificate_pdf_url,
+          image: reward?.certificate_image_url,
+          isClaimed: reward?.is_claimed,
+          pdf: reward?.certificate_pdf_url,
         });
       }
       setIsGetCertLoading(false);
     } catch {
       setIsGetCertLoading(false);
     }
-  }, [courseDetail, dispatch]);
+  }, [reward, dispatch]);
 
   const issueNFT = useCallback(async () => {
     setIsIssueLoading(true);
     try {
-      await api.post(`/api/v10/issue-nft/${courseDetail.id}`);
-      dispatch(getDetailCourseWithoutLoading(courseDetail.id));
+      await api.post(`/api/v10/issue-nft/${reward.course_id}`);
+      dispatch(getRewardDetail(reward?.course_id));
       setStatusIssue(true);
     } catch {
       toast.error("Something wrong!");
       setIsIssueLoading(false);
     }
-  }, [courseDetail, dispatch]);
+  }, [reward, dispatch]);
 
   const viewNFT = () => {
     window.open(
       `https://explorer.solana.com/address/${
-        (courseDetail as any)?.issue_nft_address
+        (reward as any)?.issue_nft_address
       }?cluster=devnet`,
       "_blank"
     );
@@ -113,15 +114,15 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
 
   const downloadCertificate = () => {
     router.push(
-      `/accomplishments/certificate/${(courseDetail as any)?.certificate_id}`
+      `/accomplishments/certificate/${(reward as any)?.certificate_id}`
     );
   };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if ((courseDetail as any)?.issue_nft_status === "Processing") {
-        dispatch(getDetailCourseWithoutLoading(courseDetail.id));
-      } else if ((courseDetail as any)?.issue_nft_status === "Committed") {
+      if ((reward as any)?.issue_nft_status === "Processing") {
+        dispatch(getRewardDetail(reward.course_id));
+      } else if ((reward as any)?.issue_nft_status === "Committed") {
         setIsIssueLoading(false);
         clearInterval(intervalId);
       }
@@ -130,7 +131,7 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, [statusIssue, courseDetail, dispatch]);
+  }, [statusIssue, reward, dispatch]);
 
   useEffect(() => {
     getCertificate();
@@ -183,22 +184,22 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
             <p className="text-2xl font-bold text-blue-100">
               Congratulations on getting your certificate!
             </p>
-            {courseDetail?.complete_assignment_at ? (
+            {reward?.complete_assignment_at ? (
               <p className="text-xl text-grey-700">
                 You completed this course on{" "}
                 {format(
-                  parseISO(courseDetail?.complete_assignment_at),
+                  parseISO(reward?.complete_assignment_at),
                   "MMM d, yyyy"
                 )}
               </p>
             ) : null}
 
             {/* <p className="text-xl text-grey-700">
-              Grade Achieved: {courseDetail?.aissignment_grade || "--"}%
+              Grade Achieved: {reward?.aissignment_grade || "--"}%
             </p> */}
           </div>
           <div className="flex items-center flex-col md:flex-row gap-4">
-            {/* {(courseDetail as any)?.issue_nft_status === "Committed" ? (
+            {/* {(reward as any)?.issue_nft_status === "Committed" ? (
               <Button
                 className="w-full md:w-auto md:min-w-[184px]"
                 onClick={viewNFT}
@@ -211,12 +212,12 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                 disabled={
                   isGetCertLoading ||
                   isIssueLoading ||
-                  (courseDetail as any)?.issue_nft_status === "Processing"
+                  (reward as any)?.issue_nft_status === "Processing"
                 }
                 onClick={issueNFT}
               >
                 {isIssueLoading ||
-                (courseDetail as any)?.issue_nft_status === "Processing"
+                (reward as any)?.issue_nft_status === "Processing"
                   ? `Processing`
                   : `Issue NFT`}
               </Button>
@@ -317,7 +318,9 @@ const RewardDetail = ({ courseDetail }: { courseDetail: CourseDetail }) => {
                     height={16}
                     alt="octicon-link-icon"
                   />
-                  <p className="font-light">{window.location.hostname}/certificate</p>
+                  <p className="font-light">
+                    {window.location.hostname}/certificate
+                  </p>
                 </div>
                 <Button className="w-full lg:max-w-[184px] !px-0">
                   {isCopied ? "Copied" : "Copy"}

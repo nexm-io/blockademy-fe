@@ -11,7 +11,6 @@ const RewardItem = ({
     title,
     course_id,
     certificate_image_url,
-    aissignment_grade,
   },
 }: {
   data: RewardDetails;

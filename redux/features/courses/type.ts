@@ -44,6 +44,7 @@ export interface CourseResponse {
     sub_course_data: any;
     module_data: any;
   };
+  menuDataLoading: boolean;
 }
 
 export interface LessonTypes {

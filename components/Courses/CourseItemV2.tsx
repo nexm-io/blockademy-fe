@@ -21,11 +21,8 @@ const CourseItemV2 = ({ course }: { course: CourseTypes }) => {
   const [srcCourse, setSrcCourse] = useState(course.image.original);
 
   const courseStatus = useMemo(
-    () =>
-      course.is_completed === 1 && course.is_completed_assignment === 1
-        ? "completed"
-        : "progress",
-    [course.is_completed, course.is_completed_assignment]
+    () => (course.is_completed === 1 ? "completed" : "progress"),
+    [course.is_completed]
   );
 
   return (

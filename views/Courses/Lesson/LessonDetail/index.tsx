@@ -213,8 +213,8 @@ const LessonDetail = () => {
             </div>
           </div>
           <div className="mt-10">
-            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
                 <Skeleton
                   variant="rounded"
                   sx={{ width: "100%" }}
@@ -233,7 +233,7 @@ const LessonDetail = () => {
                     ))}
                 </div>
               </div>
-              <div className="h-full w-full sticky top-[100px]">
+              <div className="hidden lg:block w-full lg:w-[352px]">
                 <div className="flex flex-col gap-4 md:px-0 ">
                   <Skeleton
                     variant="rounded"
@@ -303,7 +303,15 @@ const LessonDetail = () => {
                 </li>
                 <li className="leading-[23px]">
                   <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
-                    {showContent ? lesson?.title : "-"}
+                    {showContent ? (
+                      lesson?.title
+                    ) : (
+                      <Skeleton
+                        variant="rounded"
+                        sx={{ width: "100px" }}
+                        height={20}
+                      />
+                    )}
                   </span>
                 </li>
               </ol>
@@ -357,13 +365,15 @@ const LessonDetail = () => {
             </div>
           </div>
 
-          <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
-            {showContent ? (
-              lesson?.title
-            ) : (
-              <Loader3 className="animate-spin" width={24} height={24} />
-            )}
-          </h1>
+          {showContent ? (
+            <h1 className="text-black-100 font-bold md:text-4xl text-3xl mb-[48px]">
+              {lesson?.title}
+            </h1>
+          ) : (
+            <div className="flex flex-col md:flex-row justify-between mb-[48px]">
+              <Skeleton variant="rounded" sx={{ width: "400px" }} height={40} />
+            </div>
+          )}
 
           {isLogin ? null : (
             <div className="bg-blue-200 py-3 px-4 flex items-center gap-2">
@@ -377,7 +387,7 @@ const LessonDetail = () => {
 
           <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
             <div className="flex-1">
-              {showContent && (
+              {showContent ? (
                 <>
                   {lesson ? (
                     <>
@@ -396,7 +406,7 @@ const LessonDetail = () => {
                         <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                           <div
                             id="content"
-                            className="flex flex-col gap-3 course-content text-base"
+                            className="flex flex-col course-content text-base"
                             dangerouslySetInnerHTML={{
                               __html: lesson.description,
                             }}
@@ -562,7 +572,7 @@ const LessonDetail = () => {
                                   href={`/result/${lesson.assignment_detail?.id}`}
                                 >
                                   <Button className="w-full md:w-auto md:min-w-[184px] mb-[11px]">
-                                    Review Feedback
+                                    View Feedback
                                   </Button>
                                 </Link>
                                 {/* <p className="text-[10px] leading-[14px] text-grey-700 text-center">
@@ -647,6 +657,26 @@ const LessonDetail = () => {
                     <div>No Lesson</div>
                   )}
                 </>
+              ) : (
+                <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
+                  <Skeleton
+                    variant="rounded"
+                    sx={{ width: "100%" }}
+                    height={400}
+                  />
+                  <div className="mt-4 grid gap-2">
+                    {Array(20)
+                      .fill(0)
+                      .map((z, i) => (
+                        <Skeleton
+                          key={i}
+                          variant="rounded"
+                          sx={{ width: "100%" }}
+                          height={24}
+                        />
+                      ))}
+                  </div>
+                </div>
               )}
             </div>
             <div className="hidden lg:block w-full lg:w-[352px]">

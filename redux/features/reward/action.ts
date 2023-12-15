@@ -2,7 +2,7 @@ import api from "@/services/axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getRewardDetail = createAsyncThunk(
-  "reward/get-reward-detail",
+  "reward/get-reward-detail-by-user",
   async (courseId: string) => {
     try {
       const { data: reward } = await api.get(
