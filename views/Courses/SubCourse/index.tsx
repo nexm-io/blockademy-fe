@@ -138,7 +138,7 @@ const SubCourseView = () => {
     <div className="container min-h-screen">
       {isLoading ? (
         <div className="md:mt-[56px] mt-8">
-          <>
+          <div className="">
             <Skeleton
               variant="rounded"
               sx={{ maxWidth: "300px" }}
@@ -147,10 +147,10 @@ const SubCourseView = () => {
             <div className="flex flex-col md:flex-row justify-between mt-[52px]">
               <Skeleton variant="rounded" sx={{ width: "400px" }} height={50} />
             </div>
-          </>
+          </div>
           <div className="mt-10">
-            <div className="relative mt-10 grid grid-cols-1 lg:grid-cols-3 lg:gap-10 w-full p-0">
-              <div className="w-full px-0 md:px-0 col-start-1 col-end-3">
+            <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
+              <div className="flex-1">
                 <Skeleton
                   variant="rounded"
                   sx={{ width: "100%" }}
@@ -169,7 +169,7 @@ const SubCourseView = () => {
                     ))}
                 </div>
               </div>
-              <div className="h-full w-full sticky top-[100px]">
+              <div className="hidden lg:block w-full lg:w-[352px]">
                 <div className="flex flex-col gap-4 md:px-0 ">
                   <Skeleton
                     variant="rounded"
