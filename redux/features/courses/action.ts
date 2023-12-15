@@ -42,6 +42,20 @@ export const getMenuData = createAsyncThunk(
   }
 );
 
+export const getMenuDataWithoutLoading = createAsyncThunk(
+  "courses/get-menu-data-without-loading",
+  async (courseId: string) => {
+    try {
+      const { data } = await api.get(
+        `/api/v10/course/${courseId}/get-menu-data`
+      );
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getSubCourseDetail = createAsyncThunk(
   "courses/get-sub-course-detail",
   async (courseId: string) => {
