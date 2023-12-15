@@ -313,7 +313,7 @@ const CourseDetail = () => {
                   <div className="text-black-100 md:text-lg text-base font-normal mb-9">
                     <div
                       id="content"
-                      className="flex flex-col gap-3 course-content text-base"
+                      className="flex flex-col course-content text-base"
                       dangerouslySetInnerHTML={{
                         __html: courseDetail.description,
                       }}
