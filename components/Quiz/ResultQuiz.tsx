@@ -78,6 +78,29 @@ export default function ResultQuiz() {
     return href;
   }, [listResultData]);
 
+  const nextLessonUrl = useMemo(() => {
+    if (!listResultData) return "";
+    const nextData = listResultData.lesson_data.next_data;
+
+    if (!nextData) return "";
+    const isSpecialization = nextData.main_is_specialization;
+    const courseId = nextData.sub_course_id;
+    const moduleSlug = nextData.module_slug;
+    const lessonSlug = nextData?.lesson_slug;
+    const courseSlug = nextData.sub_course_slug;
+
+    let href = `/courses/${courseId}`;
+
+    if (isSpecialization) {
+      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [listResultData]);
+
   const courseUrl = useMemo(() => {
     if (!listResultData) return "";
 
@@ -106,26 +129,26 @@ export default function ResultQuiz() {
     fetchData();
   }, [dispatch, id]);
 
-  useEffect(() => {
-    scrollToTop();
-    const handleKeyDown = (event: any) => {
-      if (event.keyCode === 123) {
-        event.preventDefault();
-      }
-    };
+  // useEffect(() => {
+  //   scrollToTop();
+  //   const handleKeyDown = (event: any) => {
+  //     if (event.keyCode === 123) {
+  //       event.preventDefault();
+  //     }
+  //   };
 
-    const handleContextMenu = (event: any) => {
-      event.preventDefault();
-    };
+  //   const handleContextMenu = (event: any) => {
+  //     event.preventDefault();
+  //   };
 
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeyDown);
+  //   document.addEventListener("contextmenu", handleContextMenu);
+  //   document.addEventListener("keydown", handleKeyDown);
 
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (!listResultData) return;
@@ -271,7 +294,8 @@ export default function ResultQuiz() {
                 ) : null}
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  listResultData?.is_claimed ? (
+                  listResultData?.is_claimed &&
+                  listResultData?.is_final_quiz ? (
                     <Button
                       className="w-full md:w-[184px] !px-0"
                       onClick={() => router.push("/accomplishments")}
@@ -282,9 +306,9 @@ export default function ResultQuiz() {
                     Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
                       <Button
                         className="w-full md:w-[184px] !px-0"
-                        onClick={() => router.push(lessonUrl)}
+                        onClick={() => router.push(nextLessonUrl)}
                       >
-                        Back to Course
+                        Go to Next item
                       </Button>
                     )
                   )
