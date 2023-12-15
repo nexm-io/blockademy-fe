@@ -12,14 +12,15 @@ import {
   getNextLesson,
   getCompleteRate,
   getNextPrevLesson,
-  getSubCourseDetail,
+  getMenuData,
+  getDetailLessonWithoutLoading,
 } from "./action";
 import { CourseResponse } from "./type";
 import { RootState } from "@/redux/store";
 
 const initialState: CourseResponse = {
   success: false,
-  isLoading: true,
+  isLoading: false,
   data: [],
   error: null,
   details: null,
@@ -39,56 +40,57 @@ const initialState: CourseResponse = {
     total_pages: 0,
   },
   previousSubCourseSlug: "",
-  nextLesson: {},
+  nextLesson: {
+    main_is_specialization: "",
+    main_course_data: "",
+    course_id: "",
+    course_slug: "",
+    course_title: "",
+    is_registered: 0,
+    is_claimed: 0,
+    title: "",
+    link: null,
+    duration: 0,
+    assignment_detail: {},
+    type_upload: "",
+    type_format: 0,
+    description: null,
+  },
   completeRate: {
     total_completed: 0,
   },
   nextPrevLesson: {
     previous_data: {
-      lesson_id: 0,
-      lesson_slug: "",
+      sub_course_id: "",
+      sub_course_slug: "",
       module_id: 0,
       module_slug: "",
-      sub_course_id: 0,
-      sub_course_slug: "",
-      lesson_assignment_data: {},
+      lesson_id: 0,
+      lesson_slug: "",
       is_complete_lesson: 0,
-      is_complete_module: 0,
-      module_assignment_data: {},
-      is_complete_module_sub_course: 0,
-      is_complete_lesson_module: 0,
-      is_complete_sub_course: 0,
     },
     current_data: {
-      lesson_id: 0,
-      lesson_slug: "",
+      sub_course_id: "",
+      sub_course_slug: "",
       module_id: 0,
       module_slug: "",
-      sub_course_id: 0,
-      sub_course_slug: "",
-      lesson_assignment_data: {},
+      lesson_id: 0,
+      lesson_slug: "",
       is_complete_lesson: 0,
-      is_complete_module: 0,
-      module_assignment_data: {},
-      is_complete_module_sub_course: 0,
-      is_complete_lesson_module: 0,
-      is_complete_sub_course: 0,
     },
     next_data: {
-      lesson_id: 0,
-      lesson_slug: "",
+      sub_course_id: "",
+      sub_course_slug: "",
       module_id: 0,
       module_slug: "",
-      sub_course_id: 0,
-      sub_course_slug: "",
-      lesson_assignment_data: {},
+      lesson_id: 0,
+      lesson_slug: "",
       is_complete_lesson: 0,
-      is_complete_module: 0,
-      module_assignment_data: {},
-      is_complete_module_sub_course: 0,
-      is_complete_lesson_module: 0,
-      is_complete_sub_course: 0,
     },
+  },
+  menuData: {
+    sub_course_data: [],
+    module_data: [],
   },
 };
 
@@ -105,9 +107,8 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.pagination = action.payload.pagination;
       state.error = null;
     })
-    .addCase(getListCourse.rejected, (state, action: PayloadAction<any>) => {
+    .addCase(getListCourse.rejected, (state) => {
       state.isLoading = false;
-      // state.error = action.payload.data;
     });
 
   builder
@@ -127,17 +128,22 @@ const courseReducer = createReducer(initialState, (builder) => {
     });
 
   builder
-    .addCase(getSubCourseDetail.pending, (state) => {
-      state.subCourseLoading = true;
+    .addCase(getDetailCourseWithoutLoading.pending, (state) => {
+      state.isLoading = false;
     })
-    .addCase(getSubCourseDetail.fulfilled, (state, action) => {
-      state.subCourseLoading = false;
+    .addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
+      state.isLoading = false;
       if (!action.payload) return;
-      state.subCourse = action.payload.data;
+      state.details = action.payload.data;
     })
-    .addCase(getSubCourseDetail.rejected, (state, action: PayloadAction<any>) => {
-      state.subCourseLoading = false;
+    .addCase(getDetailCourseWithoutLoading.rejected, (state) => {
+      state.isLoading = false;
     });
+
+  builder.addCase(getMenuData.fulfilled, (state, action) => {
+    if (!action.payload) return;
+    state.menuData = action.payload.data;
+  });
 
   builder.addCase(getNextLesson.fulfilled, (state, action) => {
     if (!action.payload) return;
@@ -166,16 +172,22 @@ const courseReducer = createReducer(initialState, (builder) => {
       state.lessonLoading = false;
     });
 
+  builder
+    .addCase(getDetailLessonWithoutLoading.pending, (state) => {
+      state.lessonLoading = false;
+    })
+    .addCase(getDetailLessonWithoutLoading.fulfilled, (state, action) => {
+      state.lessonLoading = false;
+      if (!action.payload) return;
+      state.lesson = action.payload.data;
+    })
+    .addCase(getDetailLessonWithoutLoading.rejected, (state) => {
+      state.lessonLoading = false;
+    });
+
   builder.addCase(getCompleteRate.fulfilled, (state, action) => {
     if (!action.payload) return;
     state.completeRate = action.payload.data;
-  });
-
-  builder.addCase(getDetailCourseWithoutLoading.fulfilled, (state, action) => {
-    if (!action.payload) return;
-    state.isLoading = false;
-    state.details = action.payload.data;
-    state.error = null;
   });
 
   builder

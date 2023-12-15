@@ -28,6 +28,20 @@ export const getDetailCourse = createAsyncThunk(
   }
 );
 
+export const getMenuData = createAsyncThunk(
+  "courses/get-menu-data",
+  async (courseId: string) => {
+    try {
+      const { data } = await api.get(
+        `/api/v10/course/${courseId}/get-menu-data`
+      );
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
 export const getSubCourseDetail = createAsyncThunk(
   "courses/get-sub-course-detail",
   async (courseId: string) => {
@@ -100,10 +114,36 @@ export const claimReward = createAsyncThunk<CourseResponse, string>(
 
 export const getDetailLesson = createAsyncThunk(
   "courses/get-detail-lesson",
-  async (lessonIdOrSlug: string) => {
+  async ({
+    courseId,
+    lessonSlug,
+  }: {
+    courseId: string;
+    lessonSlug: string;
+  }) => {
     try {
       const { data: lesson } = await api.get(
-        `/api/v10/lesson/${lessonIdOrSlug}`
+        `/api/v10/lesson/${lessonSlug}?course_id=${courseId}`
+      );
+      return lesson;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const getDetailLessonWithoutLoading = createAsyncThunk(
+  "courses/get-detail-lesson-without-loading",
+  async ({
+    courseId,
+    lessonSlug,
+  }: {
+    courseId: string;
+    lessonSlug: string;
+  }) => {
+    try {
+      const { data: lesson } = await api.get(
+        `/api/v10/lesson/${lessonSlug}?course_id=${courseId}`
       );
       return lesson;
     } catch (error) {

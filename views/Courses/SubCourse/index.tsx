@@ -2,9 +2,13 @@
 import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import {
+  getDetailCourse,
+  getDetailCourseWithoutLoading,
+  getMenuData,
+} from "@/redux/features/courses/action";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -17,6 +21,8 @@ import LessonModule from "@/components/Courses/LessonsModule";
 import { setRefUrl } from "@/redux/features/auth/action";
 import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
+import MenuData from "@/components/Courses/MenuData/MenuData";
+import { Plus } from "@/components/Icon";
 
 const SubCourseView = () => {
   const params = useParams();
@@ -25,11 +31,76 @@ const SubCourseView = () => {
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
   const [registered, setRegistered] = useState<number>(0);
-  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const {
+    isLoading,
+    details: courseDetail,
+    menuData: { module_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pathName = usePathname();
+
+  const lessonUrl = useMemo(() => {
+    if (!courseDetail) return "";
+    const {
+      main_is_specialization,
+      lesson_first: { module_slug, slug: lessonSlug },
+      slug: courseSlug,
+    } = courseDetail;
+
+    let href = `/courses/${courseId}`;
+
+    if (main_is_specialization) {
+      href += module_slug ? `/${module_slug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [courseDetail]);
+
+  const loadMenuData = async () => {
+    try {
+      const { payload: payloadMenu } = await dispatch(
+        getMenuData(courseId as string)
+      );
+      if (payloadMenu?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadMenu;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadCourseDetail = async () => {
+    try {
+      let payloadDetail: any;
+      const params = courseId as string;
+      if (courseDetail?.id === courseId) {
+        payloadDetail = await dispatch(getDetailCourseWithoutLoading(params));
+      } else {
+        payloadDetail = await dispatch(getDetailCourse(params));
+      }
+
+      if (payloadDetail?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadDetail;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadData = async () => {
+    try {
+      await Promise.all([loadMenuData(), loadCourseDetail()]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";
@@ -50,7 +121,7 @@ const SubCourseView = () => {
   }, [courseDetail]);
 
   useEffect(() => {
-    dispatch(getDetailCourse(subCourseSlug as string));
+    loadData();
   }, []);
 
   return (
@@ -106,7 +177,7 @@ const SubCourseView = () => {
           </div>
         </div>
       ) : (
-        <>
+        courseDetail && (
           <section>
             <nav className="w-full rounded-md mb-[41px]">
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
@@ -161,14 +232,12 @@ const SubCourseView = () => {
                 active: isShowMenu,
               })}
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className="module hambuger"
-                  onClick={() => setShowMenu((prev) => !prev)}
-                >
-                  <span></span>
-                </div>
-                <p className="text-blue-100">Menu</p>
+              <div
+                className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
+                onClick={() => setShowMenu((prev) => !prev)}
+              >
+                <p className="text-blue-100">Course Menu</p>
+                <Plus />
               </div>
               <div
                 className={cn(
@@ -203,29 +272,9 @@ const SubCourseView = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
+                      lessonFirstUrl={lessonUrl}
                     />
-                    {courseDetail?.module_data.length !== 0 && !isLoading && (
-                      <div className="flex flex-col gap-10">
-                        {courseDetail?.module_data.map(
-                          (z: any, i: React.Key | null | undefined) => (
-                            <div
-                              key={i}
-                              onClick={() => {
-                                router.push(`/courses/${courseId}`);
-                              }}
-                            >
-                              <LessonModule
-                                key={i}
-                                data={z}
-                                isRegistered={registered}
-                                moduleLength={courseDetail?.module_data.length}
-                                courseId={courseId as string}
-                              />
-                            </div>
-                          )
-                        )}
-                      </div>
-                    )}
+                    <MenuData />
                   </div>
                 </div>
               </div>
@@ -272,29 +321,16 @@ const SubCourseView = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
+                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
-                <div className="flex flex-col gap-5 md:px-0">
-                  {courseDetail?.module_data.length !== 0 && !isLoading && (
-                    <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.module_data.map(
-                        (z: any, i: React.Key | null | undefined) => (
-                          <LessonModule
-                            key={i}
-                            data={z}
-                            isRegistered={registered}
-                            moduleLength={courseDetail?.module_data.length}
-                            courseId={courseId as string}
-                          />
-                        )
-                      )}
-                    </div>
-                  )}
+                <div className="hidden lg:flex flex-col gap-5 md:px-0">
+                  <MenuData />
                 </div>
               </div>
             </div>
           </section>
-        </>
+        )
       )}
       <BackToTop />
       {showPopupRegisterSuccess && (

@@ -7,16 +7,21 @@ import Button from "@/components/Common/Button";
 import { Loader3 } from "@styled-icons/remix-line";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
+import {
+  getDetailCourseWithoutLoading,
+  getMenuData,
+} from "@/redux/features/courses/action";
 
 const ApplyCourseButton = ({
   courseId,
   showPopup,
   isRegistered,
+  lessonFirstUrl,
 }: {
   courseId: string;
   showPopup: (params: boolean) => void;
   isRegistered: boolean;
+  lessonFirstUrl: string;
 }) => {
   const pathName = usePathname();
   const [registered, setRegistered] = useState<boolean>(false);
@@ -38,9 +43,10 @@ const ApplyCourseButton = ({
         `/api/v10/register-course?course_id=${courseId}`
       );
       if (response.status === 200) {
-        dispatch(getDetailCourseWithoutLoading(courseId as string));
+        dispatch(getMenuData(courseId as string));
         setRegistered(true);
         showPopup(true);
+        router.push(lessonFirstUrl);
       }
     } catch (error) {
       return null;

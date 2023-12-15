@@ -3,9 +3,13 @@ import Link from "next/link";
 import gift from "@/public/icons/giftcourse.svg";
 import Image from "next/image";
 import CourseModule from "@/components/Courses/CourseModule";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { getDetailCourse } from "@/redux/features/courses/action";
+import {
+  getDetailCourse,
+  getDetailCourseWithoutLoading,
+  getMenuData,
+} from "@/redux/features/courses/action";
 import { useParams, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
 import React from "react";
@@ -16,6 +20,7 @@ import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
+import { Plus } from "@/components/Icon";
 
 const CourseDetail = () => {
   const params = useParams();
@@ -24,17 +29,75 @@ const CourseDetail = () => {
   const [registered, setRegistered] = useState<number>(0);
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
-  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const {
+    isLoading,
+    details: courseDetail,
+    menuData: { sub_course_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    (async () => {
-      const { payload } = await dispatch(getDetailCourse(courseId as string));
-      if (payload?.response?.data?.error) router.push("/not-found");
-    })();
-  }, []);
+  const lessonUrl = useMemo(() => {
+    if (!courseDetail) return "";
+    const {
+      main_is_specialization,
+      lesson_first: { module_slug, slug: lessonSlug },
+      slug: courseSlug,
+    } = courseDetail;
+
+    let href = `/courses/${courseId}`;
+
+    if (main_is_specialization) {
+      href += module_slug ? `/${module_slug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [courseDetail]);
+
+  const loadMenuData = async () => {
+    try {
+      const { payload: payloadMenu } = await dispatch(
+        getMenuData(courseId as string)
+      );
+      if (payloadMenu?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadMenu;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadCourseDetail = async () => {
+    try {
+      let payloadDetail: any;
+      const params = courseId as string;
+      if (courseDetail?.id === courseId) {
+        payloadDetail = await dispatch(getDetailCourseWithoutLoading(params));
+      } else {
+        payloadDetail = await dispatch(getDetailCourse(params));
+      }
+
+      if (payloadDetail?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadDetail;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadData = async () => {
+    try {
+      await Promise.all([loadMenuData(), loadCourseDetail()]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setRegistered(courseDetail?.is_registered as number);
@@ -46,6 +109,10 @@ const CourseDetail = () => {
       document.body.style.overflowY = "scroll";
     };
   }, [isShowMenu]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <div className="container min-h-screen">
@@ -137,14 +204,12 @@ const CourseDetail = () => {
                 active: isShowMenu,
               })}
             >
-              <div className="flex items-center gap-3">
-                <div
-                  className="module hambuger"
-                  onClick={() => setShowMenu((prev) => !prev)}
-                >
-                  <span></span>
-                </div>
-                <p className="text-blue-100">Menu</p>
+              <div
+                className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
+                onClick={() => setShowMenu((prev) => !prev)}
+              >
+                <p className="text-blue-100">Course Menu</p>
+                <Plus />
               </div>
               <div
                 className={cn(
@@ -179,29 +244,32 @@ const CourseDetail = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
+                      lessonFirstUrl={lessonUrl}
                     />
-                    {courseDetail?.sub_course_data.length !== 0 &&
-                      !isLoading && (
-                        <div className="flex flex-col gap-10">
-                          {courseDetail?.sub_course_data.map(
-                            (subCourse, index) => (
-                              <div
+                    {sub_course_data.length !== 0 && !isLoading && (
+                      <div className="flex flex-col gap-10">
+                        {sub_course_data.map(
+                          (
+                            subCourse: any,
+                            index: React.Key | null | undefined
+                          ) => (
+                            <div
+                              key={index}
+                              onClick={() => {
+                                router.push(`/courses/${courseId}`);
+                              }}
+                            >
+                              <CourseModule
                                 key={index}
-                                onClick={() => {
-                                  router.push(`/courses/${courseId}`);
-                                }}
-                              >
-                                <CourseModule
-                                  key={index}
-                                  isRegistered={registered}
-                                  data={subCourse}
-                                  activeDropdown={index === 0}
-                                />
-                              </div>
-                            )
-                          )}
-                        </div>
-                      )}
+                                isRegistered={registered}
+                                data={subCourse}
+                                activeDropdown={index === 0}
+                              />
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -223,10 +291,10 @@ const CourseDetail = () => {
 
             {/* PASSED CASE */}
             {isLogin &&
-              courseDetail?.is_registered === 1 &&
-              courseDetail?.is_completed_assignment === 1 && (
-                <RewardDetail courseDetail={courseDetail} />
-              )}
+            courseDetail?.is_claimed &&
+            courseDetail?.is_complete_module_sub_course === 1 ? (
+              <RewardDetail courseDetail={courseDetail} />
+            ) : null}
 
             <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">
               <div className="flex-1">
@@ -248,22 +316,30 @@ const CourseDetail = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
+                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
 
                 <div className="flex flex-col gap-5 md:px-0">
-                  {courseDetail?.sub_course_data.length !== 0 && !isLoading && (
-                    <div className="hidden lg:flex flex-col gap-10">
-                      {courseDetail?.sub_course_data.map((subCourse, index) => (
-                        <CourseModule
-                          key={index}
-                          data={subCourse}
-                          isRegistered={registered}
-                          activeDropdown={index === 0}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  {sub_course_data &&
+                    sub_course_data.length !== 0 &&
+                    !isLoading && (
+                      <div className="hidden lg:flex flex-col gap-10">
+                        {sub_course_data.map(
+                          (
+                            subCourse: any,
+                            index: React.Key | null | undefined
+                          ) => (
+                            <CourseModule
+                              key={index}
+                              data={subCourse}
+                              isRegistered={registered}
+                              activeDropdown={index === 0}
+                            />
+                          )
+                        )}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
