@@ -9,6 +9,7 @@ import { format, parseISO } from "date-fns";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import { Share } from "../Icon";
 import { useAppDispatch } from "@/redux/hook";
+import { getDetailCourseWithoutLoading } from "@/redux/features/courses/action";
 import { useRouter } from "next/navigation";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Facebook from "@/public/icons/facebook-fill.svg";

@@ -21,6 +21,8 @@ import { selectAuth } from "@/redux/features/auth/reducer";
 import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 import { Plus } from "@/components/Icon";
+import { selectReward } from "@/redux/features/reward/reducer";
+import { getRewardDetail } from "@/redux/features/reward/action";
 
 const CourseDetail = () => {
   const params = useParams();
@@ -35,6 +37,7 @@ const CourseDetail = () => {
     menuData: { sub_course_data },
   } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
+  const { rewardDetails } = useAppSelector(selectReward);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -112,6 +115,14 @@ const CourseDetail = () => {
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!isLogin || !courseDetail?.is_complete_module_sub_course) return;
+      const { payload } = await dispatch(getRewardDetail(courseId as string));
+      if (payload?.response?.data?.error) router.push("/not-found");
+    })();
   }, []);
 
   return (
@@ -293,7 +304,7 @@ const CourseDetail = () => {
             {isLogin &&
             courseDetail?.is_claimed &&
             courseDetail?.is_complete_module_sub_course === 1 ? (
-              <RewardDetail courseDetail={courseDetail} />
+              <RewardDetail reward={rewardDetails} />
             ) : null}
 
             <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">

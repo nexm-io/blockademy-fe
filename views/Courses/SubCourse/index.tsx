@@ -23,6 +23,8 @@ import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
 import MenuData from "@/components/Courses/MenuData/MenuData";
 import { Plus } from "@/components/Icon";
+import { getRewardDetail } from "@/redux/features/reward/action";
+import { selectReward } from "@/redux/features/reward/reducer";
 
 const SubCourseView = () => {
   const params = useParams();
@@ -37,6 +39,7 @@ const SubCourseView = () => {
     menuData: { module_data },
   } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
+  const { rewardDetails } = useAppSelector(selectReward);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pathName = usePathname();
@@ -122,6 +125,13 @@ const SubCourseView = () => {
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { payload } = await dispatch(getRewardDetail(courseId as string));
+      if (payload?.response?.data?.error) router.push("/not-found");
+    })();
   }, []);
 
   return (
@@ -298,7 +308,7 @@ const SubCourseView = () => {
             {isLogin &&
             courseDetail?.is_complete_module_sub_course === 1 &&
             courseDetail?.is_claimed ? (
-              <RewardDetail courseDetail={courseDetail} />
+              <RewardDetail reward={rewardDetails} />
             ) : null}
 
             <div className="relative mt-4 lg:mt-10 flex flex-col lg:flex-row gap-[60px]">

@@ -31,37 +31,35 @@ const MyCertificate = ({
       toast.warning("You don't have a certificate!");
       return;
     }
-    if (rewardDetails.assignment_status.slug === ASSIGNMENT_STATUS.PASSED) {
-      if (!rewardDetails.is_claimed) {
-        setIsLoading(true);
-        try {
-          const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
-          setCertAssets({
-            image: data.data.certificate_image_url,
-            pdf: data.data.certificate_pdf_url,
-            courseName: data.data.course_title,
-            firstName: data.data.first_name,
-            lastName: data.data.last_name,
-          });
-          await getRewardDetail();
-        } catch (error) {
-          toast.warning("Something wrong...");
-          return null;
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
+    if (!rewardDetails.is_claimed) {
+      setIsLoading(true);
+      try {
+        const { data } = await api.get(`/api/v10/claim-reward/${courseId}`);
         setCertAssets({
-          image: rewardDetails.certificate_image_url,
-          pdf: rewardDetails.certificate_pdf_url,
-          courseName: rewardDetails.title,
-          firstName: rewardDetails.first_name,
-          lastName: rewardDetails.last_name,
+          image: data.data.certificate_image_url,
+          pdf: data.data.certificate_pdf_url,
+          courseName: data.data.course_title,
+          firstName: data.data.first_name,
+          lastName: data.data.last_name,
         });
+        await getRewardDetail();
+      } catch (error) {
+        toast.warning("Something wrong...");
+        return null;
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsOpenPopup(true);
+    } else {
+      setCertAssets({
+        image: rewardDetails.certificate_image_url,
+        pdf: rewardDetails.certificate_pdf_url,
+        courseName: rewardDetails.title,
+        firstName: rewardDetails.first_name,
+        lastName: rewardDetails.last_name,
+      });
     }
+
+    setIsOpenPopup(true);
   };
 
   const getRewardDetail = useCallback(async () => {
