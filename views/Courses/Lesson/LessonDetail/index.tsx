@@ -562,7 +562,7 @@ const LessonDetail = () => {
                                   href={`/result/${lesson.assignment_detail?.id}`}
                                 >
                                   <Button className="w-full md:w-auto md:min-w-[184px] mb-[11px]">
-                                    Review Feedback
+                                    View Feedback
                                   </Button>
                                 </Link>
                                 {/* <p className="text-[10px] leading-[14px] text-grey-700 text-center">

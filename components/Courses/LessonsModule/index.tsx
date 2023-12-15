@@ -175,7 +175,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
                   router.push(`/result/${data?.assignment_data?.id}`);
                 }}
               >
-                Review Feedback
+                View Feedback
               </Button>
             </div>
           </div>
