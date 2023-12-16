@@ -41,7 +41,7 @@ const CourseDetail = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const lessonUrl = useMemo(() => {
+  const lessonFirstUrl = useMemo(() => {
     if (!courseDetail) return "";
     const {
       main_is_specialization,
@@ -60,6 +60,10 @@ const CourseDetail = () => {
     href += lessonSlug || "";
     return href;
   }, [courseDetail]);
+
+  const handleLessonRedirect = () => {
+    router.push(lessonFirstUrl);
+  };
 
   const loadMenuData = async () => {
     try {
@@ -255,7 +259,6 @@ const CourseDetail = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
-                      lessonFirstUrl={lessonUrl}
                     />
                     {sub_course_data.length !== 0 && !isLoading && (
                       <div className="flex flex-col gap-10">
@@ -327,7 +330,6 @@ const CourseDetail = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
-                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
 
@@ -359,7 +361,10 @@ const CourseDetail = () => {
       )}
       <BackToTop />
       {showPopupRegisterSuccess && (
-        <RegisterSuccessPopup setShowPopup={setShowPopupRegisterSuccess} />
+        <RegisterSuccessPopup
+          setShowPopup={setShowPopupRegisterSuccess}
+          handleLessonRedirect={handleLessonRedirect}
+        />
       )}
     </div>
   );

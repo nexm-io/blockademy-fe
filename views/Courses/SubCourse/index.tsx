@@ -17,7 +17,6 @@ import cn from "@/services/cn";
 import RewardDetail from "@/components/Reward/RewardDetail";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
-import LessonModule from "@/components/Courses/LessonsModule";
 import { setRefUrl } from "@/redux/features/auth/action";
 import ApplyCourseButton from "@/components/Courses/Buttons/ApplyCourseButton";
 import { RegisterSuccessPopup } from "@/components/Courses/Popups/RegisterSuccessPopup";
@@ -28,23 +27,19 @@ import { selectReward } from "@/redux/features/reward/reducer";
 
 const SubCourseView = () => {
   const params = useParams();
-  const { courseId, subCourseSlug } = params;
+  const { courseId } = params;
   const [isShowMenu, setShowMenu] = useState<boolean>(false);
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
   const [registered, setRegistered] = useState<number>(0);
-  const {
-    isLoading,
-    details: courseDetail,
-    menuData: { module_data },
-  } = useAppSelector(selectCourses);
+  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const { rewardDetails } = useAppSelector(selectReward);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const pathName = usePathname();
 
-  const lessonUrl = useMemo(() => {
+  const lessonFirstUrl = useMemo(() => {
     if (!courseDetail) return "";
     const {
       main_is_specialization,
@@ -63,6 +58,10 @@ const SubCourseView = () => {
     href += lessonSlug || "";
     return href;
   }, [courseDetail]);
+
+  const handleLessonRedirect = () => {
+    router.push(lessonFirstUrl);
+  };
 
   const loadMenuData = async () => {
     try {
@@ -282,7 +281,6 @@ const SubCourseView = () => {
                       courseId={courseDetail?.id as string}
                       isRegistered={!!courseDetail?.is_registered}
                       showPopup={setShowPopupRegisterSuccess}
-                      lessonFirstUrl={lessonUrl}
                     />
                     <MenuData />
                   </div>
@@ -331,7 +329,6 @@ const SubCourseView = () => {
                     courseId={courseDetail?.id as string}
                     isRegistered={!!courseDetail?.is_registered}
                     showPopup={setShowPopupRegisterSuccess}
-                    lessonFirstUrl={lessonUrl}
                   />
                 </div>
                 <div className="hidden lg:flex flex-col gap-5 md:px-0">
@@ -344,7 +341,10 @@ const SubCourseView = () => {
       )}
       <BackToTop />
       {showPopupRegisterSuccess && (
-        <RegisterSuccessPopup setShowPopup={setShowPopupRegisterSuccess} />
+        <RegisterSuccessPopup
+          setShowPopup={setShowPopupRegisterSuccess}
+          handleLessonRedirect={handleLessonRedirect}
+        />
       )}
     </div>
   );

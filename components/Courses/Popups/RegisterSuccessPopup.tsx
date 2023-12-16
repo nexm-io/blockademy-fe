@@ -4,9 +4,17 @@ import React from "react";
 
 export const RegisterSuccessPopup = ({
   setShowPopup,
+  handleLessonRedirect,
 }: {
   setShowPopup: (params: boolean) => void;
+  handleLessonRedirect: () => void;
 }) => {
+
+  const handleYapSureClick = () => {
+    handleLessonRedirect();
+    setShowPopup(false);
+  };
+
   return (
     <InfoPopup
       title="Congratulations!"
@@ -21,7 +29,7 @@ export const RegisterSuccessPopup = ({
     >
       <Button
         type="button"
-        onClick={() => setShowPopup(false)}
+        onClick={handleYapSureClick}
         className="mt-2 w-[184px]"
       >
         Yap, sure
