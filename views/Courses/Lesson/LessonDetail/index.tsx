@@ -332,7 +332,7 @@ const LessonDetail = () => {
             </div>
             <div
               className={cn(
-                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible z-[999]",
                 { "!visible": isShowMenu }
               )}
             >
