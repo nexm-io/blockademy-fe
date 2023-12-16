@@ -27,19 +27,19 @@ const PreviewQuiz: React.FC<
     return item;
   });
 
-  const checkWhiteSpace = (item: string) => {
-    const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
-    if (isWhitespace) {
-      return true;
-    }
-    return false;
-  };
+  // const checkWhiteSpace = (item: string) => {
+  //   const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
+  //   if (isWhitespace) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
-  const removeWhiteSpace = (str: string) => {
-    if (!str) return "";
-    const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
-    return trimmedStr;
-  };
+  // const removeWhiteSpace = (str: string) => {
+  //   if (!str) return "";
+  //   const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
+  //   return trimmedStr;
+  // };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -191,7 +191,6 @@ const PreviewQuiz: React.FC<
                                   color: "#1E1E3A",
                                   minWidth: "170px",
                                   wordBreak: "break-word",
-                                  userSelect: "none",
                                 }}
                               />
                               {item?.image && (

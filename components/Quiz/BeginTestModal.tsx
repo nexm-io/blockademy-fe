@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Button from "../Common/Button";
 import { useAppDispatch } from "@/redux/hook";
 import { soleil } from "@/utils/constants";
@@ -21,19 +21,12 @@ export default function BeginTestModal(props: {
   handleStartQuiz: () => void;
 }) {
   const { id } = useParams();
-
-  const router = useRouter();
   const dispatch = useAppDispatch();
-
-  const handleGoBack = () => {
-    props.onCloseModalBeginTest();
-    router.back();
-  };
 
   useEffect(() => {
     const loadData = async () => {
       if (!id || typeof id !== "string") return;
-      const res = await dispatch(getListResult(id));
+      await dispatch(getListResult(id));
     };
     loadData();
   }, [id]);
@@ -56,7 +49,7 @@ export default function BeginTestModal(props: {
               right: "20px",
               cursor: "pointer",
             }}
-            onClick={handleGoBack}
+            onClick={() => props.onCloseModalBeginTest()}
           >
             <Image src="/icons/close.svg" alt="close" width={24} height={24} />
           </Box>

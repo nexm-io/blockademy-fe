@@ -49,7 +49,6 @@ const MyMemoizedComponent = memo((time: { time: number }) => {
 const TestDetail = () => {
   const router = useRouter();
   const token = useSelector(selectAuth);
-  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
   const [isModalShowImageOpen, setIsModalShowImageOpen] = useState(false);
   const [isModalEndTestOpen, setIsModalEndTestOpen] = useState(false);
 
@@ -63,7 +62,7 @@ const TestDetail = () => {
 
   const {
     listQues,
-    quesLessonId, 
+    quesLessonId,
     quesModuleId,
     userAnswer,
     listView,
@@ -71,48 +70,14 @@ const TestDetail = () => {
     dataStartTime,
     quesDetail,
     loadingCheckShowResult,
-    isSubmitInButton,
   } = useAppSelector((state) => state.quiz);
 
   const totalQuestion = listQues?.length;
-  const answerUserChoose = userAnswer.find(
-    (i) => i.question_id === quesDetail?.id
-  );
-
   const filterListView = listView?.map((item) => {
     const x = userAnswer.find((i) => i.order === item.order);
     if (x) return { ...item, complete: true };
     return item;
   });
-
-  const enterFullScreen = () => {
-    const elem = document.documentElement as any;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-    window.scrollTo(0, 1);
-  };
-
-  const handleStartQuiz = async () => {
-    if (!id || typeof id !== "string") return;
-    if (!dataStartTime) {
-      await dispatch(saveStartTime(id));
-      dispatch(setTimeStart(Date.now()));
-    }
-    setIsModalBeginTestOpen(false);
-    const { payload } = await dispatch(getListQuesOfQuiz(id));
-    if (payload?.data.length <= 0) router.push("/not-found");
-    await dispatch(getStartTime(id));
-    setIsModalBeginTestOpen(false);
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, "", window.location.href);
-    };
-  };
 
   const handleShowImage = () => {
     setIsModalShowImageOpen(true);
@@ -274,7 +239,6 @@ const TestDetail = () => {
         const fetchData = async () => {
           if (typeof id !== "string") return;
           dispatch(resetBeginTest());
-          setIsModalBeginTestOpen(true);
         };
         fetchData();
         setHasFetchData(true);
@@ -282,34 +246,34 @@ const TestDetail = () => {
     }
   }, [setHasFetchData]);
 
-  useEffect(() => {
-    if (isSubmitInButton) return;
-    const handleKeyPress = async (event: any) => {
-      if (!document.fullscreenElement) {
-        await handleSendQuiz();
-      }
-    };
+  // useEffect(() => {
+  //   if (isSubmitInButton) return;
+  //   const handleKeyPress = async (event: any) => {
+  //     if (!document.fullscreenElement) {
+  //       await handleSendQuiz();
+  //     }
+  //   };
 
-    const handleKeyDown = (event: any) => {
-      if (event.keyCode === 123) {
-        event.preventDefault();
-      }
-    };
+  //   const handleKeyDown = (event: any) => {
+  //     if (event.keyCode === 123) {
+  //       event.preventDefault();
+  //     }
+  //   };
 
-    const handleContextMenu = (event: any) => {
-      event.preventDefault();
-    };
+  //   const handleContextMenu = (event: any) => {
+  //     event.preventDefault();
+  //   };
 
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("fullscreenchange", handleKeyPress);
+  //   document.addEventListener("contextmenu", handleContextMenu);
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   document.addEventListener("fullscreenchange", handleKeyPress);
 
-    return () => {
-      document.removeEventListener("fullscreenchange", handleKeyPress);
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  });
+  //   return () => {
+  //     document.removeEventListener("fullscreenchange", handleKeyPress);
+  //     document.removeEventListener("contextmenu", handleContextMenu);
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // });
 
   const checkDisabledFinishTest = () => {
     if (quesDetail?.order === listQues?.length) {
@@ -321,13 +285,7 @@ const TestDetail = () => {
 
   return (
     <>
-      {isModalBeginTestOpen ? (
-        <BeginTestModal
-          isModalBeginTestOpen={isModalBeginTestOpen}
-          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
-          handleStartQuiz={handleStartQuiz}
-        />
-      ) : !isShowPreview && quesDetail ? (
+      {!isShowPreview && quesDetail ? (
         listQues?.length > 0 &&
         !loadingCheckShowResult && (
           <Box

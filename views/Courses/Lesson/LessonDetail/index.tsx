@@ -5,7 +5,6 @@ import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import React from "react";
 import BackToTop from "@/components/BackToTop";
-import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -26,6 +25,13 @@ import { CircleCheck } from "@styled-icons/fa-solid";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import api from "@/services/axios";
 import MenuData from "@/components/Courses/MenuData/MenuData";
+import BeginTestModal from "@/components/Quiz/BeginTestModal";
+import {
+  getListQuesOfQuiz,
+  getStartTime,
+  saveStartTime,
+  setTimeStart,
+} from "@/redux/features/quiz/action";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -39,14 +45,12 @@ const LessonDetail = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
   const [isClaimSuccess, setIsClaimSuccess] = useState<boolean>(false);
   const [isClaimLoading, setIsClaimLoading] = useState<boolean>(false);
+  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
-  const {
-    lessonLoading,
-    lesson,
-    nextPrevLesson,
-    menuData: { module_data },
-  } = useAppSelector(selectCourses);
+  const { lessonLoading, lesson, nextPrevLesson } =
+    useAppSelector(selectCourses);
+  const { dataStartTime } = useAppSelector((state) => state.quiz);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -129,6 +133,24 @@ const LessonDetail = () => {
     } finally {
       setShowContent(true);
     }
+  };
+
+  const handleStartQuiz = async () => {
+    const id = lesson.assignment_detail?.id;
+    if (!id || typeof id !== "string") return;
+    if (!dataStartTime) {
+      await dispatch(saveStartTime(id));
+      dispatch(setTimeStart(Date.now()));
+    }
+    setIsModalBeginTestOpen(false);
+    const { payload } = await dispatch(getListQuesOfQuiz(id));
+    if (payload?.data.length <= 0) router.push("/not-found");
+    await dispatch(getStartTime(id));
+    setIsModalBeginTestOpen(false);
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+    };
   };
 
   useEffect(() => {
@@ -422,10 +444,10 @@ const LessonDetail = () => {
                                 <Button
                                   className="w-full md:w-auto md:min-w-[184px]"
                                   onClick={() => {
-                                    setCompleteQuizLoading(true);
-                                    router.push(
-                                      `/quiz/${lesson.assignment_detail?.id}`
-                                    );
+                                    setIsModalBeginTestOpen(true);
+                                    // router.push(
+                                    //   `/quiz/${lesson.assignment_detail?.id}`
+                                    // );
                                   }}
                                   disabled={completeQuizLoading}
                                 >
@@ -475,7 +497,7 @@ const LessonDetail = () => {
                                 <Link
                                   className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
                                   href={`/quiz/${lesson.assignment_detail?.id}`}
-                                  onClick={() => setCompleteQuizLoading(true)}
+                                  onClick={() => setIsModalBeginTestOpen(true)}
                                 >
                                   {assignmentStatus === ASSIGNMENT_STATUS.PASSED
                                     ? "Learn Again"
@@ -686,6 +708,13 @@ const LessonDetail = () => {
         </section>
       )}
       <BackToTop />
+      {isModalBeginTestOpen && (
+        <BeginTestModal
+          isModalBeginTestOpen={isModalBeginTestOpen}
+          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
+          handleStartQuiz={handleStartQuiz}
+        />
+      )}
     </div>
   );
 };

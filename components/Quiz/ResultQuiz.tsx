@@ -500,7 +500,6 @@ export default function ResultQuiz() {
                                   color: "#1E1E3A",
                                   minWidth: "170px",
                                   wordBreak: "break-word",
-                                  userSelect: "none",
                                 }}
                               />
                               {z.result_answer &&
