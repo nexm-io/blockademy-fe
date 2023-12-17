@@ -31,8 +31,7 @@ function CountdownClock({ date }: { date: number }) {
             sx={{
               color: "#1F37B3",
               fontSize: "35px",
-              fontWeight: 500,
-              lineHeight: "45px",
+              fontWeight: 400,
             }}
           >{`Time's up!`}</Box>
           <TimeUpModal
@@ -48,9 +47,9 @@ function CountdownClock({ date }: { date: number }) {
           sx={{
             color: "#1F37B3",
             fontSize: "35px",
-            fontWeight: 500,
-            lineHeight: "45px",
+            fontWeight: 400,
             fontVariantNumeric: "tabular-nums",
+            lineHeight: "35px",
           }}
         >
           {Number(convertHours) > 0 && (

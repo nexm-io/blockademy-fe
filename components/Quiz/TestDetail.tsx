@@ -283,8 +283,8 @@ const TestDetail = () => {
           <Box
             sx={{
               mx: { xs: "0", lg: "100px" },
-              pt: "70px",
-              mb: "100px",
+              pt: "44px",
+              mb: "45px",
               color: "#1E2329",
             }}
             onCopy={(e) => {
@@ -294,10 +294,10 @@ const TestDetail = () => {
             <Typography
               sx={{
                 color: "var(--primary-black)",
-                fontSize: "24px",
+                fontSize: "36px",
                 fontWeight: 500,
                 lineHeight: "32px",
-                mb: 2,
+                mb: "40px",
               }}
             >
               {quesDetail?.quiz_title}
@@ -306,7 +306,7 @@ const TestDetail = () => {
             <Card
               sx={{
                 display: "flex",
-                gap: "40px",
+                gap: "28px",
                 flexDirection: { xs: "column-reverse", lg: "row" },
                 justifyContent: "between",
               }}
@@ -316,6 +316,7 @@ const TestDetail = () => {
                   display: "flex",
                   flexDirection: "column",
                   backgroundColor: "#F5F8FF",
+                  height: "fit-content",
                   borderRadius: "8px",
                   p: "24px",
                   width: "100%",
@@ -324,7 +325,6 @@ const TestDetail = () => {
                 {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
                   <CardContent
                     sx={{
-                      flex: "1 0 auto",
                       width: '{ lg: "100%" }',
                       p: "0 !important",
                     }}
@@ -332,10 +332,10 @@ const TestDetail = () => {
                     <Typography
                       sx={{
                         color: "var(--primary-black)",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "34px",
-                        mb: "25px",
+                        fontSize: "20px",
+                        fontWeight: 400,
+                        lineHeight: "28px",
+                        mb: "12px",
                       }}
                     >
                       Question <span>{quesDetail?.order}</span>
@@ -343,10 +343,10 @@ const TestDetail = () => {
                     <Typography
                       sx={{
                         color: "#121230",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "39px",
-                        userSelect: "none",
+                        fontSize: "24px",
+                        fontWeight: 400,
+                        lineHeight: "32px",
+                        mb: "32px",
                       }}
                     >
                       {quesDetail?.question}
@@ -358,7 +358,6 @@ const TestDetail = () => {
                             sx={{
                               color: "#71738B",
                               lineHeight: "25px",
-                              userSelect: "none",
                             }}
                             dangerouslySetInnerHTML={{
                               __html: quesDetail?.question_description,
@@ -371,7 +370,6 @@ const TestDetail = () => {
                         sx={{
                           maxWidth: "200px",
                           cursor: "zoom-in",
-                          userSelect: "none",
                         }}
                         onClick={handleShowImage}
                       >
@@ -409,9 +407,9 @@ const TestDetail = () => {
                   quesDetail?.question_type === TYPE_QUIZ.IQ) && (
                   <CardContent
                     sx={{
-                      flex: "1 0 auto",
                       maxWidth: "100%",
                       width: { lg: "100%" },
+                      p: "0 !important",
                     }}
                   >
                     <Stack
@@ -424,8 +422,8 @@ const TestDetail = () => {
                         sx={{
                           color: "#1F37B3",
                           fontSize: "20px",
-                          fontWeight: 500,
-                          lineHeight: "34px",
+                          fontWeight: 400,
+                          lineHeight: "28px",
                           mb: "12px",
                         }}
                       >
@@ -437,10 +435,9 @@ const TestDetail = () => {
                       sx={{
                         color: "#121230",
                         fontSize: "24px",
-                        fontWeight: 500,
-                        lineHeight: "39px",
-                        mb: "20px",
-                        userSelect: "none",
+                        fontWeight: 400,
+                        lineHeight: "32px",
+                        mb: "32px",
                       }}
                     >
                       {quesDetail?.question}
@@ -458,7 +455,6 @@ const TestDetail = () => {
                             sx={{
                               color: "#71738B",
                               lineHeight: "25px",
-                              userSelect: "none",
                             }}
                             dangerouslySetInnerHTML={{
                               __html: quesDetail?.question_description,
@@ -471,7 +467,6 @@ const TestDetail = () => {
                         sx={{
                           maxWidth: "200px",
                           cursor: "zoom-in",
-                          userSelect: "none",
                         }}
                         onClick={handleShowImage}
                       >
@@ -484,7 +479,7 @@ const TestDetail = () => {
                         />
                       </Box>
                     )}
-                    <FormControl sx={{ width: "100%" }}>
+                    <FormControl sx={{ width: "100%", mb: "32px" }}>
                       <RadioGroup
                         id={`question-${quesDetail.id}`}
                         value={value}
@@ -579,7 +574,7 @@ const TestDetail = () => {
                 )}
                 <div className="flex items-center  justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                   <Button
-                    className={` !bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
+                    className={`!bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
                       quesDetail?.order === 1 ? "" : "hover:!bg-[#B7E5FF]"
                     } w-[180px] flex items-center !px-4`}
                     disabled={quesDetail?.order === 1}
@@ -621,15 +616,15 @@ const TestDetail = () => {
                   <Box
                     sx={{
                       backgroundColor: "#F5F8FF",
-                      borderRadius: "20px",
+                      borderRadius: "8px",
                       width: "295px",
-                      height: "130px",
+                      height: "98px",
                       textAlign: "center",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      userSelect: "none",
+                      gap: "8px",
                     }}
                   >
                     <Typography>Remaining Time</Typography>
@@ -654,7 +649,6 @@ const TestDetail = () => {
                       sx={{
                         fontSize: "14px",
                         fontWeight: 500,
-                        userSelect: "none",
                         textAlign: "center",
                       }}
                     >
@@ -674,22 +668,21 @@ const TestDetail = () => {
                       className=" !bg-[#C6EAFF] !text-[#0B76A4] hover:!bg-[#B7E5FF] !rounded-[4px] !w-full flex items-center !px-4 "
                       onClick={handeViewDetail}
                     >
-                      <span>Review Test</span>
+                      <span>Review Answers</span>
                     </Button>
                   </div>
                 </Box>
                 <Box
                   sx={{
                     display: { xs: "none", md: "inline-block" },
-                    userSelect: "none",
                     mt: 4,
                   }}
                 >
                   <Image
                     src="/images/quiz/quiz-icon.png"
                     alt="quiz"
-                    width={176}
-                    height={205}
+                    width={122}
+                    height={142}
                   />
                 </Box>
               </Box>
@@ -778,7 +771,6 @@ const TestDetail = () => {
                           display: "inline-block",
                           width: "10px",
                           textAlign: "center",
-                          userSelect: "none",
                         }}
                       >
                         {item?.order}
