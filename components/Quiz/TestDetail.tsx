@@ -24,6 +24,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { formatUtcTime } from "@/services/formatDate";
 import {
   getListQuesOfQuiz,
+  getListResult,
   getStartTime,
   resetBeginTest,
   saveStartTime,
@@ -51,15 +52,13 @@ const TestDetail = () => {
   const token = useSelector(selectAuth);
   const [isModalShowImageOpen, setIsModalShowImageOpen] = useState(false);
   const [isModalEndTestOpen, setIsModalEndTestOpen] = useState(false);
-
+  const [hasFetchData, setHasFetchData] = useState(false);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const { id } = useParams();
-
   const [value, setValue] = useState("");
-
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { id } = useParams();
   const dispatch = useAppDispatch();
-
   const {
     listQues,
     quesLessonId,
@@ -164,6 +163,7 @@ const TestDetail = () => {
     }
     setValue(val);
   };
+
   const handlePrevQuestion = async () => {
     if (!quesDetail?.order) return;
     const initValue = userAnswer.find((i) => i.order === quesDetail?.order - 1);
@@ -172,6 +172,7 @@ const TestDetail = () => {
       dispatch(setQuesDetail(listQues[quesDetail?.order - 2]));
     }
   };
+
   const handleNextQuestion = async () => {
     if (!quesDetail?.order) return;
     if (quesDetail?.order === listQues?.length) {
@@ -225,12 +226,27 @@ const TestDetail = () => {
     }
   };
 
-  const [hasFetchData, setHasFetchData] = useState(false);
+  const startQuiz = async () => {
+    if (!id || typeof id !== "string") return;
+    if (!dataStartTime) {
+      await dispatch(saveStartTime(id));
+      dispatch(setTimeStart(Date.now()));
+    }
+    const { payload } = await dispatch(getListQuesOfQuiz(id));
+    if (payload?.data.length <= 0) router.push("/not-found");
+    await dispatch(getStartTime(id));
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+    };
+  };
 
-  const removeWhiteSpace = (str: string) => {
-    if (!str) return "";
-    const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
-    return trimmedStr;
+  const checkDisabledFinishTest = () => {
+    if (quesDetail?.order === listQues?.length) {
+      const itemNotAnswer = filterListView?.find((i) => !i.complete);
+      if (itemNotAnswer) return true;
+    }
+    return false;
   };
 
   useEffect(() => {
@@ -246,50 +262,25 @@ const TestDetail = () => {
     }
   }, [setHasFetchData]);
 
-  // useEffect(() => {
-  //   if (isSubmitInButton) return;
-  //   const handleKeyPress = async (event: any) => {
-  //     if (!document.fullscreenElement) {
-  //       await handleSendQuiz();
-  //     }
-  //   };
+  useEffect(() => {
+    setIsLoading(true);
+    const loadData = async () => {
+      if (!id || typeof id !== "string") return;
+      await dispatch(getListResult(id));
+    };
+    loadData();
+    startQuiz();
+    setIsLoading(false);
+  }, [id]);
 
-  //   const handleKeyDown = (event: any) => {
-  //     if (event.keyCode === 123) {
-  //       event.preventDefault();
-  //     }
-  //   };
-
-  //   const handleContextMenu = (event: any) => {
-  //     event.preventDefault();
-  //   };
-
-  //   document.addEventListener("contextmenu", handleContextMenu);
-  //   document.addEventListener("keydown", handleKeyDown);
-  //   document.addEventListener("fullscreenchange", handleKeyPress);
-
-  //   return () => {
-  //     document.removeEventListener("fullscreenchange", handleKeyPress);
-  //     document.removeEventListener("contextmenu", handleContextMenu);
-  //     document.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // });
-
-  const checkDisabledFinishTest = () => {
-    if (quesDetail?.order === listQues?.length) {
-      const itemNotAnswer = filterListView?.find((i) => !i.complete);
-      if (itemNotAnswer) return true;
-    }
-    return false;
-  };
-
-  return (
+  return isLoading ? (
+    <></>
+  ) : (
     <>
       {!isShowPreview && quesDetail ? (
         listQues?.length > 0 &&
         !loadingCheckShowResult && (
           <Box
-            // className="main quiz"
             sx={{
               mx: { xs: "0", lg: "100px" },
               pt: "70px",
@@ -312,19 +303,6 @@ const TestDetail = () => {
               {quesDetail?.quiz_title}
             </Typography>
 
-            {/* <Typography
-              sx={{
-                color: "var(--primary-color-100)",
-                fontSize: "20px",
-                fontWeight: 500,
-                lineHeight: "32px",
-                mt: 2,
-                mb: "20px",
-              }}
-            >
-              {removeWhiteSpace(quesDetail?.quiz_description)}
-            </Typography> */}
-
             <Card
               sx={{
                 display: "flex",
@@ -343,7 +321,6 @@ const TestDetail = () => {
                   width: "100%",
                 }}
               >
-                {/* FillinQuiz */}
                 {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
                   <CardContent
                     sx={{
@@ -400,7 +377,6 @@ const TestDetail = () => {
                       >
                         <Image
                           src={quesDetail?.image?.original_image}
-                          // src={quesDetail?.image}
                           alt="question-image"
                           width={100}
                           height={150}
@@ -429,13 +405,11 @@ const TestDetail = () => {
                     />
                   </CardContent>
                 )}
-                {/* MultipleQuiz */}
                 {(quesDetail?.question_type === TYPE_QUIZ.MULTIPLE_CHOICE ||
                   quesDetail?.question_type === TYPE_QUIZ.IQ) && (
                   <CardContent
                     sx={{
                       flex: "1 0 auto",
-                      // minHeight: "402px",
                       maxWidth: "100%",
                       width: { lg: "100%" },
                     }}
@@ -457,21 +431,6 @@ const TestDetail = () => {
                       >
                         Question <span>{quesDetail?.order}</span>
                       </Typography>
-
-                      {/* <Typography
-                        sx={{
-                          color: "#CF1818",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: 500,
-                          textDecorationLine: "underline",
-                          cursor: "pointer",
-                          userSelect: "none",
-                        }}
-                        onClick={handleEndTest}
-                      >
-                        End Test
-                      </Typography> */}
                     </Stack>
 
                     <Typography
@@ -527,12 +486,10 @@ const TestDetail = () => {
                     )}
                     <FormControl sx={{ width: "100%" }}>
                       <RadioGroup
-                        // aria-labelledby="demo-controlled-radio-buttons-group"
                         id={`question-${quesDetail.id}`}
                         value={value}
                         onChange={handleChange}
                       >
-                        {/* <Grid container columns={12}> */}
                         {quesDetail?.answer_list?.map((item, index) => (
                           <Grid
                             key={index}
@@ -586,11 +543,9 @@ const TestDetail = () => {
                                       />
                                     </svg>
                                   }
-                                  // name="checkbox"
                                   sx={{
                                     "&:hover": { bgcolor: "transparent" },
                                   }}
-                                  // disableRipple
                                 />
                               }
                               label={item.answer_text}
@@ -603,13 +558,11 @@ const TestDetail = () => {
                                 color: "#1E1E3A",
                                 minWidth: "170px",
                                 wordBreak: "break-word",
-                                // userSelect: "none",
                               }}
                             />
                             {item?.image && (
                               <Box sx={{ maxWidth: "200px", width: "95%" }}>
                                 <Image
-                                  // src={item?.image}
                                   src={item?.image?.original_image}
                                   alt="question-image"
                                   width={100}
@@ -620,7 +573,6 @@ const TestDetail = () => {
                             )}
                           </Grid>
                         ))}
-                        {/* </Grid> */}
                       </RadioGroup>
                     </FormControl>
                   </CardContent>
@@ -700,7 +652,6 @@ const TestDetail = () => {
                   >
                     <Typography
                       sx={{
-                        // color: "var(--primary-color-100)",
                         fontSize: "14px",
                         fontWeight: 500,
                         userSelect: "none",
@@ -710,20 +661,6 @@ const TestDetail = () => {
                       You have completed {userAnswer?.length} out of{" "}
                       {listQues?.length} questions.
                     </Typography>
-                    {/* <Typography
-                      sx={{
-                        color: "#9EA3AE",
-                        fontWeight: 300,
-                        fontSize: "14px",
-                        lineHeight: "20px",
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                        userSelect: "none",
-                      }}
-                      onClick={handeViewDetail}
-                    >
-                      View Details
-                    </Typography> */}
                   </Box>
                   <Button
                     onClick={() => setIsShowPreview(true)}

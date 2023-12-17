@@ -136,21 +136,7 @@ const LessonDetail = () => {
   };
 
   const handleStartQuiz = async () => {
-    const id = lesson.assignment_detail?.id;
-    if (!id || typeof id !== "string") return;
-    if (!dataStartTime) {
-      await dispatch(saveStartTime(id));
-      dispatch(setTimeStart(Date.now()));
-    }
-    setIsModalBeginTestOpen(false);
-    const { payload } = await dispatch(getListQuesOfQuiz(id));
-    if (payload?.data.length <= 0) router.push("/not-found");
-    await dispatch(getStartTime(id));
-    setIsModalBeginTestOpen(false);
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, "", window.location.href);
-    };
+    router.push(`/quiz/${lesson.assignment_detail?.id}`);
   };
 
   useEffect(() => {
@@ -494,9 +480,8 @@ const LessonDetail = () => {
                                       : null}
                                   </div>
                                 </div>
-                                <Link
-                                  className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
-                                  href={`/quiz/${lesson.assignment_detail?.id}`}
+                                <div
+                                  className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150 cursor-pointer"
                                   onClick={() => setIsModalBeginTestOpen(true)}
                                 >
                                   {assignmentStatus === ASSIGNMENT_STATUS.PASSED
@@ -509,7 +494,7 @@ const LessonDetail = () => {
                                       height={20}
                                     />
                                   )}
-                                </Link>
+                                </div>
                               </div>
                             )}
                           </div>

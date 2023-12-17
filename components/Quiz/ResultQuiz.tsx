@@ -129,26 +129,13 @@ export default function ResultQuiz() {
     fetchData();
   }, [dispatch, id]);
 
-  // useEffect(() => {
-  //   scrollToTop();
-  //   const handleKeyDown = (event: any) => {
-  //     if (event.keyCode === 123) {
-  //       event.preventDefault();
-  //     }
-  //   };
-
-  //   const handleContextMenu = (event: any) => {
-  //     event.preventDefault();
-  //   };
-
-  //   document.addEventListener("contextmenu", handleContextMenu);
-  //   document.addEventListener("keydown", handleKeyDown);
-
-  //   return () => {
-  //     document.removeEventListener("contextmenu", handleContextMenu);
-  //     document.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
+  useEffect(() => {
+    scrollToTop();
+    window.history.pushState(null, "", window.location.href);
+    window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+    };
+  }, []);
 
   useEffect(() => {
     if (!listResultData) return;
