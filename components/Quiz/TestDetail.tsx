@@ -1,6 +1,5 @@
 "use client";
 import React, { memo, useEffect, useState } from "react";
-import BeginTestModal from "./BeginTestModal";
 import { useParams, useRouter } from "next/navigation";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { useSelector } from "react-redux";
@@ -22,20 +21,12 @@ import {
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { formatUtcTime } from "@/services/formatDate";
 import {
   getListQuesOfQuiz,
-  getListResult,
-  getStartTime,
   resetBeginTest,
-  saveStartTime,
-  sendMultiQuizResult,
-  setIsViewResultInCourse,
   setListView,
   setQuesDetail,
   setQuizAnswer,
-  setShowResult,
-  setTimeStart,
 } from "@/redux/features/quiz/action";
 import Button from "../Common/Button";
 import PreviewQuiz from "./PreviewQuiz";
@@ -57,20 +48,10 @@ const TestDetail = () => {
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [value, setValue] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const {
-    listQues,
-    quesLessonId,
-    quesModuleId,
-    userAnswer,
-    listView,
-    duration,
-    dataStartTime,
-    quesDetail,
-    loadingCheckShowResult,
-  } = useAppSelector((state) => state.quiz);
+  const { listQues, userAnswer, listView, quesDetail, loadingCheckShowResult } =
+    useAppSelector((state) => state.quiz);
 
   const totalQuestion = listQues?.length;
   const filterListView = listView?.map((item) => {
@@ -81,11 +62,6 @@ const TestDetail = () => {
 
   const handleShowImage = () => {
     setIsModalShowImageOpen(true);
-  };
-
-  const handleCopyPaste = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    return false;
   };
 
   const handeViewDetail = () => {
@@ -196,60 +172,6 @@ const TestDetail = () => {
     setOpenModal(false);
   };
 
-  const handleSendQuiz = async () => {
-    const converUserAnswer = userAnswer.map((item) =>
-      !item?.answer_content
-        ? {
-            question_id: item.question_id,
-            answer_id: item.answer_id,
-            question_type: item.question_type,
-          }
-        : {
-            question_id: item.question_id,
-            answer_id: item.answer_id,
-            question_type: item.question_type,
-            answer_content: item.answer_content,
-          }
-    );
-    const list = {
-      module_id: quesModuleId,
-      lesson_id: quesLessonId,
-      post_id: listQues[0]?.post_id,
-      start_time: formatUtcTime(dataStartTime),
-      end_time: formatUtcTime(Date.now()),
-      data: converUserAnswer,
-    };
-    const res = await dispatch(sendMultiQuizResult(list));
-    if (res.payload) {
-      dispatch(setIsViewResultInCourse(false));
-      router.push(`/result/${id}`);
-      dispatch(setShowResult(true));
-    }
-  };
-
-  const startQuiz = async () => {
-    if (!id || typeof id !== "string") return;
-    if (!dataStartTime) {
-      await dispatch(saveStartTime(id));
-      dispatch(setTimeStart(Date.now()));
-    }
-    const { payload } = await dispatch(getListQuesOfQuiz(id));
-    if (payload?.data.length <= 0) router.push("/not-found");
-    await dispatch(getStartTime(id));
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, "", window.location.href);
-    };
-  };
-
-  const checkDisabledFinishTest = () => {
-    if (quesDetail?.order === listQues?.length) {
-      const itemNotAnswer = filterListView?.find((i) => !i.complete);
-      if (itemNotAnswer) return true;
-    }
-    return false;
-  };
-
   useEffect(() => {
     if (token && id) {
       if (!hasFetchData) {
@@ -264,17 +186,15 @@ const TestDetail = () => {
   }, [setHasFetchData]);
 
   useEffect(() => {
-    setIsLoading(true);
     const loadData = async () => {
       if (!id || typeof id !== "string") return;
-      await dispatch(getListResult(id));
+      const { payload } = await dispatch(getListQuesOfQuiz(id));
+      if (payload?.data.length <= 0) router.push("/not-found");
     };
     loadData();
-    startQuiz();
-    setIsLoading(false);
   }, [id]);
 
-  return !quesDetail ? (
+  return !quesDetail || listQues?.length === 0 || loadingCheckShowResult ? (
     <div className="mt-11 min-h-[65vh]">
       <Skeleton variant="rounded" className="mb-8" height={40} />
       <div className="relative mt-4 lg:mt-10 flex flex-col-reverse lg:flex-row gap-[28px]">
@@ -302,9 +222,6 @@ const TestDetail = () => {
               color: "#1E2329",
               minHeight: "65vh",
             }}
-            onCopy={(e) => {
-              e.preventDefault();
-            }}
           >
             <Typography
               sx={{
@@ -330,11 +247,13 @@ const TestDetail = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
+                  justifyContent: "space-between",
                   backgroundColor: "#F5F8FF",
                   height: "fit-content",
                   borderRadius: "8px",
                   p: "24px",
                   width: "100%",
+                  minHeight: "500px",
                 }}
               >
                 {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
@@ -412,9 +331,6 @@ const TestDetail = () => {
                       onChange={(event) => {
                         handleAnswer(event.target.value);
                       }}
-                      onCopy={handleCopyPaste}
-                      onCut={handleCopyPaste}
-                      onPaste={handleCopyPaste}
                     />
                   </CardContent>
                 )}
@@ -600,7 +516,6 @@ const TestDetail = () => {
                   <Button
                     className=" !bg-[#1F37B3] hover:!bg-[#1530BC] !rounded-[4px] w-[180px] flex items-center !px-4 "
                     onClick={handleNextQuestion}
-                    disabled={checkDisabledFinishTest()}
                   >
                     {quesDetail?.order === listQues?.length ? (
                       <span>Finish Test</span>
@@ -643,13 +558,7 @@ const TestDetail = () => {
                     }}
                   >
                     <Typography>Remaining Time</Typography>
-                    <MyMemoizedComponent
-                      time={
-                        duration - (Date.now() - dataStartTime) / 1000 < 0
-                          ? 0
-                          : duration - (Date.now() - dataStartTime) / 1000
-                      }
-                    />
+                    <MyMemoizedComponent time={listQues[0].time} />
                   </Box>
                   <Box
                     sx={{
@@ -673,7 +582,6 @@ const TestDetail = () => {
                   </Box>
                   <Button
                     onClick={() => setIsShowPreview(true)}
-                    disabled={checkDisabledFinishTest()}
                     className={` !bg-[#1F37B3] text-white  !rounded-[4px] !w-full flex items-center !px-4`}
                   >
                     <span>Finish Test</span>
@@ -725,9 +633,6 @@ const TestDetail = () => {
               px: 2,
               py: 5,
               minWidth: { xs: "unset", lg: "600px" },
-            }}
-            onCopy={(e) => {
-              e.preventDefault();
             }}
           >
             <Box
