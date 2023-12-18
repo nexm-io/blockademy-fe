@@ -17,6 +17,7 @@ import {
   Typography,
   Grid,
   Stack,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
@@ -273,8 +274,22 @@ const TestDetail = () => {
     setIsLoading(false);
   }, [id]);
 
-  return isLoading ? (
-    <></>
+  return !quesDetail ? (
+    <div className="mt-11 min-h-[65vh]">
+      <Skeleton variant="rounded" className="mb-8" height={40} />
+      <div className="relative mt-4 lg:mt-10 flex flex-col-reverse lg:flex-row gap-[28px]">
+        <Skeleton variant="rounded" sx={{ width: "100%" }} height={442} />
+        <div className="flex flex-col gap-4 lg:min-w-[295px]">
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={98} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={16} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={40} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={40} />
+          <div className="hidden lg:flex justify-center">
+            <Skeleton variant="rounded" sx={{ width: "122px" }} height={142} />
+          </div>
+        </div>
+      </div>
+    </div>
   ) : (
     <>
       {!isShowPreview && quesDetail ? (
@@ -282,10 +297,10 @@ const TestDetail = () => {
         !loadingCheckShowResult && (
           <Box
             sx={{
-              mx: { xs: "0", lg: "100px" },
               pt: "44px",
               mb: "45px",
               color: "#1E2329",
+              minHeight: "65vh",
             }}
             onCopy={(e) => {
               e.preventDefault();
@@ -601,7 +616,7 @@ const TestDetail = () => {
                   display: "flex",
                   flexDirection: { xs: "row", lg: "column" },
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: { xs: "center", lg: "start" },
                   gap: { xs: "40px", lg: 0 },
                   borderRadius: "8px",
                 }}
