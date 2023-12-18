@@ -245,12 +245,12 @@ const CourseDetail = () => {
                     { "!translate-x-0": isShowMenu }
                   )}
                 >
-                  <div className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden">
+                  <div
+                    className="absolute flex items-center top-[26px] right-5 gap-2 lg:hidden"
+                    onClick={() => setShowMenu((prev) => !prev)}
+                  >
                     <p className="text-blue-100">Close</p>
-                    <div
-                      className="hambuger"
-                      onClick={() => setShowMenu((prev) => !prev)}
-                    >
+                    <div className="hambuger">
                       <span></span>
                     </div>
                   </div>
