@@ -14,6 +14,8 @@ import {
   completeLesson,
   getDetailLesson,
   getDetailLessonWithoutLoading,
+  getMenuData,
+  getMenuDataWithoutLoading,
   getNextPrevLesson,
 } from "@/redux/features/courses/action";
 import { selectCourses } from "@/redux/features/courses/reducer";
@@ -48,9 +50,13 @@ const LessonDetail = () => {
   const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
-  const { lessonLoading, lesson, nextPrevLesson } =
-    useAppSelector(selectCourses);
-  const { dataStartTime } = useAppSelector((state) => state.quiz);
+  const {
+    lessonLoading,
+    lesson,
+    nextPrevLesson,
+    menuData: { module_data },
+  } = useAppSelector(selectCourses);
+
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -138,6 +144,30 @@ const LessonDetail = () => {
   const handleStartQuiz = async () => {
     router.push(`/quiz/${lesson.assignment_detail?.id}`);
   };
+
+  const loadMenuData = async () => {
+    try {
+      let payloadDetail: any;
+      if (module_data.length > 0) {
+        payloadDetail = await dispatch(
+          getMenuDataWithoutLoading(courseId as string)
+        );
+      } else {
+        payloadDetail = await dispatch(getMenuData(courseId as string));
+      }
+
+      if (payloadDetail?.response?.data?.error) {
+        router.push("/not-found");
+      }
+      return payloadDetail;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadMenuData();
+  }, [lessonSlug]);
 
   useEffect(() => {
     if (isShowMenu) document.body.style.overflowY = "hidden";

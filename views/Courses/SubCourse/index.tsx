@@ -8,6 +8,7 @@ import {
   getDetailCourse,
   getDetailCourseWithoutLoading,
   getMenuData,
+  getMenuDataWithoutLoading,
 } from "@/redux/features/courses/action";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@mui/material";
@@ -32,7 +33,11 @@ const SubCourseView = () => {
   const [showPopupRegisterSuccess, setShowPopupRegisterSuccess] =
     useState(false);
   const [registered, setRegistered] = useState<number>(0);
-  const { isLoading, details: courseDetail } = useAppSelector(selectCourses);
+  const {
+    isLoading,
+    details: courseDetail,
+    menuData: { module_data },
+  } = useAppSelector(selectCourses);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const { rewardDetails } = useAppSelector(selectReward);
   const router = useRouter();
@@ -65,13 +70,19 @@ const SubCourseView = () => {
 
   const loadMenuData = async () => {
     try {
-      const { payload: payloadMenu } = await dispatch(
-        getMenuData(courseId as string)
-      );
-      if (payloadMenu?.response?.data?.error) {
+      let payloadDetail: any;
+      if (module_data.length > 0) {
+        payloadDetail = await dispatch(
+          getMenuDataWithoutLoading(courseId as string)
+        );
+      } else {
+        payloadDetail = await dispatch(getMenuData(courseId as string));
+      }
+
+      if (payloadDetail?.response?.data?.error) {
         router.push("/not-found");
       }
-      return payloadMenu;
+      return payloadDetail;
     } catch (error) {
       console.log(error);
     }

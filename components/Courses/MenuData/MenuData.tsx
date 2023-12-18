@@ -1,12 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LessonModule from "../LessonsModule";
-import {
-  getMenuData,
-  getMenuDataWithoutLoading,
-} from "@/redux/features/courses/action";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { useAppSelector } from "@/redux/hook";
 import { selectCourses } from "@/redux/features/courses/reducer";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Skeleton } from "@mui/material";
 
 const MenuData = () => {
@@ -15,34 +11,8 @@ const MenuData = () => {
     menuData: { module_data },
     menuDataLoading,
   } = useAppSelector(selectCourses);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const params = useParams();
-  const { lessonSlug, courseId } = params;
-
-  const loadMenuData = async () => {
-    try {
-      let payloadDetail: any;
-      if (module_data.length > 0) {
-        payloadDetail = await dispatch(
-          getMenuDataWithoutLoading(courseId as string)
-        );
-      } else {
-        payloadDetail = await dispatch(getMenuData(courseId as string));
-      }
-
-      if (payloadDetail?.response?.data?.error) {
-        router.push("/not-found");
-      }
-      return payloadDetail;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    loadMenuData();
-  }, [lessonSlug]);
+  const { courseId } = params;
 
   return menuDataLoading ? (
     <div className="h-full w-full sticky top-[100px]">
