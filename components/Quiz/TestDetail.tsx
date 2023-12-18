@@ -285,7 +285,7 @@ const TestDetail = () => {
                     >
                       {quesDetail?.question}
                     </Typography>
-                    {quesDetail?.question_description &&
+                    {/* {quesDetail?.question_description &&
                       !checkWhiteSpace(quesDetail?.question_description) && (
                         <Box sx={{ overflow: "auto" }}>
                           <Box
@@ -298,7 +298,7 @@ const TestDetail = () => {
                             }}
                           />
                         </Box>
-                      )}
+                      )} */}
                     {quesDetail?.image && (
                       <Box
                         sx={{
