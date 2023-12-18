@@ -279,12 +279,22 @@ export default function ResultQuiz() {
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
                   listResultData?.is_claimed &&
                   listResultData?.is_final_quiz ? (
-                    <Button
-                      className="w-full md:w-[184px] !px-0"
-                      onClick={() => router.push("/accomplishments")}
-                    >
-                      Accomplishments
-                    </Button>
+                    <>
+                      <Button
+                        className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
+                        onClick={() => router.push(courseUrl)}
+                      >
+                        <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
+                          Back to Course
+                        </span>
+                      </Button>
+                      <Button
+                        className="w-full md:w-[184px] !px-0"
+                        onClick={() => router.push("/accomplishments")}
+                      >
+                        Accomplishments
+                      </Button>
+                    </>
                   ) : (
                     Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
                       <Button
