@@ -59,23 +59,24 @@ const LessonModule: React.FC<LessonModuleProps> = ({
           )}
           onClick={() => setShowDropdown(!showDropdown)}
         >
-          <div className="flex gap-[6px] flex-col">
-            <p>{data.title}</p>
-            <div className="flex items-center justify-between">
-              <div className="flex gap-6 items-center">
-                <div className="flex items-center gap-[6px]">
-                  <Image
-                    alt="clock-icon"
-                    className="w-[16px] h-[16px]"
-                    src={clock}
-                  />
+          <div className="flex items-center justify-between">
+            <div className="flex gap-[6px] flex-col">
+              <p>{data.title}</p>
+              <div className="flex items-center justify-between">
+                <div className="flex gap-6 items-center">
+                  <div className="flex items-center gap-[6px]">
+                    <Image
+                      alt="clock-icon"
+                      className="w-[16px] h-[16px]"
+                      src={clock}
+                    />
 
-                  <span className="text-sm font-light leading-6">
-                    {secondsToMinutes(data.duration)}&nbsp;minutes
-                  </span>
-                </div>
+                    <span className="text-sm font-light leading-6">
+                      {secondsToMinutes(data.duration)}&nbsp;minutes
+                    </span>
+                  </div>
 
-                {/* <div className="flex items-center gap-[6px]">
+                  {/* <div className="flex items-center gap-[6px]">
                   <Image
                     alt="quiz-icon"
                     className="w-[16px] h-[16px]"
@@ -89,16 +90,17 @@ const LessonModule: React.FC<LessonModuleProps> = ({
                       : "Quiz"}
                   </span>
                 </div> */}
+                </div>
               </div>
-              <div
-                className={cn("transition-all duration-150 ease-in-out", {
-                  "rotate-0": showDropdown,
-                  "rotate-180": !showDropdown,
-                  hidden: data.lesson_data.length === 0,
-                })}
-              >
-                <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
-              </div>
+            </div>
+            <div
+              className={cn("transition-all duration-150 ease-in-out", {
+                "rotate-0": showDropdown,
+                "rotate-180": !showDropdown,
+                hidden: data.lesson_data.length === 0,
+              })}
+            >
+              <Image alt="arrow-up" className="w-4 h-4" src={arrowUp} />
             </div>
           </div>
         </div>

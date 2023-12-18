@@ -1,6 +1,5 @@
 "use client";
 import React, { memo, useEffect, useState } from "react";
-import BeginTestModal from "./BeginTestModal";
 import { useParams, useRouter } from "next/navigation";
 import { selectAuth } from "@/redux/features/auth/reducer";
 import { useSelector } from "react-redux";
@@ -17,23 +16,17 @@ import {
   Typography,
   Grid,
   Stack,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
 import { TYPE_QUIZ, soleil } from "@/utils/constants";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { formatUtcTime } from "@/services/formatDate";
 import {
   getListQuesOfQuiz,
-  getStartTime,
   resetBeginTest,
-  saveStartTime,
-  sendMultiQuizResult,
-  setIsViewResultInCourse,
   setListView,
   setQuesDetail,
   setQuizAnswer,
-  setShowResult,
-  setTimeStart,
 } from "@/redux/features/quiz/action";
 import Button from "../Common/Button";
 import PreviewQuiz from "./PreviewQuiz";
@@ -49,78 +42,26 @@ const MyMemoizedComponent = memo((time: { time: number }) => {
 const TestDetail = () => {
   const router = useRouter();
   const token = useSelector(selectAuth);
-  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
   const [isModalShowImageOpen, setIsModalShowImageOpen] = useState(false);
   const [isModalEndTestOpen, setIsModalEndTestOpen] = useState(false);
-
+  const [hasFetchData, setHasFetchData] = useState(false);
   const [isShowPreview, setIsShowPreview] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const { id } = useParams();
-
   const [value, setValue] = useState("");
-
+  const { id } = useParams();
   const dispatch = useAppDispatch();
-
-  const {
-    listQues,
-    quesLessonId, 
-    quesModuleId,
-    userAnswer,
-    listView,
-    duration,
-    dataStartTime,
-    quesDetail,
-    loadingCheckShowResult,
-    isSubmitInButton,
-  } = useAppSelector((state) => state.quiz);
+  const { listQues, userAnswer, listView, quesDetail, loadingCheckShowResult } =
+    useAppSelector((state) => state.quiz);
 
   const totalQuestion = listQues?.length;
-  const answerUserChoose = userAnswer.find(
-    (i) => i.question_id === quesDetail?.id
-  );
-
   const filterListView = listView?.map((item) => {
     const x = userAnswer.find((i) => i.order === item.order);
     if (x) return { ...item, complete: true };
     return item;
   });
 
-  const enterFullScreen = () => {
-    const elem = document.documentElement as any;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    }
-    window.scrollTo(0, 1);
-  };
-
-  const handleStartQuiz = async () => {
-    if (!id || typeof id !== "string") return;
-    if (!dataStartTime) {
-      await dispatch(saveStartTime(id));
-      dispatch(setTimeStart(Date.now()));
-    }
-    setIsModalBeginTestOpen(false);
-    const { payload } = await dispatch(getListQuesOfQuiz(id));
-    if (payload?.data.length <= 0) router.push("/not-found");
-    await dispatch(getStartTime(id));
-    setIsModalBeginTestOpen(false);
-    window.history.pushState(null, "", window.location.href);
-    window.onpopstate = function () {
-      window.history.pushState(null, "", window.location.href);
-    };
-  };
-
   const handleShowImage = () => {
     setIsModalShowImageOpen(true);
-  };
-
-  const handleCopyPaste = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    return false;
   };
 
   const handeViewDetail = () => {
@@ -199,6 +140,7 @@ const TestDetail = () => {
     }
     setValue(val);
   };
+
   const handlePrevQuestion = async () => {
     if (!quesDetail?.order) return;
     const initValue = userAnswer.find((i) => i.order === quesDetail?.order - 1);
@@ -207,6 +149,7 @@ const TestDetail = () => {
       dispatch(setQuesDetail(listQues[quesDetail?.order - 2]));
     }
   };
+
   const handleNextQuestion = async () => {
     if (!quesDetail?.order) return;
     if (quesDetail?.order === listQues?.length) {
@@ -229,52 +172,12 @@ const TestDetail = () => {
     setOpenModal(false);
   };
 
-  const handleSendQuiz = async () => {
-    const converUserAnswer = userAnswer.map((item) =>
-      !item?.answer_content
-        ? {
-            question_id: item.question_id,
-            answer_id: item.answer_id,
-            question_type: item.question_type,
-          }
-        : {
-            question_id: item.question_id,
-            answer_id: item.answer_id,
-            question_type: item.question_type,
-            answer_content: item.answer_content,
-          }
-    );
-    const list = {
-      module_id: quesModuleId,
-      lesson_id: quesLessonId,
-      post_id: listQues[0]?.post_id,
-      start_time: formatUtcTime(dataStartTime),
-      end_time: formatUtcTime(Date.now()),
-      data: converUserAnswer,
-    };
-    const res = await dispatch(sendMultiQuizResult(list));
-    if (res.payload) {
-      dispatch(setIsViewResultInCourse(false));
-      router.push(`/result/${id}`);
-      dispatch(setShowResult(true));
-    }
-  };
-
-  const [hasFetchData, setHasFetchData] = useState(false);
-
-  const removeWhiteSpace = (str: string) => {
-    if (!str) return "";
-    const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
-    return trimmedStr;
-  };
-
   useEffect(() => {
     if (token && id) {
       if (!hasFetchData) {
         const fetchData = async () => {
           if (typeof id !== "string") return;
           dispatch(resetBeginTest());
-          setIsModalBeginTestOpen(true);
         };
         fetchData();
         setHasFetchData(true);
@@ -283,94 +186,59 @@ const TestDetail = () => {
   }, [setHasFetchData]);
 
   useEffect(() => {
-    if (isSubmitInButton) return;
-    const handleKeyPress = async (event: any) => {
-      if (!document.fullscreenElement) {
-        await handleSendQuiz();
-      }
+    const loadData = async () => {
+      if (!id || typeof id !== "string") return;
+      const { payload } = await dispatch(getListQuesOfQuiz(id));
+      if (payload?.data.length <= 0) router.push("/not-found");
     };
+    loadData();
+  }, [id]);
 
-    const handleKeyDown = (event: any) => {
-      if (event.keyCode === 123) {
-        event.preventDefault();
-      }
-    };
-
-    const handleContextMenu = (event: any) => {
-      event.preventDefault();
-    };
-
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("fullscreenchange", handleKeyPress);
-
-    return () => {
-      document.removeEventListener("fullscreenchange", handleKeyPress);
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  });
-
-  const checkDisabledFinishTest = () => {
-    if (quesDetail?.order === listQues?.length) {
-      const itemNotAnswer = filterListView?.find((i) => !i.complete);
-      if (itemNotAnswer) return true;
-    }
-    return false;
-  };
-
-  return (
+  return !quesDetail || listQues?.length === 0 || loadingCheckShowResult ? (
+    <div className="mt-11 min-h-[65vh]">
+      <Skeleton variant="rounded" className="mb-8" height={40} />
+      <div className="relative mt-4 lg:mt-10 flex flex-col-reverse lg:flex-row gap-[28px]">
+        <Skeleton variant="rounded" sx={{ width: "100%" }} height={442} />
+        <div className="flex flex-col gap-4 lg:min-w-[295px]">
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={98} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={16} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={40} />
+          <Skeleton variant="rounded" sx={{ width: "100%" }} height={40} />
+          <div className="hidden lg:flex justify-center">
+            <Skeleton variant="rounded" sx={{ width: "122px" }} height={142} />
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
     <>
-      {isModalBeginTestOpen ? (
-        <BeginTestModal
-          isModalBeginTestOpen={isModalBeginTestOpen}
-          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
-          handleStartQuiz={handleStartQuiz}
-        />
-      ) : !isShowPreview && quesDetail ? (
+      {!isShowPreview && quesDetail ? (
         listQues?.length > 0 &&
         !loadingCheckShowResult && (
           <Box
-            // className="main quiz"
             sx={{
-              mx: { xs: "0", lg: "100px" },
-              pt: "70px",
-              mb: "100px",
+              pt: "44px",
+              mb: "45px",
               color: "#1E2329",
-            }}
-            onCopy={(e) => {
-              e.preventDefault();
+              minHeight: "65vh",
             }}
           >
             <Typography
               sx={{
                 color: "var(--primary-black)",
-                fontSize: "24px",
+                fontSize: "36px",
                 fontWeight: 500,
                 lineHeight: "32px",
-                mb: 2,
+                mb: "40px",
               }}
             >
               {quesDetail?.quiz_title}
             </Typography>
 
-            {/* <Typography
-              sx={{
-                color: "var(--primary-color-100)",
-                fontSize: "20px",
-                fontWeight: 500,
-                lineHeight: "32px",
-                mt: 2,
-                mb: "20px",
-              }}
-            >
-              {removeWhiteSpace(quesDetail?.quiz_description)}
-            </Typography> */}
-
             <Card
               sx={{
                 display: "flex",
-                gap: "40px",
+                gap: "28px",
                 flexDirection: { xs: "column-reverse", lg: "row" },
                 justifyContent: "between",
               }}
@@ -379,17 +247,18 @@ const TestDetail = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
+                  justifyContent: "space-between",
                   backgroundColor: "#F5F8FF",
+                  height: "fit-content",
                   borderRadius: "8px",
                   p: "24px",
                   width: "100%",
+                  minHeight: "500px",
                 }}
               >
-                {/* FillinQuiz */}
                 {quesDetail?.question_type === TYPE_QUIZ.ESSAY && (
                   <CardContent
                     sx={{
-                      flex: "1 0 auto",
                       width: '{ lg: "100%" }',
                       p: "0 !important",
                     }}
@@ -397,10 +266,10 @@ const TestDetail = () => {
                     <Typography
                       sx={{
                         color: "var(--primary-black)",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "34px",
-                        mb: "25px",
+                        fontSize: "20px",
+                        fontWeight: 400,
+                        lineHeight: "28px",
+                        mb: "12px",
                       }}
                     >
                       Question <span>{quesDetail?.order}</span>
@@ -408,10 +277,10 @@ const TestDetail = () => {
                     <Typography
                       sx={{
                         color: "#121230",
-                        fontSize: "26px",
-                        fontWeight: 500,
-                        lineHeight: "39px",
-                        userSelect: "none",
+                        fontSize: "24px",
+                        fontWeight: 400,
+                        lineHeight: "32px",
+                        mb: "32px",
                       }}
                     >
                       {quesDetail?.question}
@@ -423,7 +292,6 @@ const TestDetail = () => {
                             sx={{
                               color: "#71738B",
                               lineHeight: "25px",
-                              userSelect: "none",
                             }}
                             dangerouslySetInnerHTML={{
                               __html: quesDetail?.question_description,
@@ -436,13 +304,11 @@ const TestDetail = () => {
                         sx={{
                           maxWidth: "200px",
                           cursor: "zoom-in",
-                          userSelect: "none",
                         }}
                         onClick={handleShowImage}
                       >
                         <Image
                           src={quesDetail?.image?.original_image}
-                          // src={quesDetail?.image}
                           alt="question-image"
                           width={100}
                           height={150}
@@ -465,21 +331,16 @@ const TestDetail = () => {
                       onChange={(event) => {
                         handleAnswer(event.target.value);
                       }}
-                      onCopy={handleCopyPaste}
-                      onCut={handleCopyPaste}
-                      onPaste={handleCopyPaste}
                     />
                   </CardContent>
                 )}
-                {/* MultipleQuiz */}
                 {(quesDetail?.question_type === TYPE_QUIZ.MULTIPLE_CHOICE ||
                   quesDetail?.question_type === TYPE_QUIZ.IQ) && (
                   <CardContent
                     sx={{
-                      flex: "1 0 auto",
-                      // minHeight: "402px",
                       maxWidth: "100%",
                       width: { lg: "100%" },
+                      p: "0 !important",
                     }}
                   >
                     <Stack
@@ -492,38 +353,22 @@ const TestDetail = () => {
                         sx={{
                           color: "#1F37B3",
                           fontSize: "20px",
-                          fontWeight: 500,
-                          lineHeight: "34px",
+                          fontWeight: 400,
+                          lineHeight: "28px",
                           mb: "12px",
                         }}
                       >
                         Question <span>{quesDetail?.order}</span>
                       </Typography>
-
-                      {/* <Typography
-                        sx={{
-                          color: "#CF1818",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: 500,
-                          textDecorationLine: "underline",
-                          cursor: "pointer",
-                          userSelect: "none",
-                        }}
-                        onClick={handleEndTest}
-                      >
-                        End Test
-                      </Typography> */}
                     </Stack>
 
                     <Typography
                       sx={{
                         color: "#121230",
                         fontSize: "24px",
-                        fontWeight: 500,
-                        lineHeight: "39px",
-                        mb: "20px",
-                        userSelect: "none",
+                        fontWeight: 400,
+                        lineHeight: "32px",
+                        mb: "32px",
                       }}
                     >
                       {quesDetail?.question}
@@ -541,7 +386,6 @@ const TestDetail = () => {
                             sx={{
                               color: "#71738B",
                               lineHeight: "25px",
-                              userSelect: "none",
                             }}
                             dangerouslySetInnerHTML={{
                               __html: quesDetail?.question_description,
@@ -554,7 +398,6 @@ const TestDetail = () => {
                         sx={{
                           maxWidth: "200px",
                           cursor: "zoom-in",
-                          userSelect: "none",
                         }}
                         onClick={handleShowImage}
                       >
@@ -567,14 +410,12 @@ const TestDetail = () => {
                         />
                       </Box>
                     )}
-                    <FormControl sx={{ width: "100%" }}>
+                    <FormControl sx={{ width: "100%", mb: "32px" }}>
                       <RadioGroup
-                        // aria-labelledby="demo-controlled-radio-buttons-group"
                         id={`question-${quesDetail.id}`}
                         value={value}
                         onChange={handleChange}
                       >
-                        {/* <Grid container columns={12}> */}
                         {quesDetail?.answer_list?.map((item, index) => (
                           <Grid
                             key={index}
@@ -628,11 +469,9 @@ const TestDetail = () => {
                                       />
                                     </svg>
                                   }
-                                  // name="checkbox"
                                   sx={{
                                     "&:hover": { bgcolor: "transparent" },
                                   }}
-                                  // disableRipple
                                 />
                               }
                               label={item.answer_text}
@@ -645,13 +484,11 @@ const TestDetail = () => {
                                 color: "#1E1E3A",
                                 minWidth: "170px",
                                 wordBreak: "break-word",
-                                // userSelect: "none",
                               }}
                             />
                             {item?.image && (
                               <Box sx={{ maxWidth: "200px", width: "95%" }}>
                                 <Image
-                                  // src={item?.image}
                                   src={item?.image?.original_image}
                                   alt="question-image"
                                   width={100}
@@ -662,14 +499,13 @@ const TestDetail = () => {
                             )}
                           </Grid>
                         ))}
-                        {/* </Grid> */}
                       </RadioGroup>
                     </FormControl>
                   </CardContent>
                 )}
                 <div className="flex items-center  justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                   <Button
-                    className={` !bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
+                    className={`!bg-[#C6EAFF] !rounded-[4px] !text-[#0B76A4] ${
                       quesDetail?.order === 1 ? "" : "hover:!bg-[#B7E5FF]"
                     } w-[180px] flex items-center !px-4`}
                     disabled={quesDetail?.order === 1}
@@ -680,7 +516,6 @@ const TestDetail = () => {
                   <Button
                     className=" !bg-[#1F37B3] hover:!bg-[#1530BC] !rounded-[4px] w-[180px] flex items-center !px-4 "
                     onClick={handleNextQuestion}
-                    disabled={checkDisabledFinishTest()}
                   >
                     {quesDetail?.order === listQues?.length ? (
                       <span>Finish Test</span>
@@ -696,7 +531,7 @@ const TestDetail = () => {
                   display: "flex",
                   flexDirection: { xs: "row", lg: "column" },
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: { xs: "center", lg: "start" },
                   gap: { xs: "40px", lg: 0 },
                   borderRadius: "8px",
                 }}
@@ -711,25 +546,19 @@ const TestDetail = () => {
                   <Box
                     sx={{
                       backgroundColor: "#F5F8FF",
-                      borderRadius: "20px",
+                      borderRadius: "8px",
                       width: "295px",
-                      height: "130px",
+                      height: "98px",
                       textAlign: "center",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
-                      userSelect: "none",
+                      gap: "8px",
                     }}
                   >
                     <Typography>Remaining Time</Typography>
-                    <MyMemoizedComponent
-                      time={
-                        duration - (Date.now() - dataStartTime) / 1000 < 0
-                          ? 0
-                          : duration - (Date.now() - dataStartTime) / 1000
-                      }
-                    />
+                    <MyMemoizedComponent time={listQues[0].time} />
                   </Box>
                   <Box
                     sx={{
@@ -742,34 +571,17 @@ const TestDetail = () => {
                   >
                     <Typography
                       sx={{
-                        // color: "var(--primary-color-100)",
                         fontSize: "14px",
                         fontWeight: 500,
-                        userSelect: "none",
                         textAlign: "center",
                       }}
                     >
                       You have completed {userAnswer?.length} out of{" "}
                       {listQues?.length} questions.
                     </Typography>
-                    {/* <Typography
-                      sx={{
-                        color: "#9EA3AE",
-                        fontWeight: 300,
-                        fontSize: "14px",
-                        lineHeight: "20px",
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                        userSelect: "none",
-                      }}
-                      onClick={handeViewDetail}
-                    >
-                      View Details
-                    </Typography> */}
                   </Box>
                   <Button
                     onClick={() => setIsShowPreview(true)}
-                    disabled={checkDisabledFinishTest()}
                     className={` !bg-[#1F37B3] text-white  !rounded-[4px] !w-full flex items-center !px-4`}
                   >
                     <span>Finish Test</span>
@@ -779,22 +591,21 @@ const TestDetail = () => {
                       className=" !bg-[#C6EAFF] !text-[#0B76A4] hover:!bg-[#B7E5FF] !rounded-[4px] !w-full flex items-center !px-4 "
                       onClick={handeViewDetail}
                     >
-                      <span>Review Test</span>
+                      <span>Review Answers</span>
                     </Button>
                   </div>
                 </Box>
                 <Box
                   sx={{
                     display: { xs: "none", md: "inline-block" },
-                    userSelect: "none",
                     mt: 4,
                   }}
                 >
                   <Image
                     src="/images/quiz/quiz-icon.png"
                     alt="quiz"
-                    width={176}
-                    height={205}
+                    width={122}
+                    height={142}
                   />
                 </Box>
               </Box>
@@ -822,9 +633,6 @@ const TestDetail = () => {
               px: 2,
               py: 5,
               minWidth: { xs: "unset", lg: "600px" },
-            }}
-            onCopy={(e) => {
-              e.preventDefault();
             }}
           >
             <Box
@@ -883,7 +691,6 @@ const TestDetail = () => {
                           display: "inline-block",
                           width: "10px",
                           textAlign: "center",
-                          userSelect: "none",
                         }}
                       >
                         {item?.order}

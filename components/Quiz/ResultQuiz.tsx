@@ -129,26 +129,9 @@ export default function ResultQuiz() {
     fetchData();
   }, [dispatch, id]);
 
-  // useEffect(() => {
-  //   scrollToTop();
-  //   const handleKeyDown = (event: any) => {
-  //     if (event.keyCode === 123) {
-  //       event.preventDefault();
-  //     }
-  //   };
-
-  //   const handleContextMenu = (event: any) => {
-  //     event.preventDefault();
-  //   };
-
-  //   document.addEventListener("contextmenu", handleContextMenu);
-  //   document.addEventListener("keydown", handleKeyDown);
-
-  //   return () => {
-  //     document.removeEventListener("contextmenu", handleContextMenu);
-  //     document.removeEventListener("keydown", handleKeyDown);
-  //   };
-  // }, []);
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   useEffect(() => {
     if (!listResultData) return;
@@ -220,7 +203,7 @@ export default function ResultQuiz() {
           </div>
         </Box>
       ) : (
-        <Box sx={{ py: 6, m: "auto" }}>
+        <Box sx={{ py: "44px", m: "auto" }}>
           <div className="container">
             <nav className="w-full rounded-md">
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
@@ -338,14 +321,14 @@ export default function ResultQuiz() {
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="40"
-                    height="40"
+                    width={40}
+                    height={40}
                     viewBox="0 0 40 40"
                     fill="none"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                       fill="#FF3333"
                     />
@@ -500,7 +483,6 @@ export default function ResultQuiz() {
                                   color: "#1E1E3A",
                                   minWidth: "170px",
                                   wordBreak: "break-word",
-                                  userSelect: "none",
                                 }}
                               />
                               {z.result_answer &&
@@ -522,14 +504,14 @@ export default function ResultQuiz() {
                               item.id === z.user_answer?.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  width="40"
-                                  height="40"
+                                  width={40}
+                                  height={40}
                                   viewBox="0 0 40 40"
                                   fill="none"
                                 >
                                   <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
                                     d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                                     fill="#FF3333"
                                   />

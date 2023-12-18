@@ -31,7 +31,6 @@ export default function EndTestModal(props: {
     quesLessonId,
     quesModuleId,
     listQues,
-    dataStartTime,
     userAnswer,
     loadingSendQuiz,
   } = useAppSelector((state) => state.quiz);
@@ -59,7 +58,7 @@ export default function EndTestModal(props: {
       module_id: quesModuleId,
       lesson_id: quesLessonId,
       post_id: listQues[0]?.post_id,
-      start_time: formatUtcTime(dataStartTime),
+      start_time: formatUtcTime(Date.now()),
       end_time: formatUtcTime(Date.now()),
       data: converUserAnswer,
     };

@@ -5,7 +5,6 @@ import Image from "next/image";
 import VideoPlayer from "@/components/VideoPlayer";
 import React from "react";
 import BackToTop from "@/components/BackToTop";
-import LessonModule from "@/components/Courses/LessonsModule";
 import cn from "@/services/cn";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -26,6 +25,13 @@ import { CircleCheck } from "@styled-icons/fa-solid";
 import { ASSIGNMENT_STATUS } from "@/utils/constants";
 import api from "@/services/axios";
 import MenuData from "@/components/Courses/MenuData/MenuData";
+import BeginTestModal from "@/components/Quiz/BeginTestModal";
+import {
+  getListQuesOfQuiz,
+  getStartTime,
+  saveStartTime,
+  setTimeStart,
+} from "@/redux/features/quiz/action";
 
 const LessonDetail = () => {
   const [formState, setFormState] = useState<"video" | "quiz">("video");
@@ -39,14 +45,12 @@ const LessonDetail = () => {
   const [showContent, setShowContent] = useState<boolean>(false);
   const [isClaimSuccess, setIsClaimSuccess] = useState<boolean>(false);
   const [isClaimLoading, setIsClaimLoading] = useState<boolean>(false);
+  const [isModalBeginTestOpen, setIsModalBeginTestOpen] = useState(false);
   const [completeQuizLoading, setCompleteQuizLoading] =
     useState<boolean>(false);
-  const {
-    lessonLoading,
-    lesson,
-    nextPrevLesson,
-    menuData: { module_data },
-  } = useAppSelector(selectCourses);
+  const { lessonLoading, lesson, nextPrevLesson } =
+    useAppSelector(selectCourses);
+  const { dataStartTime } = useAppSelector((state) => state.quiz);
   const { isAuthenticated: isLogin } = useAppSelector(selectAuth);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -129,6 +133,10 @@ const LessonDetail = () => {
     } finally {
       setShowContent(true);
     }
+  };
+
+  const handleStartQuiz = async () => {
+    router.push(`/quiz/${lesson.assignment_detail?.id}`);
   };
 
   useEffect(() => {
@@ -332,7 +340,7 @@ const LessonDetail = () => {
             </div>
             <div
               className={cn(
-                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible bg-white-100 z-[999]",
+                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible z-[999]",
                 { "!visible": isShowMenu }
               )}
             >
@@ -422,10 +430,10 @@ const LessonDetail = () => {
                                 <Button
                                   className="w-full md:w-auto md:min-w-[184px]"
                                   onClick={() => {
-                                    setCompleteQuizLoading(true);
-                                    router.push(
-                                      `/quiz/${lesson.assignment_detail?.id}`
-                                    );
+                                    setIsModalBeginTestOpen(true);
+                                    // router.push(
+                                    //   `/quiz/${lesson.assignment_detail?.id}`
+                                    // );
                                   }}
                                   disabled={completeQuizLoading}
                                 >
@@ -442,7 +450,7 @@ const LessonDetail = () => {
                             )}
 
                             {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
-                              <div className="flex items-center justify-between">
+                              <div className="flex items-center flex-col gap-4 lg:flex-row justify-between">
                                 <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
                                   <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                     {assignmentStatus !==
@@ -472,10 +480,9 @@ const LessonDetail = () => {
                                       : null}
                                   </div>
                                 </div>
-                                <Link
-                                  className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150"
-                                  href={`/quiz/${lesson.assignment_detail?.id}`}
-                                  onClick={() => setCompleteQuizLoading(true)}
+                                <div
+                                  className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150 cursor-pointer"
+                                  onClick={() => setIsModalBeginTestOpen(true)}
                                 >
                                   {assignmentStatus === ASSIGNMENT_STATUS.PASSED
                                     ? "Learn Again"
@@ -487,7 +494,7 @@ const LessonDetail = () => {
                                       height={20}
                                     />
                                   )}
-                                </Link>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -514,7 +521,7 @@ const LessonDetail = () => {
                           )}
 
                           {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
-                            <div className="flex flex-col lg:flex-row justify-between gap-4 lg:gap-0">
+                            <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
                               <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
                                 <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                   {assignmentStatus !==
@@ -571,7 +578,7 @@ const LessonDetail = () => {
                                 <Link
                                   href={`/result/${lesson.assignment_detail?.id}`}
                                 >
-                                  <Button className="w-full md:w-auto md:min-w-[184px] mb-[11px]">
+                                  <Button className="w-full md:w-auto md:min-w-[184px]">
                                     View Feedback
                                   </Button>
                                 </Link>
@@ -686,6 +693,13 @@ const LessonDetail = () => {
         </section>
       )}
       <BackToTop />
+      {isModalBeginTestOpen && (
+        <BeginTestModal
+          isModalBeginTestOpen={isModalBeginTestOpen}
+          onCloseModalBeginTest={() => setIsModalBeginTestOpen(false)}
+          handleStartQuiz={handleStartQuiz}
+        />
+      )}
     </div>
   );
 };

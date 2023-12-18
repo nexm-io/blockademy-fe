@@ -1,5 +1,4 @@
 "use client";
-// import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Dialog,
@@ -8,36 +7,14 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
 import Button from "../Common/Button";
-import { useAppDispatch } from "@/redux/hook";
 import { soleil } from "@/utils/constants";
-import { useEffect } from "react";
-import { getListResult } from "@/redux/features/quiz/action";
 
 export default function BeginTestModal(props: {
   isModalBeginTestOpen: boolean;
   onCloseModalBeginTest: () => void;
   handleStartQuiz: () => void;
 }) {
-  const { id } = useParams();
-
-  const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  const handleGoBack = () => {
-    props.onCloseModalBeginTest();
-    router.back();
-  };
-
-  useEffect(() => {
-    const loadData = async () => {
-      if (!id || typeof id !== "string") return;
-      const res = await dispatch(getListResult(id));
-    };
-    loadData();
-  }, [id]);
-
   return (
     <>
       <Dialog
@@ -56,7 +33,7 @@ export default function BeginTestModal(props: {
               right: "20px",
               cursor: "pointer",
             }}
-            onClick={handleGoBack}
+            onClick={() => props.onCloseModalBeginTest()}
           >
             <Image src="/icons/close.svg" alt="close" width={24} height={24} />
           </Box>
@@ -86,9 +63,6 @@ export default function BeginTestModal(props: {
                 clicking <span className="text-blue-100">{`"Start"`}</span>
               </span>
               <p className="text-gray-700 mt-2">
-                {/* <span className="text-[#F33]">Note:</span> Once the test starts,
-                please avoid quitting (pressing Esc) or experiencing
-                interruptions, as it can impact your final result.{" "} */}
                 <span className="text-blue-100">Good luck!!!</span>
               </p>
             </DialogContentText>
