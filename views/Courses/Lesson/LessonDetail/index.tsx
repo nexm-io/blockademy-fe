@@ -450,7 +450,7 @@ const LessonDetail = () => {
                             )}
 
                             {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
-                              <div className="flex items-center justify-between">
+                              <div className="flex items-center flex-col gap-4 lg:flex-row justify-between">
                                 <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
                                   <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                     {assignmentStatus !==
@@ -521,7 +521,7 @@ const LessonDetail = () => {
                           )}
 
                           {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
-                            <div className="flex flex-col lg:flex-row justify-between gap-4 lg:gap-0">
+                            <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
                               <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
                                 <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                   {assignmentStatus !==
@@ -578,7 +578,7 @@ const LessonDetail = () => {
                                 <Link
                                   href={`/result/${lesson.assignment_detail?.id}`}
                                 >
-                                  <Button className="w-full md:w-auto md:min-w-[184px] mb-[11px]">
+                                  <Button className="w-full md:w-auto md:min-w-[184px]">
                                     View Feedback
                                   </Button>
                                 </Link>

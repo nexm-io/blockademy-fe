@@ -321,14 +321,14 @@ export default function ResultQuiz() {
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="40"
-                    height="40"
+                    width={40}
+                    height={40}
                     viewBox="0 0 40 40"
                     fill="none"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                       fill="#FF3333"
                     />
@@ -504,14 +504,14 @@ export default function ResultQuiz() {
                               item.id === z.user_answer?.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  width="40"
-                                  height="40"
+                                  width={40}
+                                  height={40}
                                   viewBox="0 0 40 40"
                                   fill="none"
                                 >
                                   <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
                                     d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                                     fill="#FF3333"
                                   />
