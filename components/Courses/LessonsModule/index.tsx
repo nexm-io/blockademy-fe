@@ -16,6 +16,7 @@ import { RootState } from "@/redux/store";
 import { Pencil } from "@styled-icons/bootstrap";
 
 interface LessonModuleProps {
+  isExpand: number | boolean | undefined;
   data: any;
   courseId: string;
   isRegistered: number;
@@ -23,6 +24,7 @@ interface LessonModuleProps {
 }
 
 const LessonModule: React.FC<LessonModuleProps> = ({
+  isExpand,
   data,
   isRegistered,
   moduleLength,
@@ -46,7 +48,9 @@ const LessonModule: React.FC<LessonModuleProps> = ({
   }, [isRegistered]);
 
   useEffect(() => {
-    if (!lessonSlug) setShowDropdown(!!data.is_current_module);
+    if (!lessonSlug) {
+      setShowDropdown(!!isExpand);
+    }
 
     if (lessonSlug && data && data.lesson_data) {
       const foundLesson = data.lesson_data.find(
@@ -55,7 +59,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
 
       setShowDropdown(!!foundLesson);
     }
-  }, [data]);
+  }, [data, isExpand]);
 
   return (
     <div className="flex flex-col gap-4">

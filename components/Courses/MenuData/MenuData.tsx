@@ -10,6 +10,7 @@ const MenuData = () => {
     lesson,
     menuData: { module_data },
     menuDataLoading,
+    details,
   } = useAppSelector(selectCourses);
   const params = useParams();
   const { courseId } = params;
@@ -29,6 +30,9 @@ const MenuData = () => {
             <LessonModule
               key={i}
               data={z}
+              isExpand={
+                details?.is_claimed ? i === 0 && true : z.is_current_module
+              }
               moduleLength={module_data.length}
               isRegistered={lesson?.is_registered as number}
               courseId={courseId as string}
