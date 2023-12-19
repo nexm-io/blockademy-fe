@@ -479,7 +479,7 @@ const LessonDetail = () => {
 
                             {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
                               <div className="flex items-center flex-col gap-4 lg:flex-row justify-between">
-                                <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
+                                <div className="flex flex-col items-center gap-1">
                                   <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                     {assignmentStatus !==
                                     ASSIGNMENT_STATUS.NEW ? (
@@ -508,20 +508,25 @@ const LessonDetail = () => {
                                       : null}
                                   </div>
                                 </div>
-                                <div
-                                  className="text-blue-100 hover:bg-blue-600/30 hover:underline md:w-auto inline-block px-6 w-full text-center rounded py-[13px] transition-all duration-150 cursor-pointer"
-                                  onClick={() => setIsModalBeginTestOpen(true)}
-                                >
-                                  {assignmentStatus === ASSIGNMENT_STATUS.PASSED
-                                    ? "Learn Again"
-                                    : "Try Again"}
-                                  {completeQuizLoading && (
-                                    <Loader3
-                                      className="animate-spin ml-2"
-                                      width={20}
-                                      height={20}
-                                    />
-                                  )}
+                                <div className="flex">
+                                  <div
+                                    className="text-blue-100 hover:bg-blue-600/30 hover:underline w-full min-w-[218px] md:w-auto md:min-w-[184px] inline-block px-6 text-center rounded py-[13px] transition-all duration-150 cursor-pointer "
+                                    onClick={() =>
+                                      setIsModalBeginTestOpen(true)
+                                    }
+                                  >
+                                    {assignmentStatus ===
+                                    ASSIGNMENT_STATUS.PASSED
+                                      ? "Learn Again"
+                                      : "Try Again"}
+                                    {completeQuizLoading && (
+                                      <Loader3
+                                        className="animate-spin ml-2"
+                                        width={20}
+                                        height={20}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             )}
@@ -550,7 +555,7 @@ const LessonDetail = () => {
 
                           {assignmentStatus !== ASSIGNMENT_STATUS.NEW && (
                             <div className="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0">
-                              <div className="flex flex-col items-center gap-1 mb-10 lg:mb-0">
+                              <div className="flex flex-col items-center gap-1">
                                 <div className="text-xl leading-8 font-bold flex gap-2 items-center w-full justify-center lg:justify-start">
                                   {assignmentStatus !==
                                   ASSIGNMENT_STATUS.NEW ? (
@@ -606,7 +611,7 @@ const LessonDetail = () => {
                                 <Link
                                   href={`/result/${lesson.assignment_detail?.id}`}
                                 >
-                                  <Button className="w-full md:w-auto md:min-w-[184px]">
+                                  <Button className="w-full min-w-[218px] md:w-auto md:min-w-[184px]">
                                     View Feedback
                                   </Button>
                                 </Link>
@@ -619,7 +624,7 @@ const LessonDetail = () => {
                         </div>
                       )}
 
-                      <div className="flex items-center justify-end gap-10 mt-10">
+                      <div className="flex items-center justify-between lg:justify-end gap-10 mt-10">
                         <div
                           className={cn(
                             `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
