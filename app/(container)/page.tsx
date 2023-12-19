@@ -1,5 +1,3 @@
-import Maintainance from "@/components/Maintainance";
-import PageContainer from "@/components/PageContainer";
 import HomeView from "@/views/Home";
 import { Metadata } from "next";
 
