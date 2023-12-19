@@ -60,7 +60,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
       setShowDropdown(!!foundLesson);
     }
   }, [data, isExpand]);
-  console.log(data);
+
   return (
     <div className="flex flex-col gap-4">
       {moduleLength > 1 && (
