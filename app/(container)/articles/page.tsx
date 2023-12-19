@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import PageContainer from "@/components/PageContainer";
 
 export const metadata: Metadata = {
-  title: "Articles",
+  title: "Crypto News",
 };
 
 const Article = () => {

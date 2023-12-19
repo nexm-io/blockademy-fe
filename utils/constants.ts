@@ -83,7 +83,7 @@ export const MENU = [
   {
     activePathname: ["/articles"],
     key: "articles",
-    label: "Articles",
+    label: "Crypto News",
     pathname: "/articles",
   },
 ];
