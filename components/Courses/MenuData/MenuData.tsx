@@ -31,7 +31,11 @@ const MenuData = () => {
               key={i}
               data={z}
               isExpand={
-                details?.is_claimed ? i === 0 && true : z.is_current_module
+                details?.is_registered
+                  ? details?.is_claimed
+                    ? i === 0
+                    : z.is_current_module
+                  : i === 0
               }
               moduleLength={module_data.length}
               isRegistered={lesson?.is_registered as number}
