@@ -60,7 +60,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
       setShowDropdown(!!foundLesson);
     }
   }, [data, isExpand]);
-
+  console.log(data);
   return (
     <div className="flex flex-col gap-4">
       {moduleLength > 1 && (
@@ -144,7 +144,7 @@ const LessonModule: React.FC<LessonModuleProps> = ({
       <div
         className={cn(`flex-col transition-all duration-150 ease-in-out`, {
           flex: showDropdown,
-          hidden: !showDropdown || data.lesson_data.length === 0,
+          hidden: data.lesson_data.length === 0 || !showDropdown,
           "px-3": moduleLength > 1,
         })}
       >
