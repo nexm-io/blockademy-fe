@@ -365,7 +365,7 @@ const LessonDetail = () => {
               className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
               onClick={() => setShowMenu((prev) => !prev)}
             >
-              <p className="text-blue-100">Course Menu</p>
+              <p className="text-blue-100">Course Outline</p>
               <Plus />
             </div>
             <div

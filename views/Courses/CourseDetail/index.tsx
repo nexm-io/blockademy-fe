@@ -223,7 +223,7 @@ const CourseDetail = () => {
                 className="px-[10px] py-2 bg-blue-200 flex items-center justify-between"
                 onClick={() => setShowMenu((prev) => !prev)}
               >
-                <p className="text-blue-100">Course Menu</p>
+                <p className="text-blue-100">Course Outline</p>
                 <Plus />
               </div>
               <div
@@ -253,11 +253,6 @@ const CourseDetail = () => {
                     <Close className="text-blue-100" />
                   </div>
                   <div className="mt-10 overflow-y-auto">
-                    <ApplyCourseButton
-                      courseId={courseDetail?.id as string}
-                      isRegistered={!!courseDetail?.is_registered}
-                      showPopup={setShowPopupRegisterSuccess}
-                    />
                     {sub_course_data.length !== 0 && !isLoading && (
                       <div className="flex flex-col gap-10">
                         {sub_course_data.map(
@@ -300,6 +295,18 @@ const CourseDetail = () => {
                 </span>
               </div>
             )}
+
+            <div
+              className={cn(`flex lg:hidden my-4 justify-end`, {
+                active: isShowMenu,
+              })}
+            >
+              <ApplyCourseButton
+                courseId={courseDetail?.id as string}
+                isRegistered={!!courseDetail?.is_registered}
+                showPopup={setShowPopupRegisterSuccess}
+              />
+            </div>
 
             {/* PASSED CASE */}
             {isLogin &&
