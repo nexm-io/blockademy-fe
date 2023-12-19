@@ -23,7 +23,7 @@ export default function MainLayout({
         <Header />
       </ClientOnly>
       <div className="relative w-full">
-        {MAINTAINANCE === "true" ? <Maintainance /> : children}
+        {MAINTAINANCE ? <Maintainance /> : children}
       </div>
       <Footer />
     </div>
