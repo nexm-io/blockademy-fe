@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const Maintainance = () => {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 h-[65vh] text-gray-100 px-2">
+    <div className="flex flex-col items-center justify-center gap-4 text-gray-100 px-2 mt-[44px]">
       <p className="text-[40px] font-medium text-black-100 text-center">
         BlockAdemy is Under Maintenance
       </p>
