@@ -20,7 +20,7 @@ import {
 } from "@/redux/features/courses/action";
 import { selectCourses } from "@/redux/features/courses/reducer";
 import { selectAuth } from "@/redux/features/auth/reducer";
-import { CloseCirlce, Next, Plus, Previous } from "@/components/Icon";
+import { Close, CloseCirlce, Next, Plus, Previous } from "@/components/Icon";
 import Button from "@/components/Common/Button";
 import { Loader3 } from "@styled-icons/remix-line";
 import { CircleCheck } from "@styled-icons/fa-solid";
@@ -370,21 +370,21 @@ const LessonDetail = () => {
             </div>
             <div
               className={cn(
-                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.6s] ease-in-out invisible z-[999]",
+                "fixed top-0 left-0 right-0 bottom-0 transition-all duration-[0.1s] ease-in-out invisible z-[999]",
                 { "!visible": isShowMenu }
               )}
             >
               <div
                 className={cn(
-                  "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.6s] ease-in-out",
+                  "absolute inset-0 bg-black-100/30 invisible opacity-0 transition-all duration-[0.1s] ease-in-out",
                   { "!visible opacity-100": isShowMenu }
                 )}
                 onClick={() => setShowMenu(false)}
               ></div>
               <div
                 className={cn(
-                  "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.6s] ease-in-out top-0 left-0 right-0 bottom-0 -translate-x-full px-4",
-                  { "!translate-x-0": isShowMenu }
+                  "h-full w-full gap-6 grid justify-between grid-cols-1 text-base font-normal text-black-100 bg-white-100 relative pt-12 pb-6 transition-all duration-[0.1s] ease-in-out top-0 left-0 right-0 bottom-0 opacity-0 invisible px-4",
+                  { "!visible opacity-100": isShowMenu }
                 )}
               >
                 <div
@@ -392,9 +392,7 @@ const LessonDetail = () => {
                   onClick={() => setShowMenu((prev) => !prev)}
                 >
                   <p className="text-blue-100">Close</p>
-                  <div className="hambuger">
-                    <span></span>
-                  </div>
+                  <Close className="text-blue-100" />
                 </div>
                 <div className="mt-10 overflow-y-auto">
                   <MenuData />
