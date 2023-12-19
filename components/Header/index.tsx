@@ -127,6 +127,7 @@ const Header = () => {
               <a
                 href="mailto:contact@blockademy.ai"
                 className={cn(`hover:text-blue-100`)}
+                target="_blank"
               >
                 Contact Us
               </a>
