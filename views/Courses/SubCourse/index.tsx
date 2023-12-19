@@ -139,6 +139,7 @@ const SubCourseView = () => {
 
   useEffect(() => {
     (async () => {
+      if (!isLogin || !courseDetail?.is_complete_module_sub_course) return;
       const { payload } = await dispatch(getRewardDetail(courseId as string));
       if (payload?.response?.data?.error) router.push("/not-found");
     })();
