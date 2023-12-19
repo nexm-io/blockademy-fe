@@ -625,35 +625,40 @@ const LessonDetail = () => {
                       )}
 
                       <div className="flex items-center justify-between lg:justify-end gap-10 mt-10">
-                        <div
-                          className={cn(
-                            `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
-                            {
-                              hidden:
-                                !nextPrevLesson?.previous_data || lessonLoading,
-                            }
-                          )}
-                          onClick={handlePrevLesson}
-                        >
-                          <Previous />
-                          <span className="text-blue-100">Previous</span>
+                        <div>
+                          <div
+                            className={cn(
+                              `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                              {
+                                hidden:
+                                  !nextPrevLesson?.previous_data ||
+                                  lessonLoading,
+                              }
+                            )}
+                            onClick={handlePrevLesson}
+                          >
+                            <Previous />
+                            <span className="text-blue-100">Previous</span>
+                          </div>
                         </div>
-                        <div
-                          className={cn(
-                            `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
-                            {
-                              hidden:
-                                !nextPrevLesson?.next_data ||
-                                (lesson?.assignment_detail?.id &&
-                                  assignmentStatus !==
-                                    ASSIGNMENT_STATUS.PASSED) ||
-                                lessonLoading,
-                            }
-                          )}
-                          onClick={handleNextLesson}
-                        >
-                          <span className="text-blue-100">Next</span>
-                          <Next />
+                        <div>
+                          <div
+                            className={cn(
+                              `px-[14px] py-1 flex items-center gap-2 hover:bg-blue-200 transition-all rounded cursor-pointer`,
+                              {
+                                hidden:
+                                  !nextPrevLesson?.next_data ||
+                                  (lesson?.assignment_detail?.id &&
+                                    assignmentStatus !==
+                                      ASSIGNMENT_STATUS.PASSED) ||
+                                  lessonLoading,
+                              }
+                            )}
+                            onClick={handleNextLesson}
+                          >
+                            <span className="text-blue-100">Next</span>
+                            <Next />
+                          </div>
                         </div>
                         <div
                           className={cn(
