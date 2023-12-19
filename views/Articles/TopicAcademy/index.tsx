@@ -72,8 +72,8 @@ const TopicAcademy: React.FC<TopicAcademyProps> = ({
   };
 
   return (
-    <div className="bg-white-100 h-auto pl-4 md:pl-0 pb-2 md:pb-10 pt-[72px]">
-      <h1 className="text-black-100 font-bold leading-[40px] text-3xl pt-[49px] md:ml-3">
+    <div className="bg-white-100 h-auto pl-4 md:pl-0 pb-2 md:pb-10">
+      <h1 className="text-black-100 font-bold leading-[40px] text-3xl md:ml-3">
         Topics at Academy
       </h1>
       {show && (
