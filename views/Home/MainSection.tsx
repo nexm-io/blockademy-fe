@@ -78,7 +78,14 @@ const MainSection = () => {
               </div>
             </div>
           ) : (
-            <Link href={`/courses/${course.course_id}`} className="h-full">
+            <Link
+              href={
+                course.is_specialization === 1
+                  ? `/courses/${course.course_id}`
+                  : `/courses/${course.course_id}/${course.slug}`
+              }
+              className="h-full"
+            >
               <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">
                 <p className="text-xs font-normal text-dark-400">Hot Course</p>
                 <Image
