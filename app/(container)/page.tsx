@@ -1,4 +1,3 @@
-import PageContainer from "@/components/PageContainer";
 import HomeView from "@/views/Home";
 import { Metadata } from "next";
 
