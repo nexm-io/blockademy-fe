@@ -38,7 +38,9 @@ const BreadCrumb = () => {
                     } cursor-default`}
                   >
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      {getPathName(path)}
+                      {getPathName(path) === "articles"
+                        ? "Crypto News"
+                        : getPathName(path)}
                     </span>
                   </li>
 

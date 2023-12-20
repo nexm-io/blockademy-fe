@@ -21,8 +21,8 @@ export default function MainLayout({
       <ClientOnly>
         <Header />
       </ClientOnly>
-      <div className="relative w-full">{children}</div>
-      <div className="fixed left-0 right-0 bottom-0 bg-white-100">
+      <div className="relative w-full overflow-y-auto">{children}</div>
+      <div className="lg:fixed left-0 right-0 bottom-0 bg-white-100">
         <Footer />
       </div>
     </div>
