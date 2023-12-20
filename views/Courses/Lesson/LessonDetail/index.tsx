@@ -247,7 +247,7 @@ const LessonDetail = () => {
               height={24}
             />
             <div className="flex flex-col md:flex-row justify-between mt-[52px]">
-              <Skeleton variant="rounded" sx={{ width: "400px" }} height={50} />
+              <Skeleton variant="rounded" sx={{ width: "100%" }} height={50} />
             </div>
           </div>
           <div className="mt-10">

@@ -261,9 +261,7 @@ export default function ResultQuiz() {
               </ol>
             </nav>
             <div className="flex flex-col md:flex-row justify-between mt-[32px]">
-              <div className="text-[#1E2329] text-[36px] leading-[40px] font-bold">
-                Result
-              </div>
+              <div className="text-[#1E2329] text-[36px] font-bold">Result</div>
               <div className="flex flex-col md:flex-row gap-4">
                 {Number(listResultData?.score) < PASSED_QUIZZ_SCORE ? (
                   <Button
@@ -281,7 +279,7 @@ export default function ResultQuiz() {
                   listResultData?.is_final_quiz ? (
                     <>
                       <Button
-                        className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
+                        className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2 mt-4 lg:mt-0"
                         onClick={() => router.push(courseUrl)}
                       >
                         <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
@@ -298,7 +296,7 @@ export default function ResultQuiz() {
                   ) : (
                     Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
                       <Button
-                        className="w-full md:w-[184px] !px-0"
+                        className="w-full md:w-[184px] !px-0 mt-4 lg:mt-0"
                         onClick={() => router.push(nextLessonUrl)}
                       >
                         Go to Next item
