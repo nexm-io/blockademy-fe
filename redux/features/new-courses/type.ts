@@ -21,6 +21,7 @@ export interface CourseTypes {
   is_completed_assignment?: number;
   is_completed?: number;
   total_lesson_completed?: number;
+  is_specialization: number;
 }
 
 export interface MetaCoursesType {

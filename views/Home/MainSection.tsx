@@ -79,7 +79,11 @@ const MainSection = () => {
             </div>
           ) : (
             <Link
-              href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`}
+              href={
+                course.is_specialization === 1
+                  ? `/courses/${course.course_id}`
+                  : `/courses/${course.course_id}/${course.slug}`
+              }
               className="h-full"
             >
               <div className="lg:p-10 py-10 pr-0 lg:pr-0 relative">
@@ -95,9 +99,11 @@ const MainSection = () => {
                   {course.title}
                 </h3>
                 <div className="text-base text-[#616161] flex items-center gap-[25px] mt-4">
-                  <p className="text-base text-[#616161] font-normal">
-                    {format(parseISO(course.start_date), "LLL d, yyyy")}
-                  </p>
+                  {course.start_date && (
+                    <p className="text-base text-[#616161] font-normal">
+                      {format(parseISO(course.start_date), "LLL d, yyyy")}
+                    </p>
+                  )}
                   <div className="flex gap-1 items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

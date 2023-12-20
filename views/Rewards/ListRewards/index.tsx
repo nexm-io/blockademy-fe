@@ -31,7 +31,7 @@ export default function ListRewards() {
   }, [dispatch]);
 
   return (
-    <div className="container mt-24 sm:mt-32 min-h-[64vh]">
+    <div className="container min-h-[64vh] mt-[45px]">
       <nav className="w-full rounded-md">
         <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
           <li className="leading-[23px] hover:underline cursor-pointer">
@@ -59,11 +59,10 @@ export default function ListRewards() {
       <div className="flex flex-col gap-6">
         {rewardRx.listRewardLoading ? (
           <RewardLoading row={3} />
-        ) : rewardRx.rewards.filter((z) => z.is_completed_assignment).length === 0 ? (
+        ) : rewardRx.rewards.length === 0 ? (
           <RewardEmpty />
         ) : (
           rewardRx.rewards
-            .filter((z) => z.is_completed_assignment)
             .map((reward) => (
               <RewardItem key={reward.course_id} data={reward} />
             ))

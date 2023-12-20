@@ -5,17 +5,35 @@ import Link from "next/link";
 import { CourseTypes } from "@/redux/features/new-courses/type";
 
 const STATUS_DATA = {
-  completed: { bgColor: "bg-[#02E755]/20", dotColor: "bg-[#02E755]", text: 'Completed' },
-  progress: { bgColor: "bg-[#DDE8FF]", dotColor: "bg-[#1F37B3]", text: 'In Progress' },
+  completed: {
+    bgColor: "bg-[#02E755]/20",
+    dotColor: "bg-[#02E755]",
+    text: "Completed",
+  },
+  progress: {
+    bgColor: "bg-[#DDE8FF]",
+    dotColor: "bg-[#1F37B3]",
+    text: "In Progress",
+  },
 };
 
 const CourseItemV2 = ({ course }: { course: CourseTypes }) => {
   const [srcCourse, setSrcCourse] = useState(course.image.original);
 
-  const courseStatus = useMemo(() => course.is_completed === 1 && course.is_completed_assignment === 1 ? 'completed' : 'progress', [course.is_completed, course.is_completed_assignment])
+  const courseStatus = useMemo(
+    () => (course.is_completed === 1 ? "completed" : "progress"),
+    [course.is_completed]
+  );
 
   return (
-    <Link href={`/courses/${course.course_id}?lesson_id=${course.lesson_first?.lesson_id}`} className="group mb-10 border border-[#F5F5F5] rounded-lg md:max-w-[360px]">
+    <Link
+      href={
+        course.is_specialization === 1
+          ? `/courses/${course.course_id}`
+          : `/courses/${course.course_id}/${course.slug}`
+      }
+      className="group mb-10 border border-[#F5F5F5] rounded-lg md:max-w-[360px]"
+    >
       <div className="rounded overflow-hidden">
         <Image
           className="w-full h-[202px] object-cover transition-all duration-500 group-hover:scale-110"
@@ -47,7 +65,10 @@ const CourseItemV2 = ({ course }: { course: CourseTypes }) => {
           <div className="flex items-center gap-2">
             <Image src={IconDotList} width={15} height={11} alt="dot" />
             <p className="text-sm leading-3 -mb-[2px] font-light">
-              <span className="text-[#004DFB]">{course.total_lesson_completed}</span>/{course.total_Lecture} Lecture
+              <span className="text-[#004DFB]">
+                {course.total_lesson_completed}
+              </span>
+              /{course.total_Lecture} Lecture
             </p>
           </div>
         </div>

@@ -25,11 +25,15 @@ const TimeUpModal: React.FC<
   }>
 > = ({ isModalEndTestOpen, onClose }) => {
   const dispatch = useAppDispatch();
-  const { listQues, dataStartTime, userAnswer, loadingSendQuiz } =
-    useAppSelector((state) => state.quiz);
+  const {
+    quesLessonId,
+    quesModuleId,
+    listQues,
+    dataStartTime,
+    userAnswer,
+  } = useAppSelector((state) => state.quiz);
   const { push } = useRouter();
   const { id } = useParams();
-  //   const { id } = query;
 
   const handleSendQuiz = async () => {
     const converUserAnswer = userAnswer.map((item) =>
@@ -47,8 +51,10 @@ const TimeUpModal: React.FC<
           }
     );
     const list = {
+      module_id: quesModuleId,
+      lesson_id: quesLessonId,
       post_id: listQues[0]?.post_id,
-      start_time: formatUtcTime(dataStartTime),
+      start_time: formatUtcTime(Date.now()),
       end_time: formatUtcTime(Date.now()),
       data: converUserAnswer,
     };

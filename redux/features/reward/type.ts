@@ -1,19 +1,15 @@
 export type RewardDetails = {
-  aissignment_grade: number;
   course_id: string;
   title: string;
-  first_name: string | null;
-  last_name: string | null;
-  assignment_status: {
-    name: string;
-    slug: string;
-  };
-  is_completed_assignment: number;
-  assigment_id: number;
+  first_name: string;
+  last_name: string;
   is_claimed: number;
   claim_at: string;
-  certificate_image_url?: string;
-  certificate_pdf_url?: string;
+  certificate_image_url: string;
+  certificate_pdf_url: string;
+  certificate_id: string;
+  issue_nft_status: any;
+  complete_assignment_at: string;
 };
 
 export type RewardReducerType = {
@@ -26,19 +22,17 @@ export type RewardReducerType = {
 export const defaultRewardReducer: RewardReducerType = {
   rewardDetailLoading: true,
   rewardDetails: {
-    aissignment_grade: 0,
     course_id: "",
     title: "",
     first_name: "",
     last_name: "",
-    assignment_status: {
-      name: "",
-      slug: "",
-    },
-    is_completed_assignment: 0,
-    assigment_id: 0,
     is_claimed: 0,
     claim_at: "",
+    certificate_image_url: "",
+    certificate_pdf_url: "",
+    certificate_id: "",
+    issue_nft_status: {},
+    complete_assignment_at: "",
   },
   rewards: [],
   listRewardLoading: true,

@@ -26,7 +26,8 @@ export type QuizReducerType = {
   dataStartTime: any;
   isCountDownStop: boolean;
   quesDetail: DetailQuestion | null;
-
+  quesLessonId: string | number;
+  quesModuleId: string | number;
   loadingCheckShowResult: boolean;
   isCheckShowResult: boolean;
   iShowFeedBack: boolean;
@@ -57,7 +58,8 @@ export const defaultQuizReducer: QuizReducerType = {
   dataStartTime: null,
   isCountDownStop: false,
   quesDetail: null,
-
+  quesLessonId: "",
+  quesModuleId: "",
   loadingCheckShowResult: false,
   isCheckShowResult: false,
   iShowFeedBack: false,
@@ -151,6 +153,8 @@ export type DataSendQuiz = {
   start_time: string;
   end_time: string;
   data: DataSubmitType[];
+  lesson_id: string | number;
+  module_id: string | number;
 };
 
 export type DataSubmitType = {
@@ -174,6 +178,14 @@ export type listResultDataType = {
     lesson_slug: string;
     lesson_id: string;
   };
+  main_is_specialization: string | number;
+  is_lesson_quiz: number;
+  is_module_quiz: number;
+  is_course_quiz: number;
+  lesson_data: any;
+  course_title: string;
+  is_claimed: number | string;
+  is_final_quiz: number;
 };
 
 export type QuestionAnswerType = {

@@ -436,6 +436,12 @@ input[type="range"]::-webkit-slider-thumb:active {
   align-items: center;
 }
 
+.course-content table,
+.course-content table tr,
+.course-content table td {
+  border: 1px solid #333;
+}
+
 .markdown-content ol {
   list-style-type: decimal;
 }
@@ -618,8 +624,8 @@ input[type="range"]::-webkit-slider-thumb:active {
 .hambuger {
   position: relative;
   z-index: 2;
-  height: 40px;
-  width: 30px;
+  height: 27px;
+  width: 24px;
   text-align: center;
   line-height: 50px;
   font-size: 20px;
@@ -634,8 +640,8 @@ input[type="range"]::-webkit-slider-thumb:active {
   position: absolute;
   top: calc(50% - 1px);
   left: 0;
-  width: 80%;
-  border-bottom: 2px solid #1f37b3;
+  width: 100%;
+  border-bottom: 2px solid #757575;
   transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -644,6 +650,17 @@ input[type="range"]::-webkit-slider-thumb:active {
 }
 .hambuger:after {
   transform: translateY(8px);
+}
+
+.module.hambuger {
+  height: 20px;
+  width: 18px;
+}
+
+.module.hambuger span,
+.module.hambuger:before,
+.module.hambuger:after {
+  border-color: #1f37b3;
 }
 
 .active .hambuger span {

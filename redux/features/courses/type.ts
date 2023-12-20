@@ -26,6 +26,52 @@ export interface CourseResponse {
   details: CourseDetail | null;
   quiz: QuizDataResponse;
   message?: string;
+  subCourseLoading: boolean;
+  subCourse: any;
+  lessonLoading: boolean;
+  lesson: any;
+  previousSubCourseSlug: string;
+  nextLesson: LessonTypes;
+  completeRate: {
+    total_completed: number;
+  };
+  nextPrevLesson: {
+    previous_data: NextPrevType;
+    next_data: NextPrevType;
+    current_data: NextPrevType;
+  };
+  menuData: {
+    sub_course_data: any;
+    module_data: any;
+  };
+  menuDataLoading: boolean;
+}
+
+export interface LessonTypes {
+  main_is_specialization: string | any;
+  main_course_data: string | any;
+  course_id: string;
+  course_slug: string;
+  course_title: string;
+  is_registered: number;
+  is_claimed: number;
+  title: string;
+  link: null | string;
+  duration: number;
+  assignment_detail: any;
+  type_upload: string;
+  type_format: number;
+  description: null | string;
+}
+
+export interface NextPrevType {
+  sub_course_id: string;
+  sub_course_slug: string;
+  module_id: number;
+  module_slug: string;
+  lesson_id: number;
+  lesson_slug: string;
+  is_complete_lesson: number;
 }
 
 export interface ListCourse {
@@ -89,6 +135,7 @@ export interface Course_answer {
 }
 
 export interface CourseDetail {
+  is_complete_module_sub_course: number | string;
   is_claimed: number;
   complete_assignment_at: string;
   certificate_pdf_url: string;
@@ -102,9 +149,9 @@ export interface CourseDetail {
   title: string;
   campaign_title: string;
   lesson_first: any;
+  description: string;
   slug: string;
   order: number;
-  lesson_data: Lesson[];
   lesson_type: string;
   is_completed: number;
   reward_is_claimed: number;
@@ -118,6 +165,41 @@ export interface CourseDetail {
   };
   is_opened: number;
   issue_nft_status: string;
+  main_course_data: {
+    id: string;
+    title: string;
+    slug: string;
+  };
+  is_specialization: number;
+  main_is_specialization: number | string;
+}
+
+export interface ModuleItem {
+  is_complete_module: number;
+  lesson_slug: string;
+  duration: number;
+  lesson_data: {
+    id: number;
+    slug: string;
+  };
+  id: number;
+  slug: string;
+  title: string;
+  is_locked: number;
+}
+
+export interface LessonItem {
+  is_complete_lesson: number;
+  duration: number;
+  id: number;
+  slug: string;
+  type_format: number;
+  type_upload: string;
+  link: string;
+  description: string;
+  title: string;
+  is_locked: number;
+  assignment_detail: any;
 }
 
 export interface CourseDetailResponse {

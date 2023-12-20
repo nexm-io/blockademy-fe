@@ -4,14 +4,8 @@ import { Medal } from "@/components/Icon";
 import cn from "@/services/cn";
 import { Collapse } from "@/components/Antd";
 import Image from "next/image";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
-import {
-  DesktopEmpty,
-  DesktopLoading,
-  MobileEmpty,
-  MobileLoading,
-} from "@/components/Leaderboard/LeaderboardLoading";
 
 const LeaderboardView = () => {
   const router = useRouter();
@@ -23,7 +17,7 @@ const LeaderboardView = () => {
   }, [courseId]);
 
   return (
-    <div className="mt-24 sm:mt-32">
+    <>
       <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
         <div>
           <h1 className="text-black-100 font-bold md:text-4xl text-3xl">
@@ -44,7 +38,7 @@ const LeaderboardView = () => {
       <div className="block lg:hidden">
         {/* <MobileLoading /> */}
         {/* <MobileEmpty /> */}
-        <>
+        <div>
           <Collapse
             accordion
             className="leaderboard mb-1 rounded-none bg-white-700"
@@ -240,7 +234,7 @@ const LeaderboardView = () => {
               },
             ]}
           />
-        </>
+        </div>
       </div>
 
       <div className="hidden lg:block overflow-auto">
@@ -1045,7 +1039,7 @@ const LeaderboardView = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </>
   );
 };
 

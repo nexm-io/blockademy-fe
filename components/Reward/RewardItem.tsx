@@ -4,21 +4,17 @@ import React, { useEffect, useState } from "react";
 import { RewardDetails } from "@/redux/features/reward/type";
 import { PLACEHOLDER_BASE64 } from "@/utils/getLocalBase64";
 import Button from "../Common/Button";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const RewardItem = ({
   data: {
-    assignment_status,
     title,
     course_id,
     certificate_image_url,
-    aissignment_grade,
   },
 }: {
   data: RewardDetails;
 }) => {
-  const router = useRouter();
   const [cerImage, setCerImage] = useState("");
 
   useEffect(() => {
@@ -41,11 +37,11 @@ const RewardItem = ({
           <div className="flex-1 flex flex-col gap-2">
             <h5 className="text-2xl line-clamp-2">{title}</h5>
             <p className="text-[14px] font-light capitalize text-green-400">
-              {assignment_status.name}
+              Passed
             </p>
-            <p className="text-grey-700 text-xl">
+            {/* <p className="text-grey-700 text-xl">
               Grade Achieved: {aissignment_grade || "--"}%
-            </p>
+            </p> */}
           </div>
           <div>
             <Link href={`/accomplishments/${course_id}`}>

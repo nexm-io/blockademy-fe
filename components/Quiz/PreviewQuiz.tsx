@@ -27,20 +27,6 @@ const PreviewQuiz: React.FC<
     return item;
   });
 
-  const checkWhiteSpace = (item: string) => {
-    const isWhitespace = /^((&nbsp;|\s)*<[^>]+>)*(&nbsp;|\s)*$/.test(item);
-    if (isWhitespace) {
-      return true;
-    }
-    return false;
-  };
-
-  const removeWhiteSpace = (str: string) => {
-    if (!str) return "";
-    const trimmedStr = str.replace(/^(&nbsp;\s*)+|(&nbsp;\s*)+$/g, "");
-    return trimmedStr;
-  };
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -58,8 +44,7 @@ const PreviewQuiz: React.FC<
       <Box
         className="main quiz"
         sx={{
-          mx: { xs: "20px", lg: "100px" },
-          pt: "70px",
+          pt: "44px",
           mb: "100px",
         }}
         onCopy={(e) => {
@@ -73,7 +58,7 @@ const PreviewQuiz: React.FC<
           {filterListView[0]?.quiz_title}
         </h3>
 
-        <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-[42px]">
+        <div className="border-t border-[#EDEDED] mt-[20px] pt-[20px] grid gap-10">
           {filterListView?.map((item, index) => {
             return (
               <div key={index}>
@@ -83,35 +68,6 @@ const PreviewQuiz: React.FC<
                 <p className="mt-3 text-[#1E2329] text-[24px] leading-[32px]">
                   {item?.question}
                 </p>
-
-                {/* NOTE: only text */}
-                {/* {item?.question_description &&
-                    !checkWhiteSpace(item?.question_description) && (
-                      <Box sx={{ ml: 4, overflow: "auto" }}>
-                        <Box
-                          sx={{
-                            color: "#71738B",
-                            lineHeight: "25px",
-                            userSelect: "none",
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: item?.question_description,
-                          }}
-                        />
-                      </Box>
-                    )}
-                  {item?.image && (
-                    <Box sx={{ maxWidth: "300px", userSelect: "none" }}>
-                      <Image
-                        src={item?.image?.original_image}
-                        // src={item?.image}
-                        alt="question-image"
-                        width={100}
-                        height={150}
-                        layout="responsive"
-                      />
-                    </Box>
-                  )} */}
 
                 <div className="mt-8">
                   {item?.answer_list?.length > 0 ? (
@@ -191,7 +147,6 @@ const PreviewQuiz: React.FC<
                                   color: "#1E1E3A",
                                   minWidth: "170px",
                                   wordBreak: "break-word",
-                                  userSelect: "none",
                                 }}
                               />
                               {item?.image && (
