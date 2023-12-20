@@ -143,7 +143,7 @@ const SubCourseView = () => {
       const { payload } = await dispatch(getRewardDetail(courseId as string));
       if (payload?.response?.data?.error) router.push("/not-found");
     })();
-  }, []);
+  }, [isLogin, courseDetail]);
 
   return (
     <div className="container min-h-screen">
@@ -322,7 +322,7 @@ const SubCourseView = () => {
             {/* PASSED CASE */}
             {isLogin &&
             courseDetail?.is_complete_module_sub_course === 1 &&
-            courseDetail?.is_claimed ? (
+            rewardDetails?.is_claimed ? (
               <RewardDetail reward={rewardDetails} />
             ) : null}
 
