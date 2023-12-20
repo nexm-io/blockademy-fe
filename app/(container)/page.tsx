@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 export default function HomePage() {
   return (
-    <main className="mt-[82.27px]">
+    <main>
       <HomeView />
     </main>
   );

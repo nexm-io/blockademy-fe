@@ -4,15 +4,11 @@ import Courses from "@/components/Courses";
 import { loadCourses } from "@/redux/features/new-courses/action";
 import { selectNewCourses } from "@/redux/features/new-courses/reducer";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import Button from "@/components/Common/Button";
-import { LIMIT_COURSES, TOPIC_LIST } from "@/utils/constants";
+import { LIMIT_COURSES } from "@/utils/constants";
 import Pagination from "@/components/Pagination";
 import BackToTop from "@/components/BackToTop";
 import { selectCategory } from "@/redux/features/category/reducer";
-import {
-  loadCategory,
-  setCurrCategory,
-} from "@/redux/features/category/action";
+import { loadCategory } from "@/redux/features/category/action";
 
 const CoursesView = () => {
   const divRef = useRef<any>();

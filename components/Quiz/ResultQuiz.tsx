@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { useParams, useRouter } from "next/navigation";
 import { RESULT_QUIZ_FAIL, RESULT_QUIZ_PASS } from "@/utils/constants";
@@ -32,15 +32,98 @@ export default function ResultQuiz() {
     });
   };
 
+  const handleClickKeepLearning = () => {
+    let url = "";
+
+    if (listResultData) {
+      const courseId = listResultData.course_id as string;
+      const isSpecialization = listResultData.main_is_specialization;
+      const courseSlug = listResultData.course_slug;
+
+      if (listResultData.is_course_quiz || listResultData.is_module_quiz) {
+        url = isSpecialization
+          ? `/courses/${courseId}`
+          : `/courses/${courseId}/${courseSlug}`;
+      }
+
+      if (listResultData.is_lesson_quiz) {
+        const lessonSlug = listResultData.lesson_data?.slug;
+        const moduleSlug = listResultData.lesson_data?.module_slug;
+        url = isSpecialization
+          ? `/courses/${courseId}/${moduleSlug}/lessons/${lessonSlug}`
+          : `/courses/${courseId}/${courseSlug}/lessons/${lessonSlug}`;
+      }
+
+      router.push(url);
+    }
+  };
+
+  const lessonUrl = useMemo(() => {
+    if (!listResultData) return "";
+    const isSpecialization = listResultData.main_is_specialization;
+    const courseId = listResultData.course_id;
+    const moduleSlug = listResultData.lesson_data?.module_slug;
+    const lessonSlug = listResultData.lesson_data?.slug;
+    const courseSlug = listResultData.course_slug;
+
+    let href = `/courses/${courseId}`;
+
+    if (isSpecialization) {
+      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [listResultData]);
+
+  const nextLessonUrl = useMemo(() => {
+    if (!listResultData) return "";
+    const nextData = listResultData.lesson_data?.next_data;
+
+    if (!nextData) return "";
+    const isSpecialization = nextData.main_is_specialization;
+    const courseId = nextData.sub_course_id;
+    const moduleSlug = nextData.module_slug;
+    const lessonSlug = nextData?.lesson_slug;
+    const courseSlug = nextData.sub_course_slug;
+
+    let href = `/courses/${courseId}`;
+
+    if (isSpecialization) {
+      href += moduleSlug ? `/${moduleSlug}/lessons/` : "";
+    } else {
+      href += courseSlug ? `/${courseSlug}/lessons/` : "";
+    }
+
+    href += lessonSlug || "";
+    return href;
+  }, [listResultData]);
+
+  const courseUrl = useMemo(() => {
+    if (!listResultData) return "";
+
+    const {
+      main_is_specialization: isSpecialization,
+      course_id: courseId,
+      course_slug: courseSlug,
+    } = listResultData;
+
+    const href = isSpecialization
+      ? `/courses/${courseId}`
+      : `/courses/${courseId}/${courseSlug}`;
+
+    return href;
+  }, [listResultData]);
+
   useEffect(() => {
     const fetchData = async () => {
       if (typeof id !== "string") return;
       if (isViewResultInCourse) {
-        const { payload } = await dispatch(getListHighestResult(id));
-        if (!payload?.course_id) router.push("/not-found");
+        await dispatch(getListHighestResult(id));
       } else {
-        const { payload } = await dispatch(getListResult(id));
-        if (!payload?.course_id) router.push("/not-found");
+        await dispatch(getListResult(id));
       }
     };
     fetchData();
@@ -48,38 +131,28 @@ export default function ResultQuiz() {
 
   useEffect(() => {
     scrollToTop();
-    const handleKeyDown = (event: any) => {
-      if (event.keyCode === 123) {
-        event.preventDefault();
-      }
-    };
-
-    const handleContextMenu = (event: any) => {
-      event.preventDefault();
-    };
-
-    document.addEventListener("contextmenu", handleContextMenu);
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("contextmenu", handleContextMenu);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
   }, []);
 
   useEffect(() => {
     if (!listResultData) return;
     if (!isAuthenticated || !token) {
-      router.push(
-        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
-      );
+      const isSpecialization = listResultData?.main_is_specialization === 1;
+      const courseIdOrMainId = isSpecialization
+        ? listResultData.course_id
+        : `${listResultData.course_id}/${listResultData?.course_slug}`;
+
+      const url = isSpecialization
+        ? `/courses/${courseIdOrMainId}`
+        : `/courses/${courseIdOrMainId}`;
+
+      router.push(url);
     }
   }, [listResultData, isAuthenticated, token]);
 
   return (
     <>
       {loadingListResult ? (
-        <Box sx={{ py: 10, m: "auto" }}>
+        <Box sx={{ py: 6, m: "auto" }}>
           <div className="container">
             <Skeleton
               variant="rounded"
@@ -130,24 +203,58 @@ export default function ResultQuiz() {
           </div>
         </Box>
       ) : (
-        <Box sx={{ py: 10, m: "auto" }}>
+        <Box sx={{ py: "44px", m: "auto" }}>
           <div className="container">
             <nav className="w-full rounded-md">
               <ol className="list-reset flex text-gray-300 items-center md:pl-0 flex-wrap">
                 <li className="leading-[23px] hover:underline">
-                  <Link
-                    href={`/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`}
-                  >
+                  <Link href={`/`}>
                     <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
-                      {listResultData?.quiz}
+                      Home
                     </span>
                   </Link>
                 </li>
                 <li className="leading-[23px]">
                   <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
                 </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link href={`/courses`}>
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      Courses
+                    </span>
+                  </Link>
+                </li>
                 <li className="leading-[23px]">
-                  <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                <li className="leading-[23px] hover:underline">
+                  <Link href={courseUrl}>
+                    <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                      {listResultData?.course_title}
+                    </span>
+                  </Link>
+                </li>
+                <li className="leading-[23px]">
+                  <span className="mx-3 md:text-[12px] text-[10px]">&gt;</span>
+                </li>
+                {listResultData?.is_lesson_quiz && (
+                  <>
+                    <li className="leading-[23px] hover:underline">
+                      <Link href={lessonUrl}>
+                        <span className="text-gray-300 md:text-sm font-normal capitalize text-[12px]">
+                          {listResultData?.lesson_data?.title}
+                        </span>
+                      </Link>
+                    </li>
+                    <li className="leading-[23px]">
+                      <span className="mx-3 md:text-[12px] text-[10px]">
+                        &gt;
+                      </span>
+                    </li>
+                  </>
+                )}
+                <li className="leading-[23px]">
+                  <span className="text-black-400 md:text-sm font-normal capitalize text-[12px]">
                     Result
                   </span>
                 </li>
@@ -161,11 +268,7 @@ export default function ResultQuiz() {
                 {Number(listResultData?.score) < PASSED_QUIZZ_SCORE ? (
                   <Button
                     className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
-                    onClick={() =>
-                      router.push(
-                        `/courses/${listResultData?.course_id}?lesson_id=${listResultData?.lesson_first?.lesson_id}`
-                      )
-                    }
+                    onClick={handleClickKeepLearning}
                   >
                     <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
                       Keep Learning
@@ -174,12 +277,34 @@ export default function ResultQuiz() {
                 ) : null}
 
                 {listResultData?.result === RESULT_QUIZ_PASS ? (
-                  <Button
-                    className="w-full md:w-[184px] !px-0"
-                    onClick={() => router.push("/accomplishments")}
-                  >
-                    Accomplishments
-                  </Button>
+                  listResultData?.is_claimed &&
+                  listResultData?.is_final_quiz ? (
+                    <>
+                      <Button
+                        className="!bg-[#C6EAFF] group !hover:bg-[#C6EAFF]/50 !rounded-[4px] w-full md:w-[184px] px-2"
+                        onClick={() => router.push(courseUrl)}
+                      >
+                        <span className="text-[#0B76A4] group-hover:text-[#0B76A4]/80 text-base">
+                          Back to Course
+                        </span>
+                      </Button>
+                      <Button
+                        className="w-full md:w-[184px] !px-0"
+                        onClick={() => router.push("/accomplishments")}
+                      >
+                        Accomplishments
+                      </Button>
+                    </>
+                  ) : (
+                    Number(listResultData?.score) >= PASSED_QUIZZ_SCORE && (
+                      <Button
+                        className="w-full md:w-[184px] !px-0"
+                        onClick={() => router.push(nextLessonUrl)}
+                      >
+                        Go to Next item
+                      </Button>
+                    )
+                  )
                 ) : null}
               </div>
             </div>
@@ -206,14 +331,14 @@ export default function ResultQuiz() {
                 ) : (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="40"
-                    height="40"
+                    width={40}
+                    height={40}
                     viewBox="0 0 40 40"
                     fill="none"
                   >
                     <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                       fill="#FF3333"
                     />
@@ -368,7 +493,6 @@ export default function ResultQuiz() {
                                   color: "#1E1E3A",
                                   minWidth: "170px",
                                   wordBreak: "break-word",
-                                  userSelect: "none",
                                 }}
                               />
                               {z.result_answer &&
@@ -390,14 +514,14 @@ export default function ResultQuiz() {
                               item.id === z.user_answer?.id ? (
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
-                                  width="40"
-                                  height="40"
+                                  width={40}
+                                  height={40}
                                   viewBox="0 0 40 40"
                                   fill="none"
                                 >
                                   <path
-                                    fill-rule="evenodd"
-                                    clip-rule="evenodd"
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
                                     d="M18.331 20L5 6.67139L6.67139 5L20 18.331L33.3286 5L35 6.67139L21.669 20L35 33.3286L33.331 34.9976L20 21.669L6.67139 34.9976L5 33.3286L18.331 20Z"
                                     fill="#FF3333"
                                   />

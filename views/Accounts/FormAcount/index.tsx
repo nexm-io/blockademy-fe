@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import Link from "next/link";
 import Popup from "@/components/Popup";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -49,7 +49,7 @@ export default function FormAccount() {
   };
 
   useEffect(() => {
-    dispatch(getAccountDetail({ userId }));
+    if (userId) dispatch(getAccountDetail({ userId }));
   }, [userId]);
 
   useEffect(() => {

@@ -4,8 +4,8 @@ import Image from "next/image";
 import React from "react";
 import logo from "@/public/icons/logo.svg";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import Socials from "../Socials";
+import { usePathname } from "next/navigation";
 
 const LINKS = [
   {
@@ -48,26 +48,16 @@ const Footer = () => {
           ></Image>
         </Link>
         <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-[60px]">
-          {LINKS.map((z, i) =>
-            z.isContact ? (
-              <a
-                href={z.href}
-                key={i}
-                className="text-[#616161] text-xl font-normal text-center"
-              >
-                {z.label}
-              </a>
-            ) : (
-              <Link
-                href={z.href}
-                target={z.target}
-                key={i}
-                className="text-[#616161] text-xl font-normal text-center"
-              >
-                {z.label}
-              </Link>
-            )
-          )}
+          {LINKS.map((z, i) => (
+            <Link
+              href={z.href}
+              target={z.target}
+              key={i}
+              className="text-[#616161] text-xl font-normal text-center"
+            >
+              {z.label}
+            </Link>
+          ))}
         </div>
       </div>
       <div className="container">

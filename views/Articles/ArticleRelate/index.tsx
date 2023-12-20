@@ -23,7 +23,7 @@ const ArticleRelate = ({ id }: { id: number }) => {
   return (
     <div className="flex flex-col gap-6 px-4 md:px-0 mt-8 md:mt-0">
       <span className="block font-semibold text-[20px] text-black-100 leading-28px">
-        Related Articles
+        Related Crypto News
       </span>
       {(!isLoading && relateList) ? (
         relateList.map((post, index: number) => (

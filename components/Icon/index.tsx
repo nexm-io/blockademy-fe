@@ -205,3 +205,67 @@ export const Google = ({ className = "" }: { className?: string }) => (
     </g>
   </svg>
 );
+
+export const Previous = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M0.35 4.24L4.59 8.48L6 7.06L3.18 4.24L6 1.42L4.59 0L0.35 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
+
+export const Next = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={6}
+    height={9}
+    viewBox="0 0 6 9"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M5.65 4.24L1.41 8.48L0 7.06L2.82 4.24L0 1.42L1.41 0L5.65 4.24Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);
+
+export const CloseCirlce = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 18 18"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M9 0C3.98571 0 0 3.98571 0 9C0 14.0143 3.98571 18 9 18C14.0143 18 18 14.0143 18 9C18 3.98571 14.0143 0 9 0ZM12.4714 13.5L9 10.0286L5.52857 13.5L4.5 12.4714L7.97143 9L4.5 5.52857L5.52857 4.5L9 7.97143L12.4714 4.5L13.5 5.52857L10.0286 9L13.5 12.4714L12.4714 13.5Z"
+      fill="#FF3333"
+    />
+  </svg>
+);
+
+export const Plus = ({ className = "" }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    className={className}
+  >
+    <path
+      d="M21 12C21 12.1989 20.921 12.3897 20.7803 12.5303C20.6397 12.671 20.4489 12.75 20.25 12.75H12.75V20.25C12.75 20.4489 12.671 20.6397 12.5303 20.7803C12.3897 20.921 12.1989 21 12 21C11.8011 21 11.6103 20.921 11.4697 20.7803C11.329 20.6397 11.25 20.4489 11.25 20.25V12.75H3.75C3.55109 12.75 3.36032 12.671 3.21967 12.5303C3.07902 12.3897 3 12.1989 3 12C3 11.8011 3.07902 11.6103 3.21967 11.4697C3.36032 11.329 3.55109 11.25 3.75 11.25H11.25V3.75C11.25 3.55109 11.329 3.36032 11.4697 3.21967C11.6103 3.07902 11.8011 3 12 3C12.1989 3 12.3897 3.07902 12.5303 3.21967C12.671 3.36032 12.75 3.55109 12.75 3.75V11.25H20.25C20.4489 11.25 20.6397 11.329 20.7803 11.4697C20.921 11.6103 21 11.8011 21 12Z"
+      fill="#1F37B3"
+    />
+  </svg>
+);

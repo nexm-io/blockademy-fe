@@ -16,6 +16,7 @@ export const TYPE_QUIZ = {
 };
 
 export const ASSIGNMENT_STATUS = {
+  NEW: "new",
   PASSED: "passed",
   NOT_COMPLETED: "new",
   FAILED: "failed",
@@ -82,7 +83,7 @@ export const MENU = [
   {
     activePathname: ["/articles"],
     key: "articles",
-    label: "Articles",
+    label: "Crypto News",
     pathname: "/articles",
   },
 ];

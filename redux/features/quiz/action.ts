@@ -119,10 +119,15 @@ export const getListHighestResult = createAsyncThunk(
 export const sendMultiQuizResult = createAsyncThunk<any, DataSendQuiz>(
   "quiz/send-quiz-result",
   async (payloads) => {
-    const { post_id } = payloads;
+    const { post_id, lesson_id, module_id } = payloads;
     try {
+      let query: string = "";
+      if (lesson_id) query += `lesson_id=${lesson_id}`;
+      if (module_id)
+        query += query ? `&module_id=${module_id}` : `module_id=${module_id}`;
+      const finalQuery = query ? `?${query}` : "";
       const { data: sendQuizRes } = await api.post(
-        `/api/v10/quiz/${post_id}/store-quiz-result`,
+        `/api/v10/quiz/${post_id}/store-quiz-result${finalQuery}`,
         payloads
       );
       if (!sendQuizRes) return;
