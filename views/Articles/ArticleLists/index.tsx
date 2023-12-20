@@ -68,7 +68,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     (state: RootState) => state.articles.pagination
   );
 
-  const is_loading = useAppSelector(state => state.articles.isLoading)
+  const is_loading = useAppSelector((state) => state.articles.isLoading);
   const [limit] = useState<number>(15);
   const itemsPerPage = Number(pagination?.per_page) || 1;
   const [itemOffset, setItemOffset] = useState(0);
@@ -148,13 +148,13 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
     dataTrending?.length === 0 ||
     dataRecommend?.length === 0 ? (
     <div className="flex items-center justify-center my-[60px]">
-      <p className="text-gray-300 text-xl font-medium">No articles found</p>
+      <p className="text-gray-300 text-xl font-medium">No crypto news found</p>
     </div>
   ) : (
     <section>
       <div className="flex justify-between mt-[39px] mb-6">
         <h2 className="text-black-100 font-bold text-[23px] leading-8 ">
-          Articles {`(${pagination ? pagination?.total : " "})`}
+          Crypto News {`(${pagination ? pagination?.total : " "})`}
         </h2>
         <div>
           <Dropdown
@@ -198,7 +198,7 @@ const ArticleLists: React.FC<ArticleListsProps> = ({
               topic={false}
             />
           ))
-        ) : (currentData && !is_loading) ? (
+        ) : currentData && !is_loading ? (
           currentData.map((item, index) => (
             <CardItem
               key={index}
