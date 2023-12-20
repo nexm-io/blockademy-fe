@@ -20,6 +20,7 @@ export default function MainLayout({
     <div className={`${soleil.variable} font-sans overflow-hidden`}>
       <ClientOnly>
         <Header />
+        <div className="h-[82px]"></div>
       </ClientOnly>
       <div className="relative w-full overflow-y-auto">{children}</div>
       <div className="lg:fixed left-0 right-0 bottom-0 bg-white-100">
